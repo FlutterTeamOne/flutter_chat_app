@@ -49,7 +49,7 @@ class DBHelper {
 
   ///Функция создания начальной таблицы БД
   Future _onCreate(Database db, int version) async {
-    db.execute('''
+    await db.execute('''
 CREATE TABLE $_tableName (
   $_columnId INTEGER PRIMARY KEY,
   $_columnName TEXT NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE $_tableName (
   ///Функция считывания/получения данных из БД
   Future onRead() async {
     var db = await instanse.database;
-    var user = await db.query(_tableName, orderBy: 'name');
+    var user = await db.query(_tableName, orderBy: _columnName);
     user.isNotEmpty
         ? user.map((user) => 'Object().fromMap(user)').toList()
         : [];
@@ -71,31 +71,32 @@ CREATE TABLE $_tableName (
   }
 
   ///Добавление данных в БД
-  Future onAdd() async {
+  Future onAdd(Map<String, dynamic> user) async {
     var db = await instanse.database;
 
-    await db.insert(_tableName, {});
+    await db.insert(_tableName, user);
     _updateListen();
   }
 
   ///Функция удаления элемента из БД по ID
   Future onDelete(int id) async {
     var db = await instanse.database;
-    db.delete('', where: 'id = ?', whereArgs: [id]);
+    await db.delete(_tableName, where: '$_columnId=?', whereArgs: [id]);
     _updateListen();
   }
 
   ///Функция изменения элемента в БД
-  Future onUpdate(Object object) async {
+  Future onUpdate(Map<String, dynamic> user) async {
     var db = await instanse.database;
-    db.update('', {});
+    var id = user[_columnId];
+    await db.update(_tableName, user, where: '$_columnId=?', whereArgs: [id]);
     _updateListen();
   }
 
   ///Функция создания временной таблицы
   Future onCreateTemp() async {
     var db = await instanse.database;
-    db.execute('''
+    await db.execute('''
           CREATE TEMP
       ''');
     _updateListen();
