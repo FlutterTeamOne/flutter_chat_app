@@ -19,31 +19,43 @@ class DBHelper {
 
   void _updateListen() => _updateListenController.sink.add(true);
 
+//название и версия бд
+  static const _dbFileName = 'sfera.db';
+  static const _dbVersion = 1;
+
+//название таблицы
+  static const _tableName = 'User';
+
+//название колонк таблицы
+  static const _columnId = 'id';
+  static const _columnName = 'name';
+  static const _columnEmail = 'email';
+  static const _columnProfilePicId = 'profile_pic_id';
+  static const _columnAccountCreated = 'account_created';
+
   ///Инициализация локальной БД. Если ее нет,
   ///то создается новая БД
   Future<Database> initDB() async {
     sqfliteFfiInit();
     var dbFactory = databaseFactoryFfi;
     var dbPath = await dbFactory.getDatabasesPath();
-    String path = join(dbPath, 'sfera.db');
-    return await dbFactory.openDatabase(
-      path,
-      options: OpenDatabaseOptions(
-        version: 1,
-        onCreate: _onCreate,
-      ),
-    );
+    String path = join(dbPath, _dbFileName);
+    return await dbFactory.openDatabase(path,
+        options: OpenDatabaseOptions(
+          version: _dbVersion,
+          onCreate: _onCreate,
+        ));
   }
 
   ///Функция создания начальной таблицы БД
   Future _onCreate(Database db, int version) async {
     db.execute('''
-CREATE TABLE User (
-  id INTEGER PRIMARY KEY,
-  name TEXT NOT NULL,
-  email TEXT NOT NULL,
-  profile_pic_id INTEGER,
-  account_created DATE)
+CREATE TABLE $_tableName (
+  $_columnId INTEGER PRIMARY KEY,
+  $_columnName TEXT NOT NULL,
+  $_columnEmail TEXT NOT NULL,
+  $_columnProfilePicId INTEGER,
+  $_columnAccountCreated DATE)
 ''');
     _updateListen();
   }
@@ -51,7 +63,7 @@ CREATE TABLE User (
   ///Функция считывания/получения данных из БД
   Future onRead() async {
     var db = await instanse.database;
-    var user = await db.query('User', orderBy: 'name');
+    var user = await db.query(_tableName, orderBy: 'name');
     user.isNotEmpty
         ? user.map((user) => 'Object().fromMap(user)').toList()
         : [];
@@ -62,7 +74,7 @@ CREATE TABLE User (
   Future onAdd() async {
     var db = await instanse.database;
 
-    await db.insert('table', {});
+    await db.insert(_tableName, {});
     _updateListen();
   }
 
