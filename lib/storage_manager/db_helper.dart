@@ -51,7 +51,9 @@ class DBHelper {
 
   ///Функция создания начальной таблицы БД
   Future _onCreate(Database db, int version) async {
-    await db.execute('''
+    await db.transaction((txn) async {
+      //Таблица User
+      await txn.execute('''
 CREATE TABLE $_tableName (
   $_columnId INTEGER PRIMARY KEY,
   $_columnName TEXT NOT NULL,
@@ -59,6 +61,21 @@ CREATE TABLE $_tableName (
   $_columnProfilePicId INTEGER,
   $_columnAccountCreated DATE)
 ''');
+//Таблица Messages
+ await txn.execute('''
+CREATE TABLE messages
+(
+ id              integer PRIMARY KEY AUTOINCREMENT,
+ friends_chat_id integer NOT NULL,
+ reciever_id     integer NOT NULL,
+ sender_id       integer NOT NULL,
+ content         char(50) NOT NULL,
+ CONSTRAINT MESSAGES_FK_79 FOREIGN KEY ( friends_chat_id ) REFERENCES friends_chat ( "id" ),
+ CONSTRAINT MESSAGES_FK_80 FOREIGN KEY ( sender_id ) REFERENCES users ( "id" ),
+ CONSTRAINT MESSAGES_FK_82 FOREIGN KEY ( reciever_id ) REFERENCES users ( "id" )
+)
+''');
+    });
     _updateListen();
   }
 
