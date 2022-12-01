@@ -69,7 +69,7 @@ CREATE TABLE ${DatabaseConst.friendsChat}(
  CONSTRAINT FRIENDS_CHAT_FK_78 FOREIGN KEY ( friend2_id ) REFERENCES users ( "id" )
 )
 ''');
-      //Первичная запись юзера в таблица
+      //Первичная запись юзера в таблицу
       await txn
           .insert(DatabaseConst.user, {'id': 'User.id', 'name': 'User.name'});
     });
