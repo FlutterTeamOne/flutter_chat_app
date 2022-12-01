@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter_chat_app/storage_manager/database_const.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -21,19 +21,7 @@ class DBHelper {
 
   void _updateListen() => _updateListenController.sink.add(true);
 
-//название и версия бд
-  static const _dbFileName = 'sfera.db';
-  static const _dbVersion = 1;
-
-//название таблицы
-  static const _tableName = 'User';
-
-//название колонк таблицы
-  static const _columnId = 'id';
-  static const _columnName = 'name';
-  static const _columnEmail = 'email';
-  static const _columnProfilePicId = 'profile_pic_id';
-  static const _columnAccountCreated = 'account_created';
+  
 
   ///Инициализация локальной БД. Если ее нет,
   ///то создается новая БД
@@ -41,10 +29,10 @@ class DBHelper {
     sqfliteFfiInit();
     var dbFactory = databaseFactoryFfi;
     var dbPath = await dbFactory.getDatabasesPath();
-    String path = join(dbPath, _dbFileName);
+    String path = join(dbPath, DatabaseConst.dbFileName);
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(
-          version: _dbVersion,
+          version: DatabaseConst.dbVersion,
           onCreate: _onCreate,
         ));
   }
@@ -54,25 +42,33 @@ class DBHelper {
     await db.transaction((txn) async {
       //Таблица User
       await txn.execute('''
-CREATE TABLE $_tableName (
-  $_columnId INTEGER PRIMARY KEY,
-  $_columnName TEXT NOT NULL,
-  $_columnEmail TEXT NOT NULL,
-  $_columnProfilePicId INTEGER,
-  $_columnAccountCreated DATE)
+CREATE TABLE ${DatabaseConst.user} (
+  ${DatabaseConst.columnId} INTEGER PRIMARY KEY AUTOINCREMENT,
+  ${DatabaseConst.columnName} char(50) NOT NULL)
 ''');
+
 //Таблица Messages
- await txn.execute('''
-CREATE TABLE messages
-(
- id              integer PRIMARY KEY AUTOINCREMENT,
- friends_chat_id integer NOT NULL,
- reciever_id     integer NOT NULL,
- sender_id       integer NOT NULL,
- content         char(50) NOT NULL,
+      await txn.execute('''
+CREATE TABLE ${DatabaseConst.messages} (
+ ${DatabaseConst.columnId} INTEGER PRIMARY KEY AUTOINCREMENT,
+ ${DatabaseConst.columnFriendsChatId} INTEGER NOT NULL,
+ ${DatabaseConst.columnRecieverId} INTEGER NOT NULL,
+ ${DatabaseConst.columnSenderId} INTEGER NOT NULL,
+ ${DatabaseConst.columnContent} char(50) NOT NULL,
  CONSTRAINT MESSAGES_FK_79 FOREIGN KEY ( friends_chat_id ) REFERENCES friends_chat ( "id" ),
  CONSTRAINT MESSAGES_FK_80 FOREIGN KEY ( sender_id ) REFERENCES users ( "id" ),
  CONSTRAINT MESSAGES_FK_82 FOREIGN KEY ( reciever_id ) REFERENCES users ( "id" )
+)
+''');
+
+//Таблица Friends Chat
+      await txn.execute('''
+CREATE TABLE ${DatabaseConst.friendsChat}(
+ ${DatabaseConst.columnId} INTEGER PRIMARY KEY AUTOINCREMENT,
+ ${DatabaseConst.columnFirstFriendId} INTEGER NOT NULL,
+ ${DatabaseConst.columnSecondFriendId} INTEGER NOT NULL,
+ CONSTRAINT FRIENDS_CHAT_FK_77 FOREIGN KEY ( friend1_id ) REFERENCES users ( "id" ),
+ CONSTRAINT FRIENDS_CHAT_FK_78 FOREIGN KEY ( friend2_id ) REFERENCES users ( "id" )
 )
 ''');
     });
@@ -80,44 +76,46 @@ CREATE TABLE messages
   }
 
   ///Функция считывания/получения данных из БД
-  Future onRead() async {
+  Future onRead({required String tableName, required int id}) async {
     var db = await instanse.database;
-    var user = await db.query(_tableName, orderBy: _columnName);
-    user.isNotEmpty
-        ? user.map((user) => 'Object().fromMap(user)').toList()
-        : [];
+    await db.query(tableName,
+        where: '${DatabaseConst.columnId}=?', whereArgs: [id]);
+
     _updateListen();
   }
 
   ///Добавление данных в БД
-  Future onAdd(Map<String, dynamic> model) async {
+  Future onAdd(
+      {required String tableName, required Map<String, dynamic> model}) async {
     var db = await instanse.database;
-
-    await db.insert(_tableName, model);
+    await db.insert(tableName, model);
     _updateListen();
   }
 
   ///Функция удаления элемента из БД по ID
-  Future onDelete(int id) async {
+  Future onDelete({required String tableName, required int id}) async {
     var db = await instanse.database;
-    await db.delete(_tableName, where: '$_columnId=?', whereArgs: [id]);
+    await db.delete(tableName,
+        where: '${DatabaseConst.columnId}=?', whereArgs: [id]);
     _updateListen();
   }
 
   ///Функция изменения элемента в БД
-  Future onUpdate(Map<String, dynamic> model) async {
+  Future onUpdate(
+      {required String tableName, required Map<String, dynamic> model}) async {
     var db = await instanse.database;
-    var id = model[_columnId];
-    await db.update(_tableName, model, where: '$_columnId=?', whereArgs: [id]);
+    var id = model[DatabaseConst.columnId];
+    await db.update(tableName, model,
+        where: '${DatabaseConst.columnId}=?', whereArgs: [id]);
     _updateListen();
   }
 
-  ///Функция создания временной таблицы
-  Future onCreateTemp() async {
-    var db = await instanse.database;
-    await db.execute('''
-          CREATE TEMP
-      ''');
-    _updateListen();
-  }
+  // ///Функция создания временной таблицы
+  // Future onCreateTemp() async {
+  //   var db = await instanse.database;
+  //   await db.execute('''
+  //         CREATE TEMP
+  //     ''');
+  //   _updateListen();
+  // }
 }
