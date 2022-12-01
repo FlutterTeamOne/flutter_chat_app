@@ -5,6 +5,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
+import '../domain/model/user.dart';
+
 class DBHelper {
   DBHelper._();
   static final DBHelper instanse = DBHelper._();
@@ -71,10 +73,10 @@ CREATE TABLE $_tableName (
   }
 
   ///Добавление данных в БД
-  Future onAdd(Map<String, dynamic> user) async {
+  Future onAdd(Map<String, dynamic> model) async {
     var db = await instanse.database;
 
-    await db.insert(_tableName, user);
+    await db.insert(_tableName, model);
     _updateListen();
   }
 
@@ -86,10 +88,10 @@ CREATE TABLE $_tableName (
   }
 
   ///Функция изменения элемента в БД
-  Future onUpdate(Map<String, dynamic> user) async {
+  Future onUpdate(Map<String, dynamic> model) async {
     var db = await instanse.database;
-    var id = user[_columnId];
-    await db.update(_tableName, user, where: '$_columnId=?', whereArgs: [id]);
+    var id = model[_columnId];
+    await db.update(_tableName, model, where: '$_columnId=?', whereArgs: [id]);
     _updateListen();
   }
 
