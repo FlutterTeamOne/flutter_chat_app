@@ -51,3 +51,15 @@ CREATE INDEX MESSAGES_FK_4 ON messages
  
 -- VIEW
  
+CREATE VIEW john_and_jane_chat_messaged AS (
+  SELECT * FROM messages 
+  	WHERE (friends_chat_id = 1));
+  
+SELECT * FROM john_and_jane_chat_messaged;
+
+
+CREATE VIEW john_and_james_chat_messaged AS
+  SELECT * FROM messages 
+  	WHERE (friends_chat_id = 2);
+  
+SELECT * FROM john_and_james_chat_messaged;
