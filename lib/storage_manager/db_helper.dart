@@ -79,8 +79,10 @@ CREATE TABLE ${DatabaseConst.friendsChat}(
   ///Функция считывания/получения данных из БД
   Future onRead({required String tableName, required int id}) async {
     var db = await instanse.database;
-    await db.query(tableName,
-        where: '${DatabaseConst.columnId}=?', whereArgs: [id]);
+    await db.transaction((txn) async {
+      await txn.query(tableName,
+          where: '${DatabaseConst.columnId}=?', whereArgs: [id]);
+    });
 
     _updateListen();
   }
@@ -89,7 +91,9 @@ CREATE TABLE ${DatabaseConst.friendsChat}(
   Future onAdd(
       {required String tableName, required Map<String, dynamic> model}) async {
     var db = await instanse.database;
-    await db.insert(tableName, model);
+    await db.transaction((txn) async {
+      await txn.insert(tableName, model);
+    });
     _updateListen();
   }
 
