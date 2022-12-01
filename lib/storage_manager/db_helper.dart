@@ -21,8 +21,6 @@ class DBHelper {
 
   void _updateListen() => _updateListenController.sink.add(true);
 
-  
-
   ///Инициализация локальной БД. Если ее нет,
   ///то создается новая БД
   Future<Database> initDB() async {
@@ -71,6 +69,9 @@ CREATE TABLE ${DatabaseConst.friendsChat}(
  CONSTRAINT FRIENDS_CHAT_FK_78 FOREIGN KEY ( friend2_id ) REFERENCES users ( "id" )
 )
 ''');
+      //Первичная запись юзера в таблица
+      await txn
+          .insert(DatabaseConst.user, {'id': 'User.id', 'name': 'User.name'});
     });
     _updateListen();
   }
@@ -95,8 +96,10 @@ CREATE TABLE ${DatabaseConst.friendsChat}(
   ///Функция удаления элемента из БД по ID
   Future onDelete({required String tableName, required int id}) async {
     var db = await instanse.database;
-    await db.delete(tableName,
-        where: '${DatabaseConst.columnId}=?', whereArgs: [id]);
+    await db.transaction((txn) async {
+      await txn.delete(tableName,
+          where: '${DatabaseConst.columnId}=?', whereArgs: [id]);
+    });
     _updateListen();
   }
 
@@ -105,8 +108,10 @@ CREATE TABLE ${DatabaseConst.friendsChat}(
       {required String tableName, required Map<String, dynamic> model}) async {
     var db = await instanse.database;
     var id = model[DatabaseConst.columnId];
-    await db.update(tableName, model,
-        where: '${DatabaseConst.columnId}=?', whereArgs: [id]);
+    await db.transaction((txn) async {
+      await txn.update(tableName, model,
+          where: '${DatabaseConst.columnId}=?', whereArgs: [id]);
+    });
     _updateListen();
   }
 
