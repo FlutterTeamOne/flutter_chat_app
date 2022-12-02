@@ -37,7 +37,7 @@ class _MainLayoutState extends State<MainLayout> {
               child: _SideMenu(controlller: _sideBarController),
             ),
             Expanded(
-              flex: 5,
+              flex: 6,
               child: _PageControllerWidget(controller: _sideBarController),
             ),
           ],

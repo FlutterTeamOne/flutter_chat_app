@@ -10,8 +10,7 @@ class _SideMenu extends StatelessWidget {
       showToggleButton: false,
       animationDuration: const Duration(seconds: 0),
       controller: controlller,
-      headerDivider:
-          const Divider(color: AppColor.color9E9E9E, indent: 5, endIndent: 5),
+      headerDivider: const SizedBox(height: 5),
       theme: sideBarxTheme(),
       headerBuilder: (context, extended) => SingleChildScrollView(
         child: Padding(
@@ -21,17 +20,42 @@ class _SideMenu extends StatelessWidget {
       ),
       separatorBuilder: (context, index) => const SizedBox(height: 5),
       items: const [
-        SidebarXItem(icon: Icons.person_rounded, label: 'Profile'),
         SidebarXItem(
-            icon: Icons.calendar_view_day_rounded, label: 'SFERA feed'),
-        SidebarXItem(icon: Icons.chat_rounded, label: 'Asap'),
-        SidebarXItem(icon: Icons.calendar_view_day_rounded, label: 'Choose'),
-        SidebarXItem(icon: Icons.view_in_ar_rounded, label: 'Black box'),
-        SidebarXItem(icon: Icons.pie_chart_outline_rounded, label: 'MeetNet'),
+          icon: Icons.person_rounded,
+          label: 'Profile',
+        ),
         SidebarXItem(
-            icon: Icons.supervisor_account_rounded, label: 'Find friends'),
-        SidebarXItem(icon: Icons.person_search_rounded, label: 'Job lite'),
-        SidebarXItem(icon: Icons.diamond_rounded, label: 'VideoS'),
+          icon: Icons.calendar_view_day_rounded,
+          label: 'SFERA feed',
+        ),
+        SidebarXItem(
+          icon: Icons.chat_rounded,
+          label: 'Asap',
+        ),
+        SidebarXItem(
+          icon: Icons.calendar_view_day_rounded,
+          label: 'Choose',
+        ),
+        SidebarXItem(
+          icon: Icons.view_in_ar_rounded,
+          label: 'Black box',
+        ),
+        SidebarXItem(
+          icon: Icons.pie_chart_outline_rounded,
+          label: 'MeetNet',
+        ),
+        SidebarXItem(
+          icon: Icons.supervisor_account_rounded,
+          label: 'Find friends',
+        ),
+        SidebarXItem(
+          icon: Icons.person_search_rounded,
+          label: 'Job lite',
+        ),
+        SidebarXItem(
+          icon: Icons.diamond_rounded,
+          label: 'VideoS',
+        ),
       ],
     );
   }

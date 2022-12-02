@@ -12,10 +12,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter chat app',
       debugShowCheckedModeBanner: false,
-      initialRoute: '',
+      initialRoute: '/',
       routes: {
         '/': (context) => const MainLayout(),
-        '/homePage': (context) => const MainLayout(),
+        '/mainLayout': (context) => const MainLayout(),
       },
     );
   }
