@@ -51,4 +51,9 @@ CREATE INDEX MESSAGE_ID_IN_MAIN_FK_1 ON message_id_in_main
 -- TRIGGER
  
 -- VIEW
- 
+
+CREATE VIEW messages_in_chat_1 AS
+	SELECT * FROM messages WHERE (local_chat_id = 1);
+   
+CREATE VIEW messages_in_chat_2 AS
+	SELECT * FROM messages WHERE (local_chat_id = 2);
