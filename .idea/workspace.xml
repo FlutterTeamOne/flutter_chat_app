@@ -4,16 +4,8 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="start test for UnreadMessage">
-      <change beforePath="$PROJECT_DIR$/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+    <list default="true" id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="add test for UnreadMessage">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/storage_manager/last_unread_message.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/storage_manager/last_unread_message.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/storage_manager/user_preferences.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/storage_manager/user_preferences.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/unread_message_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/unread_message_test.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,7 +119,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669971420112</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="add test for UnreadMessage">
+      <created>1669979018402</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1669979018402</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -153,6 +152,7 @@
     <MESSAGE value="add shared preferences" />
     <MESSAGE value="add get and set for UnreadMessage" />
     <MESSAGE value="start test for UnreadMessage" />
-    <option name="LAST_COMMIT_MESSAGE" value="start test for UnreadMessage" />
+    <MESSAGE value="add test for UnreadMessage" />
+    <option name="LAST_COMMIT_MESSAGE" value="add test for UnreadMessage" />
   </component>
 </project>
