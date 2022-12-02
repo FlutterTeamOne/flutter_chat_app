@@ -12,26 +12,26 @@ class UserPreferences {
 
   getIsRead() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getBool(IS_READ_KEY) ?? true;
+    return sharedPreferences.getBool(IS_READ_KEY);
   }
 
   setFriendsChatId(int value) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString(FRIENDS_CHAT_ID_KEY, value.toString());
+    sharedPreferences.setInt(FRIENDS_CHAT_ID_KEY, value);
   }
 
   getFriendsChatId() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getString(FRIENDS_CHAT_ID_KEY);
+    return sharedPreferences.getInt(FRIENDS_CHAT_ID_KEY);
   }
 
   setMessageId(int value) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString(MESSAGE_ID_KEY, value.toString());
+    sharedPreferences.setInt(MESSAGE_ID_KEY, value);
   }
 
   getMessageId() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getString(MESSAGE_ID_KEY);
+    return sharedPreferences.getInt(MESSAGE_ID_KEY);
   }
 }

@@ -51,11 +51,13 @@ class Message {
 }
 
 class LastUnreadMessage {
-  final int lastUnreadMessage;
+  final int lastUnreadMessageId;
+  final int friendsChatId;
   final bool isRead;
 
   LastUnreadMessage({
-    required this.lastUnreadMessage,
+    required this.lastUnreadMessageId,
+    required this.friendsChatId,
     required this.isRead,
   });
 }
