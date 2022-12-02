@@ -36,7 +36,23 @@ CREATE TABLE ${User.table} (
           'profile_pic_link': 'some pic link',
           'main_users_id': 1,
         };
+        var user2 = {
+          'name': 'Bod',
+          'email': 'foo@email.com',
+          'registration_date': '2022-12-02T21:36:32.653712',
+          'profile_pic_link': 'some pic link',
+          'main_users_id': 2,
+        };
+        var user3 = {
+          'name': 'Bod',
+          'email': 'foo@email.com',
+          'registration_date': '2022-12-02T21:36:32.653712',
+          'profile_pic_link': 'some pic link',
+          'main_users_id': 3,
+        };
         await db.insert('User', user);
+        await db.insert('User', user2);
+        await db.insert('User', user3);
         expect(await db.query('User'), [
           {
             'id': 1,
@@ -45,6 +61,22 @@ CREATE TABLE ${User.table} (
             'registration_date': '2022-12-02T21:36:32.653712',
             'profile_pic_link': 'some pic link',
             'main_users_id': 1,
+          },
+          {
+            'id': 2,
+            'name': 'Bod',
+            'email': 'foo@email.com',
+            'registration_date': '2022-12-02T21:36:32.653712',
+            'profile_pic_link': 'some pic link',
+            'main_users_id': 2,
+          },
+          {
+            'id': 3,
+            'name': 'Bod',
+            'email': 'foo@email.com',
+            'registration_date': '2022-12-02T21:36:32.653712',
+            'profile_pic_link': 'some pic link',
+            'main_users_id': 3,
           }
         ]);
         await db.close();

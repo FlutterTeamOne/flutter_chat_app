@@ -107,6 +107,7 @@ CREATE INDEX MESSAGE_ID_IN_MAIN_FK_1 ON ${MessageIdInMain.table}
  ${DatabaseConst.columnLocalMessagesId}
 )
 ''');
+
       // //Первичная запись юзера в таблицу
       // await txn.insert(User.table, {'id': 'User.id', 'name': 'User.name'});
     });

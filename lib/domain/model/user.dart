@@ -49,26 +49,26 @@ class User extends Model {
     return map;
   }
 
-  // @override
-  // bool operator ==(Object other) {
-  //   if (identical(this, other)) return true;
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
 
-  //   return other is User &&
-  //       other.id == id &&
-  //       other.name == name &&
-  //       other.email == email &&
-  //       other.registrationDate == registrationDate &&
-  //       other.profilePicLink == profilePicLink &&
-  //       other.mainUsersId == mainUsersId;
-  // }
+    return other is User &&
+        other.id == id &&
+        other.name == name &&
+        other.email == email &&
+        other.registrationDate == registrationDate &&
+        other.profilePicLink == profilePicLink &&
+        other.mainUsersId == mainUsersId;
+  }
 
-  // @override
-  // int get hashCode {
-  //   return id.hashCode ^
-  //       name.hashCode ^
-  //       email.hashCode ^
-  //       registrationDate.hashCode ^
-  //       profilePicLink.hashCode ^
-  //       mainUsersId.hashCode;
-  // }
+  @override
+  int get hashCode {
+    return id.hashCode ^
+        name.hashCode ^
+        email.hashCode ^
+        registrationDate.hashCode ^
+        profilePicLink.hashCode ^
+        mainUsersId.hashCode;
+  }
 }
