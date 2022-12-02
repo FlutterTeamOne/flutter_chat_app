@@ -4,16 +4,16 @@ import '../domain/model/message_model.dart';
 
 class UnreadMessage {
   final userPreferences = UserPreferences();
-  setUnreadMessage(int messageId, int friendsChatId, bool isRead) {
-    userPreferences.setFriendsChatId(friendsChatId);
-    userPreferences.setMessageId(messageId);
-    userPreferences.setIsRead(isRead);
+  setUnreadMessage(int messageId, int friendsChatId, bool isRead) async {
+    await userPreferences.setFriendsChatId(friendsChatId);
+    await userPreferences.setMessageId(messageId);
+    await userPreferences.setIsRead(isRead);
   }
 
-  getUnreadMessage() {
-    final friendsChatId = userPreferences.getFriendsChatId();
-    final messageId = userPreferences.getMessageId();
-    final isRead = userPreferences.getIsRead();
+  getUnreadMessage() async {
+    final friendsChatId = await userPreferences.getFriendsChatId();
+    final messageId = await userPreferences.getMessageId();
+    final isRead = await userPreferences.getIsRead();
     return LastUnreadMessage(
         friendsChatId: friendsChatId,
         lastUnreadMessageId: messageId,

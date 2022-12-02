@@ -35,7 +35,7 @@ dependencies:
   bloc:
   flutter_bloc:
   path_provider:
-  shared_preferences:
+  shared_preferences: ^2.0.15
   test:
 
 
