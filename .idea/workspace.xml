@@ -4,7 +4,28 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="unread_message start" />
+    <list default="true" id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="unread_message start">
+      <change afterPath="$PROJECT_DIR$/.flutter-plugins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/domain/model/message_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/domain/model/user.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/domain/repository/message_repository.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/storage_manager/database_const.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/storage_manager/db_helper.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/storage_manager/last_unread_message.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_chat_app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_chat_app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/storage_manager/unread_messages/bloc/unread_messages_bloc.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/storage_manager/unread_messages/bloc/unread_messages_event.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/storage_manager/unread_messages/bloc/unread_messages_state.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/storage_manager/unread_messages/bloc/unread_messages_view.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/storage_manager/unread_messages/unread_messages.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,12 +39,18 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="anatoliyKaragodin &lt;anatoliy.karagodin@gmail.com&gt;" />
+      </list>
+    </option>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="storage_manager" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="ProjectId" id="2IHUn1HQnd93IMpoUd5Kwvl0NBS" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -47,11 +74,15 @@
     <property name="cidr.known.project.marker" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.CommitDialog" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration>C:\Users\Сервант из Ривии\AppData\Roaming\Subversion</configuration>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="" />
@@ -67,7 +98,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669881135645</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="unread_message start">
+      <created>1669881486375</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1669881486375</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -89,7 +127,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="unread_message start" />
     <option name="LAST_COMMIT_MESSAGE" value="unread_message start" />
+    <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>

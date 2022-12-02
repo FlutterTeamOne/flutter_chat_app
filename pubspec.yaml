@@ -31,9 +31,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  postgres:
+  sqflite_common_ffi:
   bloc:
   flutter_bloc:
+  path_provider:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
