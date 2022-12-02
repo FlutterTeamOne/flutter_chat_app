@@ -13,17 +13,17 @@ CREATE TABLE messages
  friends_chat_id  integer NOT NULL,
  sender_id        integer NOT NULL,
  content          char(50) NOT NULL,
- date            date NOT NULL,
+ date            integer NOT NULL,
  CONSTRAINT MESSAGES_FK_79 FOREIGN KEY ( friends_chat_id ) REFERENCES friends_chat ( main_friends_chat_id ),
  CONSTRAINT MESSAGES_FK_80 FOREIGN KEY ( sender_id ) REFERENCES users ( main_users_id )
 );
-CREATE TABLE sqlite_sequence(name,seq);
+
 CREATE TABLE users
 (
  main_users_id     integer PRIMARY KEY AUTOINCREMENT,
  name              char(50) NOT NULL,
  email             char(50) NOT NULL,
- registration_date date NOT NULL,
+ registration_date integer NOT NULL,
  profile_pic_url   char(50) NOT NULL
 );
  
