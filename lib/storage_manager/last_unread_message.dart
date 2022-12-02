@@ -1,6 +1,6 @@
 import 'package:flutter_chat_app/storage_manager/user_preferences.dart';
 
-import '../domain/model/message_model.dart';
+import '../domain/model/unread_message_model.dart';
 
 class UnreadMessage {
   final userPreferences = UserPreferences();
