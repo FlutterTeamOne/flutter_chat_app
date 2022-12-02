@@ -5,3 +5,5 @@ path_provider_ios=C:\\flutterSDK\\flutter_windows_3.3.9-stable\\flutter\\.pub-ca
 path_provider_linux=C:\\flutterSDK\\flutter_windows_3.3.9-stable\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path_provider_linux-2.1.7\\
 path_provider_macos=C:\\flutterSDK\\flutter_windows_3.3.9-stable\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path_provider_macos-2.0.6\\
 path_provider_windows=C:\\flutterSDK\\flutter_windows_3.3.9-stable\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path_provider_windows-2.1.3\\
+shared_preferences=C:\\flutterSDK\\flutter_windows_3.3.9-stable\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences-0.5.5\\
+shared_preferences_macos=C:\\flutterSDK\\flutter_windows_3.3.9-stable\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences_macos-0.0.1+11\\

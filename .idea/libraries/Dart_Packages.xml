@@ -226,6 +226,27 @@
             </list>
           </value>
         </entry>
+        <entry key="shared_preferences">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.5/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="shared_preferences_macos">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_macos-0.0.1+11/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="shared_preferences_platform_interface">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_platform_interface-1.0.4/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="sky_engine">
           <value>
             <list>
@@ -357,6 +378,9 @@
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-2.1.3/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.4/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/provider-6.0.4/lib" />
+      <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.5/lib" />
+      <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_macos-0.0.1+11/lib" />
+      <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_platform_interface-1.0.4/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/source_span-1.9.0/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite_common-2.4.0+2/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite_common_ffi-2.2.0+1/lib" />
