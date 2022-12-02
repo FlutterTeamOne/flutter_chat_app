@@ -10,12 +10,13 @@ CREATE TABLE messages
 (
  local_messages_id integer PRIMARY KEY AUTOINCREMENT,
  local_chat_id     integer NOT NULL,
- sender_local_id   integer NOT NULL,
- date             date NOT NULL,
- is_written_to_db  boolean NOT NULL,
+ sender_is_user   integer NOT NULL,
+ date             integer NOT NULL,
+ is_written_to_db  integer NOT NULL DEFAULT 0,
  content           char(50) NOT NULL,
  CONSTRAINT MESSAGES_FK_84_1 FOREIGN KEY ( local_chat_id ) REFERENCES chats ( local_chats_id ),
- CONSTRAINT MESSAGES_FK_85 FOREIGN KEY ( sender_local_id ) REFERENCES users ( local_users_id )
+  CHECK ((is_written_to_db = 0) OR (is_written_to_db = 1)),
+  CHECK ((sender_is_user = 0) OR (sender_is_user = 1))
 );
 CREATE TABLE message_id_in_main
 (
@@ -28,7 +29,7 @@ CREATE TABLE users
  local_users_id    integer PRIMARY KEY AUTOINCREMENT,
  name              char(50) NOT NULL,
  email             char(50) NOT NULL,
- registration_date date NOT NULL,
+ registration_date integer NOT NULL,
  profile_pic_link  char(50) NOT NULL,
  main_users_id     integer NOT NULL UNIQUE
 );
@@ -41,10 +42,6 @@ CREATE INDEX CHATS_FK_3 ON chats
 CREATE INDEX MESSAGES_FK_2 ON messages
 (
  local_chat_id
-);
-CREATE INDEX MESSAGES_FK_3 ON messages
-(
- sender_local_id
 );
 CREATE INDEX MESSAGE_ID_IN_MAIN_FK_1 ON message_id_in_main
 (
