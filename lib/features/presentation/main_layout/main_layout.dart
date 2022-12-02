@@ -34,10 +34,10 @@ class _MainLayoutState extends State<MainLayout> {
         child: Row(
           children: [
             Expanded(
-              child: _SideMenu(controlller: _sideBarController),
+              child: _SideMenu(controller: _sideBarController),
             ),
             Expanded(
-              flex: 6,
+              flex: 7,
               child: _PageControllerWidget(controller: _sideBarController),
             ),
           ],

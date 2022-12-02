@@ -35,7 +35,7 @@ class _PageControllerWidget extends StatelessWidget {
           default:
             return Text(
               'not found ',
-              style: AppTextStyle.s16AbelPurple,
+              style: AppTextStyle.s17AbelPurple,
             );
         }
       },

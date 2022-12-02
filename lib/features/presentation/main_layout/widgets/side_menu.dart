@@ -1,20 +1,22 @@
 ﻿part of '../main_layout.dart';
 
 class _SideMenu extends StatelessWidget {
-  const _SideMenu({required this.controlller});
-  final SidebarXController controlller;
+  const _SideMenu({
+    required this.controller,
+  });
+  final SidebarXController controller;
 
   @override
   Widget build(BuildContext context) {
     return SidebarX(
       showToggleButton: false,
       animationDuration: const Duration(seconds: 0),
-      controller: controlller,
+      controller: controller,
       headerDivider: const SizedBox(height: 5),
       theme: sideBarxTheme(),
       headerBuilder: (context, extended) => SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(35),
           child: Text('Sfera'.toUpperCase(), style: AppTextStyle.s36Abel),
         ),
       ),
@@ -67,11 +69,11 @@ SidebarXTheme sideBarxTheme() {
       borderRadius: BorderRadius.zero,
     ),
     padding: const EdgeInsets.only(left: 5),
-    textStyle: AppTextStyle.s16Abel,
+    textStyle: AppTextStyle.s17Abel,
     selectedIconTheme: const IconThemeData(
       color: AppColor.color7E57C2,
     ),
-    selectedTextStyle: AppTextStyle.s16AbelPurple,
+    selectedTextStyle: AppTextStyle.s17AbelPurple,
     selectedItemTextPadding: const EdgeInsets.only(left: 30),
     itemTextPadding: const EdgeInsets.only(left: 30),
     decoration: const BoxDecoration(
