@@ -3,10 +3,10 @@ class DatabaseConst {
   static const dbFileName = 'sfera.db';
   static const dbVersion = 1;
 
-  //названия таблиц
-  static const user = 'User';
-  static const messages = 'messages';
-  static const friendsChat = 'friends_chat';
+  // //названия таблиц
+  // static const user = 'User';
+  // static const messages = 'messages';
+  // static const friendsChat = 'friends_chat';
 
   //название колонок таблиц
   // static const _columnEmail = 'email';
