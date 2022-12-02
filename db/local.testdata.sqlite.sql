@@ -102,5 +102,9 @@ INSERT INTO messages (local_chat_id, sender_is_user, date, is_written_to_db, con
   "content3 friend to user"
 );
 
+--MESSAGE_ID_IN_MAIN
+
+INSERT INTO message_id_in_main (local_messages_id) VALUES (1);
+INSERT INTO message_id_in_main (local_messages_id) VALUES (2);
 
 
