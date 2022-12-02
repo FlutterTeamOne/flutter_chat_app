@@ -1,8 +1,8 @@
 -- TABLE
 CREATE TABLE chats
 (
- local_chats_id  integer PRIMARY KEY AUTOINCREMENT,
- chat_id_main_db integer NOT NULL,
+ local_chat_id  integer PRIMARY KEY AUTOINCREMENT,
+ chat_id_main integer NOT NULL UNIQUE,
  friend_id       integer NOT NULL,
  CONSTRAINT CHATS_FK_84 FOREIGN KEY ( friend_id ) REFERENCES users ( local_users_id )
 );
@@ -20,7 +20,7 @@ CREATE TABLE messages
 CREATE TABLE message_id_in_main
 (
  main_messages_id  integer PRIMARY KEY AUTOINCREMENT,
- local_messages_id integer NOT NULL,
+ local_messages_id integer NOT NULL UNIQUE,
  CONSTRAINT MESSAGE_ID_IN_MAIN_FK_86 FOREIGN KEY ( local_messages_id ) REFERENCES messages ( local_messages_id )
 );
 CREATE TABLE users
@@ -30,7 +30,7 @@ CREATE TABLE users
  email             char(50) NOT NULL,
  registration_date date NOT NULL,
  profile_pic_link  char(50) NOT NULL,
- main_users_id     integer NOT NULL
+ main_users_id     integer NOT NULL UNIQUE
 );
  
 -- INDEX
