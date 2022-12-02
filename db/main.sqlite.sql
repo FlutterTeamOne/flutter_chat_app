@@ -49,3 +49,6 @@ CREATE INDEX MESSAGES_FK_3 ON messages
  
 -- VIEW
  
+CREATE VIEW chats_user_2 AS 
+SELECT * FROM friends_chat f 
+	WHERE ((f.friend1_id = 2) OR (f.friend2_id = 2));

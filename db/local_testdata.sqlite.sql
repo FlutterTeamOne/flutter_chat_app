@@ -12,7 +12,7 @@ INSERT INTO users (name, email, registration_date, profile_pic_link, main_users_
   "name2",
   "name2@example.com",
   20221111124326,
-  "../pics/name2.png",SS
+  "../pics/name2.png",
   2
 );
 
@@ -82,8 +82,6 @@ INSERT INTO messages (local_chat_id, sender_is_user, date, is_written_to_db, con
   1,
   "content1 user to friend"
 );
-
-
 
 INSERT INTO messages (local_chat_id, sender_is_user, date, is_written_to_db, content) VALUES (
   1,
