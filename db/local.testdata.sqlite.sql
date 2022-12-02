@@ -73,4 +73,34 @@ INSERT INTO chats (chat_id_main, friend_id) VALUES (
   98
 );
 
+-- MESSAGES
+
+INSERT INTO messages (local_chat_id, sender_is_user, date, is_written_to_db, content) VALUES (
+  1,
+  1,
+  20220801220907,
+  1,
+  "content1 user to friend"
+);
+
+
+
+INSERT INTO messages (local_chat_id, sender_is_user, date, is_written_to_db, content) VALUES (
+  1,
+  0,
+  202208012209045,
+  1,
+  "content2 friend to user"
+);
+
+
+INSERT INTO messages (local_chat_id, sender_is_user, date, is_written_to_db, content) VALUES (
+  2,
+  0,
+  20220801211045,
+  0,
+  "content3 friend to user"
+);
+
+
 
