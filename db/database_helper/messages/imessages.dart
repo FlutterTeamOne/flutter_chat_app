@@ -4,17 +4,17 @@ abstract class IMessages extends DBHelper  {
 
   IMessages();
 
-  addNewMessage();
+  addNewMessage({required int friendsChatId, required int senderId, required String content, required String date});
 
-  getMessageById();
+  getMessageById({required int id});
 
-  updateMessage();
+  updateMessage({required String newValues, required String condition});
 
-  deleteMessage();
+  deleteMessage({required int id});
 
-  getMessagesByUserId();
+  getMessagesBySenderId({required int senderID});
 
-  getMessagesByChatId();
+  getMessagesByChatId({required int chatID});
 
   getAllMessages();
 
