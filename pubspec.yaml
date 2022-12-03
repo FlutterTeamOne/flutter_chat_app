@@ -30,6 +30,8 @@ dependencies:
   flutter_bloc:
   shared_preferences: ^2.0.15
   test:
+  grpc:
+  protobuf:
 
 
   
