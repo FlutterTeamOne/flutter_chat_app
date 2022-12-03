@@ -4,20 +4,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="start bloc for UnreadMessage">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter_chat_app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_chat_app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/domain/model/message_model.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/domain/model/user.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/domain/repository/message_repository.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/storage_manager/database_const.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/storage_manager/db_helper.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/storage_manager/last_unread_message.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/storage_manager/last_unread_message.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/storage_manager/unread_message_bloc/unread_message_bloc.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/storage_manager/unread_message_bloc/unread_message_event.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/storage_manager/unread_message_bloc/unread_message_state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/storage_manager/unread_message_bloc/unread_message_view.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/unread_message_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/storage_manager/unread_message_test.dart" afterDir="false" />
+    <list default="true" id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +35,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="UPDATE_TYPE" value="REBASE" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectId" id="2IHUn1HQnd93IMpoUd5Kwvl0NBS" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -63,6 +56,8 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="true" />
@@ -165,7 +160,6 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="unread_message start" />
