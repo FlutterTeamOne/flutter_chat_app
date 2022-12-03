@@ -10,7 +10,7 @@ class Client {
   var response;
   bool executionInProgress = true;
 
-  Future<void> main() async {
+  Future<void> SendMessage(Message message) async {
     channel = ClientChannel('localhost',
         port: 50000,
         options:
@@ -29,11 +29,6 @@ class Client {
         var option = int.parse(stdin.readLineSync()!);
         switch (option) {
           case 1:
-            var message = Message();
-            message.userMainId1 = 1;
-            message.userMainId2 = 2;
-            message.senderMainId = 2;
-            message.content = "Hello";
             response = await stub!.createMessage(message);
             if (response.ok) {
               print('Записали сообщение на сервер');
@@ -71,5 +66,10 @@ class Client {
 var con = false;
 void main() {
   var client = Client();
-  client.main();
+  var message = Message();
+  message.userMainId1 = 1;
+  message.userMainId2 = 2;
+  message.senderMainId = 2;
+  message.content = "Hello";
+  client.SendMessage(message);
 }
