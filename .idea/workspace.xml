@@ -1,17 +1,153 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="main.dart" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lib/main.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="start bloc for UnreadMessage">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_chat_app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_chat_app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/domain/model/message_model.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/domain/model/user.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/domain/repository/message_repository.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/storage_manager/database_const.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/storage_manager/db_helper.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/storage_manager/last_unread_message.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/storage_manager/last_unread_message.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/storage_manager/unread_message_bloc/unread_message_bloc.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/storage_manager/unread_message_bloc/unread_message_event.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/storage_manager/unread_message_bloc/unread_message_state.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/storage_manager/unread_message_bloc/unread_message_view.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/unread_message_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/storage_manager/unread_message_test.dart" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Dart File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="anatoliyKaragodin &lt;anatoliy.karagodin@gmail.com&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="storage_manager" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="ProjectId" id="2IHUn1HQnd93IMpoUd5Kwvl0NBS" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" />
+    <panes>
+      <pane id="ProjectPane">
+        <option name="show-excluded-files" value="false" />
+      </pane>
+    </panes>
+  </component>
+  <component name="ProjectViewState">
+    <option name="flattenPackages" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
+    <property name="cidr.known.project.marker" value="true" />
+    <property name="dart.analysis.tool.window.force.activate" value="true" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="io.flutter.reload.alreadyRun" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.CommitDialog" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\android\flutter_chat_app\test\storage_manager" />
+      <recent name="C:\android\flutter_chat_app\test" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration>C:\Users\Сервант из Ривии\AppData\Roaming\Subversion</configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="" />
+      <created>1669838165948</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1669838165948</updated>
+    </task>
+    <task id="LOCAL-00001" summary="unread_message start">
+      <created>1669881135645</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1669881135645</updated>
+    </task>
+    <task id="LOCAL-00002" summary="unread_message start">
+      <created>1669881486375</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1669881486375</updated>
+    </task>
+    <task id="LOCAL-00003" summary="unread_message start">
+      <created>1669956486657</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1669956486657</updated>
+    </task>
+    <task id="LOCAL-00004" summary="add shared preferences">
+      <created>1669957817260</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1669957817260</updated>
+    </task>
+    <task id="LOCAL-00005" summary="add get and set for UnreadMessage">
+      <created>1669961195903</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1669961195903</updated>
+    </task>
+    <task id="LOCAL-00006" summary="start test for UnreadMessage">
+      <created>1669971420112</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1669971420112</updated>
+    </task>
+    <task id="LOCAL-00007" summary="add test for UnreadMessage">
+      <created>1669979018402</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1669979018402</updated>
+    </task>
+    <task id="LOCAL-00008" summary="start bloc for UnreadMessage">
+      <created>1669991531672</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1669991531672</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
+    <servers />
   </component>
   <component name="ToolWindowManager">
     <editor active="true" />
@@ -19,18 +155,25 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
     </layout>
   </component>
-  <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1">
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <option name="show-excluded-files" value="false" />
-      </pane>
-    </panes>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="dart.analysis.tool.window.force.activate" value="true" />
-    <property name="show.migrate.to.gradle.popup" value="false" />
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="unread_message start" />
+    <MESSAGE value="add shared preferences" />
+    <MESSAGE value="add get and set for UnreadMessage" />
+    <MESSAGE value="start test for UnreadMessage" />
+    <MESSAGE value="add test for UnreadMessage" />
+    <MESSAGE value="start bloc for UnreadMessage" />
+    <option name="LAST_COMMIT_MESSAGE" value="start bloc for UnreadMessage" />
   </component>
 </project>
