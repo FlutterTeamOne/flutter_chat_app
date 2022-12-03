@@ -1,10 +1,14 @@
 ﻿import 'package:flutter/material.dart';
-
 import '../../../../../themes/color/app_color.dart';
 import '../../../../../themes/text_style/app_text_style.dart';
 
 part 'widgets/search_field.dart';
-part 'widgets/layouts/all_users_layout.dart';
+part 'widgets/message_cards/my_message_card.dart';
+part 'layouts/all_users_layout.dart';
+part 'layouts/user_chat_layout.dart';
+part 'widgets/user_card.dart';
+part 'widgets/chat_app_bar.dart';
+part 'widgets/text_input.dart';
 
 class AsapPage extends StatelessWidget {
   const AsapPage({
@@ -14,25 +18,20 @@ class AsapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: [
-        const Expanded(
+      children: const [
+        // Список чатов
+        Expanded(
           flex: 1,
-          child: AllUsersLayout(),
+          child: _AllUsersLayout(),
         ),
+        // Чат
         Expanded(
           flex: 3,
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            color: AppColor.color9E9E9E,
-            child: Text(
-              'Чат',
-              style: AppTextStyle.s36Abel,
-            ),
-          ),
+          child: UserChatLayout(),
         ),
+        // Профиль
         // Expanded(
-        //   flex: 1,
+        //   flex: 2,
         //   child: Container(
         //     height: MediaQuery.of(context).size.height,
         //     width: MediaQuery.of(context).size.width,

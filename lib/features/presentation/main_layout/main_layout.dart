@@ -33,9 +33,11 @@ class _MainLayoutState extends State<MainLayout> {
       body: SafeArea(
         child: Row(
           children: [
+            // Боковое меню
             Expanded(
               child: _SideMenu(controller: _sideBarController),
             ),
+            // Экраны
             Expanded(
               flex: 7,
               child: _PageControllerWidget(controller: _sideBarController),

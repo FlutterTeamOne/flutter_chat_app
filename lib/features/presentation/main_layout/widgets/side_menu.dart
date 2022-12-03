@@ -4,6 +4,7 @@ class _SideMenu extends StatelessWidget {
   const _SideMenu({
     required this.controller,
   });
+
   final SidebarXController controller;
 
   @override
