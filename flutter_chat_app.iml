@@ -35,6 +35,9 @@
       <excludeFolder url="file://$MODULE_DIR$/lib/grpc_manager/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/lib/grpc_manager/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/lib/grpc_manager/build" />
+      <excludeFolder url="file://$MODULE_DIR$/lib/grpc_managr/build" />
+      <excludeFolder url="file://$MODULE_DIR$/lib/grpc_managr/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/lib/grpc_managr/.pub" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Dart SDK" level="project" />

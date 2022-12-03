@@ -4,10 +4,23 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+    <list default="true" id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="start bloc for UnreadMessage">
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/CHANGELOG.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/analysis_options.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/bin/client.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/bin/server.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/lib/proto/generated/grpc_connection/grpc_connection.pb.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/lib/proto/generated/grpc_connection/grpc_connection.pbenum.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/lib/proto/generated/grpc_connection/grpc_connection.pbgrpc.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/lib/proto/generated/grpc_connection/grpc_connection.pbjson.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/lib/services/grpc_connection/conection_service_int.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/lib/services/grpc_connection/connection_service.impl.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/protos/connection_proto/grpc_connection.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/grpc_manager" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,8 +82,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\src\sfera\flutter_chat_app\lib\grpc_managr" />
+      <recent name="C:\src\sfera\flutter_chat_app\lib\grpc_managr\protos" />
+      <recent name="C:\src\sfera\flutter_chat_app\lib\grpc_managr\lib" />
+      <recent name="C:\src\sfera\flutter_chat_app\lib\grpc_managr\bin" />
       <recent name="C:\android\flutter_chat_app\test\storage_manager" />
-      <recent name="C:\android\flutter_chat_app\test" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

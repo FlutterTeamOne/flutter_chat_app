@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+service ConnectionService {
+    rpc checkConnection(Message) returns (Message) {}
+
+}
+
+message Empty{}
+
+message Message {
+    string message = 1;
+}
