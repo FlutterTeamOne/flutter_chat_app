@@ -1,19 +1,21 @@
-abstract class IChats {
+import '../db_helper.dart';
+
+abstract class IChats extends DBHelper {
 
   IChats();
 
-  createChat();
+  createChat({required int friend1_id, required int friend2_id});
 
-  getChat();
+  getChatById({required int id});
 
-  updateChat();
+  updateChat({required String newValues, required String condition});
 
-  deleteChat();
+  deleteChat({required int id});
 
-  getChatsByUserId();
+  getChatsByUserId({required int userID});
 
-  getChatByTwoIds();
+  getChatByTwoIds({required int friend1_id, required int friend2_id});
 
   getAllChats();
-  
+
 }

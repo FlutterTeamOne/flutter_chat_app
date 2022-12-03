@@ -1,4 +1,6 @@
-abstract class IMessages {
+import '../db_helper.dart';
+
+abstract class IMessages extends DBHelper  {
 
   IMessages();
 
@@ -15,5 +17,5 @@ abstract class IMessages {
   getMessagesByChatId();
 
   getAllMessages();
-  
+
 }

@@ -7,6 +7,7 @@
 	CONSTRAINT FRIENDS_CHAT_FK_77 FOREIGN KEY ( friend1_id ) REFERENCES users ( main_users_id ),
 	CONSTRAINT FRIENDS_CHAT_FK_78 FOREIGN KEY ( friend2_id ) REFERENCES users ( main_users_id )
 	);
+	
 	CREATE TABLE messages
 	(
 	main_messages_id integer PRIMARY KEY AUTOINCREMENT,
