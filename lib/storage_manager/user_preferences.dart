@@ -1,10 +1,9 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserPreferences {
-
   static const FRIENDS_CHAT_ID_KEY = "friends_chat_id_key";
-  static const MESSAGE_ID_KEY = "message_id_key";
   static const IS_READ_KEY = "is_read_key";
+  static const MESSAGE_ID_KEY = "message_id_key";
 
   setIsRead(bool value) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
