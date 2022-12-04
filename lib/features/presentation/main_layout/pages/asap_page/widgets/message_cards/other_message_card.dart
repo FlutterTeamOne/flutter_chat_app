@@ -1,16 +1,16 @@
 ﻿part of '../../asap_page.dart';
 
-class MyMessageCard extends StatelessWidget {
-  const MyMessageCard({super.key, required this.message});
+class _OtherMessageCard extends StatelessWidget {
+  const _OtherMessageCard({required this.message});
 
   final String message;
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.centerRight,
+      alignment: Alignment.centerLeft,
       child: ConstrainedBox(
         constraints:
-            BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 145),
+            BoxConstraints(maxWidth: MediaQuery.of(context).size.width + 145),
         child: Card(
           elevation: 2,
           shape: RoundedRectangleBorder(
@@ -20,14 +20,15 @@ class MyMessageCard extends StatelessWidget {
               color: AppColor.color000000.withOpacity(0.6),
             ),
           ),
-          color: AppColor.color4A2D7C,
+          color: AppColor.colorFFFFFF,
           margin:
-              const EdgeInsets.only(left: 320, bottom: 5, top: 5, right: 15),
+              const EdgeInsets.only(left: 15, bottom: 5, top: 5, right: 320),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: SelectableText(
               message,
               style: AppTextStyle.s17Abel,
+              textAlign: TextAlign.justify,
             ),
           ),
         ),
