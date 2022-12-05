@@ -50,20 +50,25 @@ class GrpcChat extends GrpcChatServiceBase {
   @override
   Stream<MessageFromBase> synchronization(
       ServiceCall call, LastMessage request) async* {
-    var messages = await messagesService.getRecentMessages(message: request);
-    MessageFromBase lastMessage = MessageFromBase();
-    if (messages.length == 0) {
+    if (request.mainIdMessage == 0) {
       MessageFromBase lastMessage = MessageFromBase();
       yield lastMessage;
     } else {
-      for (int i = 0; i < messages.length; i++) {
+      var messages = await messagesService.getRecentMessages(message: request);
+      MessageFromBase lastMessage = MessageFromBase();
+      if (messages.length == 0) {
         MessageFromBase lastMessage = MessageFromBase();
-        lastMessage.mainIdMessage = messages[i]['main_messages_id'];
-        lastMessage.chatIdMain = messages[i]['friends_chat_id'];
-        lastMessage.senderMainId = messages[i]['sender_id'];
-        lastMessage.content = messages[i]['content'];
-        lastMessage.date = messages[i]['date'];
         yield lastMessage;
+      } else {
+        for (int i = 0; i < messages.length; i++) {
+          MessageFromBase lastMessage = MessageFromBase();
+          lastMessage.mainIdMessage = messages[i]['main_messages_id'];
+          lastMessage.chatIdMain = messages[i]['friends_chat_id'];
+          lastMessage.senderMainId = messages[i]['sender_id'];
+          lastMessage.content = messages[i]['content'];
+          lastMessage.date = messages[i]['date'];
+          yield lastMessage;
+        }
       }
     }
   }
