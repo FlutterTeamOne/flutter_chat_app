@@ -7,7 +7,10 @@ class ConnectionInitial extends ConnectionStatusState {}
 
 class ActiveConnectionState extends ConnectionStatusState {
   final String message;
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/sending_manager
   ActiveConnectionState({
     required this.message,
   });
