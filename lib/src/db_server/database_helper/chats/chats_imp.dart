@@ -1,8 +1,6 @@
 import 'package:flutter_chat_app/src/db_server/database_helper/library_db.dart';
 
 class ChatsServices implements IChatsServices {
-  ChatsServices();
-
   @override
   createChat({required int friend1_id, required int friend2_id}) async {
     var db = await dbServerServices.openDatabase();
@@ -33,6 +31,7 @@ class ChatsServices implements IChatsServices {
   @override
   getChatById({required int id}) async {
     var db = await dbServerServices.openDatabase();
+
     return await db.rawQuery('''
       SELECT * FROM friends_chat 
         WHERE (main_friends_chat_id = $id)

@@ -30,14 +30,15 @@ class Client {
     //   case 1:
     try {
       response = await stub!.createMessage(message);
+    } catch (e) {
+      print(e);
+      response = MessageBase(ok: false, mainMessagesId: 0);
+    } finally {
       if (response.ok) {
         print('Записали сообщение на сервер');
       } else {
         print('Произошла ошибка с записью, попробуй еще раз');
       }
-    } catch (e) {
-      print(e);
-    } finally {
       await channel!.shutdown();
     }
     return response;
