@@ -1,9 +1,6 @@
-import 'package:sqflite_common/sqlite_api.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:flutter_chat_app/src/db_server/database_helper/library_db.dart';
 
-import 'IDatabase.dart';
-
-class DBHelper extends IDatabase {
+class DbServerServices implements IDbServerServices {
   @override
   Future<Database> openDatabase() async {
     sqfliteFfiInit();
@@ -19,8 +16,8 @@ class DBHelper extends IDatabase {
     var databaseFactory = databaseFactoryFfi;
 
     var db = await databaseFactory.openDatabase('main_db.db');
-      await db.transaction((txn) async {
-        await txn.execute('''
+    await db.transaction((txn) async {
+      await txn.execute('''
           CREATE TABLE users
           (
           main_users_id     integer PRIMARY KEY AUTOINCREMENT,
@@ -32,7 +29,7 @@ class DBHelper extends IDatabase {
           );
         ''');
 
-        await txn.execute('''
+      await txn.execute('''
           CREATE TABLE friends_chat
           (
           main_friends_chat_id integer PRIMARY KEY AUTOINCREMENT,
@@ -43,7 +40,7 @@ class DBHelper extends IDatabase {
           );
         ''');
 
-        await txn.execute('''
+      await txn.execute('''
           CREATE TABLE messages
           (
           main_messages_id integer PRIMARY KEY AUTOINCREMENT,
@@ -57,33 +54,33 @@ class DBHelper extends IDatabase {
           );
         ''');
 
-        await txn.execute('''
+      await txn.execute('''
           CREATE INDEX FRIENDS_CHAT_FK_2 ON friends_chat
           (
           friend1_id
           );
         ''');
 
-        await txn.execute('''
+      await txn.execute('''
           CREATE INDEX FRIENDS_CHAT_FK_3 ON friends_chat
           (
           friend2_id
           )
         ''');
 
-        await txn.execute('''
+      await txn.execute('''
           CREATE INDEX MESSAGES_FK_2 ON messages
           (
           friends_chat_id
           );
         ''');
 
-        await txn.execute('''
+      await txn.execute('''
           CREATE INDEX MESSAGES_FK_3 ON messages
           (
           sender_id
           );
         ''');
-      });
+    });
   }
 }

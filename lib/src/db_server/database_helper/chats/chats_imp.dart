@@ -1,15 +1,11 @@
-import 'package:sqflite_common/sqlite_api.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:flutter_chat_app/src/db_server/database_helper/library_db.dart';
 
-import 'ichats.dart';
-
-class ChatsHelper extends IChats {
-
-  ChatsHelper();
+class ChatsServices implements IChatsServices {
+  ChatsServices();
 
   @override
   createChat({required int friend1_id, required int friend2_id}) async {
-    var db = await openDatabase();
+    var db = await dbServerServices.openDatabase();
 
     await db.execute('''
       INSERT INTO friends_chat (friend1_id, friend2_id) VALUES (
@@ -18,7 +14,7 @@ class ChatsHelper extends IChats {
       );
       ''');
 
-    return  await db.rawQuery('''
+    return await db.rawQuery('''
       SELECT main_friends_chat_id FROM friends_chat 
       WHERE (
         (friend1_id = $friend1_id) 
@@ -29,14 +25,14 @@ class ChatsHelper extends IChats {
 
   @override
   getAllChats() async {
-    var db = await openDatabase();
+    var db = await dbServerServices.openDatabase();
 
     return await db.rawQuery('''SELECT * FROM friends_chat''');
   }
 
   @override
-  getChatById({required int id})  async {
-    var db = await openDatabase();
+  getChatById({required int id}) async {
+    var db = await dbServerServices.openDatabase();
     return await db.rawQuery('''
       SELECT * FROM friends_chat 
         WHERE (main_friends_chat_id = $id)
@@ -45,20 +41,22 @@ class ChatsHelper extends IChats {
 
   @override
   updateChat({required String newValues, required String condition}) async {
-    var db = await openDatabase();
-    return await db.rawUpdate('''UPDATE friends_chat SET $newValues WHERE ($condition)''');
+    var db = await dbServerServices.openDatabase();
+    return await db
+        .rawUpdate('''UPDATE friends_chat SET $newValues WHERE ($condition)''');
   }
 
   @override
   deleteChat({required int id}) async {
-    var db = await openDatabase();
+    var db = await dbServerServices.openDatabase();
 
-    return await db.rawDelete('''DELETE FROM friends_chat WHERE (main_friends_chat_id = $id)''');
+    return await db.rawDelete(
+        '''DELETE FROM friends_chat WHERE (main_friends_chat_id = $id)''');
   }
 
   @override
   getChatByTwoIds({required int friend1_id, required int friend2_id}) async {
-    var db = await openDatabase();
+    var db = await dbServerServices.openDatabase();
 
     return await db.rawQuery('''
       SELECT f.main_friends_chat_id FROM friends_chat f 
@@ -70,7 +68,7 @@ class ChatsHelper extends IChats {
 
   @override
   getChatsByUserId({required int userID}) async {
-    var db =  await openDatabase();
+    var db = await dbServerServices.openDatabase();
 
     return await db.rawQuery('''SELECT * FROM friends_chat f 
 	    WHERE ((f.friend1_id = $userID) OR (f.friend2_id = $userID))''');

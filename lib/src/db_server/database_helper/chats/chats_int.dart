@@ -1,8 +1,7 @@
-import '../db_helper.dart';
+import 'package:flutter_chat_app/src/db_server/database_helper/chats/chats_imp.dart';
 
-abstract class IChats extends DBHelper {
-
-  IChats();
+abstract class IChatsServices {
+  factory IChatsServices() => ChatsServices();
 
   createChat({required int friend1_id, required int friend2_id});
 
@@ -17,5 +16,6 @@ abstract class IChats extends DBHelper {
   getChatByTwoIds({required int friend1_id, required int friend2_id});
 
   getAllChats();
-
 }
+
+final chatsServices = IChatsServices();

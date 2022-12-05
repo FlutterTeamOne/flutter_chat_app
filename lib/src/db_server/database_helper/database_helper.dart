@@ -1,5 +1,4 @@
-import 'package:sqflite_common/sqlite_api.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:flutter_chat_app/src/db_server/database_helper/library_db.dart';
 
 Future main() async {
   // Init ffi loader if needed.
@@ -26,7 +25,7 @@ CREATE TABLE friends_chat
 );
 ''');
 
-    await db.execute('''
+  await db.execute('''
 CREATE TABLE messages
 (
  id              integer PRIMARY KEY AUTOINCREMENT,
@@ -62,8 +61,10 @@ INSERT INTO friends_chat (friend1_id, friend2_id) VALUES(
 );
 ''');
 
-  var friendsChat1 = await db.rawQuery('SELECT id From friends_chat WHERE ((friend1_id = 1) AND (friend2_id = 2))');
-  var friendsChat2 = await db.rawQuery('SELECT id From friends_chat WHERE ((friend1_id = 1) AND (friend2_id = 3))');
+  var friendsChat1 = await db.rawQuery(
+      'SELECT id From friends_chat WHERE ((friend1_id = 1) AND (friend2_id = 2))');
+  var friendsChat2 = await db.rawQuery(
+      'SELECT id From friends_chat WHERE ((friend1_id = 1) AND (friend2_id = 3))');
   var friendsChatMap1 = friendsChat1[0];
   var friendsChatMap2 = friendsChat2[0];
 
@@ -100,7 +101,20 @@ INSERT INTO messages (friends_chat_id, reciever_id, sender_id, content) VALUES(
   	"hi there!"
 );
 ''');
+  var chatsHelper = ChatsServices();
+  var index = await chatsHelper.createChat(friend1_id: 1, friend2_id: 2);
 
+  print(index);
+
+  var updatedUser = await chatsHelper.updateChat(
+      newValues: 'friend1_id = 3', condition: 'main_friends_chat_id = 1');
+
+  print(updatedUser);
+
+  var id = await chatsHelper.getChatById(id: 1);
+
+  print(index);
+  print("-------------");
   var users = await db.query('users');
   var friend_chats = await db.query('friends_chat');
   var messages = await db.query('messages');
