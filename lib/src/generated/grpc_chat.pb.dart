@@ -144,16 +144,21 @@ class Message extends $pb.GeneratedMessage {
 class MessageBase extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'MessageBase', createEmptyInstance: create)
     ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'ok')
+    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mainMessagesId', $pb.PbFieldType.O3, protoName: 'mainMessagesId')
     ..hasRequiredFields = false
   ;
 
   MessageBase._() : super();
   factory MessageBase({
     $core.bool? ok,
+    $core.int? mainMessagesId,
   }) {
     final _result = create();
     if (ok != null) {
       _result.ok = ok;
+    }
+    if (mainMessagesId != null) {
+      _result.mainMessagesId = mainMessagesId;
     }
     return _result;
   }
@@ -186,5 +191,14 @@ class MessageBase extends $pb.GeneratedMessage {
   $core.bool hasOk() => $_has(0);
   @$pb.TagNumber(1)
   void clearOk() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get mainMessagesId => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set mainMessagesId($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasMainMessagesId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearMainMessagesId() => clearField(2);
 }
 

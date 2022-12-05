@@ -58,12 +58,13 @@ class ChatsServices implements IChatsServices {
   getChatByTwoIds({required int friend1_id, required int friend2_id}) async {
     var db = await dbServerServices.openDatabase();
 
-    return await db.rawQuery('''
+    var id_chat = await db.rawQuery('''
       SELECT f.main_friends_chat_id FROM friends_chat f 
 	      WHERE 
         (((f.friend1_id = $friend1_id) AND (f.friend2_id = $friend2_id)) 
         OR 
         ((f.friend1_id = $friend2_id) AND (f.friend2_id = $friend1_id)))''');
+    return id_chat[0]['main_friends_chat_id'];
   }
 
   @override

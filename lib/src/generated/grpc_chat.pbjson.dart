@@ -34,8 +34,9 @@ const MessageBase$json = const {
   '1': 'MessageBase',
   '2': const [
     const {'1': 'ok', '3': 1, '4': 1, '5': 8, '10': 'ok'},
+    const {'1': 'mainMessagesId', '3': 2, '4': 1, '5': 5, '10': 'mainMessagesId'},
   ],
 };
 
 /// Descriptor for `MessageBase`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List messageBaseDescriptor = $convert.base64Decode('CgtNZXNzYWdlQmFzZRIOCgJvaxgBIAEoCFICb2s=');
+final $typed_data.Uint8List messageBaseDescriptor = $convert.base64Decode('CgtNZXNzYWdlQmFzZRIOCgJvaxgBIAEoCFICb2sSJgoObWFpbk1lc3NhZ2VzSWQYAiABKAVSDm1haW5NZXNzYWdlc0lk');

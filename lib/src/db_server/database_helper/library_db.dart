@@ -9,3 +9,5 @@ export 'messages/messages_imp.dart';
 export 'messages/messages_int.dart';
 export 'chats/chats_imp.dart';
 export 'chats/chats_int.dart';
+export '../../generated/grpc_chat.pb.dart';
+export '../../generated/grpc_chat.pbjson.dart';

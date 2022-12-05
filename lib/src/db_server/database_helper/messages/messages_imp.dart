@@ -13,22 +13,24 @@ class MessagesServices implements IMessagesServices {
       INSERT INTO messages (friends_chat_id, sender_id, content, date) VALUES (
         $friendsChatId,
         $senderId,
-        $content,
-        $date
+        "$content",
+        "$date"
       )
       ''');
 
-    return await db.rawQuery('''
-      SELECT main_friends_chat_id FROM messages
+    var id = await db.rawQuery('''
+      SELECT main_messages_id FROM messages
       WHERE (
         (friends_chat_id = $friendsChatId) 
         AND 
         (sender_id = $senderId)
         AND
-        (content = $content)
+        (content = '$content')
         AND
-        (date = $date))
+        (date = '$date')
+        )
     ''');
+    return id[0]['main_messages_id'];
   }
 
   @override

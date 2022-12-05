@@ -10,7 +10,7 @@ class Client {
   var response;
   bool executionInProgress = true;
 
-  Future<void> SendMessage(Message message) async {
+  Future<MessageBase> SendMessage(Message message) async {
     channel = ClientChannel('localhost',
         port: 50000,
         options:
@@ -19,57 +19,58 @@ class Client {
     stub = GrpcChatClient(channel!,
         options: CallOptions(timeout: Duration(seconds: 30)));
 
-    while (executionInProgress) {
-      try {
-        print('---- Welcome to the dart store API ---');
-        print('   ---- what do you want to do? ---');
-        print('👉 0: Connecting');
-        print('👉 1: Send Message to server');
-
-        var option = int.parse(stdin.readLineSync()!);
-        switch (option) {
-          case 1:
-            response = await stub!.createMessage(message);
-            if (response.ok) {
-              print('Записали сообщение на сервер');
-            } else {
-              print('Произошла ошибка с записью, попробуй еще раз');
-            }
-            break;
-        }
-      } catch (e) {
-        print(e);
+    // while (executionInProgress) {
+    //   try {
+    //     print('---- Welcome to the dart store API ---');
+    //     print('   ---- what do you want to do? ---');
+    //     print('👉 0: Connecting');
+    //     print('👉 1: Send Message to server');
+    //     var option = int.parse(stdin.readLineSync()!);
+    // switch (option) {
+    //   case 1:
+    try {
+      response = await stub!.createMessage(message);
+      if (response.ok) {
+        print('Записали сообщение на сервер');
+      } else {
+        print('Произошла ошибка с записью, попробуй еще раз');
       }
-
-      print('Do you wish to exit the store? (Y/n)');
-      //Пользовательский ввод в консоль
-      var result = stdin.readLineSync() ?? 'y';
-      executionInProgress = result.toLowerCase() != 'y';
+    } catch (e) {
+      print(e);
+    } finally {
+      await channel!.shutdown();
     }
-
-    await channel!.shutdown();
+    return response;
+    // print('Do you wish to exit the store? (Y/n)');
+    // //Пользовательский ввод в консоль
+    // var result = stdin.readLineSync() ?? 'y';
+    // executionInProgress = result.toLowerCase() != 'y';
   }
 
-  // Future<Category> _findCategoryByName(String name) async {
-  //   var category = Category()..name = name;
-  //   category = await stub!.getCategory(category);
-  //   return category;
-  // }
-
-  // Future<Item> _findItemByName(String name) async {
-  //   var item = Item()..name = name;
-  //   item = await stub!.getItem(item);
-  //   return item;
-  // }
+  // await channel!.shutdown();
 }
 
+// Future<Category> _findCategoryByName(String name) async {
+//   var category = Category()..name = name;
+//   category = await stub!.getCategory(category);
+//   return category;
+// }
+
+// Future<Item> _findItemByName(String name) async {
+//   var item = Item()..name = name;
+//   item = await stub!.getItem(item);
+//   return item;
+// }
+// }
+
 var con = false;
-void main() {
+void main() async {
   var client = Client();
   var message = Message();
   message.userMainId1 = 1;
   message.userMainId2 = 2;
   message.senderMainId = 2;
   message.content = "Hello";
-  client.SendMessage(message);
+  message.date = "2022-12-02T21:36:32.653712";
+  await client.SendMessage(message);
 }

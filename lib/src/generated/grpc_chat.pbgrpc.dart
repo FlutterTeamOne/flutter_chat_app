@@ -22,9 +22,9 @@ class GrpcChatClient extends $grpc.Client {
       '/GrpcChat/createMessage',
       ($0.Message value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.MessageBase.fromBuffer(value));
-  static final _$createNessages =
+  static final _$createMessages =
       $grpc.ClientMethod<$0.Message, $0.MessageBase>(
-          '/GrpcChat/createNessages',
+          '/GrpcChat/createMessages',
           ($0.Message value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $0.MessageBase.fromBuffer(value));
 
@@ -43,10 +43,10 @@ class GrpcChatClient extends $grpc.Client {
     return $createUnaryCall(_$createMessage, request, options: options);
   }
 
-  $grpc.ResponseStream<$0.MessageBase> createNessages(
+  $grpc.ResponseStream<$0.MessageBase> createMessages(
       $async.Stream<$0.Message> request,
       {$grpc.CallOptions? options}) {
-    return $createStreamingCall(_$createNessages, request, options: options);
+    return $createStreamingCall(_$createMessages, request, options: options);
   }
 }
 
@@ -69,8 +69,8 @@ abstract class GrpcChatServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) => $0.Message.fromBuffer(value),
         ($0.MessageBase value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.Message, $0.MessageBase>(
-        'createNessages',
-        createNessages,
+        'createMessages',
+        createMessages,
         true,
         true,
         ($core.List<$core.int> value) => $0.Message.fromBuffer(value),
@@ -90,6 +90,6 @@ abstract class GrpcChatServiceBase extends $grpc.Service {
   $async.Future<$0.Empty> connecting($grpc.ServiceCall call, $0.Empty request);
   $async.Future<$0.MessageBase> createMessage(
       $grpc.ServiceCall call, $0.Message request);
-  $async.Stream<$0.MessageBase> createNessages(
+  $async.Stream<$0.MessageBase> createMessages(
       $grpc.ServiceCall call, $async.Stream<$0.Message> request);
 }

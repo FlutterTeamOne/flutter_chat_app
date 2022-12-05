@@ -20,34 +20,28 @@ class GrpcChat extends GrpcChatServiceBase {
 
   @override
   Future<MessageBase> createMessage(ServiceCall call, Message request) async {
-    var friendsChatId = chatsService.getChatByTwoIds(
+    var friendsChatId = await chatsService.getChatByTwoIds(
         friend1_id: request.userMainId1, friend2_id: request.userMainId2);
-    var src = messagesService.addNewMessage(
+
+    var src = await messagesService.addNewMessage(
         friendsChatId: friendsChatId,
         senderId: request.senderMainId,
         content: request.content,
         date: request.date);
-    print(src);
-    var message = MessageBase();
-    message.ok = false;
-    return message;
 
-    // // TODO: implement createMessage
-    // var message = MessageBase();
-    // message.ok = false;
-    // Random rnd;
-    // rnd = new Random();
-    // var r = rnd.nextInt(5);
-    // print("$r is in the range of $min and $max");
-    // if (r % 2 == 0) {
-    //   message.ok = true;
-    //   return message;
-    // }
-    // return message;
+    var message = MessageBase();
+
+    if (src != 0) {
+      message.ok = true;
+      message.mainMessagesId = src;
+    } else {
+      message.ok = false;
+    }
+    return message;
   }
 
   @override
-  Stream<MessageBase> createNessages(
+  Stream<MessageBase> createMessages(
       ServiceCall call, Stream<Message> request) {
     // TODO: implement createNessages
     throw UnimplementedError();
