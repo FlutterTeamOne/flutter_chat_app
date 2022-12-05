@@ -20,6 +20,8 @@ abstract class IMessagesServices {
   getMessagesByChatId({required int chatID});
 
   getAllMessages();
+
+  getRecentMessages({required LastMessage message});
 }
 
 final messagesServices = IMessagesServices();
