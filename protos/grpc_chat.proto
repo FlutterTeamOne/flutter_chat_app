@@ -15,7 +15,7 @@ message Message {
     int32 userMainId2 = 2;
     int32 senderMainId = 3;
     string content = 4;
-    //google.protobuf.Timestamp date = 5;
+    string date = 5; //26 symbols
 }
 
 message MessageBase {

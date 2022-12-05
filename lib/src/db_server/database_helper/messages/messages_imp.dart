@@ -10,7 +10,7 @@ class MessagesServices implements IMessagesServices {
     var db = await dbServerServices.openDatabase();
 
     await db.execute('''
-      INSERT INTO friends_chat (friend1_id, friend2_id) VALUES (
+      INSERT INTO messages (friends_chat_id, sender_id, content, date) VALUES (
         $friendsChatId,
         $senderId,
         $content,
@@ -19,7 +19,7 @@ class MessagesServices implements IMessagesServices {
       ''');
 
     return await db.rawQuery('''
-      SELECT main_friends_chat_id FROM friends_chat 
+      SELECT main_friends_chat_id FROM messages
       WHERE (
         (friends_chat_id = $friendsChatId) 
         AND 

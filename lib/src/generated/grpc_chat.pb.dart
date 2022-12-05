@@ -44,6 +44,7 @@ class Message extends $pb.GeneratedMessage {
     ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userMainId2', $pb.PbFieldType.O3, protoName: 'userMainId2')
     ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'senderMainId', $pb.PbFieldType.O3, protoName: 'senderMainId')
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'content')
+    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'date')
     ..hasRequiredFields = false
   ;
 
@@ -53,6 +54,7 @@ class Message extends $pb.GeneratedMessage {
     $core.int? userMainId2,
     $core.int? senderMainId,
     $core.String? content,
+    $core.String? date,
   }) {
     final _result = create();
     if (userMainId1 != null) {
@@ -66,6 +68,9 @@ class Message extends $pb.GeneratedMessage {
     }
     if (content != null) {
       _result.content = content;
+    }
+    if (date != null) {
+      _result.date = date;
     }
     return _result;
   }
@@ -125,6 +130,15 @@ class Message extends $pb.GeneratedMessage {
   $core.bool hasContent() => $_has(3);
   @$pb.TagNumber(4)
   void clearContent() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.String get date => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set date($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasDate() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearDate() => clearField(5);
 }
 
 class MessageBase extends $pb.GeneratedMessage {
