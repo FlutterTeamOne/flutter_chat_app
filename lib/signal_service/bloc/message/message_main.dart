@@ -123,7 +123,12 @@ class _HomeState extends State<Home> {
                   onSubmitted: (value) {
                     context.read<MsgBloc>().add(
                           CreateMessageEvent(
-                            message: Message(content: value),
+                            message: Message(
+                              userMainId1: 1,
+                              userMainId2: 2,
+                              senderMainId:1,
+                              content: value,
+                              date: DateTime.now().toIso8601String()),
                           ),
                         );
                   },

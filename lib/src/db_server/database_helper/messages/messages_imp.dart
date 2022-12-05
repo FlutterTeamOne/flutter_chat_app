@@ -11,10 +11,10 @@ class MessagesServices implements IMessagesServices {
 
     await db.execute('''
       INSERT INTO messages (friends_chat_id, sender_id, content, date) VALUES (
-        $friendsChatId,
-        $senderId,
-        $content,
-        $date
+        '$friendsChatId',
+        '$senderId',
+        '$content',
+        '$date'
       )
       ''');
 
@@ -25,7 +25,7 @@ class MessagesServices implements IMessagesServices {
         AND 
         (sender_id = $senderId)
         AND
-        (content = $content)
+        (content = '$content')
         AND
         (date = $date))
     ''');

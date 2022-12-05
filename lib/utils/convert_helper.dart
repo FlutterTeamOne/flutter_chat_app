@@ -10,7 +10,7 @@ Map<String, Object> messageMapToDB(Map<String, dynamic> model) => {
       "id": "${model['1']}",
       "local_chat_id": "${model['2']}",
       "msg_date": "${model['3']}",
-      "sender_local_id": "${model['4']}",
+      "sender_id": "${model['4']}",
       "is_written_to_db": "${model['5']}",
       "content": "${model['6']}"
     };

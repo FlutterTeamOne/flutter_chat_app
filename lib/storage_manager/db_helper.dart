@@ -33,6 +33,7 @@ class DBHelper {
     var dbFactory = databaseFactoryFfi;
     // var dbPath = await dbFactory.getDatabasesPath();
     var dbPath = await getTemporaryDirectory();
+    print('PATH: ${dbPath.path}');
     String path = join(dbPath.path, DatabaseConst.dbFileName);
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(
@@ -67,19 +68,18 @@ CREATE TABLE ${Messages.table} (
  ${DatabaseConst.columnContent} ${DatabaseConst.char50} ${DatabaseConst.notNull},
  ${DatabaseConst.constraint} MESSAGES_FK_79 ${DatabaseConst.foreignKey} ( ${DatabaseConst.columnLocalChatId} ) ${DatabaseConst.references} ${Chats.table} ( local_chats_id ),
  ${DatabaseConst.constraint} MESSAGES_FK_80 ${DatabaseConst.foreignKey} ( ${DatabaseConst.columnSenderLocalId} ) ${DatabaseConst.references} ${User.table} ( local_users_id ),
- CHECK ((is_written_to_db = 0}) OR (is_written_to_db = 1))
- CHECK ((sender_is_user = 0) OR (sender_is_user = 1))
+ CHECK ((is_written_to_db = 0) OR (is_written_to_db = 1))
+ 
 )
 ''');
-
+//CHECK ((sender_is_user = 0) OR (sender_is_user = 1))
 //Таблица Messages Id In Main
-      await txn.execute('''
+    await txn.execute('''
 CREATE TABLE ${MessageIdInMain.table}
 (
  ${DatabaseConst.columnId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
- ${DatabaseConst.columnLocalMessagesId} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique},
- ${DatabaseConst.constraint} MESSAGE_ID_IN_MAIN_FK_86 ${DatabaseConst.foreignKey} ( ${DatabaseConst.columnLocalMessagesId} ) ${DatabaseConst.references} ( ${DatabaseConst.columnLocalMessagesId} )
-);
+ ${DatabaseConst.columnLocalMessagesId} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique}
+)
 ''');
 //Таблица Chats
       await txn.execute('''
@@ -128,7 +128,8 @@ CREATE INDEX MESSAGE_ID_IN_MAIN_FK_1 ON ${MessageIdInMain.table}
   }
 
   ///Добавление данных в БД
-  Future onAdd({required String tableName, required Map<String,Object> model}) async {
+  Future onAdd(
+      {required String tableName, required Map<String, Object> model}) async {
     var db = await instanse.database;
     await db.transaction((txn) async {
       await txn.insert(tableName, model);

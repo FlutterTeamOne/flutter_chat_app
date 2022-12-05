@@ -12,7 +12,7 @@ class DatabaseConst {
   static const columnMainUsersId = 'main_users_id';
 
   static const columnLocalChatId = 'local_chat_id';
-  static const columnSenderLocalId = 'sender_local_id';
+  static const columnSenderLocalId = 'sender_id';
   static const columnDate = 'date';
   static const columnIsWrittenToDb = 'is_written_to_db';
   static const columnContent = 'content';
