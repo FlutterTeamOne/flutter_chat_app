@@ -73,5 +73,11 @@ void main() async {
   message.senderMainId = 2;
   message.content = "Hello";
   message.date = "2022-12-02T21:36:32.653712";
-  await client.SendMessage(message);
+
+  ///
+  ///Если присылает один и тот же mainMessageId
+  ///поменяй message.date или message.content
+  ///
+  print("Обратный ответ:");
+  print(await client.SendMessage(message));
 }
