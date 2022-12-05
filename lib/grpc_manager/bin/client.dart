@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:grpc/grpc.dart';
-import 'package:flutter_chat_app/grpc_manager/lib/proto/generated/grpc_connection_exports.dart';
+import 'package:grpc_connection/proto/generated/grpc_connection_exports.dart';
 
 class Client {
   ClientChannel? channel;
