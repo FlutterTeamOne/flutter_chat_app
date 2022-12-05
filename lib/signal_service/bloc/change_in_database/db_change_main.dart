@@ -49,7 +49,7 @@ class _HomeState extends State<Home> {
             ElevatedButton(onPressed: (() {
               changeDatabase();
             }), 
-            child: Text('Change DB'))
+            child: Text('Change DB'),),
             BlocBuilder<NetworkBloc, NetworkState>(
               builder: (context, state) {
                 if (state is NetworkFailure) {
