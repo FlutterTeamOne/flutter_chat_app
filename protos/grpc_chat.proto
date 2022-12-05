@@ -4,6 +4,7 @@ syntax = "proto3";
 service  GrpcChat{
     rpc connecting (Empty) returns (Empty) {}
     rpc createMessage (Message) returns (MessageBase) {}
+    rpc createNessages (stream Message) returns (stream MessageBase) {}
 }
 
 
@@ -20,5 +21,3 @@ message Message {
 message MessageBase {
     bool ok = 1;
 }
-
-

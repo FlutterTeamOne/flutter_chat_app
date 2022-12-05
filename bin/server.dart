@@ -28,6 +28,13 @@ class GrpcChat extends GrpcChatServiceBase {
     }
     return message;
   }
+
+  @override
+  Stream<MessageBase> createNessages(
+      ServiceCall call, Stream<Message> request) {
+    // TODO: implement createNessages
+    throw UnimplementedError();
+  }
 }
 
 ///
