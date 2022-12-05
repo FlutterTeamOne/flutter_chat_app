@@ -9,7 +9,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_app/signal_service/bloc/message/message_bloc.dart';
 import 'package:flutter_chat_app/signal_service/bloc/message/message_bloc.dart';
 
+import '../../../client/grpc_client.dart';
 import '../../../src/db_server/database_helper/library_db.dart';
+import '../../../storage_manager/db_helper.dart';
+import '../msg_bloc.dart';
 
 class Client {
   ClientChannel? channel;
@@ -25,7 +28,7 @@ class Client {
             const ChannelOptions(credentials: ChannelCredentials.insecure()));
 
     stub = GrpcChatClient(channel!,
-        options: CallOptions(timeout: Duration(seconds: 30)));
+        options: CallOptions(timeout: const Duration(seconds: 30)));
 
     while (executionInProgress) {
       try {
@@ -71,19 +74,22 @@ class Client {
   // }
 }
 
-void main() {
-  runApp(App());
+Future<void> main() async{
+   WidgetsFlutterBinding.ensureInitialized();
+  await DBHelper.instanse.initDB();
+  runApp( App());
 }
 
 class App extends StatelessWidget {
-  App({Key? key}) : super(key: key);
-  final IMessagesServices iMessagesServices = IMessagesServices();
+   App({Key? key}) : super(key: key);
+  // final IMessagesServices iMessagesServices = IMessagesServices();
+  final GrpcClient grpcClient = GrpcClient();
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<MessageBloc>(
-          create: (context) => MessageBloc(messagesServices: iMessagesServices),
+        BlocProvider<MsgBloc>(
+          create: (context) => MsgBloc(grpcClient:grpcClient ),
         ),
       ],
       child: MaterialApp(
@@ -108,24 +114,24 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: BlocBuilder<MessageBloc, MessageState>(
+        child: BlocBuilder<MsgBloc, MsgState>(
           builder: (context, state) {
             return Column(
               children: [
                 TextField(
                   controller: textController,
                   onSubmitted: (value) {
-                    context.read<MessageBloc>().add(
-                          MessageEvent.sent(
+                    context.read<MsgBloc>().add(
+                          CreateMessageEvent(
                             message: Message(content: value),
                           ),
                         );
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
-                Text('')
+                const Text('')
               ],
             );
           },

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_chat_app/storage_manager/database_const.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -30,8 +31,9 @@ class DBHelper {
   Future<Database> initDB() async {
     sqfliteFfiInit();
     var dbFactory = databaseFactoryFfi;
-    var dbPath = await dbFactory.getDatabasesPath();
-    String path = join(dbPath, DatabaseConst.dbFileName);
+    // var dbPath = await dbFactory.getDatabasesPath();
+    var dbPath = await getTemporaryDirectory();
+    String path = join(dbPath.path, DatabaseConst.dbFileName);
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(
           version: DatabaseConst.dbVersion,
@@ -126,10 +128,10 @@ CREATE INDEX MESSAGE_ID_IN_MAIN_FK_1 ON ${MessageIdInMain.table}
   }
 
   ///Добавление данных в БД
-  Future onAdd({required String tableName, required Model model}) async {
+  Future onAdd({required String tableName, required Map<String,Object> model}) async {
     var db = await instanse.database;
     await db.transaction((txn) async {
-      await txn.insert(tableName, model.toJson());
+      await txn.insert(tableName, model);
     });
     _updateListen();
   }
