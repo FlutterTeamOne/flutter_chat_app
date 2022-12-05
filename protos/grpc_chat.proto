@@ -1,0 +1,23 @@
+
+syntax = "proto3";
+//import "google/protobuf/timestamp.proto";
+service  GrpcChat{
+    rpc connecting (Empty) returns (Empty) {}
+    rpc createMessage (Message) returns (MessageBase) {}
+    rpc createNessages (stream Message) returns (stream MessageBase) {}
+}
+
+
+message Empty {}
+
+message Message {
+    int32 userMainId1 = 1;
+    int32 userMainId2 = 2;
+    int32 senderMainId = 3;
+    string content = 4;
+    string date = 5; //26 symbols
+}
+
+message MessageBase {
+    bool ok = 1;
+}
