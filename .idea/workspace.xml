@@ -4,20 +4,12 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="start bloc for UnreadMessage">
+    <list default="true" id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="add sendingMessage_bloc">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter_chat_app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_chat_app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/domain/model/message_model.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/domain/model/user.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/domain/repository/message_repository.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/storage_manager/database_const.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/storage_manager/db_helper.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/storage_manager/last_unread_message.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/storage_manager/last_unread_message.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/storage_manager/unread_message_bloc/unread_message_bloc.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/storage_manager/unread_message_bloc/unread_message_event.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/storage_manager/unread_message_bloc/unread_message_state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/storage_manager/unread_message_bloc/unread_message_view.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/unread_message_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/storage_manager/unread_message_test.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/sending_manager/bloc/sendingMessageBloc/sendingMessage_bloc.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/sending_manager/bloc/sendingMessageBloc/sendingMessage_event.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/sending_manager/bloc/sendingMessageBloc/sendingMessage_state.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/sending_manager/connection_bloc/connection_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/sending_manager/connection_bloc/connection_state.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +31,7 @@
     </option>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="storage_manager" />
+        <entry key="$PROJECT_DIR$" value="grpc_unary_metod" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -63,17 +55,22 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/sending_manager" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.CommitDialog" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\android\flutter_chat_app\lib\sending_manager" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\android\flutter_chat_app\lib\sending_manager\bloc" />
       <recent name="C:\android\flutter_chat_app\test\storage_manager" />
       <recent name="C:\android\flutter_chat_app\test" />
     </key>
@@ -146,7 +143,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669991531672</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="add sendingMessage_bloc">
+      <created>1670246375767</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1670246375767</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -174,6 +178,7 @@
     <MESSAGE value="start test for UnreadMessage" />
     <MESSAGE value="add test for UnreadMessage" />
     <MESSAGE value="start bloc for UnreadMessage" />
-    <option name="LAST_COMMIT_MESSAGE" value="start bloc for UnreadMessage" />
+    <MESSAGE value="add sendingMessage_bloc" />
+    <option name="LAST_COMMIT_MESSAGE" value="add sendingMessage_bloc" />
   </component>
 </project>

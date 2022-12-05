@@ -26,12 +26,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  bloc:
-  flutter_bloc:
+  bloc: ^8.1.0
+  flutter_bloc: ^8.1.1
   shared_preferences: ^2.0.15
   test:
   grpc:
   protobuf:
+  connectivity_plus: ^3.0.2
 
 
   
