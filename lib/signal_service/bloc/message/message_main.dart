@@ -1,7 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter_chat_app/library.dart';
+import 'package:flutter_chat_app/signal_service/bloc/message/message_bloc.dart';
 import 'package:grpc/grpc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:flutter_chat_app/signal_service/bloc/message/message_bloc.dart';
+import 'package:flutter_chat_app/signal_service/bloc/message/message_bloc.dart';
+
+import '../../../src/db_server/database_helper/library_db.dart';
 
 class Client {
   ClientChannel? channel;
@@ -12,7 +20,7 @@ class Client {
 
   Future<void> SendMessage(Message message) async {
     channel = ClientChannel('localhost',
-        port: 50000,
+        port: 5000,
         options:
             const ChannelOptions(credentials: ChannelCredentials.insecure()));
 
@@ -61,4 +69,68 @@ class Client {
   //   item = await stub!.getItem(item);
   //   return item;
   // }
+}
+
+void main() {
+  runApp(App());
+}
+
+class App extends StatelessWidget {
+  App({Key? key}) : super(key: key);
+  final IMessagesServices iMessagesServices = IMessagesServices();
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<MessageBloc>(
+          create: (context) => MessageBloc(messagesServices: iMessagesServices),
+        ),
+      ],
+      child: MaterialApp(
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: const Home()),
+    );
+  }
+}
+
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  final textController = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: BlocBuilder<MessageBloc, MessageState>(
+          builder: (context, state) {
+            return Column(
+              children: [
+                TextField(
+                  controller: textController,
+                  onSubmitted: (value) {
+                    context.read<MessageBloc>().add(
+                          MessageEvent.sent(
+                            message: Message(content: value),
+                          ),
+                        );
+                  },
+                ),
+                SizedBox(
+                  height: 50,
+                ),
+                Text('')
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
 }
