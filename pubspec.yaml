@@ -26,12 +26,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  bloc:
   flutter_bloc:
   shared_preferences: ^2.0.15
   test:
-  grpc:
-  protobuf:
 
 
   

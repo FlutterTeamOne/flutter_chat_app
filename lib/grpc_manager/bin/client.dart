@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:grpc/grpc.dart';
-import 'package:grpc_connection/proto/generated/grpc_connection/grpc_connection.pbgrpc.dart';
+import 'package:flutter_chat_app/grpc_manager/lib/proto/generated/grpc_connection_exports.dart';
 
 class Client {
   ClientChannel? channel;
@@ -11,7 +11,7 @@ class Client {
   bool? isConnected;
   Future<void> main() async {
     channel = ClientChannel('localhost',
-        port: 50000,
+        port: 5000,
         options:
             const ChannelOptions(credentials: ChannelCredentials.insecure()));
 
