@@ -6,72 +6,67 @@ import 'IMessages.dart';
 class MessagesHelper extends IMessages {
 
   MessagesHelper();
+
+
   
-  @override
-  addNewMessage({required int friendsChatId, required int senderId, required String content, required String date}) async {
-    var db = await openDatabase();
+
+  addNewMessage({required Database db, required int friendsChatId, required int senderId, required String content, required String date}) async {
 
     await db.execute('''
-      INSERT INTO friends_chat (friend1_id, friend2_id) VALUES (
+      INSERT INTO messages (friends_chat_id, sender_id, content, date) VALUES (
         $friendsChatId,
         $senderId,
-        $content,
-        $date
+        "$content",
+        "$date"
       )
       ''');
 
     return  await db.rawQuery('''
-      SELECT main_friends_chat_id FROM friends_chat 
+      SELECT main_messages_id FROM messages 
       WHERE (
         (friends_chat_id = $friendsChatId) 
         AND 
         (sender_id = $senderId)
         AND
-        (content = $content)
+        (content = "$content")
         AND
-        (date = $date))
+        (date = "$date"))
     ''');
   }
   
   @override
-  deleteMessage({required int id}) async {
-    var db = await openDatabase();
+  deleteMessage({required Database db, required int id}) async {
 
     return await db.rawDelete('''DELETE FROM messages WHERE (main_messages_id = $id)''');
   }
   
   @override
-  getAllMessages() async {
-    var db = await openDatabase();
+  getAllMessages({required Database db}) async {
 
     return await db.rawQuery('''SELECT * FROM messages''');
   }
   
   @override
-  getMessageById({required int id}) async {
-    var db = await openDatabase();
+  getMessageById({required Database db, required int id}) async {
 
     return await db.rawQuery('''SELECT * FROM messages 
         WHERE (main_messages_id = $id)''');
   }
   
   @override
-  getMessagesByChatId({required int chatID}) async {
-    var db = await openDatabase();
+  getMessagesByChatId({required Database db, required int chatID}) async {
 
     return await db.rawQuery('''SELECT * FROM messages WHERE (friends_chat_id = $chatID)''');
   }
   
   @override
-  getMessagesBySenderId({required int senderID}) async {
-    var db = await openDatabase();
+  getMessagesBySenderId({required Database db, required int senderID}) async {
 
     return await db.rawQuery('''SELECT * FROM messages WHERE (sender_id = $senderID)''');
   }
   
   @override
-  updateMessage({required String newValues, required String condition}) async {
-    var db = await openDatabase();
+  updateMessage({required Database db, required String newValues, required String condition}) async {
 
     return await db.rawUpdate('''UPDATE messages SET $newValues WHERE ($condition)''');
   }

@@ -1,16 +1,18 @@
+import 'package:sqflite_common/sqlite_api.dart';
+
 import '../db_helper.dart';
 
 abstract class IUsers extends DBHelper  {
   IUsers();
 
-  createUser({required String name, required String email, required String registrationDate, required String profilePicUrl});
+  createUser({required Database db, required String name, required String email, required String registrationDate, required String profilePicUrl});
 
-  getUserByField({required String field, required String fieldValue});
+  getUserByField({required Database db, required String field, required String fieldValue});
 
-  updateUser({required String newValues, required String condition});
+  updateUser({required Database db, required String newValues, required String condition});
 
-  deleteUser({required int id});
+  deleteUser({required Database db, required int id});
 
-  getAllUsers();
+  getAllUsers({required Database db});
 
 }

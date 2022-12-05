@@ -1,21 +1,23 @@
+import 'package:sqflite_common/sqlite_api.dart';
+
 import '../db_helper.dart';
 
 abstract class IMessages extends DBHelper  {
 
   IMessages();
 
-  addNewMessage({required int friendsChatId, required int senderId, required String content, required String date});
+  addNewMessage({required Database db, required int friendsChatId, required int senderId, required String content, required String date});
 
-  getMessageById({required int id});
+  getMessageById({required Database db, required int id});
 
-  updateMessage({required String newValues, required String condition});
+  updateMessage({required Database db, required String newValues, required String condition});
 
-  deleteMessage({required int id});
+  deleteMessage({required Database db, required int id});
 
-  getMessagesBySenderId({required int senderID});
+  getMessagesBySenderId({required Database db, required int senderID});
 
-  getMessagesByChatId({required int chatID});
+  getMessagesByChatId({required Database db, required int chatID});
 
-  getAllMessages();
+  getAllMessages({required Database db});
 
 }
