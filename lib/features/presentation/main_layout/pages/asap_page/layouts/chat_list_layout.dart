@@ -14,7 +14,6 @@ class _ChatListLayoutState extends State<_ChatListLayout> {
 
   @override
   Widget build(BuildContext context) {
-    // final currentWith = MediaQuery.of(context).size.width;
     return Drawer(
       backgroundColor: AppColor.colorFFFFFF,
       shape: Border.all(
@@ -31,20 +30,12 @@ class _ChatListLayoutState extends State<_ChatListLayout> {
             separatorBuilder: (context, index) => const SizedBox(height: 25),
             itemCount: 11,
             itemBuilder: (context, index) {
-              // if (currentWith < 655) {
-              //   return const UserCard(
-              //     image:
-              //         'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
-              //     name: 'Tony Carbonaro',
-              //   );
-              // } else {
               return const UserCard(
                 name: 'Tony Carbonaro',
                 image:
                     'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
                 message: 'This is the long text for example, long text',
               );
-              // }
             },
           ),
         ],
