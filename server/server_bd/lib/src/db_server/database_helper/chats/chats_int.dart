@@ -1,4 +1,4 @@
-import 'package:flutter_chat_app/src/db_server/database_helper/chats/chats_imp.dart';
+import 'chats_imp.dart';
 
 abstract class IChatsServices {
   factory IChatsServices() => ChatsServices();

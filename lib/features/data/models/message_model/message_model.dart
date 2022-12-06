@@ -13,4 +13,6 @@
       required this.date,
       this.isWrittenToDb = 0,
       required this.content});
+
+ 
 }

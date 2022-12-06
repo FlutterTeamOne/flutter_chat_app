@@ -27,7 +27,7 @@ class _ChatState extends State<_Chat> {
         groupHeaderBuilder: (MessageModel message) =>
             _TimeCard(date: message.date),
         itemBuilder: (context, MessageModel message) {
-          if (message.localSendId == 1) {
+          if (message.localSendId == 0) {
             // print(message.isSentByMe);
             // print(message.message);
             return _OtherMessageCard(

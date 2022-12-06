@@ -1,10 +1,7 @@
-import 'package:grpc/grpc.dart';
 import '../lib_db.dart';
 
 class LocalUsersServices implements ILocalUsersServices {
-  final ClientChannel channel;
-
-  LocalUsersServices({required this.channel});
+  LocalUsersServices();
 
   @override
   Future<int> createUser(
@@ -25,15 +22,16 @@ class LocalUsersServices implements ILocalUsersServices {
   }
 
   @override
-  deleteUser({required int id}) async {
+  Future<int> deleteUser({required int id}) async {
     var db = await DBHelper.instanse.database;
-    return db.rawDelete(
+    return await db.rawDelete(
         'DELETE FROM ${DatabaseConst.userTable} WHERE ${DatabaseConst.usersColumnId}=$id');
   }
 
   @override
-  getAllUsers() async {
+  Future<List<Map<String, Object?>>> getAllUsers() async {
     var db = await DBHelper.instanse.database;
+
     return await db.rawQuery('''
               SELECT *
               FROM ${DatabaseConst.userTable}
