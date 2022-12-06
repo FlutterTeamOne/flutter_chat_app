@@ -79,4 +79,15 @@ class MessagesServices implements IMessagesServices {
     return await db
         .rawUpdate('''UPDATE messages SET $newValues WHERE ($condition)''');
   }
+
+  @override
+  getRecentMessages({required LastMessage message}) async {
+    var db = await dbServerServices.openDatabase();
+    var messages = await db.rawQuery('''SELECT *
+      FROM messages, friends_chat AS friend
+      WHERE (main_messages_id > ${message.mainIdMessage} AND
+        (friend.friend1_id = ${message.mainIdUser} OR 
+        friend.friend2_id = ${message.mainIdUser}))''');
+    return messages;
+  }
 }

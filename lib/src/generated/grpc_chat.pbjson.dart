@@ -40,3 +40,28 @@ const MessageBase$json = const {
 
 /// Descriptor for `MessageBase`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List messageBaseDescriptor = $convert.base64Decode('CgtNZXNzYWdlQmFzZRIOCgJvaxgBIAEoCFICb2sSJgoObWFpbk1lc3NhZ2VzSWQYAiABKAVSDm1haW5NZXNzYWdlc0lk');
+@$core.Deprecated('Use lastMessageDescriptor instead')
+const LastMessage$json = const {
+  '1': 'LastMessage',
+  '2': const [
+    const {'1': 'mainIdMessage', '3': 1, '4': 1, '5': 5, '10': 'mainIdMessage'},
+    const {'1': 'mainIdUser', '3': 2, '4': 1, '5': 5, '10': 'mainIdUser'},
+  ],
+};
+
+/// Descriptor for `LastMessage`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List lastMessageDescriptor = $convert.base64Decode('CgtMYXN0TWVzc2FnZRIkCg1tYWluSWRNZXNzYWdlGAEgASgFUg1tYWluSWRNZXNzYWdlEh4KCm1haW5JZFVzZXIYAiABKAVSCm1haW5JZFVzZXI=');
+@$core.Deprecated('Use messageFromBaseDescriptor instead')
+const MessageFromBase$json = const {
+  '1': 'MessageFromBase',
+  '2': const [
+    const {'1': 'chatIdMain', '3': 1, '4': 1, '5': 5, '10': 'chatIdMain'},
+    const {'1': 'senderMainId', '3': 2, '4': 1, '5': 5, '10': 'senderMainId'},
+    const {'1': 'content', '3': 3, '4': 1, '5': 9, '10': 'content'},
+    const {'1': 'date', '3': 4, '4': 1, '5': 9, '10': 'date'},
+    const {'1': 'mainIdMessage', '3': 5, '4': 1, '5': 5, '10': 'mainIdMessage'},
+  ],
+};
+
+/// Descriptor for `MessageFromBase`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List messageFromBaseDescriptor = $convert.base64Decode('Cg9NZXNzYWdlRnJvbUJhc2USHgoKY2hhdElkTWFpbhgBIAEoBVIKY2hhdElkTWFpbhIiCgxzZW5kZXJNYWluSWQYAiABKAVSDHNlbmRlck1haW5JZBIYCgdjb250ZW50GAMgASgJUgdjb250ZW50EhIKBGRhdGUYBCABKAlSBGRhdGUSJAoNbWFpbklkTWVzc2FnZRgFIAEoBVINbWFpbklkTWVzc2FnZQ==');
