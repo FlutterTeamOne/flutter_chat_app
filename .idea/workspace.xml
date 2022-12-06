@@ -4,30 +4,13 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="Merge remote-tracking branch 'origin/sending_manager' into sending_manager&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;lib/sending_manager/connection_bloc/connection_state.dart">
+    <list default="true" id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="style manager start">
       <change beforePath="$PROJECT_DIR$/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_03_12_2022_15_57__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_03_12_2022_15_57__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_03_12_2022_15_59__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_03_12_2022_15_59__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter_chat_app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_chat_app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/sending_manager/bloc/sendingMessageBloc/sendingMessage_bloc.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/sending_manager/bloc/sendingMessageBloc/sendingMessage_event.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/sending_manager/bloc/sendingMessageBloc/sendingMessage_state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/sending_manager/bloc/sending_message/sending_message_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/sending_manager/bloc/sending_message/sending_message_bloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/sending_manager/bloc/sending_message/sending_message_event.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/sending_manager/bloc/sending_message/sending_message_event.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/sending_manager/connection_bloc/connection_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/sending_manager/connection_bloc/connection_state.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/sending_manager/db_listen.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/linux/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/linux/flutter/generated_plugin_registrant.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/linux/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/linux/flutter/generated_plugin_registrant.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/linux/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/linux/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_1.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/sendingManager/sending_manager_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/sendingManager/sending_manager_test.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/windows/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/windows/flutter/generated_plugin_registrant.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/windows/flutter/generated_plugins.cmake" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,7 +140,21 @@
       <option name="project" value="LOCAL" />
       <updated>1669991531672</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="style manager start">
+      <created>1670324131544</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1670324131545</updated>
+    </task>
+    <task id="LOCAL-00010" summary="style manager start">
+      <created>1670324149377</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1670324149377</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -185,6 +182,7 @@
     <MESSAGE value="start test for UnreadMessage" />
     <MESSAGE value="add test for UnreadMessage" />
     <MESSAGE value="start bloc for UnreadMessage" />
-    <option name="LAST_COMMIT_MESSAGE" value="start bloc for UnreadMessage" />
+    <MESSAGE value="style manager start" />
+    <option name="LAST_COMMIT_MESSAGE" value="style manager start" />
   </component>
 </project>

@@ -212,10 +212,24 @@
             </list>
           </value>
         </entry>
+        <entry key="google_fonts">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/google_fonts-3.0.1/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="googleapis_auth">
           <value>
             <list>
               <option value="$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/googleapis_auth-1.3.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="grouped_list">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/grouped_list-5.1.2/lib" />
             </list>
           </value>
         </entry>
@@ -251,6 +265,13 @@
           <value>
             <list>
               <option value="$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.2/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="intl">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0/lib" />
             </list>
           </value>
         </entry>
@@ -548,6 +569,13 @@
             </list>
           </value>
         </entry>
+        <entry key="sidebarx">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/sidebarx-0.14.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="sky_engine">
           <value>
             <list>
@@ -760,12 +788,15 @@
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_lints-2.0.1/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/frontend_server_client-2.1.3/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/glob-2.1.1/lib" />
+      <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/google_fonts-3.0.1/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/googleapis_auth-1.3.1/lib" />
+      <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/grouped_list-5.1.2/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/grpc-3.1.0/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.13.5/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/http2-2.0.1/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/http_multi_server-3.2.1/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.2/lib" />
+      <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/io-1.0.3/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/js-0.6.4/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/lints-2.0.1/lib" />
@@ -808,6 +839,7 @@
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/shelf_packages_handler-3.0.1/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/shelf_static-1.1.1/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/shelf_web_socket-1.0.3/lib" />
+      <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/sidebarx-0.14.0/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/source_map_stack_trace-2.1.1/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/source_maps-0.10.11/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/source_span-1.9.0/lib" />
