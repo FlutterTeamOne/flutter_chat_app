@@ -41,19 +41,11 @@ class LocalMessagesServices implements ILocalMessagesServices {
   }
 
   @override
-  Future<List<Message>> getAllMessages() async {
-    var stub = GrpcChatClient(channel);
+  Future<List<Map<String, Object?>>> getAllMessages() async {
     var db = await DBHelper.instanse.database;
     var message = await db.rawQuery('SELECT * FROM messages');
 
-    return message
-        .map((item) => Message(
-            // TODO: chat id from chat
-            chatIdMaint: item[''] as int,
-            senderMainId: item['sender_id'] as int,
-            content: item['content'] as String,
-            date: item['date'] as String))
-        .toList();
+    return message;
   }
 
   @override

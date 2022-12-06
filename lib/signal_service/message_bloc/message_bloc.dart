@@ -39,8 +39,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       ReadMessageEvent event, Emitter<MessageState> emit) async {
     var message = LocalMessagesServices(channel: GrpcClient().channel);
     var chats = LocalChatServices(channel: GrpcClient().channel);
-    print(message.getAllMessages());
-    print(chats.getMainIdChatByMessage(localId: 2));
+    // print(await message.getAllMessages());
     if (event.messages == null) {
       var messages = await _messagesServices.getAllMessages();
       print(messages);

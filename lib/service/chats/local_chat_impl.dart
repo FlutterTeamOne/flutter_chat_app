@@ -48,8 +48,8 @@ class LocalChatServices implements ILocalChatsServices {
   Future<int> getMainIdChatByMessage({required int localId}) async {
     var db = await DBHelper.instanse.database;
     var chat = await db.rawQuery(
-        'SELECT chat_id_main_db FROM chats WHERE local_chats_id = $localId}');
+        'SELECT chat_id_main FROM chats WHERE local_chat_id = $localId');
 
-    return chat[0]['chat_id_main_db'] as int;
+    return chat[0]['chat_id_main'] as int;
   }
 }

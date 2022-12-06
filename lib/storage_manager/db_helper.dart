@@ -69,15 +69,6 @@ CREATE TABLE ${DatabaseConst.messageTable} (
 )
 ''');
 
-//Таблица Messages Id In Main
-      await txn.execute('''
-CREATE TABLE ${DatabaseConst.messageIdTable}
-(
- ${DatabaseConst.messageIdColumn} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
- ${DatabaseConst.messageIdColumnLocal} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique}
-CONSTRAINT MESSAGE_ID_IN_MAIN_FK_86 FOREIGN KEY ( local_messages_id ) REFERENCES messages ( local_messages_id )
-)
-''');
 //Таблица Chats
       await txn.execute('''
 CREATE TABLE ${DatabaseConst.chatsTable}(
@@ -85,6 +76,16 @@ CREATE TABLE ${DatabaseConst.chatsTable}(
  ${DatabaseConst.chatsColumnChatIdMain} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique},
  ${DatabaseConst.chatsColumnFriendId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
  ${DatabaseConst.constraint} CHATS_FK_84 ${DatabaseConst.foreignKey} ( ${DatabaseConst.chatsColumnFriendId} ) ${DatabaseConst.references} ${DatabaseConst.userTable} ( local_users_id )
+)
+''');
+
+// Таблица Messages Id In Main
+      await txn.execute('''
+CREATE TABLE ${DatabaseConst.messageIdTable}
+(
+ ${DatabaseConst.messageIdColumn} ${DatabaseConst.integer} ${DatabaseConst.primaryKey},
+ ${DatabaseConst.messageIdColumnLocal} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique},
+CONSTRAINT MESSAGE_ID_IN_MAIN_FK_86 FOREIGN KEY (local_messages_id) REFERENCES messages (local_messages_id)
 )
 ''');
 
