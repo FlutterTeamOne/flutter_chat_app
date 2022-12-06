@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_chat_app/src/db_server/database_helper/library_db.dart';
 
 import '../../client/grpc_client.dart';
+import '../../features/data/models/message_model/message_model.dart';
 import '../../library.dart';
 import 'package:flutter_chat_app/service/lib_db.dart';
 
@@ -53,12 +55,12 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   FutureOr<void> _onCreateMessageEvent(
       CreateMessageEvent event, Emitter<MessageState> emit) async {
     var message = event.message;
-    var model = message.writeToJsonMap();
+    // var model = message.writeToJsonMap();
     var chats = LocalChatServices(channel: GrpcClient().channel);
     print('MESSAGE: $message');
     // DBHelper.instanse
     //     .onAdd(tableName: 'messages', model: messageMapToDB(model));
-    var messageBase = await _messagesServices.addNewMessage(
+    await _messagesServices.addNewMessage(
       localChatId: event.idChat,
       senderId: 1,
       content: message.content,
@@ -68,20 +70,26 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     var messageToServer = Message();
     messageToServer.chatIdMaint =
         await chats.getMainIdChatByMessage(localId: event.idChat);
-    messageToServer.content = messageBase.content;
-    messageToServer.date = messageBase.date;
-    messageToServer.senderMainId = messageBase
-        .senderMainId; //Заменить за запрос поиск main_users_id по local_user_id
+    messageToServer.content = message.content;
+    messageToServer.date = message.date;
+    messageToServer.senderMainId =
+        await localUsersServices.getUserByLocalId(localId: message.localSendId);
+    print('message to server \n $messageToServer');
 
-    var messageOk =
-        await GrpcChatClient(grpcClient.channel).createMessage(messageToServer);
-    if (messageOk.ok) {
-      var updateWrittenToServer = _messagesServices.updateWrittenToServer(
-          localMessageId: messageBase.id, isWrittenToDB: messageOk.ok as int);
-      print('UPDATE WRITTEN TO SERVER: $updateWrittenToServer');
-      var createMessageId = _messageIdServices.createMessageId(
-          mainId: messageOk.mainMessagesId, localId: messageBase.id);
-      print('CREATE MESSAGE ID $createMessageId');
+    try {
+      var messageOk = await GrpcChatClient(grpcClient.channel)
+          .createMessage(messageToServer);
+      if (messageOk.ok) {
+        var updateWrittenToServer = _messagesServices.updateWrittenToServer(
+            localMessageId: message.localMessageId,
+            isWrittenToDB: messageOk.ok as int);
+        print('UPDATE WRITTEN TO SERVER: $updateWrittenToServer');
+        var createMessageId = _messageIdServices.createMessageId(
+            mainId: messageOk.mainMessagesId, localId: message.localMessageId);
+        print('CREATE MESSAGE ID $createMessageId');
+      }
+    } catch (e) {
+      print(e);
     }
     // MessagesServices().addNewMessage(
     //   friendsChatId: 2,
@@ -89,7 +97,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     //   content: message.content,
     //   date: message.date,
     // );
-    print('MODEL: $model');
+    // print('MODEL: $model');
     // _messagesServices.onCreateMessage(
     //     userMainId1: message.userMainId1,
     //     userMainId12: message.userMainId2,

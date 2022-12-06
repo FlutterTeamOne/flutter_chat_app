@@ -3,7 +3,7 @@ part of 'message_bloc.dart';
 abstract class MessageEvent {}
 
 class CreateMessageEvent extends MessageEvent {
-  final Message message;
+  final MessageModel message;
   final int idChat;
   CreateMessageEvent({
     required this.message,
@@ -12,7 +12,7 @@ class CreateMessageEvent extends MessageEvent {
 }
 
 class ReadMessageEvent extends MessageEvent {
-  final List<Message>? messages;
+  final List<MessageModel>? messages;
 
   ReadMessageEvent({this.messages});
 }

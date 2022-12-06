@@ -53,6 +53,18 @@ class LocalUsersServices implements ILocalUsersServices {
   }
 
   @override
+  Future<int> getUserByLocalId({required int localId}) async {
+    var db = await DBHelper.instanse.database;
+
+    var user = await db.rawQuery('''
+              SELECT ${DatabaseConst.usersColumnMainUsersId}
+              FROM ${DatabaseConst.userTable}
+              WHERE ${DatabaseConst.usersColumnId} = $localId
+              ''');
+    return user[0]['main_users_id'] as int;
+  }
+
+  @override
   Future<int> updateUser(
       {required String newValues, required String condition}) async {
     var db = await DBHelper.instanse.database;

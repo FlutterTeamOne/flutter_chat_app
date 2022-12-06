@@ -1,6 +1,7 @@
 import 'package:flutter_chat_app/storage_manager/db_helper.dart';
 import 'package:grpc/service_api.dart';
 
+import '../../features/data/models/message_model/message_model.dart';
 import '../../library.dart';
 import '../../storage_manager/database_const.dart';
 import 'local_message_int.dart';
@@ -17,7 +18,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
       required String date}) async {
     var stub = GrpcChatClient(channel);
 
-    return await DBHelper.instanse.onAdd(
+    await DBHelper.instanse.onAdd(
       tableName: DatabaseConst.messageTable,
       model: {
         DatabaseConst.messagesColumnLocalChatId: localChatId,
@@ -41,11 +42,19 @@ class LocalMessagesServices implements ILocalMessagesServices {
   }
 
   @override
-  Future<List<Map<String, Object?>>> getAllMessages() async {
+  Future<List<MessageModel>> getAllMessages() async {
     var db = await DBHelper.instanse.database;
     var message = await db.rawQuery('SELECT * FROM messages');
 
-    return message;
+    return message
+        .map((item) => MessageModel(
+            localMessageId: item['local_messages_id'] as int,
+            localChatId: item['local_chat_id'] as int,
+            localSendId: item['sender_is_user'] as int,
+            date: item['date'] as String,
+            content: item['content'] as String,
+            isWrittenToDb: item['is_written_to_db'] as int))
+        .toList();
   }
 
   @override

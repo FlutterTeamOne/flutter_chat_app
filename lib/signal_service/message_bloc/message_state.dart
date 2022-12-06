@@ -1,13 +1,13 @@
 part of 'message_bloc.dart';
 
 class MessageState {
-  final List<Map<String, Object?>> messages;
+  final List<MessageModel>? messages;
   MessageState({
-    required this.messages,
+    this.messages,
   });
 
   MessageState copyWith({
-    required List<Map<String, Object?>> messages,
+    required List<MessageModel>? messages,
   }) {
     return MessageState(
       messages: messages ?? this.messages,

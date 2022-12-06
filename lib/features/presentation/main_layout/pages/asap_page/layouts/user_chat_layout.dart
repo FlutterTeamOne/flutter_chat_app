@@ -13,28 +13,28 @@ class _UserChatLayoutState extends State<UserChatLayout> {
   TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    List<MessageModel> messages = [
-      MessageModel(
-        message: 'Привет, это я Руслан',
-        date: DateTime.now().subtract(const Duration(minutes: 1)),
-        isSentByMe: false,
-      ),
-      MessageModel(
-        message: 'О привет, как ты поживешь?',
-        date: DateTime.now().subtract(const Duration(minutes: 1)),
-        isSentByMe: true,
-      ),
-      MessageModel(
-        message: 'Все хорошо',
-        date: DateTime.now().subtract(const Duration(minutes: 1)),
-        isSentByMe: false,
-      ),
-      MessageModel(
-        message: 'Пока',
-        date: DateTime.now().subtract(const Duration(minutes: 1)),
-        isSentByMe: true,
-      ),
-    ]..toList();
+    // List<MessageModel> messages = [
+    //   MessageModel(
+    //     message: 'Привет, это я Руслан',
+    //     date: DateTime.now().subtract(const Duration(minutes: 1)),
+    //     isSentByMe: false,
+    //   ),
+    //   MessageModel(
+    //     message: 'О привет, как ты поживешь?',
+    //     date: DateTime.now().subtract(const Duration(minutes: 1)),
+    //     isSentByMe: true,
+    //   ),
+    //   MessageModel(
+    //     message: 'Все хорошо',
+    //     date: DateTime.now().subtract(const Duration(minutes: 1)),
+    //     isSentByMe: false,
+    //   ),
+    //   MessageModel(
+    //     message: 'Пока',
+    //     date: DateTime.now().subtract(const Duration(minutes: 1)),
+    //     isSentByMe: true,
+    //   ),
+    // ]..toList();
     return Column(
       children: [
         const _ChatAppBar(
@@ -60,9 +60,10 @@ class _UserChatLayoutState extends State<UserChatLayout> {
             if (controller.text.isNotEmpty) {
               context.read<MessageBloc>().add(
                     CreateMessageEvent(
-                        message: Message(
-                          chatIdMaint: 1,
-                          senderMainId: 1,
+                        message: MessageModel(
+                          localMessageId: 1,
+                          localChatId: 1,
+                          localSendId: 1,
                           content: text,
                           date: DateTime.now().toIso8601String(),
                         ),
