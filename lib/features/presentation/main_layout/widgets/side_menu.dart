@@ -18,7 +18,9 @@ class _SideMenu extends StatelessWidget {
       headerBuilder: (context, extended) => SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(35),
-          child: Text('Sfera'.toUpperCase(), style: AppTextStyle.s36Abel),
+          child: Text('Sfera'.toUpperCase(),
+              // style: AppTextStyle.s36Abel
+          ),
         ),
       ),
       separatorBuilder: (context, index) => const SizedBox(height: 5),
@@ -70,15 +72,15 @@ SidebarXTheme sideBarxTheme() {
       borderRadius: BorderRadius.zero,
     ),
     padding: const EdgeInsets.only(left: 5),
-    textStyle: AppTextStyle.s17Abel,
+    // textStyle: AppTextStyle.s17Abel,
     selectedIconTheme: const IconThemeData(
-      color: AppColor.color7E57C2,
+      // color: AppColor.color7E57C2,
     ),
-    selectedTextStyle: AppTextStyle.s17AbelPurple,
+    // selectedTextStyle: AppTextStyle.s17AbelPurple,
     selectedItemTextPadding: const EdgeInsets.only(left: 30),
     itemTextPadding: const EdgeInsets.only(left: 30),
-    decoration: const BoxDecoration(
-      color: AppColor.colorFFFFFF,
-    ),
+    // decoration: const BoxDecoration(
+    //   color: AppColor.colorFFFFFF,
+    // ),
   );
 }

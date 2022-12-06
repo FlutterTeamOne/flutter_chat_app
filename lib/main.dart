@@ -10,6 +10,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: (ThemeData(brightness: Brightness.dark)),
+      // themeMode: ThemeMode.dark(ThemeData(brightness: Brightness.dark)),
       title: 'Flutter chat app',
       debugShowCheckedModeBanner: false,
       initialRoute: '/',

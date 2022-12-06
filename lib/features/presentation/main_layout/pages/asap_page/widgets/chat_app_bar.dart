@@ -15,17 +15,17 @@ class _ChatAppBar extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.75,
       height: MediaQuery.of(context).size.height * 0.077,
       decoration: BoxDecoration(
-        color: AppColor.colorFFFFFF,
+        // color: AppColor.colorFFFFFF,
         border: Border(
           left: BorderSide.none,
           right: BorderSide(
-            color: AppColor.color9E9E9E.withOpacity(0.5),
+            // color: AppColor.color9E9E9E.withOpacity(0.5),
           ),
           bottom: BorderSide(
-            color: AppColor.color9E9E9E.withOpacity(0.5),
+            // color: AppColor.color9E9E9E.withOpacity(0.5),
           ),
           top: BorderSide(
-            color: AppColor.color9E9E9E.withOpacity(0.5),
+            // color: AppColor.color9E9E9E.withOpacity(0.5),
           ),
         ),
       ),
@@ -42,7 +42,7 @@ class _ChatAppBar extends StatelessWidget {
           const SizedBox(width: 15),
           Text(
             name,
-            style: AppTextStyle.s17Abel.copyWith(fontSize: 20),
+            // style: AppTextStyle.s17Abel.copyWith(fontSize: 20),
           ),
         ],
       ),

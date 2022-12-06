@@ -16,7 +16,7 @@ class _ChatState extends State<_Chat> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColor.colorFFFFFF,
+      // color: AppColor.colorFFFFFF,
       child: GroupedListView<MessageModel, DateTime>(
         padding: const EdgeInsets.all(10),
         elements: widget.messages,

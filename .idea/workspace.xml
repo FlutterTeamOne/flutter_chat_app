@@ -4,13 +4,29 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="style manager start">
-      <change beforePath="$PROJECT_DIR$/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+    <list default="true" id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="start style manager">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/main_layout.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/main_layout.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/asap_page/layouts/all_users_layout.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/asap_page/layouts/all_users_layout.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/asap_page/widgets/chat.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/asap_page/widgets/chat.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/asap_page/widgets/chat_app_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/asap_page/widgets/chat_app_bar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/asap_page/widgets/message_cards/my_message_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/asap_page/widgets/message_cards/my_message_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/asap_page/widgets/message_cards/other_message_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/asap_page/widgets/message_cards/other_message_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/asap_page/widgets/message_cards/time_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/asap_page/widgets/message_cards/time_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/asap_page/widgets/search_field.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/asap_page/widgets/search_field.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/asap_page/widgets/text_input.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/asap_page/widgets/text_input.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/asap_page/widgets/user_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/asap_page/widgets/user_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/black_box_page/black_box_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/black_box_page/black_box_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/choose_page/choose_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/choose_page/choose_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/feed_page/feed_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/feed_page/feed_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/find_friend_page/find_friend_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/find_friend_page/find_friend_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/job_lite_page/job_lite_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/job_lite_page/job_lite_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/meet_net_page/meet_net_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/meet_net_page/meet_net_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/profile_page/profile_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/profile_page/profile_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/videos_page/videos_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/videos_page/videos_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/widgets/page_controller_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/widgets/page_controller_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/widgets/side_menu.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/widgets/side_menu.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,7 +170,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670324149377</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="start style manager">
+      <created>1670324682345</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1670324682345</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -183,6 +206,7 @@
     <MESSAGE value="add test for UnreadMessage" />
     <MESSAGE value="start bloc for UnreadMessage" />
     <MESSAGE value="style manager start" />
-    <option name="LAST_COMMIT_MESSAGE" value="style manager start" />
+    <MESSAGE value="start style manager" />
+    <option name="LAST_COMMIT_MESSAGE" value="start style manager" />
   </component>
 </project>

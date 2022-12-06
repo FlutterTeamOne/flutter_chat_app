@@ -29,7 +29,7 @@ class _MainLayoutState extends State<MainLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.colorLightBackgrond,
+      // backgroundColor: AppColor.colorLightBackgrond,
       body: SafeArea(
         child: Row(
           children: [

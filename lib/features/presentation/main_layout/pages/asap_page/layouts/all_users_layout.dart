@@ -15,7 +15,7 @@ class _AllUsersLayoutState extends State<_AllUsersLayout> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: AppColor.colorFFFFFF,
+      // backgroundColor: AppColor.colorFFFFFF,
       shape: Border.all(
         color: AppColor.color9E9E9E.withOpacity(0.5),
       ),

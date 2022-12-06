@@ -17,17 +17,17 @@ class _OtherMessageCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             side: BorderSide(
               width: 0.1,
-              color: AppColor.color000000.withOpacity(0.6),
+              // color: AppColor.color000000.withOpacity(0.6),
             ),
           ),
-          color: AppColor.colorFFFFFF,
+          // color: AppColor.colorFFFFFF,
           margin:
               const EdgeInsets.only(left: 15, bottom: 5, top: 5, right: 320),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: SelectableText(
               message,
-              style: AppTextStyle.s17Abel,
+              // style: AppTextStyle.s17Abel,
               textAlign: TextAlign.justify,
             ),
           ),
