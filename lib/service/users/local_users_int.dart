@@ -1,3 +1,4 @@
+import 'package:flutter_chat_app/features/data/models/user_model.dart/user_model.dart';
 import 'package:flutter_chat_app/service/lib_db.dart';
 
 abstract class ILocalUsersServices {
@@ -17,7 +18,7 @@ abstract class ILocalUsersServices {
 
   Future<int> deleteUser({required int id});
 
-  Future<List<Map<String, Object?>>> getAllUsers();
+  Future<List<UserModel>> getAllUsers();
   Future<int> getUserByLocalId({required int localId});
 }
 

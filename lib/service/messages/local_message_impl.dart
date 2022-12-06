@@ -7,17 +7,13 @@ import '../../storage_manager/database_const.dart';
 import 'local_message_int.dart';
 
 class LocalMessagesServices implements ILocalMessagesServices {
-  final ClientChannel channel;
-
-  LocalMessagesServices({required this.channel});
+  LocalMessagesServices();
   @override
   Future<dynamic> addNewMessage(
       {required int localChatId,
       required int senderId,
       required String content,
       required String date}) async {
-    var stub = GrpcChatClient(channel);
-
     await DBHelper.instanse.onAdd(
       tableName: DatabaseConst.messageTable,
       model: {

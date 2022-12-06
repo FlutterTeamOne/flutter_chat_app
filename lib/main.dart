@@ -5,6 +5,7 @@ import 'package:flutter_chat_app/sender_manager/conncetion_bloc/connection_bloc.
 
 import 'client/grpc_client.dart';
 import 'signal_service/message_bloc/message_bloc.dart';
+import 'signal_service/user_bloc/user_bloc.dart';
 import 'storage_manager/db_helper.dart';
 
 Future<void> main() async {
@@ -22,6 +23,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<ConnectionBloc>(
           create: (context) => ConnectionBloc(),
+        ),
+        BlocProvider<UserBloc>(
+          create: (context) => UserBloc()..add(ReadUsersEvent()),
         ),
         BlocProvider<MessageBloc>(
           create: (context) =>

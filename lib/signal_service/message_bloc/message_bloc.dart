@@ -19,9 +19,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   final GrpcClient grpcClient;
 
   MessageBloc({required this.grpcClient}) : super(MessageState()) {
-    _messagesServices = LocalMessagesServices(
-      channel: GrpcClient().channel,
-    );
+    _messagesServices = LocalMessagesServices();
     // _subscription = _messageService.onMessagesStream().listen((value) {
     //   add(ReadMessageEvent(messages: value.messages));
     //   print('MESSAGE: ${value.messages}');
@@ -40,8 +38,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
   FutureOr<void> _onReadMessageEvent(
       ReadMessageEvent event, Emitter<MessageState> emit) async {
-    var message = LocalMessagesServices(channel: GrpcClient().channel);
-    var chats = LocalChatServices(channel: GrpcClient().channel);
+    var message = LocalMessagesServices();
+    var chats = LocalChatServices();
     // print(await message.getAllMessages());
     if (event.messages == null) {
       var messages = await _messagesServices.getAllMessages();
@@ -57,7 +55,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       CreateMessageEvent event, Emitter<MessageState> emit) async {
     var message = event.message;
     // var model = message.writeToJsonMap();
-    var chats = LocalChatServices(channel: GrpcClient().channel);
+    var chats = LocalChatServices();
     print('MESSAGE: $message');
     // DBHelper.instanse
     //     .onAdd(tableName: 'messages', model: messageMapToDB(model));

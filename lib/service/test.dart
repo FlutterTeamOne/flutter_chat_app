@@ -14,7 +14,7 @@ Future<void> main() async {
   // var massages = await messagesService.getAllMessages();
   // print(massages);
 
-  var message = LocalMessagesServices(channel: GrpcClient().channel);
+  var message = LocalMessagesServices();
   print(message.getAllMessages());
   //print(message.getChatByMessage(local_id: 2));
 

@@ -1,11 +1,8 @@
-import 'package:flutter_chat_app/src/generated/grpc_chat.pbgrpc.dart';
 
-import '../../client/grpc_client.dart';
 import 'local_message_impl.dart';
 
 abstract class ILocalMessagesServices {
-  factory ILocalMessagesServices() =>
-      LocalMessagesServices(channel: GrpcClient().channel);
+  factory ILocalMessagesServices() => LocalMessagesServices();
 
   void addNewMessage(
       {required int localChatId,

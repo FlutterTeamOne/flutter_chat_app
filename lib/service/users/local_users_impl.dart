@@ -1,3 +1,5 @@
+import 'package:flutter_chat_app/features/data/models/user_model.dart/user_model.dart';
+
 import '../lib_db.dart';
 
 class LocalUsersServices implements ILocalUsersServices {
@@ -12,7 +14,7 @@ class LocalUsersServices implements ILocalUsersServices {
       required int mainUserId}) async {
     var db = await DBHelper.instanse.database;
 
-    return db.insert(DatabaseConst.userTable, {
+    return await db.insert(DatabaseConst.userTable, {
       DatabaseConst.usersColumnName: name,
       DatabaseConst.usersColumnEmail: email,
       DatabaseConst.usersColumnRegistrationDate: registrationDate,
@@ -29,13 +31,23 @@ class LocalUsersServices implements ILocalUsersServices {
   }
 
   @override
-  Future<List<Map<String, Object?>>> getAllUsers() async {
+  Future<List<UserModel>> getAllUsers() async {
     var db = await DBHelper.instanse.database;
-
-    return await db.rawQuery('''
+    var users = await db.rawQuery('''
               SELECT *
               FROM ${DatabaseConst.userTable}
               ''');
+    return users
+        .map((item) => UserModel(
+            localUserId: item[DatabaseConst.usersColumnId] as int,
+            name: item[DatabaseConst.usersColumnName] as String,
+            email: item[DatabaseConst.usersColumnEmail] as String,
+            registrationDate:
+                item[DatabaseConst.usersColumnRegistrationDate] as String,
+            profilePicLink:
+                item[DatabaseConst.usersColumnProfilePicLink] as String,
+            mainUsersId: item[DatabaseConst.usersColumnMainUsersId] as int))
+        .toList();
   }
 
   @override

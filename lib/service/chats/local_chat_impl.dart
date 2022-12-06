@@ -1,10 +1,9 @@
-import 'package:grpc/grpc.dart';
+import 'package:flutter_chat_app/features/data/models/chat_model/chat_model.dart';
+
 import '../lib_db.dart';
 
 class LocalChatServices implements ILocalChatsServices {
-  final ClientChannel channel;
-
-  LocalChatServices({required this.channel});
+  LocalChatServices();
 
   @override
   Future<dynamic> createChat(
@@ -24,13 +23,18 @@ class LocalChatServices implements ILocalChatsServices {
   }
 
   @override
-  Future<List<Map<String, Object?>>> getAllChats() async {
+  Future<List<ChatModel>> getAllChats() async {
     var db = await DBHelper.instanse.database;
     var chats = await db.rawQuery('''
               SELECT *
               FROM ${DatabaseConst.chatsTable}
               ''');
-    return chats;
+    return chats
+        .map((item) => ChatModel(
+            localChatId: item[DatabaseConst.chatsColumnLocalChatId] as int,
+            chatIdMain: item[DatabaseConst.chatsColumnChatIdMain] as int,
+            friendId: item[DatabaseConst.chatsColumnFriendId] as int))
+        .toList();
   }
 
   @override
