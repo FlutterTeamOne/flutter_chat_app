@@ -43,18 +43,31 @@ class _UserChatLayoutState extends State<UserChatLayout> {
           name: 'Tony',
         ),
         Expanded(
-          child: _Chat(messages: [...messages]),
+          child: BlocConsumer<MessageBloc, MessageState>(
+            listener: (context, state) {
+              // TODO: implement listener
+            },
+            builder: (context, state) {
+              if (state.messages != null) {
+                return _Chat(messages: state.messages!);
+              } else
+                return Center(child: CircularProgressIndicator());
+            },
+          ),
         ),
         _TextInput(
           onSubmitted: (text) {
             if (controller.text.isNotEmpty) {
-              final message = MessageModel(
-                message: controller.text,
-                date: DateTime.now(),
-                isSentByMe: true,
-              );
-              setState(() => messages.add(message));
-              print(controller.text);
+              context.read<MessageBloc>().add(
+                    CreateMessageEvent(
+                      message: Message(
+                          userMainId1: 1,
+                          userMainId2: 2,
+                          senderMainId: 1,
+                          content: text,
+                          date: DateTime.now().toIso8601String()),
+                    ),
+                  );
               controller.clear();
             } else {
               return null;

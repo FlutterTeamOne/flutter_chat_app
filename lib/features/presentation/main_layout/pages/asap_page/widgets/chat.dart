@@ -6,7 +6,7 @@ class _Chat extends StatefulWidget {
     required this.messages,
   }) : super(key: key);
 
-  final List<MessageModel> messages;
+  final List<Message> messages;
 
   @override
   State<_Chat> createState() => _ChatState();
@@ -17,28 +17,24 @@ class _ChatState extends State<_Chat> {
   Widget build(BuildContext context) {
     return Container(
       color: AppColor.colorFFFFFF,
-      child: GroupedListView<MessageModel, DateTime>(
+      child: GroupedListView<Message, DateTime>(
         padding: const EdgeInsets.all(10),
         elements: widget.messages,
         reverse: true,
         order: GroupedListOrder.DESC,
         floatingHeader: true,
-        groupBy: (message) => DateTime(
-          message.date.year,
-          message.date.month,
-          message.date.day,
-        ),
-        groupHeaderBuilder: (MessageModel message) =>
-            _TimeCard(message: message),
-        itemBuilder: (context, MessageModel message) {
-          if (message.isSentByMe == false) {
-            print(message.isSentByMe);
-            print(message.message);
+        groupBy: (message) => DateTime.parse(message.date),
+        groupHeaderBuilder: (Message message) =>
+            _TimeCard(date: message.date),
+        itemBuilder: (context, Message message) {
+          if (message.userMainId1 == 1) {
+            // print(message.isSentByMe);
+            // print(message.message);
             return _OtherMessageCard(
-              message: message.message,
+              message: message.date,
             );
           } else {
-            return MyMessageCard(message: message.message);
+            return MyMessageCard(message: message.content);
           }
         },
       ),

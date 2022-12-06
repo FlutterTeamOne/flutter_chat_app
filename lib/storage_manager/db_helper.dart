@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_chat_app/storage_manager/database_const.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -22,6 +23,7 @@ class DBHelper {
 
   ///Стрим контроллер, чтоб слушать изменения в БД
   final _updateListenController = StreamController<bool>.broadcast();
+  StreamController<bool> get updateListenController => _updateListenController;
 
   void _updateListen() => _updateListenController.sink.add(true);
 
@@ -30,8 +32,10 @@ class DBHelper {
   Future<Database> initDB() async {
     sqfliteFfiInit();
     var dbFactory = databaseFactoryFfi;
-    var dbPath = await dbFactory.getDatabasesPath();
-    String path = join(dbPath, DatabaseConst.dbFileName);
+    // var dbPath = await dbFactory.getDatabasesPath();
+    var dbPath = await getTemporaryDirectory();
+    print('PATH: ${dbPath.path}');
+    String path = join(dbPath.path, DatabaseConst.dbFileName);
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(
           version: DatabaseConst.dbVersion,
@@ -56,28 +60,27 @@ CREATE TABLE ${User.table} (
 
 //Таблица Messages
       await txn.execute('''
-CREATE TABLE ${Messages.table} (
+CREATE TABLE ${DatabaseConst.messageTable} (
  ${DatabaseConst.columnId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
  ${DatabaseConst.columnLocalChatId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
  ${DatabaseConst.columnDate} ${DatabaseConst.integer} ${DatabaseConst.notNull},
  ${DatabaseConst.columnSenderLocalId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
- ${DatabaseConst.columnIsWrittenToDb} ${DatabaseConst.integer} ${DatabaseConst.notNull},
+ ${DatabaseConst.columnIsWrittenToDb} ${DatabaseConst.integer} ${DatabaseConst.notNull} DEFAULT 0,
  ${DatabaseConst.columnContent} ${DatabaseConst.char50} ${DatabaseConst.notNull},
  ${DatabaseConst.constraint} MESSAGES_FK_79 ${DatabaseConst.foreignKey} ( ${DatabaseConst.columnLocalChatId} ) ${DatabaseConst.references} ${Chats.table} ( local_chats_id ),
  ${DatabaseConst.constraint} MESSAGES_FK_80 ${DatabaseConst.foreignKey} ( ${DatabaseConst.columnSenderLocalId} ) ${DatabaseConst.references} ${User.table} ( local_users_id ),
- CHECK ((is_written_to_db = 0}) OR (is_written_to_db = 1))
- CHECK ((sender_is_user = 0) OR (sender_is_user = 1))
+ CHECK ((is_written_to_db = 0) OR (is_written_to_db = 1))
+ 
 )
 ''');
-
+//CHECK ((sender_is_user = 0) OR (sender_is_user = 1))
 //Таблица Messages Id In Main
       await txn.execute('''
 CREATE TABLE ${MessageIdInMain.table}
 (
  ${DatabaseConst.columnId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
- ${DatabaseConst.columnLocalMessagesId} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique},
- ${DatabaseConst.constraint} MESSAGE_ID_IN_MAIN_FK_86 ${DatabaseConst.foreignKey} ( ${DatabaseConst.columnLocalMessagesId} ) ${DatabaseConst.references} ( ${DatabaseConst.columnLocalMessagesId} )
-);
+ ${DatabaseConst.columnLocalMessagesId} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique}
+)
 ''');
 //Таблица Chats
       await txn.execute('''
@@ -96,7 +99,7 @@ CREATE INDEX CHATS_FK_3 ON ${Chats.table}
 )
 ''');
       await txn.execute('''
-CREATE INDEX MESSAGES_FK_2 ON ${Messages.table}
+CREATE INDEX MESSAGES_FK_2 ON ${DatabaseConst.messageTable}
 (
  ${DatabaseConst.columnLocalChatId}
 );
@@ -126,10 +129,11 @@ CREATE INDEX MESSAGE_ID_IN_MAIN_FK_1 ON ${MessageIdInMain.table}
   }
 
   ///Добавление данных в БД
-  Future onAdd({required String tableName, required Model model}) async {
+  Future onAdd(
+      {required String tableName, required Map<String, dynamic> model}) async {
     var db = await instanse.database;
     await db.transaction((txn) async {
-      await txn.insert(tableName, model.toJson());
+      await txn.insert(tableName, model);
     });
     _updateListen();
   }
