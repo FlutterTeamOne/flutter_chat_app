@@ -33,6 +33,7 @@ dependencies:
   grpc:
   protobuf:
   connectivity_plus: ^3.0.2
+  bloc_test: ^9.1.0
 
 
   
