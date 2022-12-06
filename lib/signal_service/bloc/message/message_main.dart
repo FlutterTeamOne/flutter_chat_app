@@ -6,9 +6,6 @@ import 'package:grpc/grpc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flutter_chat_app/signal_service/bloc/message/message_bloc.dart';
-import 'package:flutter_chat_app/signal_service/bloc/message/message_bloc.dart';
-
 import '../../../client/grpc_client.dart';
 import '../../../src/db_server/database_helper/library_db.dart';
 import '../../../storage_manager/db_helper.dart';
@@ -74,14 +71,14 @@ class Client {
   // }
 }
 
-Future<void> main() async{
-   WidgetsFlutterBinding.ensureInitialized();
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await DBHelper.instanse.initDB();
-  runApp( App());
+  runApp(App());
 }
 
 class App extends StatelessWidget {
-   App({Key? key}) : super(key: key);
+  App({Key? key}) : super(key: key);
   // final IMessagesServices iMessagesServices = IMessagesServices();
   final GrpcClient grpcClient = GrpcClient();
   @override
@@ -89,7 +86,8 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<MsgBloc>(
-          create: (context) => MsgBloc(grpcClient:grpcClient ),
+          create: (context) =>
+              MsgBloc(grpcClient: grpcClient)..add(ReadMessageEvent()),
         ),
       ],
       child: MaterialApp(
@@ -113,34 +111,56 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: BlocBuilder<MsgBloc, MsgState>(
-          builder: (context, state) {
-            return Column(
-              children: [
-                TextField(
-                  controller: textController,
-                  onSubmitted: (value) {
-                    context.read<MsgBloc>().add(
-                          CreateMessageEvent(
-                            message: Message(
-                              userMainId1: 1,
-                              userMainId2: 2,
-                              senderMainId:1,
-                              content: value,
-                              date: DateTime.now().toIso8601String()),
-                          ),
-                        );
-                  },
+      body: BlocConsumer<MsgBloc, MsgState>(
+        listener: (context, state) {
+          // context.read<MsgBloc>().stream.listen((event) {});
+        },
+        builder: (context, state) {
+          return CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: textController,
+                      onSubmitted: (value) {
+                        context.read<MsgBloc>().add(
+                              CreateMessageEvent(
+                                message: Message(
+                                    userMainId1: 1,
+                                    userMainId2: 2,
+                                    senderMainId: 1,
+                                    content: value,
+                                    date: DateTime.now().toIso8601String()),
+                              ),
+                            );
+                        textController.clear();
+                      },
+                    ),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  height: 50,
-                ),
-                const Text('')
-              ],
-            );
-          },
-        ),
+              ),
+              SliverToBoxAdapter(
+                  child: state.messages != null
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          reverse: true,
+                          itemCount: state.messages?.length,
+                          itemBuilder: (context, index) {
+                            var message = state.messages?[index];
+                            return ListTile(
+                              title: Text(message!.content),
+                            );
+                          })
+                      : Center(
+                          child: Text('no message'),
+                        ))
+            ],
+          );
+        },
       ),
     );
   }

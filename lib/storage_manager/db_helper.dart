@@ -23,6 +23,7 @@ class DBHelper {
 
   ///Стрим контроллер, чтоб слушать изменения в БД
   final _updateListenController = StreamController<bool>.broadcast();
+  StreamController<bool> get updateListenController => _updateListenController;
 
   void _updateListen() => _updateListenController.sink.add(true);
 
@@ -59,12 +60,12 @@ CREATE TABLE ${User.table} (
 
 //Таблица Messages
       await txn.execute('''
-CREATE TABLE ${Messages.table} (
+CREATE TABLE ${DatabaseConst.messageTable} (
  ${DatabaseConst.columnId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
  ${DatabaseConst.columnLocalChatId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
  ${DatabaseConst.columnDate} ${DatabaseConst.integer} ${DatabaseConst.notNull},
  ${DatabaseConst.columnSenderLocalId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
- ${DatabaseConst.columnIsWrittenToDb} ${DatabaseConst.integer} ${DatabaseConst.notNull},
+ ${DatabaseConst.columnIsWrittenToDb} ${DatabaseConst.integer} ${DatabaseConst.notNull} DEFAULT 0,
  ${DatabaseConst.columnContent} ${DatabaseConst.char50} ${DatabaseConst.notNull},
  ${DatabaseConst.constraint} MESSAGES_FK_79 ${DatabaseConst.foreignKey} ( ${DatabaseConst.columnLocalChatId} ) ${DatabaseConst.references} ${Chats.table} ( local_chats_id ),
  ${DatabaseConst.constraint} MESSAGES_FK_80 ${DatabaseConst.foreignKey} ( ${DatabaseConst.columnSenderLocalId} ) ${DatabaseConst.references} ${User.table} ( local_users_id ),
@@ -74,7 +75,7 @@ CREATE TABLE ${Messages.table} (
 ''');
 //CHECK ((sender_is_user = 0) OR (sender_is_user = 1))
 //Таблица Messages Id In Main
-    await txn.execute('''
+      await txn.execute('''
 CREATE TABLE ${MessageIdInMain.table}
 (
  ${DatabaseConst.columnId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
@@ -98,7 +99,7 @@ CREATE INDEX CHATS_FK_3 ON ${Chats.table}
 )
 ''');
       await txn.execute('''
-CREATE INDEX MESSAGES_FK_2 ON ${Messages.table}
+CREATE INDEX MESSAGES_FK_2 ON ${DatabaseConst.messageTable}
 (
  ${DatabaseConst.columnLocalChatId}
 );
@@ -129,7 +130,7 @@ CREATE INDEX MESSAGE_ID_IN_MAIN_FK_1 ON ${MessageIdInMain.table}
 
   ///Добавление данных в БД
   Future onAdd(
-      {required String tableName, required Map<String, Object> model}) async {
+      {required String tableName, required Map<String, dynamic> model}) async {
     var db = await instanse.database;
     await db.transaction((txn) async {
       await txn.insert(tableName, model);

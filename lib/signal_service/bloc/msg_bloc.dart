@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_chat_app/storage_manager/impl/local_message_impl.dart';
 
 import '../../client/grpc_client.dart';
 import '../../library.dart';
@@ -14,18 +15,25 @@ part 'msg_event.dart';
 part 'msg_state.dart';
 
 class MsgBloc extends Bloc<MsgEvent, MsgState> {
-  late MessageService _messageService;
+  late LocalMessagesServices _messagesServices;
   late StreamSubscription _subscription;
   final GrpcClient grpcClient;
 
   MsgBloc({required this.grpcClient}) : super(MsgState()) {
-    _messageService = MessageService(
+    _messagesServices = LocalMessagesServices(
       channel: GrpcClient().channel,
     );
     // _subscription = _messageService.onMessagesStream().listen((value) {
     //   add(ReadMessageEvent(messages: value.messages));
     //   print('MESSAGE: ${value.messages}');
     // });
+    _subscription =
+        DBHelper.instanse.updateListenController.stream.listen((event) async {
+      if (event == true) {
+        add(ReadMessageEvent(
+            messages: await _messagesServices.getAllMessages()));
+      }
+    });
     on<ReadMessageEvent>(_onReadMessageEvent);
     on<CreateMessageEvent>(_onCreateMessageEvent);
   }
@@ -33,8 +41,9 @@ class MsgBloc extends Bloc<MsgEvent, MsgState> {
   FutureOr<void> _onReadMessageEvent(
       ReadMessageEvent event, Emitter<MsgState> emit) async {
     if (event.messages == null) {
-      // emit(state.copyWith(messages: await _messageService.onCreateMessage(content: content, date: date)));
-      print(event.messages);
+      var messages = await _messagesServices.getAllMessages();
+      print(messages);
+      emit(state.copyWith(messages: messages));
     } else {
       emit(state.copyWith(messages: event.messages));
       print(event.messages);
@@ -48,17 +57,25 @@ class MsgBloc extends Bloc<MsgEvent, MsgState> {
     print('MESSAGE: $message');
     // DBHelper.instanse
     //     .onAdd(tableName: 'messages', model: messageMapToDB(model));
-    MessagesServices().addNewMessage(
-      friendsChatId:2 ,senderId: 1,content: message.content,date:message.date
+    _messagesServices.addNewMessage(
+      localChatId: 2,
+      senderId: 1,
+      content: message.content,
+      date: message.date,
     );
+    // MessagesServices().addNewMessage(
+    //   friendsChatId: 2,
+    //   senderId: 1,
+    //   content: message.content,
+    //   date: message.date,
+    // );
     print('MODEL: $model');
-
-    _messageService.onCreateMessage(
-        userMainId1: message.userMainId1,
-        userMainId12: message.userMainId2,
-        senderMainId: message.senderMainId,
-        content: message.content,
-        date: message.date);
+    // _messagesServices.onCreateMessage(
+    //     userMainId1: message.userMainId1,
+    //     userMainId12: message.userMainId2,
+    //     senderMainId: message.senderMainId,
+    //     content: message.content,
+    //     date: message.date);
   }
 
   @override

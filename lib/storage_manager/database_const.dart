@@ -3,6 +3,9 @@ class DatabaseConst {
   static const dbFileName = 'sfera.db';
   static const dbVersion = 1;
 
+  //название таблиц
+  static const messageTable = 'messages';
+  static const userTable = 'users';
   //название колонок таблиц
   static const columnId = 'id';
   static const columnName = 'name';

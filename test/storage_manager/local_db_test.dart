@@ -89,7 +89,7 @@ CREATE TABLE ${User.table} (
         onCreate: (db, version) async {
           await db.transaction((txn) async {
             await txn.execute('''
-CREATE TABLE ${Messages.table} (
+CREATE TABLE ${DatabaseConst.messageTable} (
  ${DatabaseConst.columnId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
  ${DatabaseConst.columnLocalChatId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
  ${DatabaseConst.columnDate} ${DatabaseConst.integer} ${DatabaseConst.notNull},
