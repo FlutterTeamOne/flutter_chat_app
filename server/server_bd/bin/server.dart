@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter_chat_app/library.dart';
 import 'package:grpc/grpc.dart';
-import 'package:flutter_chat_app/src/db_server/database_helper/library_db.dart';
+import '../lib/src/db_server/database_helper/library_db.dart';
 
 ///
 ///Заполняем все методы как и в Protoc файле

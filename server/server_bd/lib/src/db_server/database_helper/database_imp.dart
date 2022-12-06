@@ -1,4 +1,4 @@
-import 'package:flutter_chat_app/src/db_server/database_helper/library_db.dart';
+import 'library_db.dart';
 
 class DbServerServices implements IDbServerServices {
   @override
