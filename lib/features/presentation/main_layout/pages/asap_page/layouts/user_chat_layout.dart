@@ -1,15 +1,15 @@
 ﻿part of '../asap_page.dart';
 
-class UserChatLayout extends StatefulWidget {
-  const UserChatLayout({
+class _UserChatLayout extends StatefulWidget {
+  const _UserChatLayout({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<UserChatLayout> createState() => _UserChatLayoutState();
+  State<_UserChatLayout> createState() => _UserChatLayoutState();
 }
 
-class _UserChatLayoutState extends State<UserChatLayout> {
+class _UserChatLayoutState extends State<_UserChatLayout> {
   TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {

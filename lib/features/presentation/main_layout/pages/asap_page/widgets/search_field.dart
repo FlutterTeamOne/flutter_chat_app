@@ -10,8 +10,8 @@ class _SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      height: MediaQuery.of(context).size.height * 0.077,
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+      height: 52,
       decoration: BoxDecoration(
         border: Border.symmetric(
           horizontal: BorderSide(
@@ -31,6 +31,9 @@ class _SearchField extends StatelessWidget {
           ),
           isDense: true,
           hintText: 'Search',
+          hintStyle: AppTextStyle.s17Abel.copyWith(fontSize: 13.5),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: const BorderSide(color: AppColor.color9E9E9E),

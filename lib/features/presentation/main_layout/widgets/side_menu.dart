@@ -14,7 +14,15 @@ class _SideMenu extends StatelessWidget {
       showToggleButton: false,
       animationDuration: const Duration(seconds: 0),
       controller: controller,
-      headerDivider: const SizedBox(height: 5),
+      headerDivider: currentWidth <= 1276
+          ? const Divider(
+              color: AppColor.color9E9E9E,
+              endIndent: 11,
+            )
+          : const Divider(
+              color: AppColor.color9E9E9E,
+              endIndent: 5,
+            ),
       theme: sideBarxTheme(currentWidth),
       headerBuilder: (context, extended) => currentWidth > 1276
           ? Column(

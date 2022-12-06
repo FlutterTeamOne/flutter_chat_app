@@ -8,7 +8,7 @@ import '../../../../../themes/text_style/app_text_style.dart';
 part 'widgets/search_field.dart';
 part 'widgets/message_cards/my_message_card.dart';
 part 'widgets/message_cards/other_message_card.dart';
-part 'layouts/all_users_layout.dart';
+part 'layouts/chat_list_layout.dart';
 part 'layouts/user_chat_layout.dart';
 part 'widgets/user_card.dart';
 part 'widgets/chat_app_bar.dart';
@@ -24,20 +24,14 @@ class AsapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: [
+      children: const [
         // Список чатов
-        Expanded(
-          flex: 1,
-          child: _ChatListLayout(),
-        ),
+        Expanded(child: _ChatListLayout()),
         // Чат
-        Expanded(
-          flex: 3,
-          child: UserChatLayout(),
-        ),
+        Expanded(flex: 3, child: _UserChatLayout()),
         // Профиль
         // Expanded(
-        //   // flex: 2,
+        //   flex: 2,
         //   child: Container(
         //     height: MediaQuery.of(context).size.height,
         //     width: MediaQuery.of(context).size.width,

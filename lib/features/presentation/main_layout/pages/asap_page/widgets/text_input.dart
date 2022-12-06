@@ -20,7 +20,7 @@ class _TextInputState extends State<_TextInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.077,
+      height: 62,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: AppColor.colorFFFFFF,
