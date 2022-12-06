@@ -68,9 +68,8 @@ var con = false;
 void main() async {
   var client = Client();
   var message = Message();
-  message.userMainId1 = 1;
-  message.userMainId2 = 2;
-  message.senderMainId = 2;
+  message.chatIdMaint = 1;
+  message.senderMainId = 1;
   message.content = "Hello";
   message.date = "2022-12-02T21:36:32.653712";
 

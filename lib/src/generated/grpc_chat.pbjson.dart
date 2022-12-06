@@ -19,16 +19,15 @@ final $typed_data.Uint8List emptyDescriptor = $convert.base64Decode('CgVFbXB0eQ=
 const Message$json = const {
   '1': 'Message',
   '2': const [
-    const {'1': 'userMainId1', '3': 1, '4': 1, '5': 5, '10': 'userMainId1'},
-    const {'1': 'userMainId2', '3': 2, '4': 1, '5': 5, '10': 'userMainId2'},
-    const {'1': 'senderMainId', '3': 3, '4': 1, '5': 5, '10': 'senderMainId'},
-    const {'1': 'content', '3': 4, '4': 1, '5': 9, '10': 'content'},
-    const {'1': 'date', '3': 5, '4': 1, '5': 9, '10': 'date'},
+    const {'1': 'chatIdMaint', '3': 1, '4': 1, '5': 5, '10': 'chatIdMaint'},
+    const {'1': 'senderMainId', '3': 2, '4': 1, '5': 5, '10': 'senderMainId'},
+    const {'1': 'content', '3': 3, '4': 1, '5': 9, '10': 'content'},
+    const {'1': 'date', '3': 4, '4': 1, '5': 9, '10': 'date'},
   ],
 };
 
 /// Descriptor for `Message`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List messageDescriptor = $convert.base64Decode('CgdNZXNzYWdlEiAKC3VzZXJNYWluSWQxGAEgASgFUgt1c2VyTWFpbklkMRIgCgt1c2VyTWFpbklkMhgCIAEoBVILdXNlck1haW5JZDISIgoMc2VuZGVyTWFpbklkGAMgASgFUgxzZW5kZXJNYWluSWQSGAoHY29udGVudBgEIAEoCVIHY29udGVudBISCgRkYXRlGAUgASgJUgRkYXRl');
+final $typed_data.Uint8List messageDescriptor = $convert.base64Decode('CgdNZXNzYWdlEiAKC2NoYXRJZE1haW50GAEgASgFUgtjaGF0SWRNYWludBIiCgxzZW5kZXJNYWluSWQYAiABKAVSDHNlbmRlck1haW5JZBIYCgdjb250ZW50GAMgASgJUgdjb250ZW50EhIKBGRhdGUYBCABKAlSBGRhdGU=');
 @$core.Deprecated('Use messageBaseDescriptor instead')
 const MessageBase$json = const {
   '1': 'MessageBase',

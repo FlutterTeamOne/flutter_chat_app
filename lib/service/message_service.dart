@@ -9,12 +9,16 @@ class MessageService {
     required this.channel,
   });
 
-  Future onCreateMessage(
-      { userMainId1, userMainId12,senderMainId,required String content, required String date,}) async {
+  Future onCreateMessage({
+    userMainId1,
+    userMainId12,
+    senderMainId,
+    required String content,
+    required String date,
+  }) async {
     final stub = GrpcChatClient(channel);
     var resp = await stub.createMessage(Message(
-      userMainId1: 1,
-      userMainId2: 2,
+      chatIdMaint: 1,
       senderMainId: 1,
       content: content,
       date: date,

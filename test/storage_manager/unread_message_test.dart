@@ -1,6 +1,6 @@
 import 'package:flutter_chat_app/storage_manager/last_unread_message.dart';
 import 'package:flutter_chat_app/storage_manager/user_preferences.dart';
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 main() async {
   group('unread message test', () {

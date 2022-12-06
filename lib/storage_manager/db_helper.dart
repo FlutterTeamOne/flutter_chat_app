@@ -6,12 +6,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import '../domain/model/chats.dart';
-import '../domain/model/message_id_in_main.dart';
-import '../domain/model/messages.dart';
-import '../domain/model/model.dart';
-import '../domain/model/user.dart';
-
 class DBHelper {
   DBHelper._();
   static final DBHelper instanse = DBHelper._();
@@ -48,81 +42,115 @@ class DBHelper {
     await db.transaction((txn) async {
       //Таблица User
       await txn.execute('''
-CREATE TABLE ${User.table} (
-  ${DatabaseConst.columnId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
-  ${DatabaseConst.columnName} ${DatabaseConst.char50} ${DatabaseConst.notNull},
-  ${DatabaseConst.columnEmail} ${DatabaseConst.char50} ${DatabaseConst.notNull},
-  ${DatabaseConst.columnRegistrationDate} ${DatabaseConst.date} ${DatabaseConst.notNull},
-  ${DatabaseConst.columnProfilePicLink} ${DatabaseConst.char50} ${DatabaseConst.notNull},
-  ${DatabaseConst.columnMainUsersId} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique}
+CREATE TABLE ${DatabaseConst.userTable} (
+  ${DatabaseConst.usersColumnId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
+  ${DatabaseConst.usersColumnName} ${DatabaseConst.char50} ${DatabaseConst.notNull},
+  ${DatabaseConst.usersColumnEmail} ${DatabaseConst.char50} ${DatabaseConst.notNull},
+  ${DatabaseConst.usersColumnRegistrationDate} ${DatabaseConst.date} ${DatabaseConst.notNull},
+  ${DatabaseConst.usersColumnProfilePicLink} ${DatabaseConst.char50} ${DatabaseConst.notNull},
+  ${DatabaseConst.usersColumnMainUsersId} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique}
   )
 ''');
 
 //Таблица Messages
       await txn.execute('''
 CREATE TABLE ${DatabaseConst.messageTable} (
- ${DatabaseConst.columnId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
- ${DatabaseConst.columnLocalChatId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
- ${DatabaseConst.columnDate} ${DatabaseConst.integer} ${DatabaseConst.notNull},
- ${DatabaseConst.columnSenderLocalId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
- ${DatabaseConst.columnIsWrittenToDb} ${DatabaseConst.integer} ${DatabaseConst.notNull} DEFAULT 0,
- ${DatabaseConst.columnContent} ${DatabaseConst.char50} ${DatabaseConst.notNull},
- ${DatabaseConst.constraint} MESSAGES_FK_79 ${DatabaseConst.foreignKey} ( ${DatabaseConst.columnLocalChatId} ) ${DatabaseConst.references} ${Chats.table} ( local_chats_id ),
- ${DatabaseConst.constraint} MESSAGES_FK_80 ${DatabaseConst.foreignKey} ( ${DatabaseConst.columnSenderLocalId} ) ${DatabaseConst.references} ${User.table} ( local_users_id ),
+ ${DatabaseConst.messagesColumnLocalMessagesId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
+ ${DatabaseConst.messagesColumnLocalChatId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
+ ${DatabaseConst.messagesColumnDate} ${DatabaseConst.integer} ${DatabaseConst.notNull},
+ ${DatabaseConst.messagesColumnSenderLocalId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
+ ${DatabaseConst.messagesColumnIsWrittenToDb} ${DatabaseConst.integer} ${DatabaseConst.notNull} DEFAULT 0,
+ ${DatabaseConst.messagesColumnContent} ${DatabaseConst.char50} ${DatabaseConst.notNull},
+ ${DatabaseConst.constraint} MESSAGES_FK_79 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnLocalChatId} ) ${DatabaseConst.references} ${DatabaseConst.chatsTable} ( local_chats_id ),
+ ${DatabaseConst.constraint} MESSAGES_FK_80 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnSenderLocalId} ) ${DatabaseConst.references} ${DatabaseConst.userTable} ( local_users_id ),
  CHECK ((is_written_to_db = 0) OR (is_written_to_db = 1))
- 
+ CHECK ((sender_is_user = 0) OR (sender_is_user = 1))
+ CHECK (LENGTH(date) = 26)
 )
 ''');
-//CHECK ((sender_is_user = 0) OR (sender_is_user = 1))
+
 //Таблица Messages Id In Main
       await txn.execute('''
-CREATE TABLE ${MessageIdInMain.table}
+CREATE TABLE ${DatabaseConst.messageIdTable}
 (
- ${DatabaseConst.columnId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
- ${DatabaseConst.columnLocalMessagesId} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique}
+ ${DatabaseConst.messageIdColumn} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
+ ${DatabaseConst.messageIdColumnLocal} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique}
+CONSTRAINT MESSAGE_ID_IN_MAIN_FK_86 FOREIGN KEY ( local_messages_id ) REFERENCES messages ( local_messages_id )
 )
 ''');
 //Таблица Chats
       await txn.execute('''
-CREATE TABLE ${Chats.table}(
- ${DatabaseConst.columnId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
- ${DatabaseConst.columnChatIdMain} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique},
- ${DatabaseConst.columnFriendId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
- ${DatabaseConst.constraint} CHATS_FK_84 ${DatabaseConst.foreignKey} ( ${DatabaseConst.columnFriendId} ) ${DatabaseConst.references} ${User.table} ( local_users_id )
+CREATE TABLE ${DatabaseConst.chatsTable}(
+ ${DatabaseConst.chatsColumnLocalChatId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
+ ${DatabaseConst.chatsColumnChatIdMain} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique},
+ ${DatabaseConst.chatsColumnFriendId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
+ ${DatabaseConst.constraint} CHATS_FK_84 ${DatabaseConst.foreignKey} ( ${DatabaseConst.chatsColumnFriendId} ) ${DatabaseConst.references} ${DatabaseConst.userTable} ( local_users_id )
 )
 ''');
 
       await txn.execute('''
-CREATE INDEX CHATS_FK_3 ON ${Chats.table}
+CREATE INDEX CHATS_FK_3 ON ${DatabaseConst.chatsTable}
 (
- ${DatabaseConst.columnFriendId}
+ ${DatabaseConst.chatsColumnFriendId}
 )
 ''');
       await txn.execute('''
 CREATE INDEX MESSAGES_FK_2 ON ${DatabaseConst.messageTable}
 (
- ${DatabaseConst.columnLocalChatId}
+ ${DatabaseConst.chatsColumnLocalChatId}
 );
 ''');
       await txn.execute('''
-CREATE INDEX MESSAGE_ID_IN_MAIN_FK_1 ON ${MessageIdInMain.table}
+CREATE INDEX MESSAGE_ID_IN_MAIN_FK_1 ON ${DatabaseConst.messageIdTable}
 (
- ${DatabaseConst.columnLocalMessagesId}
+ ${DatabaseConst.messagesColumnLocalMessagesId}
 )
 ''');
 
       // //Первичная запись юзера в таблицу
-      // await txn.insert(User.table, {'id': 'User.id', 'name': 'User.name'});
+      await txn.insert(
+        DatabaseConst.userTable,
+        {
+          'name': 'test1',
+          'email': 't1@t1.t1',
+          DatabaseConst.usersColumnProfilePicLink: 'test1',
+          DatabaseConst.usersColumnRegistrationDate:
+              '2022-12-02T21:36:32.653712',
+          DatabaseConst.usersColumnMainUsersId: 1
+        },
+      );
+      await txn.insert(
+        DatabaseConst.userTable,
+        {
+          'name': 'test2',
+          'email': 't2@t2.t2',
+          DatabaseConst.usersColumnProfilePicLink: 'test2',
+          DatabaseConst.usersColumnRegistrationDate:
+              '2022-12-02T21:36:32.653712',
+          DatabaseConst.usersColumnMainUsersId: 2
+        },
+      );
+      await txn.insert(
+        DatabaseConst.chatsTable,
+        {
+          DatabaseConst.chatsColumnChatIdMain: 1,
+          DatabaseConst.chatsColumnFriendId: 2,
+        },
+      );
     });
+
     _updateListen();
   }
 
   ///Функция считывания/получения данных из БД
-  Future onRead({required String tableName, required Model model}) async {
+  Future onRead(
+      {required String tableName, required Map<String, dynamic> model}) async {
     var db = await instanse.database;
     await db.transaction((txn) async {
-      await txn.query(tableName,
-          where: '${DatabaseConst.columnId}=?', whereArgs: [model.id]);
+      await txn.query(
+        tableName,
+      );
+      // where: '${DatabaseConst.columnId}=?', whereArgs: [model.id]);
     });
 
     _updateListen();
@@ -139,21 +167,26 @@ CREATE INDEX MESSAGE_ID_IN_MAIN_FK_1 ON ${MessageIdInMain.table}
   }
 
   ///Функция удаления элемента из БД по ID
-  Future onDelete({required String tableName, required Model model}) async {
+  Future onDelete(
+      {required String tableName,
+      required String column,
+      required Map<String, dynamic> model}) async {
     var db = await instanse.database;
     await db.transaction((txn) async {
-      await txn.delete(tableName,
-          where: '${DatabaseConst.columnId}=?', whereArgs: [model.id]);
+      await txn.delete(tableName, where: '$column=?', whereArgs: [model['id']]);
     });
     _updateListen();
   }
 
   ///Функция изменения элемента в БД
-  Future onUpdate({required String tableName, required Model model}) async {
+  Future onUpdate(
+      {required String tableName,
+      required String column,
+      required Map<String, dynamic> model}) async {
     var db = await instanse.database;
     await db.transaction((txn) async {
-      await txn.update(tableName, model.toJson(),
-          where: '${DatabaseConst.columnId}=?', whereArgs: [model.id]);
+      await txn.update(tableName, model,
+          where: '$column=?', whereArgs: [model['id']]);
     });
     _updateListen();
   }

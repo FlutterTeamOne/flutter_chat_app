@@ -24,10 +24,9 @@ class _ChatState extends State<_Chat> {
         order: GroupedListOrder.DESC,
         floatingHeader: true,
         groupBy: (message) => DateTime.parse(message.date),
-        groupHeaderBuilder: (Message message) =>
-            _TimeCard(date: message.date),
+        groupHeaderBuilder: (Message message) => _TimeCard(date: message.date),
         itemBuilder: (context, Message message) {
-          if (message.userMainId1 == 1) {
+          if (message.senderMainId == 1) {
             // print(message.isSentByMe);
             // print(message.message);
             return _OtherMessageCard(

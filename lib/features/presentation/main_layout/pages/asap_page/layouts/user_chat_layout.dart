@@ -60,13 +60,13 @@ class _UserChatLayoutState extends State<UserChatLayout> {
             if (controller.text.isNotEmpty) {
               context.read<MessageBloc>().add(
                     CreateMessageEvent(
-                      message: Message(
-                          userMainId1: 1,
-                          userMainId2: 2,
+                        message: Message(
+                          chatIdMaint: 1,
                           senderMainId: 1,
                           content: text,
-                          date: DateTime.now().toIso8601String()),
-                    ),
+                          date: DateTime.now().toIso8601String(),
+                        ),
+                        idChat: 1),
                   );
               controller.clear();
             } else {

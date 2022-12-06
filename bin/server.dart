@@ -20,11 +20,8 @@ class GrpcChat extends GrpcChatServiceBase {
 
   @override
   Future<MessageBase> createMessage(ServiceCall call, Message request) async {
-    var friendsChatId = await chatsService.getChatByTwoIds(
-        friend1_id: request.userMainId1, friend2_id: request.userMainId2);
-
     var src = await messagesService.addNewMessage(
-        friendsChatId: friendsChatId,
+        friendsChatId: request.chatIdMaint,
         senderId: request.senderMainId,
         content: request.content,
         date: request.date);

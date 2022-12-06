@@ -6,22 +6,34 @@ class DatabaseConst {
   //название таблиц
   static const messageTable = 'messages';
   static const userTable = 'users';
-  //название колонок таблиц
-  static const columnId = 'id';
-  static const columnName = 'name';
-  static const columnEmail = 'email';
-  static const columnProfilePicLink = 'profile_pic_link';
-  static const columnRegistrationDate = 'registration_date';
-  static const columnMainUsersId = 'main_users_id';
+  static const chatsTable = 'chats';
+  static const messageIdTable = 'message_id_in_main'; // Для синхронизации
 
-  static const columnLocalChatId = 'local_chat_id';
-  static const columnSenderLocalId = 'sender_id';
-  static const columnDate = 'date';
-  static const columnIsWrittenToDb = 'is_written_to_db';
-  static const columnContent = 'content';
-  static const columnFriendId = 'friend_id';
-  static const columnChatIdMain = 'chat_id_main';
-  static const columnLocalMessagesId = 'local_messages_id';
+  //название колонок таблиц
+  //users
+  static const usersColumnId = 'local_users_id';
+  static const usersColumnName = 'name';
+  static const usersColumnEmail = 'email';
+  static const usersColumnProfilePicLink = 'profile_pic_link';
+  static const usersColumnRegistrationDate = 'registration_date';
+  static const usersColumnMainUsersId = 'main_users_id';
+
+  //Messages
+  static const messagesColumnLocalMessagesId = 'local_messages_id';
+  static const messagesColumnLocalChatId = 'local_chat_id';
+  static const messagesColumnSenderLocalId = 'sender_is_user';
+  static const messagesColumnDate = 'date';
+  static const messagesColumnIsWrittenToDb = 'is_written_to_db';
+  static const messagesColumnContent = 'content';
+
+  //chats
+  static const chatsColumnLocalChatId = 'local_chat_id';
+  static const chatsColumnChatIdMain = 'chat_id_main';
+  static const chatsColumnFriendId = 'friend_id';
+
+  //message_id_in_main
+  static const messageIdColumn = "main_messages_id";
+  static const messageIdColumnLocal = "local_messages_id";
 
   //
   static const integer = 'INTEGER';

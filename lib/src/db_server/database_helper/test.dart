@@ -1,10 +1,12 @@
 import 'package:flutter_chat_app/src/db_server/database_helper/library_db.dart';
+import 'package:flutter_chat_app/storage_manager/db_helper.dart';
 
 Future<void> main() async {
   ///
   ///Создание базы у вас на пк (в проекте
   ///.dart_tool\sqflite_common_ffi\databases\main_db.db)
   ///
+  var db = await dbServerServices.openDatabase();
   // db.createDatabase();
 
   //Обращаемся к методам работы с таблицей чатов через:
@@ -16,11 +18,16 @@ Future<void> main() async {
   //Обращаемся к методам работы с таблицей юзеров через:
   var usersService = UsersServices();
 
+  // db.rawUpdate(''' UPDATE messages
+  //         SET content = 'Zdarova papasha'
+  //         WHERE main_message_id = '22';
+  //               ''');
+
   ///
   ///Вывод таблицы сообщений
   ///
-  // var massages = await messagesService.getAllMessages();
-  // print(massages);
+  var massages = await messagesService.getAllMessages();
+  print(massages);
 
   ///
   ///Вывод чата по 2 id
@@ -48,7 +55,7 @@ Future<void> main() async {
   ///Проверка запроса с синхронизацией
   ///
   // var db = await dbServerServices.openDatabase();
-  // var main_messages_id = 22;
+  // var main_messages_id = 21;
   // var mainIdMessage = 1;
   // var messages = await db.rawQuery('''SELECT *
   //     FROM messages, friends_chat AS friend

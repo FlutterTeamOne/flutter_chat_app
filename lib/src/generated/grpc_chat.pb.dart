@@ -40,28 +40,23 @@ class Empty extends $pb.GeneratedMessage {
 
 class Message extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Message', createEmptyInstance: create)
-    ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userMainId1', $pb.PbFieldType.O3, protoName: 'userMainId1')
-    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userMainId2', $pb.PbFieldType.O3, protoName: 'userMainId2')
-    ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'senderMainId', $pb.PbFieldType.O3, protoName: 'senderMainId')
-    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'content')
-    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'date')
+    ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'chatIdMaint', $pb.PbFieldType.O3, protoName: 'chatIdMaint')
+    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'senderMainId', $pb.PbFieldType.O3, protoName: 'senderMainId')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'content')
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'date')
     ..hasRequiredFields = false
   ;
 
   Message._() : super();
   factory Message({
-    $core.int? userMainId1,
-    $core.int? userMainId2,
+    $core.int? chatIdMaint,
     $core.int? senderMainId,
     $core.String? content,
     $core.String? date,
   }) {
     final _result = create();
-    if (userMainId1 != null) {
-      _result.userMainId1 = userMainId1;
-    }
-    if (userMainId2 != null) {
-      _result.userMainId2 = userMainId2;
+    if (chatIdMaint != null) {
+      _result.chatIdMaint = chatIdMaint;
     }
     if (senderMainId != null) {
       _result.senderMainId = senderMainId;
@@ -96,49 +91,40 @@ class Message extends $pb.GeneratedMessage {
   static Message? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.int get userMainId1 => $_getIZ(0);
+  $core.int get chatIdMaint => $_getIZ(0);
   @$pb.TagNumber(1)
-  set userMainId1($core.int v) { $_setSignedInt32(0, v); }
+  set chatIdMaint($core.int v) { $_setSignedInt32(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUserMainId1() => $_has(0);
+  $core.bool hasChatIdMaint() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUserMainId1() => clearField(1);
+  void clearChatIdMaint() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.int get userMainId2 => $_getIZ(1);
+  $core.int get senderMainId => $_getIZ(1);
   @$pb.TagNumber(2)
-  set userMainId2($core.int v) { $_setSignedInt32(1, v); }
+  set senderMainId($core.int v) { $_setSignedInt32(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasUserMainId2() => $_has(1);
+  $core.bool hasSenderMainId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearUserMainId2() => clearField(2);
+  void clearSenderMainId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.int get senderMainId => $_getIZ(2);
+  $core.String get content => $_getSZ(2);
   @$pb.TagNumber(3)
-  set senderMainId($core.int v) { $_setSignedInt32(2, v); }
+  set content($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasSenderMainId() => $_has(2);
+  $core.bool hasContent() => $_has(2);
   @$pb.TagNumber(3)
-  void clearSenderMainId() => clearField(3);
+  void clearContent() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get content => $_getSZ(3);
+  $core.String get date => $_getSZ(3);
   @$pb.TagNumber(4)
-  set content($core.String v) { $_setString(3, v); }
+  set date($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasContent() => $_has(3);
+  $core.bool hasDate() => $_has(3);
   @$pb.TagNumber(4)
-  void clearContent() => clearField(4);
-
-  @$pb.TagNumber(5)
-  $core.String get date => $_getSZ(4);
-  @$pb.TagNumber(5)
-  set date($core.String v) { $_setString(4, v); }
-  @$pb.TagNumber(5)
-  $core.bool hasDate() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearDate() => clearField(5);
+  void clearDate() => clearField(4);
 }
 
 class MessageBase extends $pb.GeneratedMessage {

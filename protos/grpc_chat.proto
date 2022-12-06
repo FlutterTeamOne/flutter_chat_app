@@ -12,11 +12,10 @@ service  GrpcChat{
 message Empty {}
 
 message Message {
-    int32 userMainId1 = 1;
-    int32 userMainId2 = 2;
-    int32 senderMainId = 3;
-    string content = 4;
-    string date = 5; //26 symbols
+    int32 chatIdMaint = 1;
+    int32 senderMainId = 2;
+    string content = 3;
+    string date = 4; //26 symbols
 }
 
 message MessageBase {
