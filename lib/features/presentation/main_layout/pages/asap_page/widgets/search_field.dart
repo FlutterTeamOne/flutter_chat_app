@@ -11,7 +11,6 @@ class _SearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      width: MediaQuery.of(context).size.width * 0.25,
       height: MediaQuery.of(context).size.height * 0.077,
       decoration: BoxDecoration(
         border: Border.symmetric(

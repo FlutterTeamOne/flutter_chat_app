@@ -11,6 +11,7 @@ class _ChatAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentWidth = MediaQuery.of(context).size.width;
     return Container(
       width: MediaQuery.of(context).size.width * 0.75,
       height: MediaQuery.of(context).size.height * 0.077,
@@ -40,10 +41,9 @@ class _ChatAppBar extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 15),
-          Text(
-            name,
-            style: AppTextStyle.s17Abel.copyWith(fontSize: 20),
-          ),
+          Text(name, style: AppTextStyle.s17Abel.copyWith(fontSize: 20)),
+          const SizedBox(width: 15),
+          Text(currentWidth.toString()),
         ],
       ),
     );

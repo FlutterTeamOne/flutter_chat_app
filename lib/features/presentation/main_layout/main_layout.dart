@@ -28,21 +28,28 @@ class _MainLayoutState extends State<MainLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.colorLightBackgrond,
-      body: SafeArea(
-        child: Row(
-          children: [
-            // Боковое меню
-            Expanded(
-              child: _SideMenu(controller: _sideBarController),
-            ),
-            // Экраны
-            Expanded(
-              flex: 7,
-              child: _PageControllerWidget(controller: _sideBarController),
-            ),
-          ],
+    final currentWidth = MediaQuery.of(context).size.width;
+    return AspectRatio(
+      aspectRatio: 16 / 9,
+      child: Scaffold(
+        backgroundColor: AppColor.colorLightBackgrond,
+        body: SafeArea(
+          child: Row(
+            children: [
+              // Боковое меню
+              currentWidth > 1276
+                  ? Expanded(
+                      // flex: 1,
+                      child: _SideMenu(controller: _sideBarController),
+                    )
+                  : _SideMenu(controller: _sideBarController),
+              // Экраны
+              Expanded(
+                flex: 7,
+                child: _PageControllerWidget(controller: _sideBarController),
+              ),
+            ],
+          ),
         ),
       ),
     );

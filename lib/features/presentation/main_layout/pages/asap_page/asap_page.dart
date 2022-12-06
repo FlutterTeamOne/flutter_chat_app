@@ -24,11 +24,11 @@ class AsapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: const [
+      children: [
         // Список чатов
         Expanded(
           flex: 1,
-          child: _AllUsersLayout(),
+          child: _ChatListLayout(),
         ),
         // Чат
         Expanded(
@@ -37,11 +37,16 @@ class AsapPage extends StatelessWidget {
         ),
         // Профиль
         // Expanded(
-        //   flex: 2,
+        //   // flex: 2,
         //   child: Container(
         //     height: MediaQuery.of(context).size.height,
         //     width: MediaQuery.of(context).size.width,
-        //     color: AppColor.colorFFFFFF,
+        //     decoration: BoxDecoration(
+        //       color: AppColor.colorFFFFFF,
+        //       border: Border.all(
+        //         color: AppColor.color9E9E9E.withOpacity(0.5),
+        //       ),
+        //     ),
         //     child: Text(
         //       'профиль',
         //       style: AppTextStyle.s36Abel,
