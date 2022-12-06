@@ -61,7 +61,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
   Future<Map<String, Object?>> getMessageById({required int id}) async {
     var db = await DBHelper.instanse.database;
     var message = await db
-        .rawQuery('SELECT * FROM messages where local_messages_id = $id}');
+        .rawQuery('SELECT * FROM messages where local_messages_id = $id');
     return message[0];
   }
 
@@ -90,9 +90,9 @@ class LocalMessagesServices implements ILocalMessagesServices {
       {required int localMessageId, required int isWrittenToDB}) async {
     var db = await DBHelper.instanse.database;
 
-    db.rawUpdate(
+    await db.rawUpdate(
       ''' UPDATE messages 
-          SET is_written_to_bd = $isWrittenToDB
+          SET is_written_to_db = $isWrittenToDB
           WHERE local_messages_id = $localMessageId
                 ''',
     );

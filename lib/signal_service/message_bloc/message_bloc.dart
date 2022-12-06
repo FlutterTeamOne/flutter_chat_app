@@ -26,6 +26,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     //   add(ReadMessageEvent(messages: value.messages));
     //   print('MESSAGE: ${value.messages}');
     // });
+    _messageIdServices = MessageIdServices();
     _subscription =
         DBHelper.instanse.updateListenController.stream.listen((event) async {
       if (event == true) {
@@ -79,12 +80,15 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     try {
       var messageOk = await GrpcChatClient(grpcClient.channel)
           .createMessage(messageToServer);
+      print("messageOK:/n $messageOk");
       if (messageOk.ok) {
-        var updateWrittenToServer = _messagesServices.updateWrittenToServer(
+        await _messagesServices.updateWrittenToServer(
             localMessageId: message.localMessageId,
-            isWrittenToDB: messageOk.ok as int);
+            isWrittenToDB: messageOk.ok ? 1 : 0);
+        var updateWrittenToServer =
+            await _messagesServices.getMessageById(id: message.localMessageId);
         print('UPDATE WRITTEN TO SERVER: $updateWrittenToServer');
-        var createMessageId = _messageIdServices.createMessageId(
+        var createMessageId = await _messageIdServices.createMessageId(
             mainId: messageOk.mainMessagesId, localId: message.localMessageId);
         print('CREATE MESSAGE ID $createMessageId');
       }

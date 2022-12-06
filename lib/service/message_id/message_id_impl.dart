@@ -2,16 +2,15 @@ import 'package:grpc/grpc.dart';
 import 'package:flutter_chat_app/service/lib_db.dart';
 
 class MessageIdServices implements IMessageIdServices {
-  final ClientChannel channel;
-
-  MessageIdServices({required this.channel});
+  MessageIdServices();
 
   @override
   Future<int> createMessageId(
       {required int mainId, required int localId}) async {
     var db = await DBHelper.instanse.database;
-    return await db.rawInsert(
-        'INSERT INTO ${DatabaseConst.messageIdTable}(${DatabaseConst.messageIdColumn},${DatabaseConst.messageIdColumnLocal}) VALUS ($mainId,$localId');
+    return await db.rawInsert('''INSERT INTO ${DatabaseConst.messageIdTable}
+        (${DatabaseConst.messageIdColumn},${DatabaseConst.messageIdColumnLocal})
+        VALUES ($mainId,$localId)''');
   }
 
   @override
