@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_chat_app/src/db_server/database_helper/library_db.dart';
 
 import '../../client/grpc_client.dart';
 import '../../features/data/models/message_model/message_model.dart';
