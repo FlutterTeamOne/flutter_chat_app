@@ -66,6 +66,9 @@ class _SideMenu extends StatelessWidget {
               SidebarXItem(
                 icon: Icons.diamond_rounded,
               ),
+              SidebarXItem(
+                icon: Icons.settings,
+              ),
             ]
           : const [
               SidebarXItem(
@@ -103,6 +106,10 @@ class _SideMenu extends StatelessWidget {
               SidebarXItem(
                 icon: Icons.diamond_rounded,
                 label: 'VideoS',
+              ),
+              SidebarXItem(
+                icon: Icons.settings,
+                label: 'Settings',
               ),
             ],
     );

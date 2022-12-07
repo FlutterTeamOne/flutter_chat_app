@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_chat_app/style%20manager/bloc/change_theme_bloc/change_theme_bloc.dart';
-import 'package:flutter_chat_app/style%20manager/themes/custom_themes.dart';
+import 'package:flutter_chat_app/style_manager/bloc/change_theme_bloc/change_theme_bloc.dart';
+import 'package:flutter_chat_app/style_manager/themes/custom_themes.dart';
 
 import 'bloc/change_theme_bloc/change_theme_event.dart';
 

@@ -23,14 +23,8 @@ class _TimeCard extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Text(
-<<<<<<< HEAD
-              
               DateFormat.yMMMd().format(DateTime.parse(date)),
-              style: AppTextStyle.s17Abel.copyWith(fontSize: 14),
-=======
-              DateFormat.yMMMd().format(message.date),
               // style: AppTextStyle.s17Abel.copyWith(fontSize: 14),
->>>>>>> origin/style_manager
             ),
           ),
         ),
