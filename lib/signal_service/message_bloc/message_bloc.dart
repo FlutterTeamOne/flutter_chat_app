@@ -59,13 +59,12 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     print('MESSAGE: $message');
     // DBHelper.instanse
     //     .onAdd(tableName: 'messages', model: messageMapToDB(model));
-    await _messagesServices.addNewMessage(
+    message.localMessageId = await _messagesServices.addNewMessage(
       localChatId: message.localChatId,
       senderId: 1,
       content: message.content,
       date: message.date,
     );
-
     var messageToServer = Message();
     messageToServer.chatIdMaint =
         await chats.getMainIdChatByMessage(localId: message.localChatId);
@@ -82,6 +81,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       if (messageOk.ok) {
         await _messagesServices.updateWrittenToServer(
             localMessageId: message.localMessageId!, isWrittenToDB: 1);
+        emit(state.copyWith(
+            messages: await localMessagesServices.getAllMessages()));
         var updateWrittenToServer =
             await _messagesServices.getMessageById(id: message.localMessageId!);
         print('UPDATE WRITTEN TO SERVER: $updateWrittenToServer');

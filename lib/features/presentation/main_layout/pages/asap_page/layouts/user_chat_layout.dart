@@ -26,7 +26,7 @@ class _UserChatLayoutState extends State<_UserChatLayout> {
         ),
         Expanded(
           child: context.watch<MessageBloc>().state.messages != null
-              ? _Chat(messages: context.read<MessageBloc>().state.messages!)
+              ? _Chat(messages: context.watch<MessageBloc>().state.messages!)
               : const Center(child: CircularProgressIndicator()),
         ),
         _TextInput(
