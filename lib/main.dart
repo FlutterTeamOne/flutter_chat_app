@@ -15,7 +15,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ChangeThemeBloc changeThemeBloc = BlocProvider.of<ChangeThemeBloc>(context);
     return BlocProvider(
       create: (context) => ChangeThemeBloc(),
       child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(

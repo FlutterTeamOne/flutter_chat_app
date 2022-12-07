@@ -26,7 +26,7 @@ class CustomTheme {
     primarySwatch: Colors.orange,
   );
   ThemeData lightThemeOrange = ThemeData(
-    brightness: Brightness.dark,
+    brightness: Brightness.light,
     primarySwatch: Colors.orange,
   );
 }

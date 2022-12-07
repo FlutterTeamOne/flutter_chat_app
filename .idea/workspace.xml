@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="add settings page to mainLayout bar">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/style manager/bloc/change_theme_bloc/change_theme_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/style manager/bloc/change_theme_bloc/change_theme_bloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/style manager/bloc/change_theme_bloc/change_theme_event.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/style manager/bloc/change_theme_bloc/change_theme_event.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/style manager/settings_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/style manager/settings_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/style manager/themes/custom_themes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/style manager/themes/custom_themes.dart" afterDir="false" />
-    </list>
+    <list default="true" id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="add 3 color theme with dark and light version" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -198,7 +191,21 @@
       <option name="project" value="LOCAL" />
       <updated>1670409910340</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="add 3 color theme with dark and light version">
+      <created>1670417332528</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1670417332528</updated>
+    </task>
+    <task id="LOCAL-00018" summary="add 3 color theme with dark and light version">
+      <created>1670417397893</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1670417397893</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -231,6 +238,7 @@
     <MESSAGE value="clear color and text style" />
     <MESSAGE value="add settings page and change theme with bloc" />
     <MESSAGE value="add settings page to mainLayout bar" />
-    <option name="LAST_COMMIT_MESSAGE" value="add settings page to mainLayout bar" />
+    <MESSAGE value="add 3 color theme with dark and light version" />
+    <option name="LAST_COMMIT_MESSAGE" value="add 3 color theme with dark and light version" />
   </component>
 </project>
