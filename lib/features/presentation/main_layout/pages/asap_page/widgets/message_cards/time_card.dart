@@ -17,15 +17,20 @@ class _TimeCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             side: BorderSide(
               width: 0.1,
-              color: AppColor.color000000.withOpacity(0.3),
+              // color: AppColor.color000000.withOpacity(0.3),
             ),
           ),
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Text(
+<<<<<<< HEAD
               
               DateFormat.yMMMd().format(DateTime.parse(date)),
               style: AppTextStyle.s17Abel.copyWith(fontSize: 14),
+=======
+              DateFormat.yMMMd().format(message.date),
+              // style: AppTextStyle.s17Abel.copyWith(fontSize: 14),
+>>>>>>> origin/style_manager
             ),
           ),
         ),

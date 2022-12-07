@@ -5,6 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/presentation/main_layout/main_layout.dart';
 import 'sender_manager/conncetion_bloc/connection_bloc.dart';
 import 'signal_service/message_id_in_main_bloc/message_id_in_main_bloc.dart';
+import 'package:flutter_chat_app/features/presentation/main_layout/main_layout.dart';
+import 'package:flutter_chat_app/style%20manager/bloc/change_theme_bloc/change_theme_bloc.dart';
+import 'package:flutter_chat_app/style%20manager/bloc/change_theme_bloc/change_theme_state.dart';
+import 'package:flutter_chat_app/style%20manager/settings_page.dart';
+import 'package:flutter_chat_app/style%20manager/themes/custom_themes.dart';
 
 import 'client/grpc_client.dart';
 import 'signal_service/chat_bloc/chat_bloc.dart';
@@ -45,17 +50,47 @@ class MyApp extends StatelessWidget {
         BlocProvider<MessageIdInMainBloc>(
           create: (context) => MessageIdInMainBloc(),
         ),
+        BlocProvider(
+          create: (context) => ChangeThemeBloc(),
+        ),
       ],
-      child: MaterialApp(
-        title: 'Flutter chat app',
-        theme: ThemeData(useMaterial3: true),
-        debugShowCheckedModeBanner: false,
-        initialRoute: MainLayout.routeName,
-        routes: {
-          MainLayout.routeName: (context) => const MainLayout(),
-          '/mainLayout': (context) => const MainLayout(),
+      child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
+        builder: (context, state) {
+          if (state.theme == 'lightThemeDeepPurple') {
+            final theme = CustomTheme().lightThemeDeepPurple;
+            return buildMaterialApp(theme);
+          } else if (state.theme == 'lightThemeLightBlue') {
+            final theme = CustomTheme().lightThemeLightBlue;
+            return buildMaterialApp(theme);
+          } else if (state.theme == 'lightThemeOrange') {
+            final theme = CustomTheme().lightThemeOrange;
+            return buildMaterialApp(theme);
+          } else if (state.theme == 'darkThemeLightBlue') {
+            final theme = CustomTheme().darkThemeLightBlue;
+            return buildMaterialApp(theme);
+          } else if (state.theme == 'darkThemeOrange') {
+            final theme = CustomTheme().darkThemeOrange;
+            return buildMaterialApp(theme);
+          } else {
+            final theme = CustomTheme().darkThemeDeepPurple;
+            return buildMaterialApp(theme);
+          }
         },
       ),
+    );
+  }
+
+  MaterialApp buildMaterialApp(ThemeData theme) {
+    return MaterialApp(
+      theme: theme,
+      title: 'Flutter chat app',
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const MainLayout(),
+        '/mainLayout': (context) => const MainLayout(),
+        '/Settings page': (context) => const SettingsPage(),
+      },
     );
   }
 }

@@ -32,10 +32,12 @@ class _PageControllerWidget extends StatelessWidget {
             return const JobLitePage();
           case 8:
             return const VideosPage();
+          case 9:
+            return const SettingsPage();
           default:
             return Text(
               'not found ',
-              style: AppTextStyle.s17AbelPurple,
+              // style: AppTextStyle.s17AbelPurple,
             );
         }
       },

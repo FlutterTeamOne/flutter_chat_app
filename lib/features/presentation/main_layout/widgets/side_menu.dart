@@ -16,11 +16,11 @@ class _SideMenu extends StatelessWidget {
       controller: controller,
       headerDivider: currentWidth <= 1276
           ? const Divider(
-              color: AppColor.color9E9E9E,
+              // color: AppColor.color9E9E9E,
               endIndent: 11,
             )
           : const Divider(
-              color: AppColor.color9E9E9E,
+              // color: AppColor.color9E9E9E,
               endIndent: 5,
             ),
       theme: sideBarxTheme(currentWidth),
@@ -28,7 +28,10 @@ class _SideMenu extends StatelessWidget {
           ? Column(
               children: [
                 const SizedBox(height: 20),
-                Text('Sfera'.toUpperCase(), style: AppTextStyle.s36Abel),
+                Text(
+                  'Sfera'.toUpperCase(),
+                  // style: AppTextStyle.s36Abel
+                ),
                 const SizedBox(height: 20),
               ],
             )
@@ -113,14 +116,14 @@ class _SideMenu extends StatelessWidget {
       padding: currentWidth <= 1276
           ? const EdgeInsets.only(left: 11)
           : const EdgeInsets.only(left: 5),
-      textStyle: AppTextStyle.s17Abel,
-      selectedIconTheme: const IconThemeData(color: AppColor.color7E57C2),
-      selectedTextStyle: AppTextStyle.s17AbelPurple,
+      // textStyle: AppTextStyle.s17Abel,
+      // selectedIconTheme: const IconThemeData(color: AppColor.color7E57C2),
+      // selectedTextStyle: AppTextStyle.s17AbelPurple,
       selectedItemTextPadding: const EdgeInsets.only(left: 30),
       itemTextPadding: const EdgeInsets.only(left: 30),
-      decoration: const BoxDecoration(
-        color: AppColor.colorFFFFFF,
-      ),
+      // decoration: const BoxDecoration(
+      //   color: AppColor.colorFFFFFF,
+      // ),
     );
   }
 }

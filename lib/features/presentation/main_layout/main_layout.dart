@@ -11,6 +11,8 @@ import 'pages/profile_page/profile_page.dart';
 import 'pages/videos_page/videos_page.dart';
 import '../../../themes/color/app_color.dart';
 import '../../../themes/text_style/app_text_style.dart';
+
+import 'package:flutter_chat_app/style%20manager/settings_page.dart';
 import 'package:sidebarx/sidebarx.dart';
 
 import '../../../sender_manager/conncetion_bloc/connection_bloc.dart';
