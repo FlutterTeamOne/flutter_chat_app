@@ -29,12 +29,12 @@ class SettingsPage extends StatelessWidget {
                             onPressed: () {
                               changeThemeBloc.add(LightThemeDeepPurpleEvent());
                             },
-                            icon: Icon(Icons.light_mode_outlined)),
+                            icon: const Icon(Icons.light_mode_outlined)),
                         IconButton(
                             onPressed: () {
                               changeThemeBloc.add(DarkThemeDeepPurpleEvent());
                             },
-                            icon: Icon(Icons.dark_mode_outlined)),
+                            icon: const Icon(Icons.dark_mode_outlined)),
                       ]),
                 ),
                 Card(
@@ -46,12 +46,12 @@ class SettingsPage extends StatelessWidget {
                             onPressed: () {
                               changeThemeBloc.add(LightThemeLightBlueEvent());
                             },
-                            icon: Icon(Icons.light_mode_outlined)),
+                            icon: const Icon(Icons.light_mode_outlined)),
                         IconButton(
                             onPressed: () {
                               changeThemeBloc.add(DarkThemeLightBlueEvent());
                             },
-                            icon: Icon(Icons.dark_mode_outlined)),
+                            icon: const Icon(Icons.dark_mode_outlined)),
                       ]),
                 ),
                 Card(
@@ -63,12 +63,12 @@ class SettingsPage extends StatelessWidget {
                             onPressed: () {
                               changeThemeBloc.add(LightThemeOrangeEvent());
                             },
-                            icon: Icon(Icons.light_mode_outlined)),
+                            icon: const Icon(Icons.light_mode_outlined)),
                         IconButton(
                             onPressed: () {
                               changeThemeBloc.add(DarkThemeOrangeEvent());
                             },
-                            icon: Icon(Icons.dark_mode_outlined)),
+                            icon: const Icon(Icons.dark_mode_outlined)),
                       ]),
                 ),
               ],
