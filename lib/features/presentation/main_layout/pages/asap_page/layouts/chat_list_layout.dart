@@ -3,8 +3,12 @@
 class _ChatListLayout extends StatefulWidget {
   const _ChatListLayout({
     Key? key,
+    required this.chatModel,
+    required this.messageModel,
   }) : super(key: key);
 
+  final List<ChatModel> chatModel;
+  final List<MessageModel> messageModel;
   @override
   State<_ChatListLayout> createState() => _ChatListLayoutState();
 }
@@ -15,117 +19,73 @@ class _ChatListLayoutState extends State<_ChatListLayout> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: AppColor.colorFFFFFF,
-      shape: Border.all(
-        color: AppColor.color9E9E9E.withOpacity(0.5),
-      ),
-      elevation: 0,
-      child: BlocConsumer<MessageBloc, MessageState>(
-        listener: (context, messageState) {
-          // TODO: implement listener
-        },
-        builder: (context, messageState) {
-          return BlocConsumer<ChatBloc, ChatState>(
-            listener: (context, chatState) {
-              // if (state.chats == null) {}
-            },
-            builder: (context, chatState) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  chatState.chats == null || chatState.chats == []
-                      ? const Center(
-                          child: Text('Oops...\nno chats'),
-                        )
-                      : SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              _SearchField(controller: _searchController),
-                              const SizedBox(height: 5),
-                              ListView.separated(
-                                itemCount: chatState.chats!.length,
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(height: 25),
-                                itemBuilder: (context, index) {
-                                  var friendId =
-                                      chatState.chats![index].friendId - 1;
-                                  var lastMessageId =
-                                      messageState.messages!.isEmpty
-                                          ? 0
-                                          : messageState.messages!.length - 1;
-                                  return UserCard(
-                                    selected: false,
-                                    onTap: () {},
-                                    name: context
-                                        .read<UserBloc>()
-                                        .state
-                                        .users![friendId]
-                                        .name,
-                                    image: context
-                                        .read<UserBloc>()
-                                        .state
-                                        .users![friendId]
-                                        .profilePicLink,
-                                    message: messageState.messages!.isNotEmpty
-                                        ? messageState
-                                            .messages![lastMessageId].content
-                                        : '',
-                                  );
-                                },
-                              )
-                            ],
-                          ),
-                        ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton.icon(
-                      onPressed:
-                          () {}, //=>context.read<ChatBloc>().add(CreateChatEvent(
-                      //chat: ChatModel(
-                      //localChatId: 1, chatIdMain: 2, friendId: 2),
-                      // )),
-                      icon: const Icon(Icons.add),
-                      label: const Text('Add Chat'),
-                    ),
+        backgroundColor: AppColor.colorFFFFFF,
+        shape: Border.all(
+          color: AppColor.color9E9E9E.withOpacity(0.5),
+        ),
+        elevation: 0,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            widget.chatModel.isEmpty || widget.chatModel == []
+                ? const Center(
+                    child: Text('Oops...\nno chats'),
                   )
-                ],
-              );
-            },
-          );
-        },
-      ),
-    );
+                : SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        _SearchField(controller: _searchController),
+                        const SizedBox(height: 5),
+                        ListView.separated(
+                          itemCount: widget.chatModel.length,
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: 25),
+                          itemBuilder: (context, index) {
+                            var friendId = widget.chatModel[index].friendId - 1;
+                            var lastMessageId = widget.messageModel.isEmpty
+                                ? 0
+                                : widget.messageModel.length - 1;
+                            return UserCard(
+                              selected: false,
+                              onTap: () {
+                                context.read<ChatBloc>().add(GetChatIdEvent(
+                                    friendId,
+                                    widget.chatModel[index].localChatId));
+                              },
+                              name: context
+                                  .read<UserBloc>()
+                                  .state
+                                  .users![friendId]
+                                  .name,
+                              image: context
+                                  .read<UserBloc>()
+                                  .state
+                                  .users![friendId]
+                                  .profilePicLink,
+                              message: widget.messageModel.isNotEmpty
+                                  ? widget.messageModel[lastMessageId].content
+                                  : '',
+                            );
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton.icon(
+                onPressed:
+                    () {}, //=>context.read<ChatBloc>().add(CreateChatEvent(
+                //chat: ChatModel(
+                //localChatId: 1, chatIdMain: 2, friendId: 2),
+                // )),
+                icon: const Icon(Icons.add),
+                label: const Text('Add Chat'),
+              ),
+            )
+          ],
+        ));
   }
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Drawer(
-  //     backgroundColor: AppColor.colorFFFFFF,
-  //     shape: Border.all(
-  //       color: AppColor.color9E9E9E.withOpacity(0.5),
-  //     ),
-  //     elevation: 0,
-  //     child: ListView(
-  //       children: [
-  //         _SearchField(controller: _searchController),
-  //         const SizedBox(height: 5),
-  //         ListView.separated(
-  //           physics: const NeverScrollableScrollPhysics(),
-  //           shrinkWrap: true,
-  //           separatorBuilder: (context, index) => const SizedBox(height: 25),
-  //           itemCount: 11,
-  //           itemBuilder: (context, index) {
-  //             return const UserCard(
-  //               name: 'Tony Carbonaro',
-  //               image:
-  //                   'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
-  //               message: 'This is the long text for example, long text',
-  //             );
-  //           },
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }

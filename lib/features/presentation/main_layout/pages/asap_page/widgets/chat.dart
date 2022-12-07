@@ -34,7 +34,8 @@ class _ChatState extends State<_Chat> {
               message: message.date,
             );
           } else {
-            return MyMessageCard(message: message.content, isSuccess: 0);
+            return MyMessageCard(
+                message: message.content, isSuccess: message.isWrittenToDb);
           }
         },
       ),

@@ -1,5 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_chat_app/service/lib_db.dart';
 
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
@@ -28,31 +29,56 @@ class AsapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: const [
-        // Список чатов
-        Expanded(child: _ChatListLayout()),
-        // Чат
-        Expanded(flex: 3, child: _UserChatLayout()),
-        // Профиль
-        // Expanded(
-        //   flex: 2,
-        //   child: Container(
-        //     height: MediaQuery.of(context).size.height,
-        //     width: MediaQuery.of(context).size.width,
-        //     decoration: BoxDecoration(
-        //       color: AppColor.colorFFFFFF,
-        //       border: Border.all(
-        //         color: AppColor.color9E9E9E.withOpacity(0.5),
-        //       ),
-        //     ),
-        //     child: Text(
-        //       'профиль',
-        //       style: AppTextStyle.s36Abel,
-        //     ),
-        //   ),
-        // ),
-      ],
+    return BlocConsumer<MessageBloc, MessageState>(
+      listener: (context, messageState) {
+        // TODO: implement listener
+      },
+      builder: (context, messageState) {
+        return BlocConsumer<ChatBloc, ChatState>(
+          listener: (context, chatState) {
+            // TODO: implement listener
+          },
+          builder: (context, chatState) {
+            return Row(
+              children: [
+                // Список чатов
+                Expanded(
+                    child: chatState.chats == null
+                        ? Text('Sorry')
+                        : _ChatListLayout(
+                            chatModel: chatState.chats!,
+                            messageModel: messageState.messages!)),
+                // Чат
+                Expanded(
+                    flex: 3,
+                    child: chatState.chatId == null
+                        ? Text('Sorry')
+                        : _UserChatLayout(
+                            chatId: chatState.chatId!,
+                            localChatId: chatState.localChatId!)),
+                // Профиль
+                // Expanded(
+                //   flex: 2,
+                //   child: Container(
+                //     height: MediaQuery.of(context).size.height,
+                //     width: MediaQuery.of(context).size.width,
+                //     decoration: BoxDecoration(
+                //       color: AppColor.colorFFFFFF,
+                //       border: Border.all(
+                //         color: AppColor.color9E9E9E.withOpacity(0.5),
+                //       ),
+                //     ),
+                //     child: Text(
+                //       'профиль',
+                //       style: AppTextStyle.s36Abel,
+                //     ),
+                //   ),
+                // ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 }

@@ -4,10 +4,9 @@ abstract class MessageEvent {}
 
 class CreateMessageEvent extends MessageEvent {
   final MessageModel message;
-  final int idChat;
+
   CreateMessageEvent({
     required this.message,
-    required this.idChat,
   });
 }
 
