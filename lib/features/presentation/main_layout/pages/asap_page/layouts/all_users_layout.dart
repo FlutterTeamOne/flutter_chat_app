@@ -51,8 +51,11 @@ class _AllUsersLayoutState extends State<_AllUsersLayout> {
                                   .state
                                   .users![chatState.chats![index].friendId - 1]
                                   .name,
-                              image:
-                                  'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
+                              image: context
+                                  .read<UserBloc>()
+                                  .state
+                                  .users![chatState.chats![index].friendId - 1]
+                                  .profilePicLink,
                               message:
                                   'This is the long text for example, long text',
                             ),
