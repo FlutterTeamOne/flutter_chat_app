@@ -32,13 +32,9 @@ class _ChatState extends State<_Chat> {
             _TimeCard(message: message),
         itemBuilder: (context, MessageModel message) {
           if (message.isSentByMe == false) {
-            print(message.isSentByMe);
-            print(message.message);
-            return _OtherMessageCard(
-              message: message.message,
-            );
+            return _OtherMessageCard(message: message.message);
           } else {
-            return MyMessageCard(message: message.message);
+            return MyMessageCard(message: message.message, isSuccess: 0);
           }
         },
       ),
