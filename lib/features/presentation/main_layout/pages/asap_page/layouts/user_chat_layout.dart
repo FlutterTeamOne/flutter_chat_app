@@ -53,7 +53,7 @@ class _UserChatLayoutState extends State<UserChatLayout> {
               context.read<MessageBloc>().add(
                     CreateMessageEvent(
                         message: MessageModel(
-                          localMessageId: 1,
+                          // localMessageId: 1,
                           localChatId: 1,
                           localSendId: 1,
                           content: text,

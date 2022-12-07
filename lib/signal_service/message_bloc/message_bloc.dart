@@ -81,13 +81,13 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       print("messageOK:/n $messageOk");
       if (messageOk.ok) {
         await _messagesServices.updateWrittenToServer(
-            localMessageId: message.localMessageId,
+            localMessageId: message.localMessageId!,
             isWrittenToDB: messageOk.ok ? 1 : 0);
         var updateWrittenToServer =
-            await _messagesServices.getMessageById(id: message.localMessageId);
+            await _messagesServices.getMessageById(id: message.localMessageId!);
         print('UPDATE WRITTEN TO SERVER: $updateWrittenToServer');
         var createMessageId = await _messageIdServices.createMessageId(
-            mainId: messageOk.mainMessagesId, localId: message.localMessageId);
+            mainId: messageOk.mainMessagesId, localId: message.localMessageId!);
         print('CREATE MESSAGE ID $createMessageId');
       }
     } catch (e) {
