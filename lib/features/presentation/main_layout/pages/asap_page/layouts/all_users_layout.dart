@@ -53,7 +53,7 @@ class _AllUsersLayoutState extends State<_AllUsersLayout> {
                                       chatState.chats![index].friendId - 1;
                                   var lastMessageId =
                                       messageState.messages!.isEmpty
-                                          ? messageState.messages?.length
+                                          ? 0
                                           : messageState.messages!.length - 1;
                                   return UserCard(
                                     selected: false,
@@ -68,10 +68,10 @@ class _AllUsersLayoutState extends State<_AllUsersLayout> {
                                         .state
                                         .users![friendId]
                                         .profilePicLink,
-                                    message: messageState
-                                            .messages?[lastMessageId!]
-                                            .content ??
-                                        '',
+                                    message: messageState.messages!.isNotEmpty
+                                        ? messageState
+                                            .messages![lastMessageId].content
+                                        : '',
                                   );
                                 },
                               )
