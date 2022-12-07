@@ -5,7 +5,9 @@ import 'change_theme_event.dart';
 import 'change_theme_state.dart';
 
 class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
-  // String savedTheme = UserPreferences().getTheme();
+  // final savedTheme = UserPreferences().getTheme() == null
+  //     ? 'darkThemeDeepPurple'
+  //     : UserPreferences().getTheme();
   ChangeThemeBloc() : super(ChangeThemeState(theme: 'darkThemeDeepPurple')) {
     on<LightThemeDeepPurpleEvent>(_setLightThemeDeepPurple);
     on<LightThemeLightBlueEvent>(_setLightThemeLightBlue);

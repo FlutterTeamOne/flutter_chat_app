@@ -21,85 +21,39 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           if (state.theme == 'lightThemeDeepPurple') {
             final theme = CustomTheme().lightThemeDeepPurple;
-            return MaterialApp(
-              theme: theme,
-              title: 'Flutter chat app',
-              debugShowCheckedModeBanner: false,
-              initialRoute: '/',
-              routes: {
-                '/': (context) => const MainLayout(),
-                '/mainLayout': (context) => const MainLayout(),
-                '/Settings page': (context) => const SettingsPage(),
-              },
-            );
+            return buildMaterialApp(theme);
           } else if (state.theme == 'lightThemeLightBlue') {
             final theme = CustomTheme().lightThemeLightBlue;
-            return MaterialApp(
-              theme: theme,
-              title: 'Flutter chat app',
-              debugShowCheckedModeBanner: false,
-              initialRoute: '/',
-              routes: {
-                '/': (context) => const MainLayout(),
-                '/mainLayout': (context) => const MainLayout(),
-                '/Settings page': (context) => const SettingsPage(),
-              },
-            );
+            return buildMaterialApp(theme);
           } else if (state.theme == 'lightThemeOrange') {
             final theme = CustomTheme().lightThemeOrange;
-            return MaterialApp(
-              theme: theme,
-              title: 'Flutter chat app',
-              debugShowCheckedModeBanner: false,
-              initialRoute: '/',
-              routes: {
-                '/': (context) => const MainLayout(),
-                '/mainLayout': (context) => const MainLayout(),
-                '/Settings page': (context) => const SettingsPage(),
-              },
-            );
+            return buildMaterialApp(theme);
           } else if (state.theme == 'darkThemeLightBlue') {
             final theme = CustomTheme().darkThemeLightBlue;
-            return MaterialApp(
-              theme: theme,
-              title: 'Flutter chat app',
-              debugShowCheckedModeBanner: false,
-              initialRoute: '/',
-              routes: {
-                '/': (context) => const MainLayout(),
-                '/mainLayout': (context) => const MainLayout(),
-                '/Settings page': (context) => const SettingsPage(),
-              },
-            );
+            return buildMaterialApp(theme);
           } else if (state.theme == 'darkThemeOrange') {
             final theme = CustomTheme().darkThemeOrange;
-            return MaterialApp(
-              theme: theme,
-              title: 'Flutter chat app',
-              debugShowCheckedModeBanner: false,
-              initialRoute: '/',
-              routes: {
-                '/': (context) => const MainLayout(),
-                '/mainLayout': (context) => const MainLayout(),
-                '/Settings page': (context) => const SettingsPage(),
-              },
-            );
+            return buildMaterialApp(theme);
           } else {
             final theme = CustomTheme().darkThemeDeepPurple;
-            return MaterialApp(
-              theme: theme,
-              title: 'Flutter chat app',
-              debugShowCheckedModeBanner: false,
-              initialRoute: '/',
-              routes: {
-                '/': (context) => const MainLayout(),
-                '/mainLayout': (context) => const MainLayout(),
-                '/Settings page': (context) => const SettingsPage(),
-              },
-            );
+            return buildMaterialApp(theme);
           }
         },
       ),
     );
+  }
+
+  MaterialApp buildMaterialApp(ThemeData theme) {
+    return MaterialApp(
+            theme: theme,
+            title: 'Flutter chat app',
+            debugShowCheckedModeBanner: false,
+            initialRoute: '/',
+            routes: {
+              '/': (context) => const MainLayout(),
+              '/mainLayout': (context) => const MainLayout(),
+              '/Settings page': (context) => const SettingsPage(),
+            },
+          );
   }
 }
