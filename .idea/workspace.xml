@@ -6,10 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="add settings page to mainLayout bar">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/main_layout.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/main_layout.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/asap_page/widgets/text_input.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/pages/asap_page/widgets/text_input.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/style manager/bloc/change_theme_bloc/settings_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/style manager/settings_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/style manager/bloc/change_theme_bloc/change_theme_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/style manager/bloc/change_theme_bloc/change_theme_bloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/style manager/bloc/change_theme_bloc/change_theme_event.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/style manager/bloc/change_theme_bloc/change_theme_event.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/style manager/settings_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/style manager/settings_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/style manager/themes/custom_themes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/style manager/themes/custom_themes.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,7 +184,21 @@
       <option name="project" value="LOCAL" />
       <updated>1670408421741</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="add settings page to mainLayout bar">
+      <created>1670409838158</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1670409838158</updated>
+    </task>
+    <task id="LOCAL-00016" summary="add settings page to mainLayout bar">
+      <created>1670409910340</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1670409910340</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="ToolWindowManager">

@@ -1,4 +1,13 @@
 abstract class ChangeThemeEvent {}
 
-class LightThemeEvent extends ChangeThemeEvent {}
-class DarkThemeEvent extends ChangeThemeEvent {}
+class LightThemeDeepPurpleEvent extends ChangeThemeEvent {}
+
+class LightThemeLightBlueEvent extends ChangeThemeEvent {}
+
+class LightThemeOrangeEvent extends ChangeThemeEvent {}
+
+class DarkThemeDeepPurpleEvent extends ChangeThemeEvent {}
+
+class DarkThemeLightBlueEvent extends ChangeThemeEvent {}
+
+class DarkThemeOrangeEvent extends ChangeThemeEvent {}

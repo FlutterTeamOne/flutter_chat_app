@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_app/style%20manager/bloc/change_theme_bloc/change_theme_bloc.dart';
+import 'package:flutter_chat_app/style%20manager/themes/custom_themes.dart';
 
 import 'bloc/change_theme_bloc/change_theme_event.dart';
 
@@ -9,42 +10,69 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ChangeThemeBloc changeThemeBloc = BlocProvider.of<ChangeThemeBloc>(context);
+    final ChangeThemeBloc changeThemeBloc =
+        BlocProvider.of<ChangeThemeBloc>(context);
     return Scaffold(
       body: Center(
-        child: Column(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.end,
-            //   children: [
-            //     IconButton(
-            //       icon: const Icon(Icons.close),
-            //       onPressed: () {
-            //         Navigator.pushNamed(context, '/mainLayout');
-            //       },
-            //     ),
-            //   ],
-            // ),
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-            IconButton(
-                onPressed: () {
-                  changeThemeBloc.add(LightThemeEvent());
-                },
-                icon: Icon(Icons.light_mode_outlined)),
-            IconButton(
-                onPressed: () {
-                  changeThemeBloc.add(DarkThemeEvent());
-                },
-                icon: Icon(Icons.dark_mode_outlined)),
-            ]),
-            // Row(
-            //   children: [
-            //     Container(),
-            //   ],
-            // ),
+                Card(
+                  color: CustomTheme().darkThemeDeepPurple.colorScheme.primary,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              changeThemeBloc.add(LightThemeDeepPurpleEvent());
+                            },
+                            icon: Icon(Icons.light_mode_outlined)),
+                        IconButton(
+                            onPressed: () {
+                              changeThemeBloc.add(DarkThemeDeepPurpleEvent());
+                            },
+                            icon: Icon(Icons.dark_mode_outlined)),
+                      ]),
+                ),
+                Card(
+                  color: CustomTheme().darkThemeLightBlue.colorScheme.primary,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              changeThemeBloc.add(LightThemeLightBlueEvent());
+                            },
+                            icon: Icon(Icons.light_mode_outlined)),
+                        IconButton(
+                            onPressed: () {
+                              changeThemeBloc.add(DarkThemeLightBlueEvent());
+                            },
+                            icon: Icon(Icons.dark_mode_outlined)),
+                      ]),
+                ),
+                Card(
+                  color: CustomTheme().darkThemeOrange.colorScheme.primary,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              changeThemeBloc.add(LightThemeOrangeEvent());
+                            },
+                            icon: Icon(Icons.light_mode_outlined)),
+                        IconButton(
+                            onPressed: () {
+                              changeThemeBloc.add(DarkThemeOrangeEvent());
+                            },
+                            icon: Icon(Icons.dark_mode_outlined)),
+                      ]),
+                ),
+              ],
+            ),
           ],
         ),
       ),
