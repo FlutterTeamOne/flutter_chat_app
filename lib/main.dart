@@ -6,7 +6,7 @@ import 'package:flutter_chat_app/features/presentation/main_layout/main_layout.d
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    setWindowMinSize(const Size(940, 470));
+    setWindowMinSize(const Size(960, 480));
   }
   runApp(const MyApp());
 }

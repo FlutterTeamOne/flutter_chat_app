@@ -15,6 +15,7 @@ part 'widgets/chat_app_bar.dart';
 part 'widgets/text_input.dart';
 part 'widgets/chat.dart';
 part 'widgets/message_cards/time_card.dart';
+part 'widgets/app_card.dart';
 
 class AsapPage extends StatelessWidget {
   const AsapPage({

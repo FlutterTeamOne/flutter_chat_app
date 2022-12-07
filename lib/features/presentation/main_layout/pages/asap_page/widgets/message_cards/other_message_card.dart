@@ -22,7 +22,7 @@ class _OtherMessageCard extends StatelessWidget {
           ),
           color: AppColor.colorFFFFFF,
           margin:
-              const EdgeInsets.only(left: 15, bottom: 5, top: 5, right: 320),
+              const EdgeInsets.only(left: 10, bottom: 5, top: 5, right: 320),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: SelectableText(
