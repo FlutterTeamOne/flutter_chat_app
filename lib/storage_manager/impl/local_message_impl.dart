@@ -22,21 +22,16 @@ class LocalMessagesServices implements ILocalMessagesServices {
       tableName: DatabaseConst.messageTable,
       model: {
         // DatabaseConst.columnId: id,
-        DatabaseConst.columnLocalChatId: localChatId,
-        DatabaseConst.columnSenderLocalId: senderId,
-        DatabaseConst.columnIsWrittenToDb: isWrittenToDb,
-        DatabaseConst.columnContent: content,
-        DatabaseConst.columnDate: date
+        DatabaseConst.messagesColumnLocalChatId: localChatId,
+        DatabaseConst.messagesColumnSenderLocalId: senderId,
+        DatabaseConst.messagesColumnIsWrittenToDb: isWrittenToDb,
+        DatabaseConst.messagesColumnContent: content,
+        DatabaseConst.messagesColumnDate: date
       },
     );
 
-  await  stub.createMessage(
-      Message(
-          userMainId1: 1,
-          userMainId2: 2,
-          senderMainId: 1,
-          content: content,
-          date: date),
+    await stub.createMessage(
+      Message(chatIdMaint: 1, senderMainId: 1, content: content, date: date),
     );
   }
 
@@ -54,8 +49,8 @@ class LocalMessagesServices implements ILocalMessagesServices {
 
     return message
         .map((item) => Message(
-            userMainId1: item[DatabaseConst.columnLocalChatId] as int,
-            userMainId2: item[DatabaseConst.columnSenderLocalId] as int,
+            chatIdMaint:
+                item[DatabaseConst.messagesColumnLocalMessagesId] as int,
             senderMainId: item['sender_id'] as int,
             content: item['content'] as String,
             date: item['date'] as String))
