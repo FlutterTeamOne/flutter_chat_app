@@ -4,7 +4,7 @@ protoc --dart_out=grpc:lib/src/generated -Iprotos protos/grpc_chat.proto
 
 генерация для сервера 
 
-protoc --dart_out=grpc:server/server_bd/lib/src/generated -Iprotos protos/grpc_chat.proto
+protoc --dart_out=grpc:servers/server_bd/lib/src/generated -Iprotos protos/grpc_chat.proto
 
 ///
 ///Запуск клиента и Сервера в разных консолях!!!!!!
@@ -12,11 +12,11 @@ protoc --dart_out=grpc:server/server_bd/lib/src/generated -Iprotos protos/grpc_c
 
 Запуск клиента консольного
 
-dart server\server_bd\bin\client.dart
+dart servers\server_bd\bin\client.dart
 
 Запуск локального сервера
 
-dart server\server_bd\bin\server.dart
+dart servers\server_bd\bin\server.dart
 
 
 При ошибках с grpc или Базой: 
