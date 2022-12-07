@@ -15,6 +15,17 @@ class SettingsPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.end,
+            //   children: [
+            //     IconButton(
+            //       icon: const Icon(Icons.close),
+            //       onPressed: () {
+            //         Navigator.pushNamed(context, '/mainLayout');
+            //       },
+            //     ),
+            //   ],
+            // ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -29,6 +40,11 @@ class SettingsPage extends StatelessWidget {
                 },
                 icon: Icon(Icons.dark_mode_outlined)),
             ]),
+            // Row(
+            //   children: [
+            //     Container(),
+            //   ],
+            // ),
           ],
         ),
       ),

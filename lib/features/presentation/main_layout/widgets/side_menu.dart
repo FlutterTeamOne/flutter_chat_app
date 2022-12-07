@@ -61,6 +61,10 @@ class _SideMenu extends StatelessWidget {
           icon: Icons.diamond_rounded,
           label: 'VideoS',
         ),
+        SidebarXItem(
+          icon: Icons.settings,
+          label: 'Settings',
+        ),
       ],
     );
   }

@@ -8,6 +8,7 @@ import 'package:flutter_chat_app/features/presentation/main_layout/pages/job_lit
 import 'package:flutter_chat_app/features/presentation/main_layout/pages/meet_net_page/meet_net_page.dart';
 import 'package:flutter_chat_app/features/presentation/main_layout/pages/profile_page/profile_page.dart';
 import 'package:flutter_chat_app/features/presentation/main_layout/pages/videos_page/videos_page.dart';
+import 'package:flutter_chat_app/style%20manager/bloc/change_theme_bloc/settings_page.dart';
 import 'package:flutter_chat_app/themes/color/app_color.dart';
 import 'package:flutter_chat_app/themes/text_style/app_text_style.dart';
 import 'package:sidebarx/sidebarx.dart';

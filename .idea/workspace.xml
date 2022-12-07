@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="clear color and text style">
+    <list default="true" id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="add settings page and change theme with bloc">
+      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/main_layout.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/main_layout.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/widgets/page_controller_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/widgets/page_controller_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/main_layout/widgets/side_menu.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/main_layout/widgets/side_menu.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/style manager/bloc/change_theme_bloc/settings_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/style manager/bloc/change_theme_bloc/settings_page.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,7 +170,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670327428150</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="add settings page and change theme with bloc">
+      <created>1670335942848</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1670335942848</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -196,6 +208,7 @@
     <MESSAGE value="style manager start" />
     <MESSAGE value="start style manager" />
     <MESSAGE value="clear color and text style" />
-    <option name="LAST_COMMIT_MESSAGE" value="clear color and text style" />
+    <MESSAGE value="add settings page and change theme with bloc" />
+    <option name="LAST_COMMIT_MESSAGE" value="add settings page and change theme with bloc" />
   </component>
 </project>

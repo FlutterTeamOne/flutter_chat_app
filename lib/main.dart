@@ -27,8 +27,9 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             initialRoute: '/',
             routes: {
-              '/': (context) => const SettingsPage(),
+              '/': (context) => const MainLayout(),
               '/mainLayout': (context) => const MainLayout(),
+              '/Settings page': (context) => const SettingsPage(),
             },
           );
         },
