@@ -3,10 +3,10 @@
 class _TimeCard extends StatelessWidget {
   const _TimeCard({
     Key? key,
-    required this.message,
+    required this.date,
   }) : super(key: key);
 
-  final MessageModel message;
+  final String date;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -23,7 +23,8 @@ class _TimeCard extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Text(
-              DateFormat.yMMMd().format(message.date),
+              
+              DateFormat.yMMMd().format(DateTime.parse(date)),
               style: AppTextStyle.s17Abel.copyWith(fontSize: 14),
             ),
           ),

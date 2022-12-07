@@ -23,18 +23,18 @@ class _ChatState extends State<_Chat> {
         reverse: true,
         order: GroupedListOrder.DESC,
         floatingHeader: true,
-        groupBy: (message) => DateTime(
-          message.date.year,
-          message.date.month,
-          message.date.day,
-        ),
+        groupBy: (message) => DateTime.parse(message.date),
         groupHeaderBuilder: (MessageModel message) =>
-            _TimeCard(message: message),
+            _TimeCard(date: message.date),
         itemBuilder: (context, MessageModel message) {
-          if (message.isSentByMe == false) {
-            return _OtherMessageCard(message: message.message);
+          if (message.localSendId == 0) {
+            // print(message.isSentByMe);
+            // print(message.message);
+            return _OtherMessageCard(
+              message: message.date,
+            );
           } else {
-            return MyMessageCard(message: message.message, isSuccess: 0);
+            return MyMessageCard(message: message.content, isSuccess: 0);
           }
         },
       ),

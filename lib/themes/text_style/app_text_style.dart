@@ -1,5 +1,5 @@
 ﻿import 'package:flutter/cupertino.dart';
-import 'package:flutter_chat_app/themes/color/app_color.dart';
+import '../color/app_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 abstract class AppTextStyle {

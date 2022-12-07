@@ -1,12 +1,12 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_chat_app/signal_service/bloc/network/network_events/network_notify.dart';
-import 'package:flutter_chat_app/signal_service/bloc/network/network_events/network_observe.dart';
-import 'package:flutter_chat_app/signal_service/bloc/network/network_state/abstract_network_state.dart';
-import 'package:flutter_chat_app/signal_service/bloc/network/network_state/network_failure.dart';
-import 'package:flutter_chat_app/signal_service/bloc/network/network_state/network_initial.dart';
-import 'package:flutter_chat_app/signal_service/bloc/network/network_state/network_success.dart';
-import 'package:flutter_chat_app/signal_service/bloc/network/network_helper.dart';
+import 'network_events/network_notify.dart';
+import 'network_events/network_observe.dart';
+import 'network_state/abstract_network_state.dart';
+import 'network_state/network_failure.dart';
+import 'network_state/network_initial.dart';
+import 'network_state/network_success.dart';
+import 'network_helper.dart';
 
 
 import 'network_events/abstract_network_events.dart';

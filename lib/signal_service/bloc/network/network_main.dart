@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_chat_app/signal_service/bloc/network/network_state/network_success.dart';
+import 'network_state/network_success.dart';
 
 import 'network_bloc.dart';
 import 'network_events/network_observe.dart';

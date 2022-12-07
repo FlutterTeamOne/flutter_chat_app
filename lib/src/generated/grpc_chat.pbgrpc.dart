@@ -1,16 +1,11 @@
 ///
-//  Generated code. Do not modify.
-//  source: grpc_chat.proto
-//
-// @dart = 2.12
-// ignore_for_file: annotate_overrides,camel_case_types,constant_identifier_names,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
-
 import 'dart:async' as $async;
-
 import 'dart:core' as $core;
 
 import 'package:grpc/service_api.dart' as $grpc;
+
 import 'grpc_chat.pb.dart' as $0;
+
 export 'grpc_chat.pb.dart';
 
 class GrpcChatClient extends $grpc.Client {
@@ -22,11 +17,17 @@ class GrpcChatClient extends $grpc.Client {
       '/GrpcChat/createMessage',
       ($0.Message value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.MessageBase.fromBuffer(value));
-  static final _$createNessages =
+  static final _$createMessages =
       $grpc.ClientMethod<$0.Message, $0.MessageBase>(
-          '/GrpcChat/createNessages',
+          '/GrpcChat/createMessages',
           ($0.Message value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $0.MessageBase.fromBuffer(value));
+  static final _$synchronization =
+      $grpc.ClientMethod<$0.LastMessage, $0.MessageFromBase>(
+          '/GrpcChat/synchronization',
+          ($0.LastMessage value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.MessageFromBase.fromBuffer(value));
 
   GrpcChatClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -43,10 +44,18 @@ class GrpcChatClient extends $grpc.Client {
     return $createUnaryCall(_$createMessage, request, options: options);
   }
 
-  $grpc.ResponseStream<$0.MessageBase> createNessages(
+  $grpc.ResponseStream<$0.MessageBase> createMessages(
       $async.Stream<$0.Message> request,
       {$grpc.CallOptions? options}) {
-    return $createStreamingCall(_$createNessages, request, options: options);
+    return $createStreamingCall(_$createMessages, request, options: options);
+  }
+
+  $grpc.ResponseStream<$0.MessageFromBase> synchronization(
+      $0.LastMessage request,
+      {$grpc.CallOptions? options}) {
+    return $createStreamingCall(
+        _$synchronization, $async.Stream.fromIterable([request]),
+        options: options);
   }
 }
 
@@ -69,12 +78,19 @@ abstract class GrpcChatServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) => $0.Message.fromBuffer(value),
         ($0.MessageBase value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.Message, $0.MessageBase>(
-        'createNessages',
-        createNessages,
+        'createMessages',
+        createMessages,
         true,
         true,
         ($core.List<$core.int> value) => $0.Message.fromBuffer(value),
         ($0.MessageBase value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.LastMessage, $0.MessageFromBase>(
+        'synchronization',
+        synchronization_Pre,
+        false,
+        true,
+        ($core.List<$core.int> value) => $0.LastMessage.fromBuffer(value),
+        ($0.MessageFromBase value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.Empty> connecting_Pre(
@@ -87,9 +103,16 @@ abstract class GrpcChatServiceBase extends $grpc.Service {
     return createMessage(call, await request);
   }
 
+  $async.Stream<$0.MessageFromBase> synchronization_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.LastMessage> request) async* {
+    yield* synchronization(call, await request);
+  }
+
   $async.Future<$0.Empty> connecting($grpc.ServiceCall call, $0.Empty request);
   $async.Future<$0.MessageBase> createMessage(
       $grpc.ServiceCall call, $0.Message request);
-  $async.Stream<$0.MessageBase> createNessages(
+  $async.Stream<$0.MessageBase> createMessages(
       $grpc.ServiceCall call, $async.Stream<$0.Message> request);
+  $async.Stream<$0.MessageFromBase> synchronization(
+      $grpc.ServiceCall call, $0.LastMessage request);
 }
