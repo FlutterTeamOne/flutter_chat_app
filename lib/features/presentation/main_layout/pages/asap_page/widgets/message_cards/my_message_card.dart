@@ -13,26 +13,36 @@ class MyMessageCard extends StatelessWidget {
       child: ConstrainedBox(
         constraints:
             BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 145),
-        child: Card(
-          elevation: 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-            side: BorderSide(
-              width: 0.1,
-              // color: AppColor.color000000.withOpacity(0.6),
-            ),
-          ),
-          // color: AppColor.color4A2D7C,
-          margin:
-              const EdgeInsets.only(left: 320, bottom: 5, top: 5, right: 15),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: SelectableText(
-              message,
-              // style: AppTextStyle.s17Abel,
-            ),
-          ),
-        ),
+        child: isSuccess == 1
+            ? _AppCard(message: message, marginIndex: 15)
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  currentWidth > 888.8
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            _AppCard(
+                              marginIndex: 5,
+                              message: message,
+                            ),
+                            const Icon(
+                              Icons.error,
+                              //color: AppColor.colorF44336,
+                            )
+                          ],
+                        )
+                      : _AppCard(
+                          marginIndex: 10,
+                          message: message,
+                        ),
+                  Text(
+                    'Not Delivered',
+                    // style: AppTextStyle.s14AbelGrey
+                    //     .copyWith(color: AppColor.colorF44336),
+                  )
+                ],
+              ),
       ),
     );
   }
