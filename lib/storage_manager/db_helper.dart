@@ -114,7 +114,8 @@ CREATE INDEX MESSAGE_ID_IN_MAIN_FK_1 ON ${DatabaseConst.messageIdTable}
         {
           'name': 'test1',
           'email': 't1@t1.t1',
-          DatabaseConst.usersColumnProfilePicLink: 'test1',
+          DatabaseConst.usersColumnProfilePicLink:
+              'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
           DatabaseConst.usersColumnRegistrationDate:
               '2022-12-02T21:36:32.653712',
           DatabaseConst.usersColumnMainUsersId: 1
@@ -125,7 +126,8 @@ CREATE INDEX MESSAGE_ID_IN_MAIN_FK_1 ON ${DatabaseConst.messageIdTable}
         {
           'name': 'test2',
           'email': 't2@t2.t2',
-          DatabaseConst.usersColumnProfilePicLink: 'test2',
+          DatabaseConst.usersColumnProfilePicLink:
+              'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
           DatabaseConst.usersColumnRegistrationDate:
               '2022-12-02T21:36:32.653712',
           DatabaseConst.usersColumnMainUsersId: 2
