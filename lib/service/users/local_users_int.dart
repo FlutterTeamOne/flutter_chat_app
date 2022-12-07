@@ -20,7 +20,8 @@ abstract class ILocalUsersServices {
   Future<int> deleteUser({required int id});
 
   Future<List<UserModel>> getAllUsers();
-  Future<int> getUserByLocalId({required int localId});
+  Future<int> getMainIdUserByLocalId({required int localId});
+  Future<UserModel> getUserByLocalId({required int localId});
 }
 
 final localUsersServices = ILocalUsersServices();

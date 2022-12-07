@@ -62,7 +62,7 @@ class LocalUsersServices implements ILocalUsersServices {
   }
 
   @override
-  Future<int> getUserByLocalId({required int localId}) async {
+  Future<int> getMainIdUserByLocalId({required int localId}) async {
     var db = await DBHelper.instanse.database;
 
     var user = await db.rawQuery('''
@@ -71,6 +71,18 @@ class LocalUsersServices implements ILocalUsersServices {
               WHERE ${DatabaseConst.usersColumnId} = $localId
               ''');
     return user[0]['main_users_id'] as int;
+  }
+
+  @override
+  Future<UserModel> getUserByLocalId({required int localId}) async {
+    var db = await DBHelper.instanse.database;
+
+    var user = await db.rawQuery('''
+              SELECT ${DatabaseConst.usersColumnMainUsersId}
+              FROM ${DatabaseConst.userTable}
+              WHERE ${DatabaseConst.usersColumnId} = $localId
+              ''');
+    return user[0] as UserModel;
   }
 
   @override

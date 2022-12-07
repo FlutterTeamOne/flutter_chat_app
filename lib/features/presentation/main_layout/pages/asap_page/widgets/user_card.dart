@@ -1,13 +1,14 @@
 ﻿part of '../asap_page.dart';
 
 class UserCard extends StatelessWidget {
-  const UserCard(
-      {super.key,
-      required this.name,
-      required this.image,
-      required this.message,
-      required this.onTap,
-      required this.selected});
+  const UserCard({
+    super.key,
+    required this.name,
+    required this.image,
+    required this.message,
+    required this.onTap,
+    required this.selected,
+  });
 
   final String name;
   final String image;
@@ -43,5 +44,3 @@ class UserCard extends StatelessWidget {
     );
   }
 }
-
-

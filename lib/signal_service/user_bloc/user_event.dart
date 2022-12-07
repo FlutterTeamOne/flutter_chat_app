@@ -12,6 +12,7 @@ class CreateUserEvent extends UserEvent {
 
 class ReadUsersEvent extends UserEvent {
   final List<UserModel>? users;
+  final int? localId;
 
-  ReadUsersEvent({this.users});
+  ReadUsersEvent({this.localId, this.users});
 }

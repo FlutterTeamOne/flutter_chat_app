@@ -18,14 +18,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   FutureOr<void> _onReadUsersEvent(
       ReadUsersEvent event, Emitter<UserState> emit) async {
-    if (event.users != null) {
-      var users = await _usersServices.getAllUsers();
-      print('USERS: $users');
-      emit(state.copyWith(users: users));
-    } else {
-      emit(state.copyWith(users: event.users));
-      print(event.users);
-    }
+    _usersServices = LocalUsersServices();
+    var users = await _usersServices.getAllUsers();
+    print('USERS: $users');
+    emit(state.copyWith(users: users));
+
+    // emit(state.copyWith(users: event.users));
+    // print(event.users);
+    // }
   }
 
   FutureOr<void> _onCreateUserEvent(

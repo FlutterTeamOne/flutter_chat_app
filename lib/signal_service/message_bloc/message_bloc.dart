@@ -71,8 +71,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         await chats.getMainIdChatByMessage(localId: event.idChat);
     messageToServer.content = message.content;
     messageToServer.date = message.date;
-    messageToServer.senderMainId =
-        await localUsersServices.getUserByLocalId(localId: message.localSendId);
+    messageToServer.senderMainId = await localUsersServices
+        .getMainIdUserByLocalId(localId: message.localSendId);
     print('message to server \n $messageToServer');
 
     try {
