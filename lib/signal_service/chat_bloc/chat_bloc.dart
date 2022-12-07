@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_chat_app/service/lib_db.dart';
+import '../../service/lib_db.dart';
 
-import '../../features/data/models/chat_model/chat_model.dart';
+import '../../src/libs/models_lib.dart';
 
 part 'chat_event.dart';
 part 'chat_state.dart';
@@ -30,8 +30,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   FutureOr<void> _onCreateChatEvent(
       CreateChatEvent event, Emitter<ChatState> emit) async {
+    _chatServices = LocalChatServices();
     var chat = event.chat;
-    await _chatServices.createChat(
+    var chats = await _chatServices.createChat(
         chatIdMainDB: chat.chatIdMain, friendId: chat.friendId);
+    emit(state.copyWith(chats: chats));
   }
 }

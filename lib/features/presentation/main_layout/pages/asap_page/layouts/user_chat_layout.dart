@@ -50,8 +50,9 @@ class _UserChatLayoutState extends State<UserChatLayout> {
             builder: (context, state) {
               if (state.messages != null) {
                 return _Chat(messages: state.messages!);
-              } else
-                return Center(child: CircularProgressIndicator());
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
             },
           ),
         ),

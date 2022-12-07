@@ -1,10 +1,8 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter_chat_app/features/data/models/message_id_in_main_model/message_id_in_main_model.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../service/lib_db.dart';
+import '../../src/libs/models_lib.dart';
 
 part 'message_id_in_main_event.dart';
 part 'message_id_in_main_state.dart';
@@ -19,7 +17,7 @@ class MessageIdInMainBloc
   FutureOr<void> _onCreateMessageIdInMainEvent(CreateMessageIdInMainEvent event,
       Emitter<MessageIdInMainState> emit) async {
     var messageId = event.messageIdInMain;
-  await  _messageIdServices.createMessageId(
+    await _messageIdServices.createMessageId(
         mainId: messageId.mainMessageId, localId: messageId.localMessageId);
   }
 }

@@ -1,5 +1,4 @@
-import 'package:flutter_chat_app/features/data/models/chat_model/chat_model.dart';
-
+import '../../src/libs/models_lib.dart';
 import '../lib_db.dart';
 
 class LocalChatServices implements ILocalChatsServices {

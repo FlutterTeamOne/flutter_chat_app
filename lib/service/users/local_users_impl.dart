@@ -1,5 +1,4 @@
-import 'package:flutter_chat_app/features/data/models/user_model.dart/user_model.dart';
-
+import '../../src/libs/models_lib.dart';
 import '../lib_db.dart';
 
 class LocalUsersServices implements ILocalUsersServices {

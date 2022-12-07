@@ -1,8 +1,6 @@
-import 'package:flutter_chat_app/storage_manager/db_helper.dart';
-import 'package:grpc/service_api.dart';
+import '../../storage_manager/db_helper.dart';
 
-import '../../features/data/models/message_model/message_model.dart';
-import '../../library.dart';
+import '../../src/libs/models_lib.dart';
 import '../../storage_manager/database_const.dart';
 import 'local_message_int.dart';
 

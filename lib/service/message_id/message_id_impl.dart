@@ -1,5 +1,4 @@
-import 'package:grpc/grpc.dart';
-import 'package:flutter_chat_app/service/lib_db.dart';
+import '../lib_db.dart';
 
 class MessageIdServices implements IMessageIdServices {
   MessageIdServices();

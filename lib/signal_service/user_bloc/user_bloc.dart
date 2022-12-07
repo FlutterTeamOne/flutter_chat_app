@@ -1,11 +1,8 @@
 import 'dart:async';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../service/lib_db.dart';
 
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter_chat_app/service/lib_db.dart';
-
-import '../../client/grpc_client.dart';
-import '../../features/data/models/user_model.dart/user_model.dart';
+import '../../src/libs/models_lib.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';
@@ -32,9 +29,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   FutureOr<void> _onCreateUserEvent(
-      CreateUserEvent event, Emitter<UserState> emit)async {
+      CreateUserEvent event, Emitter<UserState> emit) async {
     var user = event.user;
-   await _usersServices.createUser(
+    await _usersServices.createUser(
         name: user.name,
         email: user.email,
         registrationDate: user.registrationDate,

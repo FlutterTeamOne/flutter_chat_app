@@ -1,4 +1,4 @@
-import 'package:flutter_chat_app/storage_manager/user_preferences.dart';
+import 'user_preferences.dart';
 
 import '../domain/model/unread_message_model.dart';
 

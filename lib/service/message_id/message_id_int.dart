@@ -1,5 +1,4 @@
-import 'package:flutter_chat_app/client/grpc_client.dart';
-import 'package:flutter_chat_app/service/lib_db.dart';
+import '../lib_db.dart';
 
 abstract class IMessageIdServices {
   factory IMessageIdServices() => MessageIdServices();

@@ -4,9 +4,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../client/grpc_client.dart';
-import '../../features/data/models/message_model/message_model.dart';
 import '../../library.dart';
-import 'package:flutter_chat_app/service/lib_db.dart';
+import '../../service/lib_db.dart';
+
+import '../../src/libs/models_lib.dart';
 
 part 'message_event.dart';
 part 'message_state.dart';

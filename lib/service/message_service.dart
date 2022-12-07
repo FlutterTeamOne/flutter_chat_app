@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter_chat_app/library.dart';
+import '../library.dart';
 import 'package:grpc/service_api.dart';
 
 class MessageService {

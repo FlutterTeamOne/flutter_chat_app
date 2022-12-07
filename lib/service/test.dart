@@ -1,5 +1,5 @@
-import 'package:flutter_chat_app/client/grpc_client.dart';
-import "package:flutter_chat_app/service/lib_db.dart";
+import '../client/grpc_client.dart';
+import "lib_db.dart";
 
 Future<void> main() async {
   ///

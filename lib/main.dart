@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_chat_app/features/presentation/main_layout/main_layout.dart';
-import 'package:flutter_chat_app/sender_manager/conncetion_bloc/connection_bloc.dart';
+import 'features/presentation/main_layout/main_layout.dart';
+import 'sender_manager/conncetion_bloc/connection_bloc.dart';
+import 'signal_service/message_id_in_main_bloc/message_id_in_main_bloc.dart';
 
 import 'client/grpc_client.dart';
+import 'signal_service/chat_bloc/chat_bloc.dart';
 import 'signal_service/message_bloc/message_bloc.dart';
 import 'signal_service/user_bloc/user_bloc.dart';
 import 'storage_manager/db_helper.dart';
@@ -27,9 +29,15 @@ class MyApp extends StatelessWidget {
         BlocProvider<UserBloc>(
           create: (context) => UserBloc()..add(ReadUsersEvent()),
         ),
+        BlocProvider<ChatBloc>(
+          create: (context) => ChatBloc()..add(ReadChatEvent()),
+        ),
         BlocProvider<MessageBloc>(
           create: (context) =>
               MessageBloc(grpcClient: grpcClient)..add(ReadMessageEvent()),
+        ),
+        BlocProvider<MessageIdInMainBloc>(
+          create: (context) => MessageIdInMainBloc(),
         ),
       ],
       child: MaterialApp(

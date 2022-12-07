@@ -1,6 +1,4 @@
-
-import 'package:flutter_chat_app/features/data/models/chat_model/chat_model.dart';
-
+import '../../src/libs/models_lib.dart';
 import 'local_chat_impl.dart';
 
 abstract class ILocalChatsServices {
@@ -11,7 +9,7 @@ abstract class ILocalChatsServices {
 
   deleteChat({required int id});
 
- Future<List<ChatModel>> getAllChats();
+  Future<List<ChatModel>> getAllChats();
   getMainIdChatByMessage({required int localId});
 }
 
