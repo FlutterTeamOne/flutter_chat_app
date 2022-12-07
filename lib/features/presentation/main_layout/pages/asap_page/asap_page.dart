@@ -15,12 +15,14 @@ part 'widgets/message_cards/my_message_card.dart';
 part 'widgets/message_cards/other_message_card.dart';
 part 'layouts/chat_list_layout.dart';
 part 'layouts/user_chat_layout.dart';
+part 'layouts/default_user_chat_layout.dart';
 part 'widgets/user_card.dart';
 part 'widgets/chat_app_bar.dart';
 part 'widgets/text_input.dart';
 part 'widgets/chat.dart';
 part 'widgets/message_cards/time_card.dart';
 part 'widgets/app_card.dart';
+part 'widgets/app_circle_button.dart';
 
 class AsapPage extends StatelessWidget {
   const AsapPage({
@@ -52,7 +54,7 @@ class AsapPage extends StatelessWidget {
                 Expanded(
                     flex: 3,
                     child: chatState.chatId == null
-                        ? Text('Sorry')
+                        ? _DefaultUserChatLayout()
                         : _UserChatLayout(
                             chatId: chatState.chatId!,
                             localChatId: chatState.localChatId!)),
