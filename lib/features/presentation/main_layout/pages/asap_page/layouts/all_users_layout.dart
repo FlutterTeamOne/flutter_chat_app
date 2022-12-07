@@ -28,7 +28,8 @@ class _AllUsersLayoutState extends State<_AllUsersLayout> {
           return Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              state.chats == null && state.chats == []
+              
+              state.chats == null || state.chats == []
                   ? const Center(
                       child: Text('Oops...\nno chats'),
                     )
@@ -59,10 +60,10 @@ class _AllUsersLayoutState extends State<_AllUsersLayout> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton.icon(
-                  onPressed: () => context.read<ChatBloc>().add(CreateChatEvent(
-                        chat: ChatModel(
-                            localChatId: 1, chatIdMain: 2, friendId: 2),
-                      )),
+                  onPressed: () {}, //=>context.read<ChatBloc>().add(CreateChatEvent(
+                        //chat: ChatModel(
+                            //localChatId: 1, chatIdMain: 2, friendId: 2),
+                     // )),
                   icon: const Icon(Icons.add),
                   label: const Text('Add Chat'),
                 ),
