@@ -28,7 +28,7 @@ class LocalChatServices implements ILocalChatsServices {
               SELECT *
               FROM ${DatabaseConst.chatsTable}
               ''');
-    return chats
+    return await chats
         .map((item) => ChatModel(
             localChatId: item[DatabaseConst.chatsColumnLocalChatId] as int,
             chatIdMain: item[DatabaseConst.chatsColumnChatIdMain] as int,
