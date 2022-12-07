@@ -14,12 +14,14 @@ part 'widgets/message_cards/my_message_card.dart';
 part 'widgets/message_cards/other_message_card.dart';
 part 'layouts/chat_list_layout.dart';
 part 'layouts/user_chat_layout.dart';
+part 'layouts/default_user_chat_layout.dart';
 part 'widgets/user_card.dart';
 part 'widgets/chat_app_bar.dart';
 part 'widgets/text_input.dart';
 part 'widgets/chat.dart';
 part 'widgets/message_cards/time_card.dart';
 part 'widgets/app_card.dart';
+part 'widgets/app_circle_button.dart';
 
 class AsapPage extends StatelessWidget {
   const AsapPage({
@@ -33,7 +35,9 @@ class AsapPage extends StatelessWidget {
         // Список чатов
         Expanded(child: _ChatListLayout()),
         // Чат
-        Expanded(flex: 3, child: _UserChatLayout()),
+        // Expanded(flex: 3, child: _UserChatLayout()),
+        // Экран до выбора чата
+        Expanded(flex: 3, child: _DefaultUserChatLayout())
         // Профиль
         // Expanded(
         //   flex: 2,
