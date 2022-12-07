@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_app/features/presentation/main_layout/main_layout.dart';
 import 'package:flutter_chat_app/style%20manager/bloc/change_theme_bloc/change_theme_bloc.dart';
 import 'package:flutter_chat_app/style%20manager/bloc/change_theme_bloc/change_theme_state.dart';
-import 'package:flutter_chat_app/style%20manager/bloc/change_theme_bloc/settings_page.dart';
+import 'package:flutter_chat_app/style%20manager/settings_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,8 +21,14 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           return MaterialApp(
             theme: state.theme == 'light'
-                ? ThemeData(brightness: Brightness.light)
-                : ThemeData(brightness: Brightness.dark),
+                ? ThemeData(
+                    brightness: Brightness.light,
+                    primarySwatch: Colors.deepPurple,
+                  )
+                : ThemeData(
+                    brightness: Brightness.dark,
+                    primarySwatch: Colors.deepPurple,
+                  ),
             title: 'Flutter chat app',
             debugShowCheckedModeBanner: false,
             initialRoute: '/',

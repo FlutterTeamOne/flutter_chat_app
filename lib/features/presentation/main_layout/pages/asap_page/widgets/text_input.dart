@@ -46,7 +46,7 @@ class _TextInputState extends State<_TextInput> {
             child: CircleAvatar(
               child: Container(
                 decoration: BoxDecoration(
-                  // color: AppColor.color7E57C2,
+                  color: Theme.of(context).colorScheme.primary,
                   borderRadius: BorderRadius.circular(50),
                 ),
                 child: const Center(
@@ -100,7 +100,7 @@ class _TextInputState extends State<_TextInput> {
             child: CircleAvatar(
               child: Container(
                 decoration: BoxDecoration(
-                  // color: AppColor.color7E57C2,
+                  color: Theme.of(context).colorScheme.primary,
                   borderRadius: BorderRadius.circular(50),
                 ),
                 child: const Center(
