@@ -41,14 +41,14 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     var message = LocalMessagesServices();
     var chats = LocalChatServices();
     // print(await message.getAllMessages());
-    if (event.messages == null) {
+    // if (event.messages == null) {
       var messages = await _messagesServices.getAllMessages();
-      print(messages);
+      print("MESSAGES:$messages");
       emit(state.copyWith(messages: messages));
-    } else {
-      emit(state.copyWith(messages: event.messages));
-      print(event.messages);
-    }
+    // } else {
+    //   emit(state.copyWith(messages: event.messages));
+    //   print(event.messages);
+    // }
   }
 
   FutureOr<void> _onCreateMessageEvent(

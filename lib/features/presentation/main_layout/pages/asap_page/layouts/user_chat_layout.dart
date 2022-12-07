@@ -43,18 +43,9 @@ class _UserChatLayoutState extends State<UserChatLayout> {
           name: 'Tony',
         ),
         Expanded(
-          child: BlocConsumer<MessageBloc, MessageState>(
-            listener: (context, state) {
-              // TODO: implement listener
-            },
-            builder: (context, state) {
-              if (state.messages != null) {
-                return _Chat(messages: state.messages!);
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            },
-          ),
+          child: context.watch<MessageBloc>().state.messages != null
+              ? _Chat(messages: context.read<MessageBloc>().state.messages!)
+              : const Center(child: CircularProgressIndicator()),
         ),
         _TextInput(
           onSubmitted: (text) {
