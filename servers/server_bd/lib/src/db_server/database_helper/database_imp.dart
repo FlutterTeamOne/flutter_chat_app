@@ -1,4 +1,5 @@
 import 'package:server_bd/src/db_server/database_helper/library_db.dart';
+import "dart:io" as io;
 
 class DbServerServices implements IDbServerServices {
   @override
@@ -6,7 +7,14 @@ class DbServerServices implements IDbServerServices {
     sqfliteFfiInit();
 
     var databaseFactory = databaseFactoryFfi;
+    var path = ".dart_tool/sqflite_common_ffi/databases/main_db.db";
 
+    var dbExists = await io.File(path).exists();
+
+    if(!dbExists) {
+      createDatabase();
+      return await databaseFactory.openDatabase('main_db.db');
+    }
     return await databaseFactory.openDatabase('main_db.db');
   }
 
