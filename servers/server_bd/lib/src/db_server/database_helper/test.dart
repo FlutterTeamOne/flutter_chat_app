@@ -27,6 +27,8 @@ Future<void> main() async {
   ///
   var massages = await messagesService.getAllMessages();
   print(massages);
+  var chatsServices = await ChatsServices();
+  print(await chatsServices.getAllChats());
 
   ///
   ///Вывод чата по 2 id

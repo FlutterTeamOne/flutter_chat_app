@@ -33,7 +33,7 @@ class DbServerServices implements IDbServerServices {
           email             char(50) NOT NULL,
           registration_date char(26) NOT NULL,
           profile_pic_url   char(50) NOT NULL,
-          CHECK (LENGTH(registration_date) = 26)
+          CHECK (LENGTH(registration_date) >= 26)
           );
         ''');
 
@@ -58,7 +58,7 @@ class DbServerServices implements IDbServerServices {
           date            char(26) NOT NULL,
           CONSTRAINT MESSAGES_FK_79 FOREIGN KEY ( friends_chat_id ) REFERENCES friends_chat ( main_friends_chat_id ),
           CONSTRAINT MESSAGES_FK_80 FOREIGN KEY ( sender_id ) REFERENCES users ( main_users_id ),
-          CHECK (LENGTH(date) = 26)
+          CHECK (LENGTH(date) >= 26)
           );
         ''');
 
@@ -81,14 +81,22 @@ class DbServerServices implements IDbServerServices {
           (
           friends_chat_id
           );
-        ''');
-
+      ''');
       await txn.execute('''
           CREATE INDEX MESSAGES_FK_3 ON messages
           (
           sender_id
           );
-        ''');
+      ''');
+      await txn.execute('''
+          INSERT INTO users (name, email, registration_date, profile_pic_url) VALUES ('test1', 't1@t1.t1', 'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg', '2022-12-02T21:36:32.653712')
+      ''');
+      await txn.execute('''
+          INSERT INTO users (name, email, registration_date, profile_pic_url) VALUES ('test2', 't2@t2.t2', 'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg', '2022-12-02T21:36:32.653712')
+      ''');
+      await txn.execute('''
+          INSERT INTO friends_chat (friend1_id, friend2_id) VALUES (1, 2)
+      ''');  
     });
   }
 }
