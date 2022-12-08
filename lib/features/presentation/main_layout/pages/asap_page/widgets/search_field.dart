@@ -15,32 +15,31 @@ class _SearchField extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.symmetric(
           horizontal: BorderSide(
-            color: AppColor.color9E9E9E.withOpacity(0.5),
-          ),
+              // color: AppColor.color9E9E9E.withOpacity(0.5),
+              ),
         ),
-        color: AppColor.colorFFFFFF,
+        // color: AppColor.colorFFFFFF,
       ),
       child: TextField(
-        style: AppTextStyle.s17Abel.copyWith(fontSize: 14),
+        // style: AppTextStyle.s17Abel.copyWith(fontSize: 14),
         controller: controller,
-        cursorColor: AppColor.color7E57C2,
+        // cursorColor: AppColor.color7E57C2,
         decoration: InputDecoration(
           prefixIcon: const Icon(
             Icons.search_rounded,
-            color: AppColor.color9E9E9E,
+            // color: AppColor.color9E9E9E,
           ),
           isDense: true,
           hintText: 'Search',
-          hintStyle: AppTextStyle.s17Abel.copyWith(fontSize: 13.5),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: AppColor.color9E9E9E),
+            // borderSide: const BorderSide(color: AppColor.color9E9E9E),
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: AppColor.color9E9E9E),
+            // borderSide: const BorderSide(color: AppColor.color9E9E9E),
           ),
         ),
       ),

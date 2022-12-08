@@ -28,7 +28,7 @@ class MyMessageCard extends StatelessWidget {
                             ),
                             const Icon(
                               Icons.error,
-                              color: AppColor.colorF44336,
+                              //color: AppColor.colorF44336,
                             )
                           ],
                         )
@@ -38,8 +38,8 @@ class MyMessageCard extends StatelessWidget {
                         ),
                   Text(
                     'Not Delivered',
-                    style: AppTextStyle.s14AbelGrey
-                        .copyWith(color: AppColor.colorF44336),
+                    // style: AppTextStyle.s14AbelGrey
+                    //     .copyWith(color: AppColor.colorF44336),
                   )
                 ],
               ),

@@ -9,8 +9,8 @@ import 'pages/job_lite_page/job_lite_page.dart';
 import 'pages/meet_net_page/meet_net_page.dart';
 import 'pages/profile_page/profile_page.dart';
 import 'pages/videos_page/videos_page.dart';
-import '../../../themes/color/app_color.dart';
-import '../../../themes/text_style/app_text_style.dart';
+
+import 'package:flutter_chat_app/style_manager/settings_page.dart';
 import 'package:sidebarx/sidebarx.dart';
 
 import '../../../sender_manager/conncetion_bloc/connection_bloc.dart';
@@ -34,7 +34,7 @@ class _MainLayoutState extends State<MainLayout> {
   Widget build(BuildContext context) {
     final currentWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: AppColor.colorLightBackgrond,
+      // backgroundColor: AppColor.colorLightBackgrond,
       body: BlocListener<ConnectionBloc, ConnectionStatusState>(
         listener: (context, state) {
           if (state is ActiveConnectionState) {

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../src/libs/bloc_lib.dart';
-import '../../../../../themes/color/app_color.dart';
-import '../../../../../themes/text_style/app_text_style.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({
@@ -18,23 +16,26 @@ class ProfilePage extends StatelessWidget {
         // TODO: implement listener
       },
       builder: (context, state) {
-   return state.users?[0].name !=null?
-         Center(
-          child: Column(
-            children: [
-              Container(
-                color: AppColor.color7E57C2,
-                child: Text(
-                  'Profile',
-                  style: AppTextStyle.s36Abel,
+        return state.users?[0].name != null
+            ? Center(
+                child: Column(
+                  children: [
+                    Container(
+                      // color: AppColor.color7E57C2,
+                      child: Text(
+                        'Profile',
+                        // style: AppTextStyle.s36Abel,
+                      ),
+                    ),
+                    Text(state.users![0].name),
+                    Text(state.users![0].email),
+                    Text(state.users![0].profilePicLink)
+                  ],
                 ),
-              ),
-              Text(state.users![0].name),
-              Text(state.users![0].email),
-              Text(state.users![0].profilePicLink)
-            ],
-          ),
-        ):  Center(child: CircularProgressIndicator(),);
+              )
+            : Center(
+                child: CircularProgressIndicator(),
+              );
       },
     );
   }

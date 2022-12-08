@@ -7,8 +7,6 @@ import 'package:intl/intl.dart';
 import '../../../../../signal_service/message_bloc/message_bloc.dart';
 import '../../../../../src/libs/bloc_lib.dart';
 import '../../../../../src/libs/models_lib.dart';
-import '../../../../../themes/color/app_color.dart';
-import '../../../../../themes/text_style/app_text_style.dart';
 
 part 'widgets/search_field.dart';
 part 'widgets/message_cards/my_message_card.dart';
