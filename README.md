@@ -1,5 +1,33 @@
 # FlutterChatApp:::
 
+После клонирования перед запуском прописываем в консоль:
+
+dart pub get
+
+cd servers\server_bd
+
+dart pub get
+
+cd ..\..
+
+Запуск локального сервера:
+
+dart servers\server_bd\bin\server.dart
+
+В консоли проверьте на каком порту реализован сервер.
+Зайти в файл
+lib/client/grpc_client.dart
+Поменять порт на тот который вывел сервер.
+
+Можем запускать приложение
+
+flutter run
+
+/////////////////////////////////////////////////
+////////////////////////////////////////////////
+////////////////////////////////////////////////
+////////////////////////////////////////////////
+
 Генерация protosFiles(Если поменяли файл .proto)
 
 protoc --dart_out=grpc:lib/src/generated -Iprotos protos/grpc_chat.proto
@@ -25,6 +53,6 @@ dart servers\server_bd\bin\server.dart
 При ошибках с grpc или Базой: 
 Проверьте что база создана (Создается на каждом пк отдельно, тк файлики .dart_tool в .gitignore)
 Для проверки успешной записи в базу раскомментировать нужные строки в файле:
-lib\src\db_server\database_helper\test.dart
+servers\server_bd\lib\src\db_server\database_helper\test.dart
 Запуск проверки:
-dart lib\src\db_server\database_helper\test.dart
+dart servers\server_bd\lib\src\db_server\database_helper\test.dart
