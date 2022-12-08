@@ -1,6 +1,4 @@
 ﻿import 'package:flutter/material.dart';
-import '../../../../../themes/color/app_color.dart';
-import '../../../../../themes/text_style/app_text_style.dart';
 
 class BlackBoxPage extends StatelessWidget {
   const BlackBoxPage({

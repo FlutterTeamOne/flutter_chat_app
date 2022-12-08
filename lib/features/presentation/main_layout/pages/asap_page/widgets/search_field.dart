@@ -15,8 +15,8 @@ class _SearchField extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.symmetric(
           horizontal: BorderSide(
-            // color: AppColor.color9E9E9E.withOpacity(0.5),
-          ),
+              // color: AppColor.color9E9E9E.withOpacity(0.5),
+              ),
         ),
         // color: AppColor.colorFFFFFF,
       ),
@@ -31,7 +31,6 @@ class _SearchField extends StatelessWidget {
           ),
           isDense: true,
           hintText: 'Search',
-          hintStyle: AppTextStyle.s17Abel.copyWith(fontSize: 13.5),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
           focusedBorder: OutlineInputBorder(

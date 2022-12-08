@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../src/libs/bloc_lib.dart';
-import '../../../../../themes/color/app_color.dart';
-import '../../../../../themes/text_style/app_text_style.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({

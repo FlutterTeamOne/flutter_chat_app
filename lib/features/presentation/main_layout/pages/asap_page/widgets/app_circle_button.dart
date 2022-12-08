@@ -17,7 +17,6 @@ class _AppCircleButton extends StatelessWidget {
       child: CircleAvatar(
         child: Container(
           decoration: BoxDecoration(
-            color: AppColor.color7E57C2,
             borderRadius: BorderRadius.circular(50),
           ),
           child: Center(

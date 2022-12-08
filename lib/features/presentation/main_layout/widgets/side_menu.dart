@@ -35,7 +35,9 @@ class _SideMenu extends StatelessWidget {
                 const SizedBox(height: 20),
               ],
             )
-          : Text('Ⓢ', style: AppTextStyle.s36Abel),
+          : Text(
+              'Ⓢ',
+            ),
       separatorBuilder: (context, index) => const SizedBox(height: 5),
       items: currentWidth <= 1276
           ? const [

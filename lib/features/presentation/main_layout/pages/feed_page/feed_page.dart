@@ -1,8 +1,5 @@
 ﻿import 'package:flutter/material.dart';
 
-import '../../../../../themes/color/app_color.dart';
-import '../../../../../themes/text_style/app_text_style.dart';
-
 class FeedPage extends StatelessWidget {
   const FeedPage({
     Key? key,

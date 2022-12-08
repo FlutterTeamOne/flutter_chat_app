@@ -19,10 +19,7 @@ class _ChatListLayoutState extends State<_ChatListLayout> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-        backgroundColor: AppColor.colorFFFFFF,
-        shape: Border.all(
-          color: AppColor.color9E9E9E.withOpacity(0.5),
-        ),
+        shape: Border.all(),
         elevation: 0,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
