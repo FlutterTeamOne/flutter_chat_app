@@ -391,7 +391,6 @@
           <value>
             <list>
               <option value="$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/js-0.6.4/lib" />
-              <option value="$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/js-0.6.5/lib" />
             </list>
           </value>
         </entry>
@@ -963,7 +962,6 @@
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/io-1.0.3/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/js-0.6.4/lib" />
-      <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/js-0.6.5/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/json_annotation-4.7.0/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/lints-2.0.1/lib" />
       <root url="file://$PROJECT_DIR$/../../flutterSDK/flutter_windows_3.3.9-stable/flutter/.pub-cache/hosted/pub.dartlang.org/logging-1.1.0/lib" />
