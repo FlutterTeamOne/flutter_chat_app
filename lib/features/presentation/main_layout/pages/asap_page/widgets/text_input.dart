@@ -23,18 +23,18 @@ class _TextInputState extends State<_TextInput> {
       height: 62,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: AppColor.colorFFFFFF,
+        // color: AppColor.colorFFFFFF,
         border: Border(
           left: BorderSide.none,
           right: BorderSide(
-            color: AppColor.color9E9E9E.withOpacity(0.5),
-          ),
+              // color: AppColor.color9E9E9E.withOpacity(0.5),
+              ),
           bottom: BorderSide(
-            color: AppColor.color9E9E9E.withOpacity(0.5),
-          ),
+              // color: AppColor.color9E9E9E.withOpacity(0.5),
+              ),
           top: BorderSide(
-            color: AppColor.color9E9E9E.withOpacity(0.5),
-          ),
+              // color: AppColor.color9E9E9E.withOpacity(0.5),
+              ),
         ),
       ),
       child: Row(
@@ -46,7 +46,7 @@ class _TextInputState extends State<_TextInput> {
             child: CircleAvatar(
               child: Container(
                 decoration: BoxDecoration(
-                  color: AppColor.color7E57C2,
+                  color: Theme.of(context).colorScheme.primary,
                   borderRadius: BorderRadius.circular(50),
                 ),
                 child: const Center(
@@ -64,32 +64,32 @@ class _TextInputState extends State<_TextInput> {
             child: TextField(
               onSubmitted: widget.onSubmitted,
               controller: widget.controller,
-              style: AppTextStyle.s17Abel.copyWith(
-                fontSize: 16,
-                overflow: TextOverflow.clip,
-              ),
+              // style: AppTextStyle.s17Abel.copyWith(
+              //   fontSize: 16,
+              //   overflow: TextOverflow.clip,
+              // ),
               decoration: InputDecoration(
                 contentPadding:
                     const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                hintStyle: AppTextStyle.s17Abel.copyWith(fontSize: 16),
+                // hintStyle: AppTextStyle.s17Abel.copyWith(fontSize: 16),
                 hintText: 'Message',
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide(
-                    color: AppColor.color9E9E9E.withOpacity(0.5),
-                  ),
+                      // color: AppColor.color9E9E9E.withOpacity(0.5),
+                      ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide(
-                    color: AppColor.color9E9E9E.withOpacity(0.5),
-                  ),
+                      // color: AppColor.color9E9E9E.withOpacity(0.5),
+                      ),
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide(
-                    color: AppColor.color9E9E9E.withOpacity(0.5),
-                  ),
+                      // color: AppColor.color9E9E9E.withOpacity(0.5),
+                      ),
                 ),
               ),
             ),
@@ -100,7 +100,7 @@ class _TextInputState extends State<_TextInput> {
             child: CircleAvatar(
               child: Container(
                 decoration: BoxDecoration(
-                  color: AppColor.color7E57C2,
+                  color: Theme.of(context).colorScheme.primary,
                   borderRadius: BorderRadius.circular(50),
                 ),
                 child: const Center(

@@ -42,9 +42,9 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     var chats = LocalChatServices();
     // print(await message.getAllMessages());
     // if (event.messages == null) {
-      var messages = await _messagesServices.getAllMessages();
-      print("MESSAGES:$messages");
-      emit(state.copyWith(messages: messages));
+    var messages = await _messagesServices.getAllMessages();
+    print("MESSAGES:$messages");
+    emit(state.copyWith(messages: messages));
     // } else {
     //   emit(state.copyWith(messages: event.messages));
     //   print(event.messages);
@@ -59,20 +59,19 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     print('MESSAGE: $message');
     // DBHelper.instanse
     //     .onAdd(tableName: 'messages', model: messageMapToDB(model));
-    await _messagesServices.addNewMessage(
-      localChatId: event.idChat,
+    message.localMessageId = await _messagesServices.addNewMessage(
+      localChatId: message.localChatId,
       senderId: 1,
       content: message.content,
       date: message.date,
     );
-
     var messageToServer = Message();
     messageToServer.chatIdMaint =
-        await chats.getMainIdChatByMessage(localId: event.idChat);
+        await chats.getMainIdChatByMessage(localId: message.localChatId);
     messageToServer.content = message.content;
     messageToServer.date = message.date;
-    messageToServer.senderMainId = await localUsersServices
-        .getMainIdUserByLocalId(localId: message.localSendId);
+    messageToServer.senderMainId =
+        await localUsersServices.getMainIdUserByLocalId(localId: 1);
     print('message to server \n $messageToServer');
 
     try {
@@ -81,8 +80,9 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       print("messageOK:/n $messageOk");
       if (messageOk.ok) {
         await _messagesServices.updateWrittenToServer(
-            localMessageId: message.localMessageId!,
-            isWrittenToDB: messageOk.ok ? 1 : 0);
+            localMessageId: message.localMessageId!, isWrittenToDB: 1);
+        emit(state.copyWith(
+            messages: await localMessagesServices.getAllMessages()));
         var updateWrittenToServer =
             await _messagesServices.getMessageById(id: message.localMessageId!);
         print('UPDATE WRITTEN TO SERVER: $updateWrittenToServer');

@@ -17,7 +17,6 @@ class MessagesServices implements IMessagesServices {
         "$date"
       )
       ''');
-    await db.insert();
 
     var id = await db.rawQuery('''
       SELECT main_messages_id FROM messages

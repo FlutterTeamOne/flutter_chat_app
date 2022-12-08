@@ -4,6 +4,7 @@ class UserPreferences {
   static const FRIENDS_CHAT_ID_KEY = "friends_chat_id_key";
   static const IS_READ_KEY = "is_read_key";
   static const MESSAGE_ID_KEY = "message_id_key";
+  static const THEME_KEY = "theme_key";
 
   setIsRead(bool value) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -33,5 +34,15 @@ class UserPreferences {
   getMessageId() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.getInt(MESSAGE_ID_KEY);
+  }
+
+  setTheme(String value) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString(IS_READ_KEY, value);
+  }
+
+  getTheme() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getString(IS_READ_KEY);
   }
 }

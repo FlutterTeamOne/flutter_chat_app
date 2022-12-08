@@ -25,3 +25,7 @@ dart servers\server_bd\bin\server.dart
 lib\src\db_server\database_helper\test.dart
 Запуск проверки:
 dart lib\src\db_server\database_helper\test.dart
+
+
+
+//git merge origin/style_manager

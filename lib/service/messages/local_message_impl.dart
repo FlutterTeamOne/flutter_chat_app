@@ -12,6 +12,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
       required int senderId,
       required String content,
       required String date}) async {
+    var db = await DBHelper.instanse.database;
     await DBHelper.instanse.onAdd(
       tableName: DatabaseConst.messageTable,
       model: {
@@ -21,10 +22,14 @@ class LocalMessagesServices implements ILocalMessagesServices {
         DatabaseConst.messagesColumnDate: date
       },
     );
-
-    // await stub.createMessage(
-    //   Message(chatIdMaint: 1, senderMainId: 1, content: content, date: date),
-    // );
+    var message = await db.rawQuery('''
+            SELECT local_messages_id 
+            FROM messages
+            WHERE ((${DatabaseConst.messagesColumnLocalChatId} = $localChatId) AND
+                  (${DatabaseConst.messagesColumnSenderLocalId} = $senderId) AND
+                  (${DatabaseConst.messagesColumnContent} = '$content') AND
+                  (${DatabaseConst.messagesColumnDate} = '$date'))''');
+    return message[0]['local_messages_id'] as int;
   }
 
   @override

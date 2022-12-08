@@ -5,8 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d8a32977-0ab8-4f7f-97ad-bb3126d9347c" name="Changes" comment="add save theme option with shared_preferences(stateTheme init didn't work yet)">
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
+=======
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/CHANGELOG.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/analysis_options.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/bin/client.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/bin/server.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/lib/proto/generated/grpc_connection/grpc_connection.pb.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/lib/proto/generated/grpc_connection/grpc_connection.pbenum.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/lib/proto/generated/grpc_connection/grpc_connection.pbgrpc.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/lib/proto/generated/grpc_connection/grpc_connection.pbjson.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/lib/services/grpc_connection/conection_service_int.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/lib/services/grpc_connection/connection_service.impl.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/protos/connection_proto/grpc_connection.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/grpc_managr/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/grpc_manager" beforeDir="false" />
+>>>>>>> merge_calc_ss
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,7 +47,11 @@
     </option>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
+<<<<<<< HEAD
         <entry key="$PROJECT_DIR$" value="style_manager" />
+=======
+        <entry key="$PROJECT_DIR$" value="anatoliyKaragodin" />
+>>>>>>> merge_calc_ss
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -57,6 +80,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="true" />
@@ -72,6 +96,8 @@
       <recent name="C:\src\sfera\flutter_chat_app\lib\grpc_managr\protos" />
       <recent name="C:\src\sfera\flutter_chat_app\lib\grpc_managr\lib" />
       <recent name="C:\src\sfera\flutter_chat_app\lib\grpc_managr\bin" />
+      <recent name="C:\android\flutter_chat_app\lib\style manager" />
+      <recent name="C:\android\flutter_chat_app\lib\style manager\bloc" />
       <recent name="C:\android\flutter_chat_app\test\storage_manager" />
     </key>
   </component>
@@ -143,7 +169,91 @@
       <option name="project" value="LOCAL" />
       <updated>1669991531672</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="style manager start">
+      <created>1670324131544</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1670324131545</updated>
+    </task>
+    <task id="LOCAL-00010" summary="style manager start">
+      <created>1670324149377</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1670324149377</updated>
+    </task>
+    <task id="LOCAL-00011" summary="start style manager">
+      <created>1670324682345</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1670324682345</updated>
+    </task>
+    <task id="LOCAL-00012" summary="clear color and text style">
+      <created>1670327428150</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1670327428150</updated>
+    </task>
+    <task id="LOCAL-00013" summary="add settings page and change theme with bloc">
+      <created>1670335942848</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1670335942848</updated>
+    </task>
+    <task id="LOCAL-00014" summary="add settings page to mainLayout bar">
+      <created>1670408421741</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1670408421741</updated>
+    </task>
+    <task id="LOCAL-00015" summary="add settings page to mainLayout bar">
+      <created>1670409838158</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1670409838158</updated>
+    </task>
+    <task id="LOCAL-00016" summary="add settings page to mainLayout bar">
+      <created>1670409910340</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1670409910340</updated>
+    </task>
+    <task id="LOCAL-00017" summary="add 3 color theme with dark and light version">
+      <created>1670417332528</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1670417332528</updated>
+    </task>
+    <task id="LOCAL-00018" summary="add 3 color theme with dark and light version">
+      <created>1670417397893</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1670417397893</updated>
+    </task>
+    <task id="LOCAL-00019" summary="add 3 color theme with dark and light version">
+      <created>1670417737854</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1670417737854</updated>
+    </task>
+    <task id="LOCAL-00020" summary="add save theme option with shared_preferences(stateTheme init didn't work yet)">
+      <created>1670419729501</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1670419729501</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -171,6 +281,13 @@
     <MESSAGE value="start test for UnreadMessage" />
     <MESSAGE value="add test for UnreadMessage" />
     <MESSAGE value="start bloc for UnreadMessage" />
-    <option name="LAST_COMMIT_MESSAGE" value="start bloc for UnreadMessage" />
+    <MESSAGE value="style manager start" />
+    <MESSAGE value="start style manager" />
+    <MESSAGE value="clear color and text style" />
+    <MESSAGE value="add settings page and change theme with bloc" />
+    <MESSAGE value="add settings page to mainLayout bar" />
+    <MESSAGE value="add 3 color theme with dark and light version" />
+    <MESSAGE value="add save theme option with shared_preferences(stateTheme init didn't work yet)" />
+    <option name="LAST_COMMIT_MESSAGE" value="add save theme option with shared_preferences(stateTheme init didn't work yet)" />
   </component>
 </project>
