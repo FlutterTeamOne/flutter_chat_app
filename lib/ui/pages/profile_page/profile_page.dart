@@ -1,8 +1,7 @@
-// <<<<<<< HEAD:lib/features/presentation/main_layout/pages/profile_page/profile_page.dart
-﻿import 'package:blur/blur.dart';
+import 'package:blur/blur.dart';
+import 'package:chat_app/modules/signal_service/library/library_signal_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../src/libs/bloc_lib.dart';
 
 part 'widgets/change_user_pic.dart';
 part 'widgets/load_method.dart';
@@ -10,7 +9,6 @@ part 'widgets/app_blured_image.dart';
 part 'widgets/_user_picture.dart';
 part 'widgets/app_dialog.dart';
 part 'widgets/layout/profile_layout.dart';
-
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({
@@ -25,7 +23,7 @@ class ProfilePage extends StatelessWidget {
       },
       builder: (context, state) {
         return state.users?[0].name != null
-            ? _ProfileLayout()
+            ? const _ProfileLayout()
             : const Center(
                 child: CircularProgressIndicator(),
               );
