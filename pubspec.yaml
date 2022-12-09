@@ -33,6 +33,7 @@ dependencies:
   protobuf: ^2.1.0
   connectivity_plus: ^3.0.2
   freezed: ^2.2.0
+  sqlite3: ^1.9.1
 
 dev_dependencies:
   flutter_test:
