@@ -1,6 +1,7 @@
 import 'package:grpc/grpc.dart';
-import 'package:server/src/generated/grpc_manager.pbgrpc.dart';
-import 'package:server/src/library/library_server.dart';
+
+import '../lib/src/generated/grpc_manager.pbgrpc.dart';
+
 
 class Client {
   ClientChannel? channel;

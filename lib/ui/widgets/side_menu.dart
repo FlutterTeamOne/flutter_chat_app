@@ -1,8 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
 
-import '../../modules/style_manager/library/library_style_manager.dart';
-
 class SideMenuWidget extends StatelessWidget {
   const SideMenuWidget({
     super.key,
@@ -39,7 +37,7 @@ class SideMenuWidget extends StatelessWidget {
                 const SizedBox(height: 20),
               ],
             )
-          : Text('Ⓢ', style: AppTextStyle.s36Abel),
+          : Text('Ⓢ', style: Theme.of(context).textTheme.labelLarge),
       separatorBuilder: (context, index) => const SizedBox(height: 5),
       items: currentWidth <= 1276
           ? const [
