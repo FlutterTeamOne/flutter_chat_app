@@ -1,8 +1,4 @@
-import 'package:chat_app/modules/style_manager/library/library_style_manager.dart';
 import 'package:flutter/material.dart';
-=======
-﻿import 'package:flutter/material.dart';
->>>>>>> fdeb7e0085405b0aaa6cb4d4857474c0fe562954
 
 class SearchFieldWidget extends StatelessWidget {
   const SearchFieldWidget({
