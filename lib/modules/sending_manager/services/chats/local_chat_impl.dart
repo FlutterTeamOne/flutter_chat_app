@@ -52,4 +52,10 @@ class LocalChatServices implements ILocalChatsServices {
 
     return chat[0]['chat_id_main'] as int;
   }
+
+  @override
+  Future<int> updateChat({required int chatId}) {
+    // TODO: изменение в БД информации о чате
+    throw UnimplementedError();
+  }
 }

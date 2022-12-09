@@ -21,3 +21,11 @@ class GetChatIdEvent extends ChatEvent {
   final int localChatId;
   GetChatIdEvent(this.chatId, this.localChatId);
 }
+
+class DeleteChatEvent extends ChatEvent {
+  final int chatId;
+
+  DeleteChatEvent(this.chatId);
+}
+
+class EditChatEvent extends ChatEvent {}

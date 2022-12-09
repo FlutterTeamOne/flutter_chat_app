@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../domain/data/library/library_data.dart';
 import '../../../sending_manager/library/library_sending_manager.dart';
 import '../../library/library_signal_service.dart';
@@ -16,6 +17,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ReadChatEvent>(_onReadChatEvent);
     on<CreateChatEvent>(_onCreateChatEvent);
     on<GetChatIdEvent>(_onGetChatIdEvent);
+    on<DeleteChatEvent>(_onDeleteChatEvent);
+    on<EditChatEvent>(_onEditChatEvent);
   }
 
   FutureOr<void> _onReadChatEvent(
@@ -47,5 +50,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   FutureOr<void> _onGetChatIdEvent(
       GetChatIdEvent event, Emitter<ChatState> emit) async {
     emit(state.copyWith(chatId: event.chatId, localChatId: event.localChatId));
+  }
+
+  FutureOr<void> _onDeleteChatEvent(
+      DeleteChatEvent event, Emitter<ChatState> emit) async {
+    //TODO: func delete chat
+    await _chatServices.deleteChat(id: event.chatId);
+    print('CHAT ID: ${event.chatId}');
+  }
+
+  FutureOr<void> _onEditChatEvent(
+      EditChatEvent event, Emitter<ChatState> emit) async {
+    //TODO: func edit chat
+   
   }
 }

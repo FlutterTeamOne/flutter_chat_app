@@ -12,6 +12,7 @@ abstract class ILocalChatsServices {
 
   Future<List<ChatDto>> getAllChats();
   getMainIdChatByMessage({required int localId});
+  Future<int> updateChat({required int chatId});
 }
 
 final localChatServices = ILocalChatsServices();
