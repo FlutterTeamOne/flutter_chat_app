@@ -30,7 +30,7 @@ CREATE TABLE message_deleted
 );
 CREATE TABLE message_updated
 (
- message_is_updated_id integer PRIMARY KEY AUTOINCREMENT,
+ message_updated_id integer PRIMARY KEY AUTOINCREMENT,
  local_messages_id     integer NOT NULL,
  when_updated          char(26) NOT NULL,
  CONSTRAINT MESSAGE_UPDATED_FK_86_1 FOREIGN KEY ( local_messages_id ) REFERENCES messages ( local_messages_id ),
