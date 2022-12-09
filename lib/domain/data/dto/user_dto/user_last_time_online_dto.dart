@@ -15,7 +15,6 @@ class UserLastTimeOnlineDto extends ModelDto {
     required this.isOnline,
     required this.lastTimeOnline,
   });
- 
 
   UserLastTimeOnlineDto copyWith({
     int? userLastTimeOnlineId,
@@ -42,16 +41,18 @@ class UserLastTimeOnlineDto extends ModelDto {
 
   factory UserLastTimeOnlineDto.fromMap(Map<String, dynamic> map) {
     return UserLastTimeOnlineDto(
-      userLastTimeOnlineId: map[DatabaseConst.userLastTimeOnlineColumnId] as int,
+      userLastTimeOnlineId:
+          map[DatabaseConst.userLastTimeOnlineColumnId] as int,
       localUsersId: map[DatabaseConst.usersColumnId],
-      isOnline: map[DatabaseConst.userLastTimeOnlineColumnisOnline] ?? false,
+      isOnline: map[DatabaseConst.userLastTimeOnlineColumnisOnline] == 1,
       lastTimeOnline: map[DatabaseConst.userLastTimeOnlineColumnLastTimeOnline],
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory UserLastTimeOnlineDto.fromJson(String source) => UserLastTimeOnlineDto.fromMap(json.decode(source));
+  factory UserLastTimeOnlineDto.fromJson(String source) =>
+      UserLastTimeOnlineDto.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -61,20 +62,19 @@ class UserLastTimeOnlineDto extends ModelDto {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is UserLastTimeOnlineDto &&
-      other.userLastTimeOnlineId == userLastTimeOnlineId &&
-      other.localUsersId == localUsersId &&
-      other.isOnline == isOnline &&
-      other.lastTimeOnline == lastTimeOnline;
+        other.userLastTimeOnlineId == userLastTimeOnlineId &&
+        other.localUsersId == localUsersId &&
+        other.isOnline == isOnline &&
+        other.lastTimeOnline == lastTimeOnline;
   }
 
   @override
   int get hashCode {
     return userLastTimeOnlineId.hashCode ^
-      localUsersId.hashCode ^
-      isOnline.hashCode ^
-      lastTimeOnline.hashCode;
+        localUsersId.hashCode ^
+        isOnline.hashCode ^
+        lastTimeOnline.hashCode;
   }
 }
- 
