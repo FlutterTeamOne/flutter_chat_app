@@ -1,7 +1,5 @@
 import '../lib/src/db_server/database_helper/library_db.dart';
 
-
-
 ///
 ///Заполняем все методы как и в Protoc файле
 ///
@@ -83,5 +81,6 @@ Future<void> main() async {
   );
 
   await server.serve(port: 50000);
+  await dbServerServices.openDatabase();
   print('✅ Server listening on port ${server.port}...');
 }
