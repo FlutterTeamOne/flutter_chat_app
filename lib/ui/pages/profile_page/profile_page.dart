@@ -16,22 +16,25 @@ class ProfilePage extends StatelessWidget {
       },
       builder: (context, state) {
         return state.users?[0].name != null
-            ? Center(
-                child: Column(
-                  children: [
-                    Container(
-                      // color: AppColor.color7E57C2,
-                      child: Text(
-                        'Profile',
-                        // style: AppTextStyle.s36Abel,
+            ? Container(
+          color: Theme.of(context).colorScheme.background,
+              child: Center(
+                  child: Column(
+                    children: [
+                      Container(
+                        // color: AppColor.color7E57C2,
+                        child: Text(
+                          'Profile',
+                          // style: AppTextStyle.s36Abel,
+                        ),
                       ),
-                    ),
-                    Text(state.users![0].name),
-                    Text(state.users![0].email),
-                    Text(state.users![0].profilePicLink)
-                  ],
+                      Text(state.users![0].name),
+                      Text(state.users![0].email),
+                      Text(state.users![0].profilePicLink)
+                    ],
+                  ),
                 ),
-              )
+            )
             : Center(
                 child: CircularProgressIndicator(),
               );

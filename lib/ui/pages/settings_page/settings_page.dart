@@ -10,6 +10,7 @@ class SettingsPage extends StatelessWidget {
     final ChangeThemeBloc changeThemeBloc =
         BlocProvider.of<ChangeThemeBloc>(context);
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
