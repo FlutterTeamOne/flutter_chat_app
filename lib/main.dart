@@ -1,21 +1,10 @@
 import 'dart:io';
-import 'package:window_size/window_size.dart';
+
+import 'ui/pages/library/library_pages.dart';
+import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'features/presentation/main_layout/main_layout.dart';
-import 'sender_manager/conncetion_bloc/connection_bloc.dart';
-import 'signal_service/message_id_in_main_bloc/message_id_in_main_bloc.dart';
-import 'package:flutter_chat_app/features/presentation/main_layout/main_layout.dart';
-import 'package:flutter_chat_app/style_manager/bloc/change_theme_bloc/change_theme_bloc.dart';
-import 'package:flutter_chat_app/style_manager/bloc/change_theme_bloc/change_theme_state.dart';
-import 'package:flutter_chat_app/style_manager/settings_page.dart';
-import 'package:flutter_chat_app/style_manager/themes/custom_themes.dart';
-
-import 'client/grpc_client.dart';
-import 'signal_service/chat_bloc/chat_bloc.dart';
-import 'signal_service/message_bloc/message_bloc.dart';
-import 'signal_service/user_bloc/user_bloc.dart';
-import 'storage_manager/db_helper.dart';
+import 'package:window_size/window_size.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
