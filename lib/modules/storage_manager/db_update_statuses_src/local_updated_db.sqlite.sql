@@ -44,7 +44,6 @@ CREATE TABLE message_updated
  CONSTRAINT MESSAGE_UPDATED_FK_86_1 FOREIGN KEY ( local_messages_id ) REFERENCES messages ( local_messages_id ),
  CONSTRAINT MESSAGE_UPDATED_DATE_CHECK CHECK ( LENGTH(when_updated) = 26 )
 );
-CREATE TABLE sqlite_sequence(name,seq);
 CREATE TABLE users
 (
  local_users_id    integer PRIMARY KEY AUTOINCREMENT,
