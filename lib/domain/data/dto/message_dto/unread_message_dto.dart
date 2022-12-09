@@ -1,4 +1,4 @@
-import 'model_dto.dart';
+import '../model_dto.dart';
 class LastUnreadMessageDto extends ModelDto {
 
   final int lastUnreadMessageId;

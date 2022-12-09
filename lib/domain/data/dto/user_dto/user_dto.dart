@@ -1,4 +1,4 @@
-import 'model_dto.dart';
+import '../model_dto.dart';
 class UserDto extends ModelDto {
 
   final int localUserId;

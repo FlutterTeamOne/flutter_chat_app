@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:chat_app/src/constants/db_constants.dart';
 
-import 'model_dto.dart';
+import '../model_dto.dart';
 
 class MessageDto extends ModelDto {
   late int? localMessageId;
