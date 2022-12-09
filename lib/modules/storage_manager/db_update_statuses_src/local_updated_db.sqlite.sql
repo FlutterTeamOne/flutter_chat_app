@@ -8,6 +8,14 @@ CREATE TABLE chats
  CONSTRAINT CHATS_FK_84 FOREIGN KEY ( friend_id ) REFERENCES users ( local_users_id ),
  CONSTRAINT CHATS_DATE_OF_CREATION_CHECK_1 CHECK ( LENGTH(date_of_creation) = 26 )
 );
+CREATE TABLE deleted_users
+(
+ deleted_users_id integer PRIMARY KEY AUTOINCREMENT,
+ local_users_id   integer NOT NULL,
+ when_deleted     char(26) NOT NULL,
+ CONSTRAINT DELETED_USER_FK_88 FOREIGN KEY ( local_users_id ) REFERENCES users ( local_users_id ),
+ CONSTRAINT DELETED_USER_DATE_CHECK CHECK ( LENGTH(when_deleted) = 26 )
+);
 CREATE TABLE messages
 (
  local_messages_id integer PRIMARY KEY AUTOINCREMENT,
@@ -30,7 +38,7 @@ CREATE TABLE message_deleted
 );
 CREATE TABLE message_updated
 (
- message_updated_id integer PRIMARY KEY AUTOINCREMENT,
+ message_is_updated_id integer PRIMARY KEY AUTOINCREMENT,
  local_messages_id     integer NOT NULL,
  when_updated          char(26) NOT NULL,
  CONSTRAINT MESSAGE_UPDATED_FK_86_1 FOREIGN KEY ( local_messages_id ) REFERENCES messages ( local_messages_id ),
@@ -61,6 +69,10 @@ CREATE TABLE user_had_been_online
 CREATE INDEX CHATS_FK_3 ON chats
 (
  friend_id
+);
+CREATE INDEX DELETED_USER_FK_2 ON deleted_users
+(
+ local_users_id
 );
 CREATE INDEX FK_2 ON messages
 (
