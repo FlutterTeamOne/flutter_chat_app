@@ -51,7 +51,7 @@
 Проверьте что база создана (Создается на каждом пк отдельно, тк файлики .dart_tool в .gitignore)
 
 Для проверки успешной записи в базу раскомментировать нужные строки(создать базу) в файле:
-lib\modules\server\lib\src\test_db\test.dart
+\server\lib\src\test_db\test.dart
 
 Запуск проверки:
-dart .\lib\modules\server\lib\src\test_db\test.dart
+dart .\server\lib\src\test_db\test.dart
