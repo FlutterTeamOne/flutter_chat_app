@@ -87,6 +87,18 @@ CREATE TABLE ${DatabaseConst.messageIdTable}
 CONSTRAINT MESSAGE_ID_IN_MAIN_FK_86 FOREIGN KEY (local_messages_id) REFERENCES messages (local_messages_id)
 )
 ''');
+//Таблица
+      await txn.execute('''
+CREATE TABLE ${DatabaseConst.userLastTimeOnlineTable}(
+  ${DatabaseConst.userLastTimeOnlineColumnId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
+  ${DatabaseConst.usersColumnId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
+  ${DatabaseConst.userLastTimeOnlineColumnisOnline} ${DatabaseConst.integer} ${DatabaseConst.notNull},
+  ${DatabaseConst.userLastTimeOnlineColumnLastTimeOnline} ${DatabaseConst.char26} ${DatabaseConst.notNull},
+   CONSTRAINT LAST_TIME_ONLINE_FK_85_1 FOREIGN KEY ( ${DatabaseConst.usersColumnId} ) REFERENCES ${DatabaseConst.userTable} ( ${DatabaseConst.usersColumnId} ),
+ CONSTRAINT LAST_TIME_ONLINE_CHECK_2 CHECK ( LENGTH(${DatabaseConst.userLastTimeOnlineColumnLastTimeOnline}) = 26 ),
+ CHECK ((${DatabaseConst.userLastTimeOnlineColumnisOnline} = 0) OR (${DatabaseConst.userLastTimeOnlineColumnisOnline} = 1))
+)
+''');
 
       await txn.execute('''
 CREATE INDEX CHATS_FK_3 ON ${DatabaseConst.chatsTable}

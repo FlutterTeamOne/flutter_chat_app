@@ -58,6 +58,7 @@ class DatabaseConst {
   static const autoincrement = 'AUTOINCREMENT';
   static const notNull = 'NOT NULL';
   static const char50 = 'char(50)';
+  static const char26 = 'char(26)';
   static const text = 'TEXT';
   static const constraint = 'CONSTRAINT';
   static const foreignKey = 'FOREIGN KEY';
