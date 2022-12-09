@@ -37,7 +37,7 @@ class SideMenuWidget extends StatelessWidget {
                 const SizedBox(height: 20),
               ],
             )
-          : Text('Ⓢ', style: Theme.of(context).textTheme.labelLarge),
+          : Text('Ⓢ', style: Theme.of(context).textTheme.headlineLarge),
       separatorBuilder: (context, index) => const SizedBox(height: 5),
       items: currentWidth <= 1276
           ? const [
