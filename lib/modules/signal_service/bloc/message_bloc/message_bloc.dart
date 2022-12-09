@@ -31,6 +31,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     on<UpdateMessageEvent>(_onUpdateMessageEvent);
 //TODO:добавить удаление сообщения
     on<DeleteMessageEvent>(_onDeleteMessageEvent);
+    on<DeleteHistoryMessageEvent>(_onDeleteHistoryMessageEvent);
   }
 
   FutureOr<void> _onReadMessageEvent(
@@ -90,18 +91,27 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     }
   }
 
+  ///Обновление сообщения
   FutureOr<void> _onUpdateMessageEvent(
       UpdateMessageEvent event, Emitter<MessageState> emit) async {
     await _messagesServices.updateMessage(
         newValues: event.message.content, localMessageId: event.messageId);
   }
 
+  ///Удаление сообщения по ид
   FutureOr<void> _onDeleteMessageEvent(
       DeleteMessageEvent event, Emitter<MessageState> emit) async {
     await _messagesServices.deleteMessage(id: event.messageId);
     add(ReadMessageEvent());
     print('message ID: ${event.messageId}');
     //TODO: отправить запрос в grpc на удаление сообщения и получить ответ
+  }
+
+  ///Очистка истории в определенном чате
+  FutureOr<void> _onDeleteHistoryMessageEvent(
+      DeleteHistoryMessageEvent event, Emitter<MessageState> emit) async {
+    await _messagesServices.deleteAllMessagesInChat(chatID: event.chatID);
+    print('CHAT ID: ${event.chatID}');
   }
 
   @override

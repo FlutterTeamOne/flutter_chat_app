@@ -29,4 +29,10 @@ class DeleteMessageEvent extends MessageEvent {
   DeleteMessageEvent({required this.messageId});
 }
 
+class DeleteHistoryMessageEvent extends MessageEvent {
+  final int chatID;
+
+  DeleteHistoryMessageEvent(this.chatID);
+}
+
 class MessageStreamEvent extends MessageEvent {}

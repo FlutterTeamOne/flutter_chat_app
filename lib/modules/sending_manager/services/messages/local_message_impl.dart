@@ -61,7 +61,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
       {required int chatID}) async {
     var db = await DBHelper.instanse.database;
     var messages = await db
-        .rawQuery('SELECT * FROM messages where local_chats_id = $chatID}');
+        .rawQuery('SELECT * FROM messages where local_chats_id = $chatID');
     return messages;
   }
 
@@ -75,9 +75,10 @@ class LocalMessagesServices implements ILocalMessagesServices {
   }
 
   @override
- Future<int> updateMessage({required String newValues, required int localMessageId}) async {
+  Future<int> updateMessage(
+      {required String newValues, required int localMessageId}) async {
     var db = await DBHelper.instanse.database;
-  return await db.rawUpdate('''
+    return await db.rawUpdate('''
 UPDATE messages
 SET content = $newValues
 WHERE local_message_id = $localMessageId
@@ -94,5 +95,14 @@ WHERE local_message_id = $localMessageId
           WHERE local_messages_id = $localMessageId
                 ''',
     );
+  }
+
+  @override
+  Future<int> deleteAllMessagesInChat({required int chatID}) async {
+    var db = await DBHelper.instanse.database;
+    return await db.rawDelete('''
+DELETE FROM messages
+WHERE  local_chats_id = $chatID
+''');
   }
 }

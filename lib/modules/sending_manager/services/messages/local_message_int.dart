@@ -1,25 +1,30 @@
+import '../../../../domain/data/library/library_data.dart';
 import 'local_message_impl.dart';
 
 abstract class ILocalMessagesServices {
   factory ILocalMessagesServices() => LocalMessagesServices();
 
-  void addNewMessage(
+  Future<dynamic> addNewMessage(
       {required int localChatId,
-        required int senderId,
-        required String content,
-        required String date});
+      required int senderId,
+      required String content,
+      required String date});
 
-  void getMessageById({required int id});
+  Future<Map<String, Object?>> getMessageById({required int id});
 
-  Future<int> updateMessage({required String newValues, required  int localMessageId});
+  Future<int> updateMessage(
+      {required String newValues, required int localMessageId});
 
-  void deleteMessage({required int id});
+  Future<int> deleteMessage({required int id});
 
-  getMessagesBySenderId({required int senderID});
+  Future<List<Map<String, Object?>>> getMessagesBySenderId(
+      {required int senderID});
 
-  getMessagesByChatId({required int chatID});
+  Future<List<Map<String, Object?>>> getMessagesByChatId({required int chatID});
 
-  getAllMessages();
+  Future<List<MessageDto>> getAllMessages();
+
+  Future<int> deleteAllMessagesInChat({required int chatID});
 }
 
 final localMessagesServices = ILocalMessagesServices();
