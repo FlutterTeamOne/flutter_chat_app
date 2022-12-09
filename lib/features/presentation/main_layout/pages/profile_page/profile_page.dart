@@ -1,10 +1,14 @@
-﻿import 'package:flutter/cupertino.dart';
+﻿import 'package:blur/blur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../../src/libs/bloc_lib.dart';
-import '../../../../../themes/color/app_color.dart';
-import '../../../../../themes/text_style/app_text_style.dart';
+
+part 'widgets/change_user_pic.dart';
+part 'widgets/load_method.dart';
+part 'widgets/app_blured_image.dart';
+part 'widgets/_user_picture.dart';
+part 'widgets/app_dialog.dart';
+part 'widgets/layout/profile_layout.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({
@@ -19,23 +23,8 @@ class ProfilePage extends StatelessWidget {
       },
       builder: (context, state) {
         return state.users?[0].name != null
-            ? Center(
-                child: Column(
-                  children: [
-                    Container(
-                      // color: AppColor.color7E57C2,
-                      child: Text(
-                        'Profile',
-                        // style: AppTextStyle.s36Abel,
-                      ),
-                    ),
-                    Text(state.users![0].name),
-                    Text(state.users![0].email),
-                    Text(state.users![0].profilePicLink)
-                  ],
-                ),
-              )
-            : Center(
+            ? _ProfileLayout()
+            : const Center(
                 child: CircularProgressIndicator(),
               );
       },
