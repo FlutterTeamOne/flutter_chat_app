@@ -54,17 +54,22 @@ CREATE TABLE users
  main_users_id     integer NOT NULL,
  CONSTRAINT USERS_REGISTRATION_DATE_CHECK CHECK ( LENGTH(registration_date) = 26 )
 );
-CREATE TABLE user_had_been_online
+CREATE TABLE user_last_time_online
 (
- user_had_been_online_id integer PRIMARY KEY AUTOINCREMENT,
- local_users_id          integer NOT NULL,
- is_online               boolean NOT NULL,
- last_time_online        char(26) NULL,
- CONSTRAINT HAD_BEEN_ONLINE_FK_85_1 FOREIGN KEY ( local_users_id ) REFERENCES users ( local_users_id ),
- CONSTRAINT HAD_BEEN_ONLINE_DATE_CHECK_2 CHECK ( LENGTH(last_time_online) = 26 )
+ user_last_time_online_id integer PRIMARY KEY AUTOINCREMENT,
+ local_users_id           integer NOT NULL,
+ is_online                boolean NOT NULL,
+ last_time_online         char(26) NULL,
+ CONSTRAINT LAST_TIME_ONLINE_FK_85_1 FOREIGN KEY ( local_users_id ) REFERENCES users ( local_users_id ),
+ CONSTRAINT LAST_TIME_ONLINE_CHECK_2 CHECK ( LENGTH(last_time_online) = 26 )
 );
- 
+
 -- INDEX
+
+CREATE INDEX LAST_TIME_ONLINE_FK_2 ON user_last_time_online
+(
+ local_users_id
+);
 CREATE INDEX CHATS_FK_3 ON chats
 (
  friend_id
