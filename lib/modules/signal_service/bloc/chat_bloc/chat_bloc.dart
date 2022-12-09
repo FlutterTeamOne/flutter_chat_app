@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:chat_app/domain/data/library/library_data.dart';
-import 'package:chat_app/modules/sending_manager/library/library_sending_manager.dart';
-import 'package:chat_app/modules/signal_service/library/library_signal_service.dart';
+import '../../../../domain/data/library/library_data.dart';
+import '../../../sending_manager/library/library_sending_manager.dart';
+import '../../library/library_signal_service.dart';
 import 'package:equatable/equatable.dart';
 
 part 'chat_event.dart';

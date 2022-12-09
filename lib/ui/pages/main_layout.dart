@@ -1,5 +1,5 @@
-import 'package:chat_app/src/libraries/library_all.dart';
-import 'package:chat_app/ui/widgets/library/library_widgets.dart';
+import '../../src/libraries/library_all.dart';
+import '../widgets/library/library_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sidebarx/sidebarx.dart';

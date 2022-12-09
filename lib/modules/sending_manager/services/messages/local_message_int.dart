@@ -11,7 +11,7 @@ abstract class ILocalMessagesServices {
 
   void getMessageById({required int id});
 
-  void updateMessage({required String newValues, required String condition});
+  Future<int> updateMessage({required String newValues, required  int localMessageId});
 
   void deleteMessage({required int id});
 

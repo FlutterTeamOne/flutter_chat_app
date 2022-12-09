@@ -1,4 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+
 import 'network_bloc.dart';
 import 'network_events/network_notify.dart';
 

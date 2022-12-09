@@ -1,6 +1,6 @@
-import 'package:chat_app/src/constants/db_constants.dart';
-import 'package:chat_app/domain/data/library/library_data.dart';
-import 'package:chat_app/modules/storage_manager/library/library_storage_manager.dart';
+import '../../../../src/constants/db_constants.dart';
+import '../../../../domain/data/library/library_data.dart';
+import '../../../storage_manager/library/library_storage_manager.dart';
 
 import 'local_message_int.dart';
 
@@ -45,15 +45,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
     var db = await DBHelper.instanse.database;
     var message = await db.rawQuery('SELECT * FROM messages');
 
-    return message
-        .map((item) => MessageDto(
-            localMessageId: item['local_messages_id'] as int,
-            localChatId: item['local_chat_id'] as int,
-            localSendId: item['sender_is_user'] as int,
-            date: item['date'] as String,
-            content: item['content'] as String,
-            isWrittenToDb: item['is_written_to_db'] as int))
-        .toList();
+    return message.map((item) => MessageDto.fromMap(item)).toList();
   }
 
   @override
@@ -83,7 +75,14 @@ class LocalMessagesServices implements ILocalMessagesServices {
   }
 
   @override
-  updateMessage({required String newValues, required String condition}) {}
+ Future<int> updateMessage({required String newValues, required int localMessageId}) async {
+    var db = await DBHelper.instanse.database;
+  return await db.rawUpdate('''
+UPDATE messages
+SET content = $newValues
+WHERE local_message_id = $localMessageId
+''');
+  }
 
   updateWrittenToServer(
       {required int localMessageId, required int isWrittenToDB}) async {

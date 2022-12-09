@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:chat_app/src/constants/db_constants.dart';
+import '../../../src/constants/db_constants.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common/sqlite_api.dart';

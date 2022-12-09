@@ -1,15 +1,14 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'network_events/abstract_network_events.dart';
 import 'network_events/network_notify.dart';
 import 'network_events/network_observe.dart';
+import 'network_helper.dart';
 import 'network_state/abstract_network_state.dart';
 import 'network_state/network_failure.dart';
 import 'network_state/network_initial.dart';
 import 'network_state/network_success.dart';
-import 'network_helper.dart';
-
-
-import 'network_events/abstract_network_events.dart';
 
 class NetworkBloc extends Bloc<NetworkEvent, NetworkState> {
   factory NetworkBloc() => _instance;

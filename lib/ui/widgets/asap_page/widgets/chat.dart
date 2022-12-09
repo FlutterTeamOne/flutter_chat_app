@@ -1,5 +1,5 @@
-﻿import 'package:chat_app/src/libraries/library_all.dart';
-import 'package:chat_app/ui/widgets/library/library_widgets.dart';
+﻿import '../../../../src/libraries/library_all.dart';
+import '../../library/library_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 
@@ -38,7 +38,9 @@ class ChatWidgetState extends State<ChatWidget> {
             );
           } else {
             return MyMessageCardWidget(
-                message: message.content, isSuccess: message.isWrittenToDb);
+                message: message,
+                isSuccess: message.isWrittenToDb,
+               );
           }
         },
       ),

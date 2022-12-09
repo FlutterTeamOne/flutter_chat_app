@@ -1,4 +1,4 @@
-import 'package:chat_app/domain/data/library/library_data.dart';
+import '../../../../domain/data/library/library_data.dart';
 
 import 'local_chat_impl.dart';
 

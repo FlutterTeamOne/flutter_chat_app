@@ -1,7 +1,7 @@
-import 'package:chat_app/src/constants/db_constants.dart';
-import 'package:chat_app/domain/data/library/library_data.dart';
-import 'package:chat_app/modules/sending_manager/library/library_sending_manager.dart';
-import 'package:chat_app/modules/storage_manager/library/library_storage_manager.dart';
+import '../../../../src/constants/db_constants.dart';
+import '../../../../domain/data/library/library_data.dart';
+import '../../library/library_sending_manager.dart';
+import '../../../storage_manager/library/library_storage_manager.dart';
 
 class LocalChatServices implements ILocalChatsServices {
   LocalChatServices();
@@ -17,9 +17,9 @@ class LocalChatServices implements ILocalChatsServices {
   }
 
   @override
-  deleteChat({required int id}) async {
+  Future<int> deleteChat({required int id}) async {
     var db = await DBHelper.instanse.database;
-    return db.rawDelete(
+    return await db.rawDelete(
         'DELETE FROM ${DatabaseConst.chatsTable} WHERE ${DatabaseConst.chatsColumnChatIdMain}=$id');
   }
 
@@ -30,12 +30,7 @@ class LocalChatServices implements ILocalChatsServices {
               SELECT *
               FROM ${DatabaseConst.chatsTable}
               ''');
-    return await chats
-        .map((item) => ChatDto(
-            localChatId: item[DatabaseConst.chatsColumnLocalChatId] as int,
-            chatIdMain: item[DatabaseConst.chatsColumnChatIdMain] as int,
-            friendId: item[DatabaseConst.chatsColumnFriendId] as int))
-        .toList();
+    return chats.map((item) => ChatDto.fromMap(item)).toList();
   }
 
   @override

@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:chat_app/src/generated/grpc_manager/grpc_manager.pbgrpc.dart';
-import 'package:chat_app/src/libraries/library_all.dart';
+import '../../../../src/generated/grpc_manager/grpc_manager.pbgrpc.dart';
+import '../../../../src/libraries/library_all.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 part 'message_event.dart';
 part 'message_state.dart';
@@ -27,12 +27,14 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     });
     on<ReadMessageEvent>(_onReadMessageEvent);
     on<CreateMessageEvent>(_onCreateMessageEvent);
+//TODO: добавить редактирование сообщения
+    on<UpdateMessageEvent>(_onUpdateMessageEvent);
+//TODO:добавить удаление сообщения
+    on<DeleteMessageEvent>(_onDeleteMessageEvent);
   }
 
   FutureOr<void> _onReadMessageEvent(
       ReadMessageEvent event, Emitter<MessageState> emit) async {
-    var message = LocalMessagesServices();
-    var chats = LocalChatServices();
     // print(await message.getAllMessages());
     // if (event.messages == null) {
     var messages = await _messagesServices.getAllMessages();
@@ -86,19 +88,20 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     } catch (e) {
       print(e);
     }
-    // MessagesServices().addNewMessage(
-    //   friendsChatId: 2,
-    //   senderId: 1,
-    //   content: message.content,
-    //   date: message.date,
-    // );
-    // print('MODEL: $model');
-    // _messagesServices.onCreateMessage(
-    //     userMainId1: message.userMainId1,
-    //     userMainId12: message.userMainId2,
-    //     senderMainId: message.senderMainId,
-    //     content: message.content,
-    //     date: message.date);
+  }
+
+  FutureOr<void> _onUpdateMessageEvent(
+      UpdateMessageEvent event, Emitter<MessageState> emit) async {
+    await _messagesServices.updateMessage(
+        newValues: event.message.content, localMessageId: event.messageId);
+  }
+
+  FutureOr<void> _onDeleteMessageEvent(
+      DeleteMessageEvent event, Emitter<MessageState> emit) async {
+    await _messagesServices.deleteMessage(id: event.messageId);
+    add(ReadMessageEvent());
+    print('message ID: ${event.messageId}');
+    //TODO: отправить запрос в grpc на удаление сообщения и получить ответ
   }
 
   @override

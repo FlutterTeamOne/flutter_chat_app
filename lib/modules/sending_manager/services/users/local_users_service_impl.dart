@@ -1,7 +1,7 @@
-import 'package:chat_app/src/constants/db_constants.dart';
-import 'package:chat_app/domain/data/library/library_data.dart';
-import 'package:chat_app/modules/sending_manager/library/library_sending_manager.dart';
-import 'package:chat_app/modules/storage_manager/library/library_storage_manager.dart';
+import '../../../../src/constants/db_constants.dart';
+import '../../../../domain/data/library/library_data.dart';
+import '../../library/library_sending_manager.dart';
+import '../../../storage_manager/library/library_storage_manager.dart';
 
 class LocalUsersServices implements ILocalUsersServices {
   LocalUsersServices();

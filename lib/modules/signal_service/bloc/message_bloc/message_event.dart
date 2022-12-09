@@ -16,4 +16,17 @@ class ReadMessageEvent extends MessageEvent {
   ReadMessageEvent({this.messages});
 }
 
+class UpdateMessageEvent extends MessageEvent {
+  final MessageDto message;
+  final int messageId;
+
+  UpdateMessageEvent({required this.message, required this.messageId});
+}
+
+class DeleteMessageEvent extends MessageEvent {
+  final int messageId;
+
+  DeleteMessageEvent({required this.messageId});
+}
+
 class MessageStreamEvent extends MessageEvent {}
