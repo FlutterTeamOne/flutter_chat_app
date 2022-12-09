@@ -1,4 +1,4 @@
-import 'package:server/src/library/library_server.dart';
+import '../../library/library_server.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import "dart:io" as io;
