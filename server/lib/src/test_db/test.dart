@@ -6,10 +6,7 @@ Future<void> main() async {
   ///.dart_tool\sqflite_common_ffi\databases\main_db.db)
   ///
 
-  //создать базу
-  await dbServerServices.createDatabase();
-
-  //открыть бауз
+  //открыть базу
   await dbServerServices.openDatabase();
 
   //Обращаемся к методам работы с таблицей чатов через:
