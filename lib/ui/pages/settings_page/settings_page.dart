@@ -73,6 +73,7 @@ class SettingsPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         IconButton(
+
                             onPressed: () {
                               changeThemeBloc.add(LightThemeOrangeEvent());
                             },
