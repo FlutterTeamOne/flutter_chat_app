@@ -61,25 +61,25 @@ dart .\server\lib\src\test_db\test.dart
 1. Открыть консоль bash.
 
 2. В консоли из директории приложения запустить команду ./run_server.sh.
-![[Pasted image 20221210145111.png]]
+![image ./run_server.sh](20221210145111.png)
 
 Скрипт перейдет в папку sh, и вызовет оттуда скрипты ger_nessessary_files.sh (запускает pub get как для основного приложения, так и для сервера; генерирует proto для grpc) и server.sh (запускает сервер в консоли).
-![[Pasted image 20221210145136.png]]
+![image resolving dependences](20221210145136.png)
 
 3. Открыть новую консоль, не закрывая предыдущую.
-![[Pasted image 20221210145201.png]]
+![image 2 opened bash consoles](20221210145201.png)
 
 4. Запустить скрипт для клиента (./run_client.sh). На данный момент содержит только команду flutter run.
-![[Pasted image 20221210145227.png]]
+![image ./run_client.sh](20221210145227.png)
 
 #### Как запустить консоль bash в Windows (Visual Studio Code)
 
 1. Открыть новый терминал
-![[Pasted image 20221210144947.png]]
+![image open new terminal](20221210144947.png)
 
-2. В открытом терминале открыть выпадающий список launch profileS
-![[Pasted image 20221210145029.png]]
+2. В открытом терминале открыть выпадающий список launch profiles
+![image choose a terminal](20221210145029.png)
 
 3. Выбрать bash
-![[Pasted image 20221210145042.png]]
+![image bash terminal is opened](20221210145042.png)
 
