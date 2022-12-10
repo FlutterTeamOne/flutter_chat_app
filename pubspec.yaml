@@ -35,6 +35,7 @@ dependencies:
   protobuf: ^2.1.0
   connectivity_plus: ^3.0.2
   freezed: ^2.2.0
+  sqlite3: ^1.9.1
   blur: ^3.1.0
 
 dev_dependencies:

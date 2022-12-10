@@ -729,7 +729,7 @@ packages:
     source: hosted
     version: "2.2.0+1"
   sqlite3:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: sqlite3
       url: "https://pub.dartlang.org"
