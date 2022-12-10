@@ -1,4 +1,4 @@
-import 'package:server/src/library/library_server.dart';
+import '../../../library/library_server.dart';
 
 abstract class IUsersServices {
   factory IUsersServices() => UsersServices();

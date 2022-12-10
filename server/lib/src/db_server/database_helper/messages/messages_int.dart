@@ -1,5 +1,5 @@
-import 'package:server/src/generated/grpc_manager.pb.dart';
-import 'package:server/src/library/library_server.dart';
+import '../../../generated/grpc_manager.pb.dart';
+import '../../../library/library_server.dart';
 
 abstract class IMessagesServices {
   factory IMessagesServices() => MessagesServices();

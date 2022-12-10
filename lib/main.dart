@@ -45,25 +45,12 @@ class MyApp extends StatelessWidget {
       ],
       child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
         builder: (context, state) {
-          if (state.theme == 'lightThemeDeepPurple') {
-            final theme = CustomTheme().lightThemeDeepPurple;
-            return buildMaterialApp(theme);
-          } else if (state.theme == 'lightThemeLightBlue') {
-            final theme = CustomTheme().lightThemeLightBlue;
-            return buildMaterialApp(theme);
-          } else if (state.theme == 'lightThemeOrange') {
-            final theme = CustomTheme().lightThemeOrange;
-            return buildMaterialApp(theme);
-          } else if (state.theme == 'darkThemeLightBlue') {
-            final theme = CustomTheme().darkThemeLightBlue;
-            return buildMaterialApp(theme);
-          } else if (state.theme == 'darkThemeOrange') {
-            final theme = CustomTheme().darkThemeOrange;
-            return buildMaterialApp(theme);
-          } else {
-            final theme = CustomTheme().darkThemeDeepPurple;
-            return buildMaterialApp(theme);
-          }
+          // final cashTheme = UserPreferences().getTheme();
+          // final ThemeData theme = cashTheme == null
+          //     ? state.theme
+          //     : CustomTheme().darkThemeDeepPurple;
+          final ThemeData theme = state.theme;
+          return buildMaterialApp(theme);
         },
       ),
     );

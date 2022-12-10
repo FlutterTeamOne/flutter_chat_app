@@ -20,7 +20,7 @@ class _MainLayoutState extends State<MainLayout> {
   Widget build(BuildContext context) {
     final currentWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: AppColor.colorLightBackgrond,
+
       body: BlocListener<ConnectionBloc, ConnectionStatusState>(
         listener: (context, state) {
           if (state is ActiveConnectionState) {

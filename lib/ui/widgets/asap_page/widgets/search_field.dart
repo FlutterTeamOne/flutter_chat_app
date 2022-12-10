@@ -1,5 +1,4 @@
-﻿import 'package:chat_app/modules/style_manager/library/library_style_manager.dart';
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 class SearchFieldWidget extends StatelessWidget {
   const SearchFieldWidget({
@@ -15,24 +14,17 @@ class SearchFieldWidget extends StatelessWidget {
       height: 52,
       decoration: const BoxDecoration(
         border: Border.symmetric(
-          horizontal: BorderSide(
-              // color: AppColor.color9E9E9E.withOpacity(0.5),
-              ),
+          horizontal: BorderSide(),
         ),
-        // color: AppColor.colorFFFFFF,
       ),
       child: TextField(
-        // style: AppTextStyle.s17Abel.copyWith(fontSize: 14),
         controller: controller,
-        // cursorColor: AppColor.color7E57C2,
         decoration: InputDecoration(
           prefixIcon: const Icon(
             Icons.search_rounded,
-            // color: AppColor.color9E9E9E,
           ),
           isDense: true,
           hintText: 'Search',
-          hintStyle: AppTextStyle.s17Abel.copyWith(fontSize: 13.5),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
           focusedBorder: OutlineInputBorder(
