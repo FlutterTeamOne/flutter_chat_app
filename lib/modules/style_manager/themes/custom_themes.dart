@@ -20,7 +20,7 @@ class CustomTheme {
     primarySwatch: Colors.deepPurple,
     primaryColor: Colors.deepPurple,
     errorColor: Colors.redAccent.shade200,
-    // backgroundColor: Colors.black45,
+    // backgroundColor: Colors.blueGrey,
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: Colors.white70,
       selectionColor: Colors.white70,
