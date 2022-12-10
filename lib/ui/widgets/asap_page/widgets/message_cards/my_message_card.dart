@@ -22,15 +22,12 @@ class MyMessageCardWidget extends StatelessWidget {
       PopupMenuItem(
         onTap: () {
           textController.text = message.content;
-          // setState(() {
-          //   widget.isEditing = true;
-          // });
+
           context.read<MessageBloc>().add(UpdateMessageEvent(
               messageId: message.localMessageId,
               isEditing: EditState.isPreparation));
 
           // print('IS EDITING: ${context.read<MessageBloc>().isEditing}');
-          Navigator.of(context).pop();
         },
         mouseCursor: MouseCursor.uncontrolled,
         padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -48,7 +45,6 @@ class MyMessageCardWidget extends StatelessWidget {
           context.read<MessageBloc>().add(
                 DeleteMessageEvent(messageId: message.localMessageId!),
               );
-          Navigator.of(context).pop();
         },
         mouseCursor: MouseCursor.uncontrolled,
         padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -64,41 +60,53 @@ class MyMessageCardWidget extends StatelessWidget {
     ];
 
     final currentWidth = MediaQuery.of(context).size.width;
-    return Align(
-      alignment: Alignment.centerRight,
-      child: ConstrainedBox(
-        constraints:
-            BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 145),
-        child: isSuccess == 1
-            ? AppCardWidget(message: message.content, marginIndex: 15)
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  currentWidth > 888.8
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            AppCardWidget(
-                              marginIndex: 5,
-                              message: message.content,
-                            ),
-                            const Icon(
-                              Icons.error,
-                              //color: AppColor.colorF44336,
-                            )
-                          ],
-                        )
-                      : AppCardWidget(
-                          marginIndex: 10,
-                          message: message.content,
-                        ),
-                  const Text(
-                    'Not Delivered',
-                    // style: AppTextStyle.s14AbelGrey
-                    //     .copyWith(color: AppColor.colorF44336),
-                  )
-                ],
-              ),
+    return PopupMenuButton(
+      tooltip: '',
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10),
+            topLeft: Radius.circular(10)),
+      ),
+      position: PopupMenuPosition.under,
+      splashRadius: 0,
+      itemBuilder: (context) => items,
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: ConstrainedBox(
+          constraints:
+              BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 145),
+          child: isSuccess == 1
+              ? AppCardWidget(message: message.content, marginIndex: 15)
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    currentWidth > 888.8
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              AppCardWidget(
+                                marginIndex: 5,
+                                message: message.content,
+                              ),
+                              const Icon(
+                                Icons.error,
+                                //color: AppColor.colorF44336,
+                              )
+                            ],
+                          )
+                        : AppCardWidget(
+                            marginIndex: 10,
+                            message: message.content,
+                          ),
+                    const Text(
+                      'Not Delivered',
+                      // style: AppTextStyle.s14AbelGrey
+                      //     .copyWith(color: AppColor.colorF44336),
+                    )
+                  ],
+                ),
+        ),
       ),
     );
   }
