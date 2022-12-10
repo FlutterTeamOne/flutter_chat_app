@@ -101,6 +101,12 @@ CREATE TABLE ${DatabaseConst.userLastTimeOnlineTable}(
 ''');
 
       await txn.execute('''
+CREATE INDEX LAST_TIME_ONLINE_FK_2 ON ${DatabaseConst.userLastTimeOnlineTable}
+(
+ ${DatabaseConst.usersColumnId}
+)
+''');
+      await txn.execute('''
 CREATE INDEX CHATS_FK_3 ON ${DatabaseConst.chatsTable}
 (
  ${DatabaseConst.chatsColumnFriendId}
@@ -196,11 +202,11 @@ CREATE INDEX MESSAGE_ID_IN_MAIN_FK_1 ON ${DatabaseConst.messageIdTable}
   Future onUpdate(
       {required String tableName,
       required String column,
-      required Map<String, dynamic> model}) async {
+      required Map<String, dynamic> model,
+      required id}) async {
     var db = await instanse.database;
     await db.transaction((txn) async {
-      await txn.update(tableName, model,
-          where: '$column=?', whereArgs: [model['id']]);
+      await txn.update(tableName, model, where: '$column=?', whereArgs: [id]);
     });
     _updateListen();
   }

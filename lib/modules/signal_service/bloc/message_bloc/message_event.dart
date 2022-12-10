@@ -17,10 +17,11 @@ class ReadMessageEvent extends MessageEvent {
 }
 
 class UpdateMessageEvent extends MessageEvent {
-  final MessageDto message;
-  final int messageId;
+  final MessageDto? message;
+  final int? messageId;
+  final EditState? isEditing;
 
-  UpdateMessageEvent({required this.message, required this.messageId});
+  UpdateMessageEvent({this.message, this.messageId, this.isEditing});
 }
 
 class DeleteMessageEvent extends MessageEvent {

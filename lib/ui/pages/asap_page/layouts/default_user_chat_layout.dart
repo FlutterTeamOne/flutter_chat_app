@@ -1,12 +1,12 @@
 ﻿import 'package:flutter/material.dart';
 
 class DefaultUserChatLayout extends StatelessWidget {
-  const DefaultUserChatLayout();
+  const DefaultUserChatLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           left: BorderSide.none,
           right: BorderSide(),
@@ -21,7 +21,7 @@ class DefaultUserChatLayout extends StatelessWidget {
             Text(
               'Sfera'.toUpperCase(),
             ),
-            Text(
+            const Text(
               'Send and receive messages. Choose a chat to write a message.',
             ),
           ],

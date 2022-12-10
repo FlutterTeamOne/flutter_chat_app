@@ -19,6 +19,7 @@ class UserChatLayout extends StatefulWidget {
 
 class UserChatLayoutState extends State<UserChatLayout> {
   TextEditingController controller = TextEditingController();
+  final bool isEditing = false;
   @override
   Widget build(BuildContext context) {
     var user = context.read<UserBloc>().state.users![widget.chatId];
@@ -31,44 +32,71 @@ class UserChatLayoutState extends State<UserChatLayout> {
         Expanded(
           child: context.watch<MessageBloc>().state.messages != null
               ? ChatWidget(
+                  textController: controller,
+                  isEditing: isEditing,
                   messages: context.watch<MessageBloc>().state.messages!)
               : const Center(child: CircularProgressIndicator()),
         ),
         TextInputWidget(
-          onSubmitted: (text) {
-            if (controller.text.isNotEmpty) {
-              context.read<MessageBloc>().add(
-                    CreateMessageEvent(
-                      message: MessageDto(
-                        // localMessageId: 1,
-                        localChatId: widget.localChatId,
-                        localSendId: 1,
-                        content: text,
-                        date: DateTime.now().toIso8601String(),
+            onSubmitted: (text) {
+              FocusScope.of(context).unfocus();
+              if (controller.text.isNotEmpty) {
+                context.read<MessageBloc>().add(
+                      CreateMessageEvent(
+                        message: MessageDto(
+                          // localMessageId: 1,
+                          localChatId: widget.localChatId,
+                          localSendId: 1,
+                          content: text,
+                          date: DateTime.now().toIso8601String(),
+                        ),
                       ),
-                    ),
-                  );
-              controller.clear();
-            } else {
-              return null;
-            }
-          },
-          controller: controller,
-          onTap: () {
-            // if (controller.text.isNotEmpty) {
-            //   final message = MessageModel(
-            //     message: controller.text,
-            //     date: DateTime.now(),
-            //     isSentByMe: true,
-            //   );
-            //   setState(() => messages.add(message));
-            //   print(controller.text);
-            //   controller.clear();
-            // } else {
-            //   return null;
-            // }
-          },
-        ),
+                    );
+                controller.clear();
+              } else {
+                return null;
+              }
+            },
+            controller: controller,
+            onTap: () {
+              if (context.read<MessageBloc>().state.editState ==
+                      EditState.isNotEditing &&
+                  controller.text.isNotEmpty) {
+                context.read<MessageBloc>().add(
+                      CreateMessageEvent(
+                        message: MessageDto(
+                          // localMessageId: 1,
+                          localChatId: widget.localChatId,
+                          localSendId: 1,
+                          content: controller.text,
+                          date: DateTime.now().toIso8601String(),
+                        ),
+                      ),
+                    );
+                FocusScope.of(context).unfocus();
+                controller.clear();
+              }
+              // print('IS EDIT F:${context.read<MessageBloc>().isEditing}');
+              if (context.read<MessageBloc>().state.editState ==
+                      EditState.isPreparation &&
+                  controller.text.isNotEmpty) {
+                print("EDITING");
+
+                context.read<MessageBloc>().add(
+                      UpdateMessageEvent(
+                          message: MessageDto(
+                            localChatId: widget.localChatId,
+                            localSendId: 1,
+                            content: controller.text,
+                            date: DateTime.now().toIso8601String(),
+                          ),
+                          isEditing: EditState.isEditing),
+                    );
+                controller.clear();
+              } else {
+                return null;
+              }
+            }),
       ],
     );
   }

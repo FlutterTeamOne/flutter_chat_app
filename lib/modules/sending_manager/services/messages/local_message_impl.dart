@@ -75,14 +75,33 @@ class LocalMessagesServices implements ILocalMessagesServices {
   }
 
   @override
-  Future<int> updateMessage(
-      {required String newValues, required int localMessageId}) async {
+  Future updateMessage(
+      {required MessageDto message, required int localMessageId}) async {
     var db = await DBHelper.instanse.database;
-    return await db.rawUpdate('''
-UPDATE messages
-SET content = $newValues
-WHERE local_message_id = $localMessageId
-''');
+    // return await db.update(
+    //     'messages',
+    //     {
+    //       DatabaseConst.messagesColumnLocalMessagesId: localMessageId,
+    //       DatabaseConst.messagesColumnLocalChatId: message.localChatId,
+    //       DatabaseConst.messagesColumnSenderLocalId: message.localSendId,
+    //       DatabaseConst.messagesColumnDate: message.date,
+    //       DatabaseConst.messagesColumnIsWrittenToDb: message.isWrittenToDb,
+    //       DatabaseConst.messagesColumnContent: message.content
+    //     },
+    //     where: '${DatabaseConst.messagesColumnLocalMessagesId} = ?',
+    //     whereArgs: [localMessageId]);
+     await DBHelper.instanse.onUpdate(
+        tableName: 'messages',
+        column: DatabaseConst.messagesColumnLocalMessagesId,
+        model: {
+          DatabaseConst.messagesColumnLocalMessagesId: localMessageId,
+          DatabaseConst.messagesColumnLocalChatId: message.localChatId,
+          DatabaseConst.messagesColumnSenderLocalId: message.localSendId,
+          DatabaseConst.messagesColumnDate: message.date,
+          DatabaseConst.messagesColumnIsWrittenToDb: message.isWrittenToDb,
+          DatabaseConst.messagesColumnContent: message.content
+        },
+        id: localMessageId);
   }
 
   updateWrittenToServer(

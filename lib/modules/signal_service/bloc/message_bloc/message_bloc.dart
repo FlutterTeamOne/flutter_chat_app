@@ -9,6 +9,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   late LocalMessagesServices _messagesServices;
   late MessageIdServices _messageIdServices;
   late StreamSubscription _subscription;
+  StreamController<List<MessageDto>> messageController =
+      StreamController.broadcast();
   final GrpcClient grpcClient;
 
   MessageBloc({required this.grpcClient}) : super(MessageState()) {
@@ -21,13 +23,16 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     _subscription =
         DBHelper.instanse.updateListenController.stream.listen((event) async {
       if (event == true) {
-        add(ReadMessageEvent(
-            messages: await _messagesServices.getAllMessages()));
+        var messages = await _messagesServices.getAllMessages();
+        // messages.sort((a, b) => a.localMessageId!.compareTo(b.localMessageId!));
+        print('sort message:$messages');
+        add(ReadMessageEvent(messages: messages));
+        // state.copyWith(messages: messages);
       }
     });
+
     on<ReadMessageEvent>(_onReadMessageEvent);
     on<CreateMessageEvent>(_onCreateMessageEvent);
-//TODO: добавить редактирование сообщения
     on<UpdateMessageEvent>(_onUpdateMessageEvent);
 //TODO:добавить удаление сообщения
     on<DeleteMessageEvent>(_onDeleteMessageEvent);
@@ -37,14 +42,16 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   FutureOr<void> _onReadMessageEvent(
       ReadMessageEvent event, Emitter<MessageState> emit) async {
     // print(await message.getAllMessages());
-    // if (event.messages == null) {
-    var messages = await _messagesServices.getAllMessages();
-    print("MESSAGES:$messages");
-    emit(state.copyWith(messages: messages));
-    // } else {
-    //   emit(state.copyWith(messages: event.messages));
-    //   print(event.messages);
-    // }
+    if (event.messages == null) {
+      var messages = await _messagesServices.getAllMessages();
+      print("MESSAGES:$messages");
+
+      messageController.add(messages);
+      emit(state.copyWith(messages: messages));
+    } else {
+      print('EVENT MSG: ${event.messages}');
+      emit(state.copyWith(messages: event.messages));
+    }
   }
 
   FutureOr<void> _onCreateMessageEvent(
@@ -94,8 +101,16 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   ///Обновление сообщения
   FutureOr<void> _onUpdateMessageEvent(
       UpdateMessageEvent event, Emitter<MessageState> emit) async {
-    await _messagesServices.updateMessage(
-        newValues: event.message.content, localMessageId: event.messageId);
+    if (event.isEditing == EditState.isPreparation) {
+      emit(state.copyWith(
+          editState: EditState.isPreparation, messageId: event.messageId));
+    }
+    if (event.isEditing == EditState.isEditing) {
+      await _messagesServices.updateMessage(
+          message: event.message!, localMessageId: state.messageId!);
+      emit(state.copyWith(editState: EditState.isNotEditing));
+    }
+    //TODO: запрос на редактирование сообщение на сервере
   }
 
   ///Удаление сообщения по ид
@@ -112,6 +127,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       DeleteHistoryMessageEvent event, Emitter<MessageState> emit) async {
     await _messagesServices.deleteAllMessagesInChat(chatID: event.chatID);
     print('CHAT ID: ${event.chatID}');
+    add(ReadMessageEvent());
   }
 
   @override

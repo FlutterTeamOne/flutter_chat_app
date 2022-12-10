@@ -12,8 +12,8 @@ abstract class ILocalMessagesServices {
 
   Future<Map<String, Object?>> getMessageById({required int id});
 
-  Future<int> updateMessage(
-      {required String newValues, required int localMessageId});
+  Future updateMessage(
+      {required  MessageDto message, required int localMessageId});
 
   Future<int> deleteMessage({required int id});
 

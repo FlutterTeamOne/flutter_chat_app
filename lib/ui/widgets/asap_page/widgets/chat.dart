@@ -4,12 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 
 class ChatWidget extends StatefulWidget {
-  const ChatWidget({
+  ChatWidget({
     Key? key,
     required this.messages,
+    required this.textController,
+    required this.isEditing,
   }) : super(key: key);
 
   final List<MessageDto> messages;
+  final TextEditingController textController;
+  bool isEditing;
 
   @override
   State<ChatWidget> createState() => ChatWidgetState();
@@ -20,15 +24,15 @@ class ChatWidgetState extends State<ChatWidget> {
   Widget build(BuildContext context) {
     return Container(
       // color: AppColor.colorFFFFFF,
-      child: GroupedListView<MessageDto, DateTime>(
+      child: GroupedListView<MessageDto, int>(
         padding: const EdgeInsets.all(10),
         elements: widget.messages,
         reverse: true,
-        order: GroupedListOrder.DESC,
         floatingHeader: true,
-        groupBy: (message) => DateTime.parse(message.date),
+        groupBy: (message) => message.localMessageId!,
         groupHeaderBuilder: (MessageDto message) =>
             TimeCardWidget(date: message.date),
+        groupComparator: (value1, value2) => value2,
         itemBuilder: (context, MessageDto message) {
           if (message.localSendId == 0) {
             // print(message.isSentByMe);
@@ -38,9 +42,11 @@ class ChatWidgetState extends State<ChatWidget> {
             );
           } else {
             return MyMessageCardWidget(
-                message: message,
-                isSuccess: message.isWrittenToDb,
-               );
+              message: message,
+              isSuccess: message.isWrittenToDb,
+              textController: widget.textController,
+              isEditing: widget.isEditing,
+            );
           }
         },
       ),
