@@ -8,12 +8,10 @@ class ChatWidget extends StatefulWidget {
     Key? key,
     required this.messages,
     required this.textController,
-    required this.isEditing,
   }) : super(key: key);
 
   final List<MessageDto> messages;
   final TextEditingController textController;
-  bool isEditing;
 
   @override
   State<ChatWidget> createState() => ChatWidgetState();

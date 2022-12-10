@@ -2,7 +2,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../src/libraries/library_all.dart';
-import '../../../widgets/asap_page/widgets/chat_widget.dart';
 import '../../../widgets/library/library_widgets.dart';
 
 class UserChatLayout extends StatefulWidget {
@@ -34,8 +33,8 @@ class UserChatLayoutState extends State<UserChatLayout> {
           child: context.watch<MessageBloc>().state.messages != null
               ? ChatWidget(
                   textController: controller,
-                  isEditing: isEditing,
-                  messages: context.watch<MessageBloc>().state.messages!)
+                  messages: context.watch<MessageBloc>().state.messages!,
+                )
               : const Center(child: CircularProgressIndicator()),
         ),
         TextInputWidget(
