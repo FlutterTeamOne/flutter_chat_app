@@ -28,14 +28,16 @@ class SettingsPage extends StatelessWidget {
                             onPressed: () {
                               changeThemeBloc.add(LightThemeDeepPurpleEvent());
                             },
-                            icon: const Icon(Icons.light_mode_outlined),
+                            icon: const Icon(Icons.light_mode_outlined,
+                              color: Colors.white,),
                         iconSize: 20,
                         ),
                         IconButton(
                             onPressed: () {
                               changeThemeBloc.add(DarkThemeDeepPurpleEvent());
                             },
-                            icon: const Icon(Icons.dark_mode_outlined),
+                            icon: const Icon(Icons.dark_mode_outlined,
+                              color: Colors.black87,),
                           iconSize: 20,
                         ),
                       ]),
@@ -50,14 +52,16 @@ class SettingsPage extends StatelessWidget {
                             onPressed: () {
                               changeThemeBloc.add(LightThemeLightBlueEvent());
                             },
-                            icon: const Icon(Icons.light_mode_outlined),
+                            icon: const Icon(Icons.light_mode_outlined,
+                              color: Colors.white,),
                           iconSize: 20,
                         ),
                         IconButton(
                             onPressed: () {
                               changeThemeBloc.add(DarkThemeLightBlueEvent());
                             },
-                            icon: const Icon(Icons.dark_mode_outlined),
+                            icon: const Icon(Icons.dark_mode_outlined,
+                              color: Colors.black87,),
                           iconSize: 20,
                         ),
                       ]),
@@ -72,14 +76,17 @@ class SettingsPage extends StatelessWidget {
                             onPressed: () {
                               changeThemeBloc.add(LightThemeOrangeEvent());
                             },
-                            icon: const Icon(Icons.light_mode_outlined),
+                            icon: Icon(Icons.light_mode_outlined,
+                            color: Colors.white,
+                            ),
                           iconSize: 20,
                         ),
                         IconButton(
                             onPressed: () {
                               changeThemeBloc.add(DarkThemeOrangeEvent());
                             },
-                            icon: const Icon(Icons.dark_mode_outlined),
+                            icon: const Icon(Icons.dark_mode_outlined,
+                              color: Colors.black87,),
                           iconSize: 20,
                         ),
                       ]),
