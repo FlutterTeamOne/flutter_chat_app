@@ -29,12 +29,8 @@ class MyMessageCardWidget extends StatelessWidget {
                               message: message,
                             ),
                             Icon(
-                              Icons.error,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .error
-                                  .withOpacity(0.7),
-
+                              Icons.error_outline_rounded,
+                              color: Theme.of(context).errorColor,
                             )
                           ],
                         )
@@ -42,8 +38,9 @@ class MyMessageCardWidget extends StatelessWidget {
                           marginIndex: 10,
                           message: message,
                         ),
-                  Text('Not Delivered',
-                      style: Theme.of(context).textTheme.caption,
+                  Text(
+                    'not delivered',
+                    style: Theme.of(context).textTheme.caption,
                   )
                 ],
               ),

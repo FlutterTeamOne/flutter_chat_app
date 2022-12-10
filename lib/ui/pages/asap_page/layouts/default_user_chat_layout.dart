@@ -9,20 +9,19 @@ class DefaultUserChatLayout extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border(
           left: BorderSide.none,
-          right: BorderSide(),
-          bottom: BorderSide(),
-          top: BorderSide(),
+          right: BorderSide.none,
+          bottom: BorderSide.none,
+          top: BorderSide.none,
         ),
       ),
       child: Container(
-        color: Theme.of(context).colorScheme.background,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Sfera'.toUpperCase(),
-              ),
+              // Text(
+              //   'Sfera'.toUpperCase(),
+              // ),
               Text(
                 'Send and receive messages. Choose a chat to write a message.',
               ),

@@ -14,19 +14,19 @@ class ChatAppBarWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
       height: 52,
-      decoration: const BoxDecoration(
-        // color: AppColor.colorFFFFFF,
+      decoration: BoxDecoration(
+
         border: Border(
-          left: BorderSide.none,
-          right: BorderSide(
-              // color: AppColor.color9E9E9E.withOpacity(0.5),
-              ),
-          bottom: BorderSide(
-              // color: AppColor.color9E9E9E.withOpacity(0.5),
-              ),
-          top: BorderSide(
-              // color: AppColor.color9E9E9E.withOpacity(0.5),
-              ),
+          left: BorderSide(
+            width: 1,
+              color: Theme.of(context).dividerColor
+
+          )
+        //   right: BorderSide.none,
+        //   bottom: BorderSide(
+        //       color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+        //       ),
+        //   top: BorderSide.none
         ),
       ),
       child: Row(

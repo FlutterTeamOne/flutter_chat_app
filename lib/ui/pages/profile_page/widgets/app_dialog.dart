@@ -10,28 +10,25 @@ class _AppDialog extends StatelessWidget {
     return Center(
       child: Container(
         width: 350,
-        height: 250,
+        height: 200,
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          boxShadow: const [
-            BoxShadow(
-              blurRadius: 8,
-              blurStyle: BlurStyle.outer,
-              // Цвет
-              // color: AppColor.color000000.withOpacity(0.7),
-            ),
-          ],
+          //
           borderRadius: BorderRadius.circular(15),
-          // Цвет
-          // color: AppColor.color000000.withOpacity(0.2),
+          color: Theme.of(context).dialogBackgroundColor,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Choose image',
-              // Стиль
-              // style: TextStyle(fontSize: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Choose image',
+                  // Стиль
+                  // style: TextStyle(fontSize: 16),
+                ),
+              ],
             ),
             const SizedBox(height: 20),
             Row(

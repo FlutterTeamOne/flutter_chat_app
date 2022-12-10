@@ -8,7 +8,7 @@ class BlackBoxPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).colorScheme.background,
+
       child: Center(
         child: Container(
           // color: AppColor.color7E57C2,
