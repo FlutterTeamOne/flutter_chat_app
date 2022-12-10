@@ -1,2 +1,1 @@
-cd ..
 flutter run
