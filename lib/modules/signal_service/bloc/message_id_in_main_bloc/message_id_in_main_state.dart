@@ -1,8 +1,8 @@
 part of 'message_id_in_main_bloc.dart';
 
-class MessageIdInMainState {
+class MessageIdInMainState extends Equatable {
   final List<MessageIdInMainDto>? messageIdInMain;
-  MessageIdInMainState({
+  const MessageIdInMainState({
     this.messageIdInMain,
   });
 
@@ -13,4 +13,7 @@ class MessageIdInMainState {
       messageIdInMain: messageIdInMain ?? this.messageIdInMain,
     );
   }
+
+  @override
+  List<Object?> get props => [messageIdInMain];
 }
