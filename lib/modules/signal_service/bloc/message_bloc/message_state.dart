@@ -2,11 +2,11 @@ part of 'message_bloc.dart';
 
 enum EditState { isEditing, isNotEditing, isPreparation }
 
-class MessageState {
+class MessageState extends Equatable {
   final List<MessageDto>? messages;
   final EditState editState;
   final int? messageId;
-  MessageState({
+  const MessageState({
     this.messages,
     this.editState = EditState.isNotEditing,
     this.messageId,
@@ -23,4 +23,7 @@ class MessageState {
       messageId: messageId ?? this.messageId,
     );
   }
+
+  @override
+  List<Object?> get props => [messages, editState, messageId];
 }

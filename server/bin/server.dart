@@ -83,7 +83,7 @@ Future<void> main() async {
     CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
   );
 
-  await server.serve(port: 50000);
+  await server.serve(port: 5000);
   await dbServerServices.openDatabase();
   print('✅ Server listening on port ${server.port}...');
 }

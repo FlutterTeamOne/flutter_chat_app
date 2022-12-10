@@ -19,7 +19,6 @@ class UserChatLayout extends StatefulWidget {
 
 class UserChatLayoutState extends State<UserChatLayout> {
   TextEditingController controller = TextEditingController();
-  final bool isEditing = false;
   @override
   Widget build(BuildContext context) {
     var user = context.read<UserBloc>().state.users![widget.chatId];
@@ -38,9 +37,10 @@ class UserChatLayoutState extends State<UserChatLayout> {
               : const Center(child: CircularProgressIndicator()),
         ),
         TextInputWidget(
-            onSubmitted: (text) => _sendAndChange(),
-            controller: controller,
-            onTap: () => _sendAndChange()),
+          onSubmitted: (text) => _sendAndChange(),
+          controller: controller,
+          onTap: () => _sendAndChange(),
+        ),
       ],
     );
   }
@@ -51,7 +51,6 @@ class UserChatLayoutState extends State<UserChatLayout> {
       context.read<MessageBloc>().add(
             CreateMessageEvent(
               message: MessageDto(
-                // localMessageId: 1,
                 localChatId: widget.localChatId,
                 localSendId: 1,
                 content: controller.text,

@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:equatable/equatable.dart';
+import 'package:grpc/grpc_connection_interface.dart';
+
 import '../../../../src/generated/grpc_manager/grpc_manager.pbgrpc.dart';
 import '../../../../src/libraries/library_all.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +22,17 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     //   add(ReadMessageEvent(messages: value.messages));
     //   print('MESSAGE: ${value.messages}');
     // });
+
+    grpcClient.channel.getConnection();
+    grpcClient.channel.onConnectionStateChanged.asBroadcastStream(
+      onListen: (subscription) {
+        subscription.resume();
+        subscription.onData((data) {
+          print('DATA $data');
+        });
+      },
+    );
+   
     _messageIdServices = MessageIdServices();
     _subscription =
         DBHelper.instanse.updateListenController.stream.listen((event) async {
@@ -42,6 +56,18 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   FutureOr<void> _onReadMessageEvent(
       ReadMessageEvent event, Emitter<MessageState> emit) async {
     // print(await message.getAllMessages());
+     grpcClient.channel.onConnectionStateChanged.listen((event) {
+      print('ON LISTEN $event');
+    });
+    grpcClient.channelState.listen((item) => print('ITEM LISTEN $item'));
+    print('OnConnection: ${grpcClient.channel.onConnectionStateChanged}');
+    print('STATE CONNECT :${grpcClient.channelState}');
+    grpcClient.channelState.forEach((element) {
+      print("ELEMENT $element");
+    });
+    grpcClient.channelState.listen((event) {
+      print('EVENT $event');
+    });
     if (event.messages == null) {
       var messages = await _messagesServices.getAllMessages();
       print("MESSAGES:$messages");
