@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 
 class ChatWidget extends StatefulWidget {
-  ChatWidget({
+  const ChatWidget({
     Key? key,
     required this.messages,
     required this.textController,

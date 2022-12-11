@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
+
 import 'ui/pages/library/library_pages.dart';
 import 'src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
@@ -21,11 +23,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return MultiBlocProvider(
       providers: [
         BlocProvider<ConnectionBloc>(
           create: (context) => ConnectionBloc(),
+        ),
+        BlocProvider(
+          create: (_) => GrpcConnectionBloc(grpcClient, ConnectionBloc())
+            ..add(
+              const GrpcConnectionStarted(),
+            ),
         ),
         BlocProvider<UserBloc>(
           create: (context) => UserBloc()..add(ReadUsersEvent()),
