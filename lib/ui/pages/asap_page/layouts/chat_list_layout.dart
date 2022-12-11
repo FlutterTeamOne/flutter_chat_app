@@ -23,7 +23,12 @@ class _ChatListLayoutState extends State<ChatListLayout> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-        shape: Border.all(),
+        shape: Border(
+          right: BorderSide(
+            width: 1,
+            color: Theme.of(context).dividerColor
+          )
+        ),
         elevation: 0,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,17 +81,26 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                   ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton.icon(
-                onPressed:
-                    () {}, //=>context.read<ChatBloc>().add(CreateChatEvent(
-                //chat: ChatModel(
-                //localChatId: 1, chatIdMain: 2, friendId: 2),
-                // )),
-                icon: const Icon(Icons.add),
-                label: const Text('Add Chat'),
+              child: Container(
+                // decoration: BoxDecoration(
+                //   borderRadius: BorderRadius.circular(50)
+                // ),
+                child: ElevatedButton.icon(
+                  onPressed:
+                      () {}, //=>context.read<ChatBloc>().add(CreateChatEvent(
+                  //chat: ChatModel(
+                  //localChatId: 1, chatIdMain: 2, friendId: 2),
+                  // )),
+                  icon: Icon(Icons.add),
+                  label: Text('Add Chat'),
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0),
+                  ),
+    )
+                ),
               ),
             )
-          ],
+            )],
         ));
   }
 }

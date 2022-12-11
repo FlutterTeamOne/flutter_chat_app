@@ -7,12 +7,15 @@ class VideosPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        // color: AppColor.color7E57C2,
-        child: Text(
-          'VideoS',
-          // style: AppTextStyle.s36Abel,
+    return Container(
+      // color: Theme.of(context).colorScheme.background,
+      child: Center(
+        child: Container(
+
+          child: Text(
+            'VideoS',
+            // style: AppTextStyle.s36Abel,
+          ),
         ),
       ),
     );

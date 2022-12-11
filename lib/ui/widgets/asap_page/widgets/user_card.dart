@@ -21,8 +21,8 @@ class UserCardWidget extends StatelessWidget {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 8),
       // selected: true,
-      // selectedTileColor: AppColor.color9E9E9E.withOpacity(0.4),
-      // selectedColor: AppColor.color000000,
+      // selectedTileColor: Theme.of(context).colorScheme.secondary,
+      // selectedColor: Theme.of(context).colorScheme.secondary,
       onTap: onTap,
       leading: ClipRRect(
         borderRadius: BorderRadius.circular(100),

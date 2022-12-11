@@ -19,7 +19,13 @@ class ChatWidgetState extends State<ChatWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // color: AppColor.colorFFFFFF,
+      // color: Theme.of(context).colorScheme.secondary,
+      // decoration: BoxDecoration(
+      //     border: Border(
+      //         left: BorderSide(
+      //             width: 1,
+      //         color: Theme.of(context).dividerColor
+      //         ))),
       child: GroupedListView<MessageDto, DateTime>(
         padding: const EdgeInsets.all(10),
         elements: widget.messages,

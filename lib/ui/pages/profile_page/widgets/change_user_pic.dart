@@ -17,8 +17,7 @@ class _ChangeUserPic extends StatelessWidget {
           radius: 18,
           child: Container(
             decoration: BoxDecoration(
-              // Цвет
-              // color: AppColor.colorFFFFFF,
+              color: Theme.of(context).primaryColor,
               borderRadius: BorderRadius.circular(50),
             ),
             child: const Center(
