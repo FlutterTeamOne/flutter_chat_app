@@ -1,7 +1,7 @@
 name: chat_app
 description: A new Flutter project.
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
 
@@ -33,6 +33,7 @@ dependencies:
   protobuf: ^2.1.0
   connectivity_plus: ^3.0.2
   freezed: ^2.2.0
+  custom_pop_up_menu: ^1.2.4
 
 dev_dependencies:
   flutter_test:
