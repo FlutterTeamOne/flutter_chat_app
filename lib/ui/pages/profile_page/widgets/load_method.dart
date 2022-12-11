@@ -13,9 +13,10 @@ class _LoadMethod extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      borderRadius: BorderRadius.circular(5),
+      borderRadius: BorderRadius.circular(20),
       child: InkWell(
-        borderRadius: BorderRadius.circular(5),
+
+        borderRadius: BorderRadius.circular(20),
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.symmetric(
@@ -24,16 +25,17 @@ class _LoadMethod extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             // Цвет
-            // color: AppColor.color000000.withOpacity(0.4),
-            borderRadius: BorderRadius.circular(5),
+            color: Theme.of(context).dividerColor,
+            borderRadius: BorderRadius.circular(20),
           ),
           child: Column(
             children: [
-              const CircleAvatar(
-                radius: 55,
-                // Цвет
-                // backgroundColor: AppColor.color7E57C2,
-                child: Icon(Icons.add_photo_alternate, size: 26),
+              CircleAvatar(
+                radius: 30,
+                backgroundColor: Theme.of(context).primaryColor,
+                child: Icon(Icons.add_photo_alternate, size: 25,
+                  color: Colors.white,
+                ),
               ),
               const SizedBox(height: 10),
               Text(text)

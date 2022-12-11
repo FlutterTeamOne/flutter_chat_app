@@ -10,6 +10,7 @@ class SettingsPage extends StatelessWidget {
     final ChangeThemeBloc changeThemeBloc =
         BlocProvider.of<ChangeThemeBloc>(context);
     return Scaffold(
+
       body: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -18,7 +19,8 @@ class SettingsPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Card(
-                  color: CustomTheme().darkThemeDeepPurple.colorScheme.primary,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                  color: CustomTheme().darkThemeDeepPurple.primaryColor,
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -26,16 +28,23 @@ class SettingsPage extends StatelessWidget {
                             onPressed: () {
                               changeThemeBloc.add(LightThemeDeepPurpleEvent());
                             },
-                            icon: const Icon(Icons.light_mode_outlined)),
+                            icon: const Icon(Icons.light_mode_outlined,
+                              color: Colors.white,),
+                        iconSize: 20,
+                        ),
                         IconButton(
                             onPressed: () {
                               changeThemeBloc.add(DarkThemeDeepPurpleEvent());
                             },
-                            icon: const Icon(Icons.dark_mode_outlined)),
+                            icon: const Icon(Icons.dark_mode_outlined,
+                              color: Colors.black87,),
+                          iconSize: 20,
+                        ),
                       ]),
                 ),
                 Card(
-                  color: CustomTheme().darkThemeLightBlue.colorScheme.primary,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                  color: CustomTheme().darkThemeLightBlue.primaryColor,
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -43,29 +52,44 @@ class SettingsPage extends StatelessWidget {
                             onPressed: () {
                               changeThemeBloc.add(LightThemeLightBlueEvent());
                             },
-                            icon: const Icon(Icons.light_mode_outlined)),
+                            icon: const Icon(Icons.light_mode_outlined,
+                              color: Colors.white,),
+                          iconSize: 20,
+                        ),
                         IconButton(
                             onPressed: () {
                               changeThemeBloc.add(DarkThemeLightBlueEvent());
                             },
-                            icon: const Icon(Icons.dark_mode_outlined)),
+                            icon: const Icon(Icons.dark_mode_outlined,
+                              color: Colors.black87,),
+                          iconSize: 20,
+                        ),
                       ]),
                 ),
                 Card(
-                  color: CustomTheme().darkThemeOrange.colorScheme.primary,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                  color: CustomTheme().darkThemeOrange.primaryColor,
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         IconButton(
+
                             onPressed: () {
                               changeThemeBloc.add(LightThemeOrangeEvent());
                             },
-                            icon: const Icon(Icons.light_mode_outlined)),
+                            icon: Icon(Icons.light_mode_outlined,
+                            color: Colors.white,
+                            ),
+                          iconSize: 20,
+                        ),
                         IconButton(
                             onPressed: () {
                               changeThemeBloc.add(DarkThemeOrangeEvent());
                             },
-                            icon: const Icon(Icons.dark_mode_outlined)),
+                            icon: const Icon(Icons.dark_mode_outlined,
+                              color: Colors.black87,),
+                          iconSize: 20,
+                        ),
                       ]),
                 ),
               ],

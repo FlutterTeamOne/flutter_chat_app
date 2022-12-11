@@ -29,34 +29,24 @@ class _ProfileLayout extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                   Text(
                     'Username',
-                    // Стиль
-                    // style: TextStyle(
-                    //     fontWeight: FontWeight.w500,
-                    //     color: AppColor.color000000.withOpacity(0.6)),
+                    style: Theme.of(context).textTheme.headline6,
                   ),
                   const SizedBox(height: 2),
                   Text(
                     state.users?[0].name ?? 'unknow',
-                    // Стиль
-                    // style: const TextStyle(
-                    //     fontSize: 16, color: AppColor.color000000),
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                   const SizedBox(height: 10),
-                  const Text(
+                  Text(
                     'Email',
-                    // Стиль
-                    // style: TextStyle(
-                    //     fontWeight: FontWeight.w500,
-                    //     color: AppColor.color000000.withOpacity(0.6)),
+                    style: Theme.of(context).textTheme.headline6,
                   ),
                   const SizedBox(height: 2),
                   Text(
                     state.users?[0].email ?? '???',
-                    // Цвет
-                    // style: const TextStyle(
-                    //     fontSize: 16, color: AppColor.color000000),
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ],
               ),

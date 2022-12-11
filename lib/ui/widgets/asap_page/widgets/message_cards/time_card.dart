@@ -15,11 +15,8 @@ class TimeCardWidget extends StatelessWidget {
       child: Center(
         child: Card(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-            side: const BorderSide(
-              width: 0.1,
-              // color: AppColor.color000000.withOpacity(0.3),
-            ),
+            borderRadius: BorderRadius.circular(10),
+
           ),
           child: Padding(
             padding: const EdgeInsets.all(10),

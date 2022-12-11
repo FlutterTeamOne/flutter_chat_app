@@ -45,10 +45,6 @@ class MyApp extends StatelessWidget {
       ],
       child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
         builder: (context, state) {
-          // final cashTheme = UserPreferences().getTheme();
-          // final ThemeData theme = cashTheme == null
-          //     ? state.theme
-          //     : CustomTheme().darkThemeDeepPurple;
           final ThemeData theme = state.theme;
           return buildMaterialApp(theme);
         },
