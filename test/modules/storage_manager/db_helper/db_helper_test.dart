@@ -13,7 +13,7 @@ Future main() async {
     databaseFactory = databaseFactoryFfi;
   });
   group("Тест создания таблицы", () {
-    test('adding user to a database', () async {
+    test('Test dbhelper', () async {
       final dbHelper = DBHelper.instanse;
       final db = await dbHelper.database;
       final usersCont = ((await db.rawQuery('''
@@ -33,11 +33,40 @@ Future main() async {
 
       await dbHelper.onAdd(tableName: DatabaseConst.userTable, model: user);
 
-      final users = await db.rawQuery('''
+      var users = await db.rawQuery('''
               SELECT *
               FROM ${DatabaseConst.userTable}
               WHERE ${DatabaseConst.usersColumnMainUsersId} = $usersCont
               ''');
+      expect(users.last, user);
+
+      final user2 = {
+        'name': 'test2',
+        'email': 't2@t2.t2',
+        DatabaseConst.usersColumnProfilePicLink:
+            'https://static.more.tv/actor/avatar/5feab82564aa7.jpeg',
+        DatabaseConst.usersColumnRegistrationDate: '2022-12-02T21:37:32.653712',
+        DatabaseConst.usersColumnMainUsersId: usersCont + 1,
+        'local_users_id': usersCont + 1,
+      };
+
+      await dbHelper.onAdd(tableName: DatabaseConst.userTable, model: user2);
+      await dbHelper.onDelete(
+          tableName: DatabaseConst.userTable,
+          column: DatabaseConst.usersColumnId,
+          model: user2);
+      users = await db.rawQuery('''
+              SELECT *
+              FROM ${DatabaseConst.userTable}
+              WHERE ${DatabaseConst.usersColumnMainUsersId} = $usersCont
+              ''');
+      expect(users.last, user);
+
+      await dbHelper.onUpdate(
+          tableName: DatabaseConst.userTable,
+          column: DatabaseConst.usersColumnId,
+          model: user);
+
       expect(users.last, user);
     });
 
