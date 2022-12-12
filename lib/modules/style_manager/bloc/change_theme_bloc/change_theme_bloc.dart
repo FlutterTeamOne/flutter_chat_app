@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chat_app/modules/storage_manager/preferences/user_preferences.dart';
 import 'package:chat_app/modules/style_manager/themes/custom_themes.dart';
 
