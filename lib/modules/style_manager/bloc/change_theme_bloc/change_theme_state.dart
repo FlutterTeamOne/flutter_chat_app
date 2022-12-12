@@ -2,7 +2,7 @@ import 'package:chat_app/modules/style_manager/library/library_style_manager.dar
 import 'package:flutter/material.dart';
 
 class ChangeThemeState {
-  ThemeData theme;
+  final ThemeData theme;
   final int index;
   Map<int, Color> iconColor = {
     0: Colors.white.withOpacity(0.2),
