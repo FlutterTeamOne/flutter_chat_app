@@ -9,6 +9,7 @@ class CustomTheme {
       primaryColor: Colors.deepPurple,
       errorColor: Colors.redAccent.shade200,
       backgroundColor: Colors.white70,
+      indicatorColor: Colors.white,
       // hintColor: Colors.white70,
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: Colors.black26,
@@ -20,6 +21,7 @@ class CustomTheme {
     primarySwatch: Colors.deepPurple,
     primaryColor: Colors.deepPurple,
     errorColor: Colors.redAccent.shade200,
+    indicatorColor: Colors.white,
     // backgroundColor: Colors.blueGrey,
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: Colors.white70,
