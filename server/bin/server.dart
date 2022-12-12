@@ -26,7 +26,7 @@ class GrpcChat extends GrpcChatServiceBase {
         content: request.content,
         createdDate: DateTime.now().toIso8601String(),
         updatedDate: DateTime.now().toIso8601String());
-
+    print('SRC: $src');
     var message = CreateMessageResponse();
 
     if (src != 0) {
@@ -35,6 +35,7 @@ class GrpcChat extends GrpcChatServiceBase {
     } else {
       // message.ok = false;
     }
+    print('SERVER MESSAGE: $message');
     return message;
   }
 
@@ -77,8 +78,6 @@ class GrpcChat extends GrpcChatServiceBase {
     // TODO: implement updateMessage
     throw UnimplementedError();
   }
-
-
 }
 
 ///

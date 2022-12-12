@@ -79,18 +79,24 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       date: message.createdDate,
     );
 
-    var messageToServer = CreateMessageRequest();
+    var messageToServer = CreateMessageRequest(
+        chatIdMain:
+            await chats.getMainIdChatByMessage(localId: message.localChatId),
+        content: message.content,
+        senderMainId:
+            await localUsersServices.getMainIdUserByLocalId(localId: 1));
 
-    messageToServer.chatIdMain =
-        await chats.getMainIdChatByMessage(localId: message.localChatId);
-    messageToServer.content = message.content;
-    messageToServer.senderMainId = await localUsersServices
-        .getMainIdUserByLocalId(localId: 1); ////поменять запрос на mainUserTabl
+    // messageToServer.chatIdMain =
+    //     await chats.getMainIdChatByMessage(localId: message.localChatId);
+    // messageToServer.content = message.content;
+    // messageToServer.senderMainId = await localUsersServices
+    //     .getMainIdUserByLocalId(localId: 1); ////поменять запрос на mainUserTabl
     print('message to server \n $messageToServer');
     // await for (var grpcState in grpcConnection.stream) {
     // grpcConnection.stream.listen((grpcState) async {
 
-    var messageResponse = await stub.createMessage(messageToServer);
+    var messageResponse = await GrpcChatClient(GrpcClient().channel)
+        .createMessage(messageToServer);
     messageResponse.mainMessagesId;
     print("messageOK:/n $messageResponse");
     grpcConnection.add(const GrpcConnectionStarted());
