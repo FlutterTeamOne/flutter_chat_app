@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
 class CustomTheme {
+  final Map<int, ThemeData> themes = {
+    0: CustomTheme().lightThemeDeepPurple,
+    1: CustomTheme().lightThemeDeepPurple,
+    2: CustomTheme().lightThemeDeepPurple,
+    3: CustomTheme().lightThemeDeepPurple,
+    4: CustomTheme().lightThemeDeepPurple,
+    5: CustomTheme().lightThemeDeepPurple,
+  };
+
   ThemeData lightThemeDeepPurple = ThemeData(
 
       brightness: Brightness.light,

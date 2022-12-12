@@ -33,15 +33,16 @@ class SettingsPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ListView.builder(
+                          scrollDirection: Axis.horizontal,
                             itemCount: 2,
                             itemBuilder: (BuildContext context, int iconIndex) {
                               return IconButton(
                                 onPressed: () {
-                                  changeThemeBloc.add(LightThemeDeepPurpleEvent(
+                                  changeThemeBloc.add(SetTheme(
                                       index: cardIndex*2 + iconIndex));
                                 },
                                 icon: Icon(
-                                  Icons.light_mode_outlined,
+                                  state.selectIcon[iconIndex],
                                   color: state.iconColor[state.index],
                                 ),
                                 iconSize: 20,

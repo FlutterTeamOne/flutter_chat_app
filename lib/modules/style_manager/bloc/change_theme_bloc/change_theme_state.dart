@@ -17,6 +17,10 @@ class ChangeThemeState {
     1: CustomTheme().darkThemeLightBlue.primaryColor,
     2: CustomTheme().darkThemeOrange.primaryColor,
     };
+  Map<int, Object> selectIcon = {
+    0: Icons.light_mode_outlined,
+    1: Icons.dark_mode_outlined,
+  };
   ChangeThemeState({
     required this.theme,
     required this.index,
