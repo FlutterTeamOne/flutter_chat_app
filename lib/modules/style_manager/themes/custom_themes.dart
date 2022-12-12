@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 class CustomTheme {
   final Map<int, ThemeData> themes = {
     0: CustomTheme().lightThemeDeepPurple,
-    1: CustomTheme().lightThemeDeepPurple,
-    2: CustomTheme().lightThemeDeepPurple,
-    3: CustomTheme().lightThemeDeepPurple,
-    4: CustomTheme().lightThemeDeepPurple,
-    5: CustomTheme().lightThemeDeepPurple,
+    1: CustomTheme().darkThemeDeepPurple,
+    2: CustomTheme().lightThemeLightBlue,
+    3: CustomTheme().darkThemeLightBlue,
+    4: CustomTheme().lightThemeOrange,
+    5: CustomTheme().lightThemeOrange,
   };
 
   ThemeData lightThemeDeepPurple = ThemeData(
