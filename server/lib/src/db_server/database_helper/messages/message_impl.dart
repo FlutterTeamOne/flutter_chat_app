@@ -5,7 +5,7 @@ import '../../../library/library_server.dart';
 
 class MessagesServices implements IMessagesServices {
   @override
-  addNewMessage({
+  Future<int> addNewMessage({
     required int chatId,
     required int senderId,
     required String content,
@@ -20,7 +20,7 @@ class MessagesServices implements IMessagesServices {
       'content': content,
       'created_date': createdDate,
       'updated_date': updatedDate,
-      'deleted_date':deletedDate
+      'deleted_date': deletedDate
     });
     // await db.execute('''
     //   INSERT INTO messages (chat_id, sender_id, content, created_date, updated_date, deleted_date) VALUES (
@@ -49,7 +49,7 @@ class MessagesServices implements IMessagesServices {
         (deleted_date = '$deletedDate')
         )
     ''');
-    return id[0]['message_id'];
+    return id[0]['message_id'] as int;
   }
 
   @override

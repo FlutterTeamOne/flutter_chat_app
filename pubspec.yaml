@@ -17,7 +17,6 @@ dependencies:
       path: plugins/window_size
   flutter_bloc:
   shared_preferences: ^2.0.15
-  test:
   sidebarx: ^0.14.0
   google_fonts: ^3.0.1
   intl: ^0.17.0

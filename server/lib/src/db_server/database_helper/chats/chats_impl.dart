@@ -6,14 +6,14 @@ class ChatsServices implements IChatsServices {
     var db = await dbServerServices.openDatabase();
 
     await db.execute('''
-      INSERT INTO friends_chat (friend1_id, friend2_id) VALUES (
+      INSERT INTO chats (friend1_id, friend2_id) VALUES (
         $friend1_id,
         $friend2_id
       );
       ''');
 
     return await db.rawQuery('''
-      SELECT main_friends_chat_id FROM friends_chat 
+      SELECT main_friends_chat_id FROM chats 
       WHERE (
         (friend1_id = $friend1_id) 
         AND 
@@ -25,7 +25,7 @@ class ChatsServices implements IChatsServices {
   getAllChats() async {
     var db = await dbServerServices.openDatabase();
 
-    return await db.rawQuery('''SELECT * FROM friends_chat''');
+    return await db.rawQuery('''SELECT * FROM chats''');
   }
 
   @override
@@ -33,7 +33,7 @@ class ChatsServices implements IChatsServices {
     var db = await dbServerServices.openDatabase();
 
     return await db.rawQuery('''
-      SELECT * FROM friends_chat 
+      SELECT * FROM chats 
         WHERE (main_friends_chat_id = $id)
     ''');
   }
@@ -42,7 +42,7 @@ class ChatsServices implements IChatsServices {
   updateChat({required String newValues, required String condition}) async {
     var db = await dbServerServices.openDatabase();
     return await db
-        .rawUpdate('''UPDATE friends_chat SET $newValues WHERE ($condition)''');
+        .rawUpdate('''UPDATE chats SET $newValues WHERE ($condition)''');
   }
 
   @override
@@ -50,7 +50,7 @@ class ChatsServices implements IChatsServices {
     var db = await dbServerServices.openDatabase();
 
     return await db.rawDelete(
-        '''DELETE FROM friends_chat WHERE (main_friends_chat_id = $id)''');
+        '''DELETE FROM chats WHERE (main_friends_chat_id = $id)''');
   }
 
   @override
@@ -58,7 +58,7 @@ class ChatsServices implements IChatsServices {
     var db = await dbServerServices.openDatabase();
 
     var id_chat = await db.rawQuery('''
-      SELECT f.main_friends_chat_id FROM friends_chat f 
+      SELECT f.main_friends_chat_id FROM chats f 
 	      WHERE 
         (((f.friend1_id = $friend1_id) AND (f.friend2_id = $friend2_id)) 
         OR 
@@ -70,7 +70,7 @@ class ChatsServices implements IChatsServices {
   getChatsByUserId({required int userID}) async {
     var db = await dbServerServices.openDatabase();
 
-    return await db.rawQuery('''SELECT * FROM friends_chat f 
+    return await db.rawQuery('''SELECT * FROM chats f 
 	    WHERE ((f.friend1_id = $userID) OR (f.friend2_id = $userID))''');
   }
 }

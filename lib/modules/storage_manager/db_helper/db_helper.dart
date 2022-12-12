@@ -9,7 +9,7 @@ class DBHelper {
   DBHelper._();
   static final DBHelper instanse = DBHelper._();
 
-  static Database? _database;
+  static Database? _database; 
 
   ///Обращение к локальной БД извне
   Future<Database> get database async => _database ??= await initDB();

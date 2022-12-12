@@ -1,7 +1,10 @@
+import 'package:path/path.dart';
+
 import '../../library/library_server.dart';
 import 'package:sqflite_common/sqlite_api.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import "dart:io" as io;
+
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DbServerServices implements IDbServerServices {
   @override
@@ -14,19 +17,20 @@ class DbServerServices implements IDbServerServices {
     var dbExists = await io.File(path).exists();
 
     if (!dbExists) {
-      createDatabase();
-      return await databaseFactory.openDatabase('main_db.db');
+      return await databaseFactory.openDatabase('main_db.db',
+          options: OpenDatabaseOptions(
+            version: 1,
+            onCreate: _createDatabase,
+          ));
     }
-    return await databaseFactory.openDatabase('main_db.db');
+    return await databaseFactory.openDatabase('main_db.db',
+        options: OpenDatabaseOptions(
+          version: 1,
+          onCreate: _createDatabase,
+        ));
   }
 
-  @override
-  Future createDatabase() async {
-    sqfliteFfiInit();
-
-    var databaseFactory = databaseFactoryFfi;
-
-    var db = await databaseFactory.openDatabase('main_db.db');
+  Future _createDatabase(Database db, int version) async {
     await db.transaction((txn) async {
       await txn.execute('''
           CREATE TABLE users
@@ -51,7 +55,7 @@ class DbServerServices implements IDbServerServices {
           friend1_id           integer NOT NULL,
           friend2_id           integer NOT NULL,
           created_date          char(26) NOT NULL,
-          delete_date           char(26),
+          deleted_date           char(26),
           updated_date          char(26) NOT NULL,
           CONSTRAINT FRIENDS_CHAT_FK_77 FOREIGN KEY ( friend1_id ) REFERENCES users ( main_users_id ),
           CONSTRAINT FRIENDS_CHAT_FK_78 FOREIGN KEY ( friend2_id ) REFERENCES users ( main_users_id )
@@ -109,13 +113,10 @@ class DbServerServices implements IDbServerServices {
       await txn.insert('chats', {
         'friend1_id': 1,
         'friend2_id': 2,
-        'created_data': '2022-12-02T21:36:32.653712',
-        'deleted_data': null,
-        'updated_data': '2022-12-02T21:36:32.653712'
+        'created_date': '2022-12-02T21:36:32.653712',
+        'deleted_date': '',
+        'updated_date': '2022-12-02T21:36:32.653712'
       });
-      // await txn.execute('''
-      //     INSERT INTO chats (friend1_id, friend2_id, created_date, deleted_date, updated_date) VALUES (1, 2, '2022-12-02T21:36:32.653712', null, '2022-12-02T21:36:32.653712')
-      // ''');
     });
   }
 }
