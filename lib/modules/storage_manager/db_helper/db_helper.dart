@@ -43,10 +43,10 @@ class DBHelper {
       await txn.execute('''
 CREATE TABLE ${DatabaseConst.userTable} (
   ${DatabaseConst.usersColumnId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
-  ${DatabaseConst.usersColumnName} ${DatabaseConst.char50} ${DatabaseConst.notNull},
-  ${DatabaseConst.usersColumnEmail} ${DatabaseConst.char50} ${DatabaseConst.notNull},
+  ${DatabaseConst.usersColumnName} ${DatabaseConst.char350} ${DatabaseConst.notNull},
+  ${DatabaseConst.usersColumnEmail} ${DatabaseConst.char350} ${DatabaseConst.notNull},
   ${DatabaseConst.usersColumnRegistrationDate} ${DatabaseConst.date} ${DatabaseConst.notNull},
-  ${DatabaseConst.usersColumnProfilePicLink} ${DatabaseConst.char50} ${DatabaseConst.notNull},
+  ${DatabaseConst.usersColumnProfilePicLink} ${DatabaseConst.char350} ${DatabaseConst.notNull},
   ${DatabaseConst.usersColumnMainUsersId} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique}
   )
 ''');
@@ -59,7 +59,7 @@ CREATE TABLE ${DatabaseConst.messageTable} (
  ${DatabaseConst.messagesColumnDate} ${DatabaseConst.integer} ${DatabaseConst.notNull},
  ${DatabaseConst.messagesColumnSenderLocalId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
  ${DatabaseConst.messagesColumnIsWrittenToDb} ${DatabaseConst.integer} ${DatabaseConst.notNull} DEFAULT 0,
- ${DatabaseConst.messagesColumnContent} ${DatabaseConst.char50} ${DatabaseConst.notNull},
+ ${DatabaseConst.messagesColumnContent} ${DatabaseConst.char350} ${DatabaseConst.notNull},
  ${DatabaseConst.constraint} MESSAGES_FK_79 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnLocalChatId} ) ${DatabaseConst.references} ${DatabaseConst.chatsTable} ( local_chats_id ),
  ${DatabaseConst.constraint} MESSAGES_FK_80 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnSenderLocalId} ) ${DatabaseConst.references} ${DatabaseConst.userTable} ( local_users_id ),
  CHECK ((is_written_to_db = 0) OR (is_written_to_db = 1))
