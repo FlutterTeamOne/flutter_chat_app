@@ -9,11 +9,11 @@ class UserCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          width: 200,
-          height: 200,
-          child: Placeholder(
-            child: Image.network(image),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(50),
+          child: SizedBox.fromSize(
+            size: Size.fromRadius(120),
+            child: Image.network(image, fit: BoxFit.cover),
           ),
         ),
         Text(
