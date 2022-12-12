@@ -9,14 +9,14 @@ import 'change_theme_state.dart';
 class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
   ChangeThemeBloc()
       : super(ChangeThemeState(
-    theme: CustomTheme().darkThemeDeepPurple,
+    theme: CustomTheme().themes[1]!,
     index: 1,
   )) {
-    on<SetTheme>(_setTheme);
+    on<SetThemeEvent>(_SetThemeEvent);
   }
 
-  void _setTheme(ChangeThemeEvent event, Emitter<ChangeThemeState> emit) async {
-    await UserPreferences().setTheme('lightThemeDeepPurple');
+  void _SetThemeEvent(ChangeThemeEvent event, Emitter<ChangeThemeState> emit) async {
+    await UserPreferences().SetThemeEvent('lightThemeDeepPurple');
     await UserPreferences().getTheme();
     emit(ChangeThemeState(
         theme: CustomTheme().themes[event.index]!, index: event.index));

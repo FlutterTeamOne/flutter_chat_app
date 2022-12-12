@@ -2,10 +2,9 @@ abstract class ChangeThemeEvent {
   late int index;
 }
 
-class SetTheme extends ChangeThemeEvent {
+class SetThemeEvent extends ChangeThemeEvent {
   final int index;
-
-  SetTheme({
+  SetThemeEvent({
     required this.index,
   });
 }

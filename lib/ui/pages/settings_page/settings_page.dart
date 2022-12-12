@@ -38,7 +38,7 @@ class SettingsPage extends StatelessWidget {
                             itemBuilder: (BuildContext context, int iconIndex) {
                               return IconButton(
                                 onPressed: () {
-                                  changeThemeBloc.add(SetTheme(
+                                  changeThemeBloc.add(SetThemeEvent(
                                       index: cardIndex*2 + iconIndex));
                                 },
                                 icon: Icon(
