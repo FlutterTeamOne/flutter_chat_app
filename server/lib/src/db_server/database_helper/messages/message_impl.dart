@@ -20,7 +20,7 @@ class MessagesServices implements IMessagesServices {
       'content': content,
       'created_date': createdDate,
       'updated_date': updatedDate,
-      'deleted_date': deletedDate
+      'deleted_date': deletedDate??""
     });
     // await db.execute('''
     //   INSERT INTO messages (chat_id, sender_id, content, created_date, updated_date, deleted_date) VALUES (
@@ -44,9 +44,7 @@ class MessagesServices implements IMessagesServices {
         AND
         (created_date = '$createdDate')
         AND
-        (updated_date = '$updatedDate')
-        AND
-        (deleted_date = '$deletedDate')
+        (updated_date = '$updatedDate')       
         )
     ''');
     return id[0]['message_id'] as int;

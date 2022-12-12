@@ -95,8 +95,10 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     // await for (var grpcState in grpcConnection.stream) {
     // grpcConnection.stream.listen((grpcState) async {
 
-    var messageResponse = await GrpcChatClient(GrpcClient().channel)
-        .createMessage(messageToServer);
+    // var messageResponse = await GrpcChatClient(GrpcClient().channel)
+    //     .createMessage(messageToServer);
+    var messageResponse =
+        await Locator.getIt<GrpcChatClient>().createMessage(messageToServer);
     messageResponse.mainMessagesId;
     print("messageOK:/n $messageResponse");
     grpcConnection.add(const GrpcConnectionStarted());

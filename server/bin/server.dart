@@ -12,9 +12,8 @@ class GrpcChat extends GrpcChatServiceBase {
   var usersService = UsersServices();
 
   @override
-  Future<Empty> connecting(ServiceCall call, Empty request) {
-    // TODO: implement connecting
-    throw UnimplementedError();
+  Future<Empty> connecting(ServiceCall call, Empty request) async {
+    return request;
   }
 
   @override
