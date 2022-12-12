@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chat_app/ui/auth/authorization_page.dart';
 import 'ui/pages/library/library_pages.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +60,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => const MainLayout(),
+        '/': (context) => AuthPage1(),
         '/mainLayout': (context) => const MainLayout(),
         '/Settings page': (context) => const SettingsPage(),
       },

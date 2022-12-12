@@ -11,6 +11,16 @@ service  GrpcChat{
 
 message Empty {}
 
+message User{
+    string name =1;
+    int32 id =2;
+    string img = 3;
+}
+
+message AllUsers{
+
+}
+
 message Message {
     int32 chatIdMaint = 1;
     int32 senderMainId = 2;
