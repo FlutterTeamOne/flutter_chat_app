@@ -1,10 +1,15 @@
 import 'dart:async';
+import 'package:chat_app/domain/data/dto/user_dto/main_user_dto.dart';
+import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:grpc/grpc.dart';
 import 'package:grpc/grpc_connection_interface.dart';
 
 import '../../../../src/generated/grpc_manager/grpc_manager.pbgrpc.dart';
 import '../../../../src/libraries/library_all.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../service_locator/locator.dart';
 part 'message_event.dart';
 part 'message_state.dart';
 
@@ -15,24 +20,16 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   StreamController<List<MessageDto>> messageController =
       StreamController.broadcast();
   final GrpcClient grpcClient;
-
-  MessageBloc({required this.grpcClient}) : super(MessageState()) {
+  final GrpcConnectionBloc grpcConnection;
+  var stub = GrpcChatClient(Locator.getIt<GrpcClient>().channel);
+  MessageBloc({required this.grpcClient, required this.grpcConnection})
+      : super(const MessageState()) {
     _messagesServices = LocalMessagesServices();
     // _subscription = _messageService.onMessagesStream().listen((value) {
     //   add(ReadMessageEvent(messages: value.messages));
     //   print('MESSAGE: ${value.messages}');
     // });
 
-    grpcClient.channel.getConnection();
-    grpcClient.channel.onConnectionStateChanged.asBroadcastStream(
-      onListen: (subscription) {
-        subscription.resume();
-        subscription.onData((data) {
-          print('DATA $data');
-        });
-      },
-    );
-   
     _messageIdServices = MessageIdServices();
     _subscription =
         DBHelper.instanse.updateListenController.stream.listen((event) async {
@@ -55,19 +52,6 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
   FutureOr<void> _onReadMessageEvent(
       ReadMessageEvent event, Emitter<MessageState> emit) async {
-    // print(await message.getAllMessages());
-     grpcClient.channel.onConnectionStateChanged.listen((event) {
-      print('ON LISTEN $event');
-    });
-    grpcClient.channelState.listen((item) => print('ITEM LISTEN $item'));
-    print('OnConnection: ${grpcClient.channel.onConnectionStateChanged}');
-    print('STATE CONNECT :${grpcClient.channelState}');
-    grpcClient.channelState.forEach((element) {
-      print("ELEMENT $element");
-    });
-    grpcClient.channelState.listen((event) {
-      print('EVENT $event');
-    });
     if (event.messages == null) {
       var messages = await _messagesServices.getAllMessages();
       print("MESSAGES:$messages");
@@ -92,36 +76,51 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       localChatId: message.localChatId,
       senderId: 1,
       content: message.content,
-      date: message.date,
+      date: message.createdDate,
     );
-    var messageToServer = Message();
-    messageToServer.chatIdMaint =
+
+    var messageToServer = CreateMessageRequest();
+
+    messageToServer.chatIdMain =
         await chats.getMainIdChatByMessage(localId: message.localChatId);
     messageToServer.content = message.content;
-    messageToServer.date = message.date;
-    messageToServer.senderMainId =
-        await localUsersServices.getMainIdUserByLocalId(localId: 1);
+    messageToServer.senderMainId = await localUsersServices
+        .getMainIdUserByLocalId(localId: 1); ////поменять запрос на mainUserTabl
     print('message to server \n $messageToServer');
+    // await for (var grpcState in grpcConnection.stream) {
+    // grpcConnection.stream.listen((grpcState) async {
 
-    try {
-      var messageOk = await GrpcChatClient(grpcClient.channel)
-          .createMessage(messageToServer);
-      print("messageOK:/n $messageOk");
-      if (messageOk.ok) {
-        await _messagesServices.updateWrittenToServer(
-            localMessageId: message.localMessageId!, isWrittenToDB: 1);
-        emit(state.copyWith(
-            messages: await localMessagesServices.getAllMessages()));
-        var updateWrittenToServer =
-            await _messagesServices.getMessageById(id: message.localMessageId!);
-        print('UPDATE WRITTEN TO SERVER: $updateWrittenToServer');
-        var createMessageId = await _messageIdServices.createMessageId(
-            mainId: messageOk.mainMessagesId, localId: message.localMessageId!);
-        print('CREATE MESSAGE ID $createMessageId');
+    var messageResponse = await stub.createMessage(messageToServer);
+    messageResponse.mainMessagesId;
+    print("messageOK:/n $messageResponse");
+    grpcConnection.add(const GrpcConnectionStarted());
+    await for (var grpcState in grpcConnection.stream) {
+      print('get grpc State');
+      print('grpc message state2:${grpcState.connectState}');
+      if (grpcState.connectState == GrpcConnectState.ready) {
+        print('grpc message state3:${grpcState.connectState}');
+        try {
+          print("messageOK:/n $messageResponse");
+          if (messageResponse.dateCreate == '') {
+            await _messagesServices.updateWrittenToServer(
+                localMessageId: message.localMessageId!,
+                updatedDate: messageResponse.dateCreate);
+            emit(state.copyWith(
+                messages: await localMessagesServices.getAllMessages()));
+            // var updateWrittenToServer = await _messagesServices.getMessageById(
+            //     id: message.localMessageId!);
+            // print('UPDATE WRITTEN TO SERVER: $updateWrittenToServer');
+            // var createMessageId = await _messageIdServices.createMessageId(
+            //     mainId: messageOk.mainMessagesId,
+            //     localId: message.localMessageId!);
+            // print('CREATE MESSAGE ID $createMessageId');
+          }
+        } catch (e) {
+          print(e);
+        }
       }
-    } catch (e) {
-      print(e);
     }
+    // );
   }
 
   ///Обновление сообщения
@@ -135,6 +134,15 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       await _messagesServices.updateMessage(
           message: event.message!, localMessageId: state.messageId!);
       emit(state.copyWith(editState: EditState.isNotEditing));
+      try {
+        var messageUpdateRequest = UpdateMessageRequest(
+            idMessageMain: state.messageId, content: event.message!.content);
+        var messageUpdateResponse =
+            await stub.updateMessage(messageUpdateRequest);
+
+        print('id Message Main: ${messageUpdateResponse.idMessageMain}');
+        print('date update: ${messageUpdateResponse.dateUpdate}');
+      } catch (e) {}
     }
     //TODO: запрос на редактирование сообщение на сервере
   }

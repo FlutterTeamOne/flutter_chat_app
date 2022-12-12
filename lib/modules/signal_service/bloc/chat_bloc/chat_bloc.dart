@@ -13,7 +13,7 @@ part 'chat_state.dart';
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   late LocalChatServices _chatServices;
   UserBloc userBloc;
-  ChatBloc({required this.userBloc}) : super(ChatState(chatId: null)) {
+  ChatBloc({required this.userBloc}) : super(const ChatState()) {
     on<ReadChatEvent>(_onReadChatEvent);
     on<CreateChatEvent>(_onCreateChatEvent);
     on<GetChatIdEvent>(_onGetChatIdEvent);
@@ -43,7 +43,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     _chatServices = LocalChatServices();
     var chat = event.chat;
     var chats = await _chatServices.createChat(
-        chatIdMainDB: chat.chatIdMain, friendId: chat.friendId);
+        createDate: DateTime.now().toIso8601String(), userId: chat.userIdChat);
     emit(state.copyWith(chats: chats));
   }
 
@@ -62,6 +62,5 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   FutureOr<void> _onEditChatEvent(
       EditChatEvent event, Emitter<ChatState> emit) async {
     //TODO: func edit chat
-   
   }
 }

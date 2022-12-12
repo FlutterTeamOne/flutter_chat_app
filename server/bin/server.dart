@@ -12,34 +12,36 @@ class GrpcChat extends GrpcChatServiceBase {
   var usersService = UsersServices();
 
   @override
-  Future<Empty> connecting(ServiceCall call, Empty request) async {
+  Future<Empty> connecting(ServiceCall call, Empty request) {
     // TODO: implement connecting
-    return Empty();
+    throw UnimplementedError();
   }
 
   @override
-  Future<MessageBase> createMessage(ServiceCall call, Message request) async {
+  Future<CreateMessageResponse> createMessage(
+      ServiceCall call, CreateMessageRequest request) async {
     var src = await messagesService.addNewMessage(
-        friendsChatId: request.chatIdMaint,
+        chatId: request.chatIdMain,
         senderId: request.senderMainId,
         content: request.content,
-        date: request.date);
+        createdDate: DateTime.now().toIso8601String(),
+        updatedDate: DateTime.now().toIso8601String());
 
-    var message = MessageBase();
+    var message = CreateMessageResponse();
 
     if (src != 0) {
-      message.ok = true;
+      message.dateCreate = DateTime.now().toIso8601String();
       message.mainMessagesId = src;
     } else {
-      message.ok = false;
+      // message.ok = false;
     }
     return message;
   }
 
   @override
-  Stream<MessageBase> createMessages(
-      ServiceCall call, Stream<Message> request) {
-    // TODO: implement createNessages
+  Future<DeleteMessageResponse> deleteMessage(
+      ServiceCall call, DeleteMessageRequest request) {
+    // TODO: implement deleteMessage
     throw UnimplementedError();
   }
 
@@ -68,6 +70,15 @@ class GrpcChat extends GrpcChatServiceBase {
       }
     }
   }
+
+  @override
+  Future<UpdateMessageResponse> updateMessage(
+      ServiceCall call, UpdateMessageRequest request) {
+    // TODO: implement updateMessage
+    throw UnimplementedError();
+  }
+
+
 }
 
 ///

@@ -46,7 +46,8 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                           separatorBuilder: (context, index) =>
                               const SizedBox(height: 25),
                           itemBuilder: (context, index) {
-                            var friendId = widget.chatModel[index].friendId - 1;
+                            var friendId =
+                                widget.chatModel[index].userIdChat - 1;
                             var lastMessageId = widget.messageModel.isEmpty
                                 ? 0
                                 : widget.messageModel.length - 1;
@@ -54,8 +55,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                               selected: false,
                               onTap: () {
                                 context.read<ChatBloc>().add(GetChatIdEvent(
-                                    friendId,
-                                    widget.chatModel[index].localChatId));
+                                    friendId, widget.chatModel[index].chatId));
                               },
                               name: context
                                   .read<UserBloc>()

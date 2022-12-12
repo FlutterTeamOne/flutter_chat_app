@@ -8,11 +8,12 @@ class LocalChatServices implements ILocalChatsServices {
 
   @override
   Future<dynamic> createChat(
-      {required int chatIdMainDB, required int friendId}) async {
+      {required String createDate, required int userId}) async {
     return await DBHelper.instanse
         .onAdd(tableName: DatabaseConst.chatsTable, model: {
-      DatabaseConst.chatsColumnChatIdMain: chatIdMainDB,
-      DatabaseConst.chatsColumnFriendId: friendId
+      DatabaseConst.chatsColumnUserId: userId,
+      DatabaseConst.chatsColumnCreatedDate: createDate,
+      DatabaseConst.chatsColumnUpdatedDate: createDate
     });
   }
 
@@ -20,7 +21,7 @@ class LocalChatServices implements ILocalChatsServices {
   Future<int> deleteChat({required int id}) async {
     var db = await DBHelper.instanse.database;
     return await db.rawDelete(
-        'DELETE FROM ${DatabaseConst.chatsTable} WHERE ${DatabaseConst.chatsColumnChatIdMain}=$id');
+        'DELETE FROM ${DatabaseConst.chatsTable} WHERE ${DatabaseConst.chatsColumnUserId}=$id');
   }
 
   @override
@@ -48,9 +49,9 @@ class LocalChatServices implements ILocalChatsServices {
   Future<int> getMainIdChatByMessage({required int localId}) async {
     var db = await DBHelper.instanse.database;
     var chat = await db.rawQuery(
-        'SELECT chat_id_main FROM chats WHERE local_chat_id = $localId');
+        'SELECT ${DatabaseConst.chatsColumnLocalChatId} FROM ${DatabaseConst.chatsTable} WHERE ${DatabaseConst.chatsColumnLocalChatId} = $localId');
 
-    return chat[0]['chat_id_main'] as int;
+    return chat[0][DatabaseConst.chatsColumnLocalChatId] as int;
   }
 
   @override

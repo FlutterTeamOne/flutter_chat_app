@@ -3,62 +3,84 @@ import 'dart:convert';
 import 'package:chat_app/src/constants/db_constants.dart';
 
 import '../model_dto.dart';
-class ChatDto extends ModelDto {
-  final int localChatId;
-  final int chatIdMain;
-  final int friendId;
 
+class ChatDto extends ModelDto {
+  final int chatId;
+  final int userIdChat;
+  final String createdDate;
+  final String updatedDate;
+  final String? deletedDate;
   ChatDto({
-    required this.localChatId,
-    required this.chatIdMain,
-    required this.friendId,
+    required this.chatId,
+    required this.userIdChat,
+    required this.createdDate,
+    required this.updatedDate,
+    this.deletedDate,
   });
 
   ChatDto copyWith({
-    int? localChatId,
-    int? chatIdMain,
-    int? friendId,
+    int? chatId,
+    int? userIdChat,
+    String? createdDate,
+    String? updatedDate,
+    String? deletedDate,
   }) {
     return ChatDto(
-      localChatId: localChatId ?? this.localChatId,
-      chatIdMain: chatIdMain ?? this.chatIdMain,
-      friendId: friendId ?? this.friendId,
+      chatId: chatId ?? this.chatId,
+      userIdChat: userIdChat ?? this.userIdChat,
+      createdDate: createdDate ?? this.createdDate,
+      updatedDate: updatedDate ?? this.updatedDate,
+      deletedDate: deletedDate ?? this.deletedDate,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      DatabaseConst.chatsColumnLocalChatId: localChatId,
-      DatabaseConst.chatsColumnChatIdMain: chatIdMain,
-      DatabaseConst.chatsColumnFriendId: friendId,
+      DatabaseConst.chatsColumnLocalChatId: chatId,
+      DatabaseConst.chatsColumnUserId: userIdChat,
+      DatabaseConst.chatsColumnCreatedDate: createdDate,
+      DatabaseConst.chatsColumnUpdatedDate: updatedDate,
+      DatabaseConst.chatsColumnDeletedDate: deletedDate,
     };
   }
 
   factory ChatDto.fromMap(Map<String, dynamic> map) {
     return ChatDto(
-      localChatId: map[DatabaseConst.chatsColumnLocalChatId] as int,
-      chatIdMain: map[DatabaseConst.chatsColumnChatIdMain] as int,
-      friendId: map[DatabaseConst.chatsColumnFriendId] as int,
+      chatId: map[DatabaseConst.chatsColumnLocalChatId] as int,
+      userIdChat: map[DatabaseConst.chatsColumnUserId] as int,
+      createdDate: map[DatabaseConst.chatsColumnCreatedDate] as String,
+      updatedDate: map[DatabaseConst.chatsColumnUpdatedDate] as String,
+      deletedDate: map[DatabaseConst.chatsColumnDeletedDate] ?? '',
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory ChatDto.fromJson(String source) => ChatDto.fromMap(json.decode(source));
+  factory ChatDto.fromJson(String source) =>
+      ChatDto.fromMap(json.decode(source));
 
   @override
-  String toString() => 'ChatDto(localChatId: $localChatId, chatIdMain: $chatIdMain, friendId: $friendId)';
+  String toString() {
+    return 'ChatDto(localChatId: $chatId, chatIdMain: $userIdChat, createdDate: $createdDate, updatedDate: $updatedDate, deletedDate: $deletedDate)';
+  }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is ChatDto &&
-      other.localChatId == localChatId &&
-      other.chatIdMain == chatIdMain &&
-      other.friendId == friendId;
+        other.chatId == chatId &&
+        other.userIdChat == userIdChat &&
+        other.createdDate == createdDate &&
+        other.updatedDate == updatedDate &&
+        other.deletedDate == deletedDate;
   }
 
   @override
-  int get hashCode => localChatId.hashCode ^ chatIdMain.hashCode ^ friendId.hashCode;
+  int get hashCode =>
+      chatId.hashCode ^
+      userIdChat.hashCode ^
+      createdDate.hashCode ^
+      updatedDate.hashCode ^
+      deletedDate.hashCode;
 }

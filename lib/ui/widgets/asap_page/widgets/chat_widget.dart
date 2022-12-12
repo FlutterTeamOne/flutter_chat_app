@@ -8,12 +8,10 @@ class ChatWidget extends StatefulWidget {
     Key? key,
     required this.messages,
     required this.textController,
-    required this.isEditing,
   }) : super(key: key);
 
   final List<MessageDto> messages;
   final TextEditingController textController;
-  bool isEditing;
 
   @override
   State<ChatWidget> createState() => ChatWidgetState();
@@ -31,19 +29,19 @@ class ChatWidgetState extends State<ChatWidget> {
         floatingHeader: true,
         groupBy: (message) => message.localMessageId!,
         groupHeaderBuilder: (MessageDto message) =>
-            TimeCardWidget(date: message.date),
+            TimeCardWidget(date: message.createdDate),
         groupComparator: (value1, value2) => value2,
         itemBuilder: (context, MessageDto message) {
           if (message.localSendId == 0) {
             // print(message.isSentByMe);
             // print(message.message);
             return OtherMessageCardWidget(
-              message: message.date,
+              message: message.createdDate,
             );
           } else {
             return MyMessageCardWidget(
               message: message,
-              isSuccess: message.isWrittenToDb,
+              isSuccess: message.isRead,
               textController: widget.textController,
             );
           }

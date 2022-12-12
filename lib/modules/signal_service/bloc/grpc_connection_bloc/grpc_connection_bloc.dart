@@ -6,6 +6,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grpc/grpc.dart';
 
+import '../../service_locator/locator.dart';
+
 part 'grpc_connection_event.dart';
 part 'grpc_connection_state.dart';
 

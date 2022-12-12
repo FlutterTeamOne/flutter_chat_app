@@ -1,37 +1,55 @@
+import 'package:sqflite_common/sqlite_api.dart';
+
 import '../../../generated/grpc_manager.pb.dart';
 import '../../../library/library_server.dart';
 
 class MessagesServices implements IMessagesServices {
   @override
-  addNewMessage(
-      {required int friendsChatId,
-      required int senderId,
-      required String content,
-      required String date}) async {
-    var db = await dbServerServices.openDatabase();
-
-    await db.execute('''
-      INSERT INTO messages (friends_chat_id, sender_id, content, date) VALUES (
-        $friendsChatId,
-        $senderId,
-        "$content",
-        "$date"
-      )
-      ''');
+  addNewMessage({
+    required int chatId,
+    required int senderId,
+    required String content,
+    required String createdDate,
+    required String updatedDate,
+    String? deletedDate,
+  }) async {
+    Database db = await dbServerServices.openDatabase();
+    await db.insert('messages', {
+      'chat_id': chatId,
+      'sender_id': senderId,
+      'content': content,
+      'created_date': createdDate,
+      'updated_date': updatedDate,
+      'deleted_date':deletedDate
+    });
+    // await db.execute('''
+    //   INSERT INTO messages (chat_id, sender_id, content, created_date, updated_date, deleted_date) VALUES (
+    //     $chatId,
+    //     $senderId,
+    //     "$content",
+    //     "$createdDate",
+    //     "$updatedDate",
+    //     "$deletedDate"
+    //   )
+    //   ''');
 
     var id = await db.rawQuery('''
-      SELECT main_messages_id FROM messages
+      SELECT message_id FROM messages
       WHERE (
-        (friends_chat_id = $friendsChatId) 
+        (chat_id = $chatId) 
         AND 
         (sender_id = $senderId)
         AND
         (content = '$content')
         AND
-        (date = '$date')
+        (created_date = '$createdDate')
+        AND
+        (updated_date = '$updatedDate')
+        AND
+        (deleted_date = '$deletedDate')
         )
     ''');
-    return id[0]['main_messages_id'];
+    return id[0]['message_id'];
   }
 
   @override
@@ -39,7 +57,7 @@ class MessagesServices implements IMessagesServices {
     var db = await dbServerServices.openDatabase();
 
     return await db
-        .rawDelete('''DELETE FROM messages WHERE (main_messages_id = $id)''');
+        .rawDelete('''DELETE FROM messages WHERE (message_id = $id)''');
   }
 
   @override
@@ -54,23 +72,23 @@ class MessagesServices implements IMessagesServices {
     var db = await dbServerServices.openDatabase();
 
     return await db.rawQuery('''SELECT * FROM messages 
-        WHERE (main_messages_id = $id)''');
+        WHERE (message_id = $id)''');
   }
 
   @override
-  getMessagesByChatId({required int chatID}) async {
-    var db = await dbServerServices.openDatabase();
-
-    return await db.rawQuery(
-        '''SELECT * FROM messages WHERE (friends_chat_id = $chatID)''');
-  }
-
-  @override
-  getMessagesBySenderId({required int senderID}) async {
+  getMessagesByChatId({required int chatId}) async {
     var db = await dbServerServices.openDatabase();
 
     return await db
-        .rawQuery('''SELECT * FROM messages WHERE (sender_id = $senderID)''');
+        .rawQuery('''SELECT * FROM messages WHERE (chat_id = $chatId)''');
+  }
+
+  @override
+  getMessagesBySenderId({required int senderId}) async {
+    var db = await dbServerServices.openDatabase();
+
+    return await db
+        .rawQuery('''SELECT * FROM messages WHERE (sender_id = $senderId)''');
   }
 
   @override
@@ -85,7 +103,7 @@ class MessagesServices implements IMessagesServices {
   getRecentMessages({required LastMessage message}) async {
     var db = await dbServerServices.openDatabase();
     var messages = await db.rawQuery('''SELECT *
-      FROM messages, friends_chat AS friend
+      FROM messages, chats AS friend
       WHERE (main_messages_id > ${message.mainIdMessage} AND
         (friend.friend1_id = ${message.mainIdUser} OR 
         friend.friend2_id = ${message.mainIdUser}))''');

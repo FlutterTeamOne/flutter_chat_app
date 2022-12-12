@@ -2,7 +2,6 @@ import 'package:grpc/grpc.dart';
 
 import '../lib/src/generated/grpc_manager.pbgrpc.dart';
 
-
 class Client {
   ClientChannel? channel;
   //Класс заглушка, определяет все функции которые есть на сервере
@@ -10,7 +9,7 @@ class Client {
   var response;
   bool executionInProgress = true;
 
-  Future<MessageBase> SendMessage(Message message) async {
+  Future<MessageBase> SendMessage(CreateMessageRequest message) async {
     channel = ClientChannel('localhost',
         port: 50000,
         options:
@@ -67,11 +66,10 @@ class Client {
 var con = false;
 void main() async {
   var client = Client();
-  var message = Message();
-  message.chatIdMaint = 1;
+  var message = CreateMessageRequest();
+  message.chatIdMain = 1;
   message.senderMainId = 1;
   message.content = "Hello";
-  message.date = "2022-12-02T21:36:32.653712";
 
   ///
   ///Если присылает один и тот же mainMessageId

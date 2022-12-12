@@ -45,10 +45,31 @@ CREATE TABLE ${DatabaseConst.userTable} (
   ${DatabaseConst.usersColumnId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
   ${DatabaseConst.usersColumnName} ${DatabaseConst.char50} ${DatabaseConst.notNull},
   ${DatabaseConst.usersColumnEmail} ${DatabaseConst.char50} ${DatabaseConst.notNull},
-  ${DatabaseConst.usersColumnRegistrationDate} ${DatabaseConst.date} ${DatabaseConst.notNull},
   ${DatabaseConst.usersColumnProfilePicLink} ${DatabaseConst.char50} ${DatabaseConst.notNull},
-  ${DatabaseConst.usersColumnMainUsersId} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique}
+  ${DatabaseConst.usersColumnMainUsersId} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique},
+  ${DatabaseConst.usersColumnCreatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
+  ${DatabaseConst.usersColumnUpdatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
+  ${DatabaseConst.usersColumnsDeletedDate} ${DatabaseConst.char26}
   )
+''');
+//Таблица User_main
+      await txn.execute('''
+CREATE TABLE ${DatabaseConst.mainUserTable}(
+  ${DatabaseConst.mainUserColumnUserId} ${DatabaseConst.integer},
+  ${DatabaseConst.mainUserColumnKey} ${DatabaseConst.char50},
+  ${DatabaseConst.mainUserColumnDataSync} ${DatabaseConst.char26}
+)
+''');
+//Таблица Chats
+      await txn.execute('''
+CREATE TABLE ${DatabaseConst.chatsTable}(
+ ${DatabaseConst.chatsColumnLocalChatId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
+ ${DatabaseConst.chatsColumnUserId} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique},
+ ${DatabaseConst.chatsColumnCreatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
+ ${DatabaseConst.chatsColumnUpdatedDate} ${DatabaseConst.char26},
+ ${DatabaseConst.chatsColumnDeletedDate} ${DatabaseConst.char26},
+ ${DatabaseConst.constraint} CHATS_FK_84 ${DatabaseConst.foreignKey} ( ${DatabaseConst.chatsColumnUserId} ) ${DatabaseConst.references} ${DatabaseConst.userTable} ( local_users_id )
+)
 ''');
 
 //Таблица Messages
@@ -56,25 +77,18 @@ CREATE TABLE ${DatabaseConst.userTable} (
 CREATE TABLE ${DatabaseConst.messageTable} (
  ${DatabaseConst.messagesColumnLocalMessagesId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
  ${DatabaseConst.messagesColumnLocalChatId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
- ${DatabaseConst.messagesColumnDate} ${DatabaseConst.integer} ${DatabaseConst.notNull},
+ ${DatabaseConst.messagesColumnCreatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
  ${DatabaseConst.messagesColumnSenderLocalId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
- ${DatabaseConst.messagesColumnIsWrittenToDb} ${DatabaseConst.integer} ${DatabaseConst.notNull} DEFAULT 0,
+ ${DatabaseConst.messagesColumnMessageId} ${DatabaseConst.integer},
+ ${DatabaseConst.messagesColumnIsRead} ${DatabaseConst.integer} ${DatabaseConst.notNull} DEFAULT 0,
  ${DatabaseConst.messagesColumnContent} ${DatabaseConst.char50} ${DatabaseConst.notNull},
+ ${DatabaseConst.messagesColumnUpdatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
+ ${DatabaseConst.messagesColumnDeletedDate} ${DatabaseConst.char26}, 
  ${DatabaseConst.constraint} MESSAGES_FK_79 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnLocalChatId} ) ${DatabaseConst.references} ${DatabaseConst.chatsTable} ( local_chats_id ),
  ${DatabaseConst.constraint} MESSAGES_FK_80 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnSenderLocalId} ) ${DatabaseConst.references} ${DatabaseConst.userTable} ( local_users_id ),
- CHECK ((is_written_to_db = 0) OR (is_written_to_db = 1))
+ CHECK ((is_read = 0) OR (is_read = 1))
  CHECK ((sender_is_user = 0) OR (sender_is_user = 1))
- CHECK (LENGTH(date) = 26)
-)
-''');
-
-//Таблица Chats
-      await txn.execute('''
-CREATE TABLE ${DatabaseConst.chatsTable}(
- ${DatabaseConst.chatsColumnLocalChatId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
- ${DatabaseConst.chatsColumnChatIdMain} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique},
- ${DatabaseConst.chatsColumnFriendId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
- ${DatabaseConst.constraint} CHATS_FK_84 ${DatabaseConst.foreignKey} ( ${DatabaseConst.chatsColumnFriendId} ) ${DatabaseConst.references} ${DatabaseConst.userTable} ( local_users_id )
+ CHECK (LENGTH(${DatabaseConst.messagesColumnCreatedDate}) = 26)
 )
 ''');
 
@@ -87,29 +101,11 @@ CREATE TABLE ${DatabaseConst.messageIdTable}
 CONSTRAINT MESSAGE_ID_IN_MAIN_FK_86 FOREIGN KEY (local_messages_id) REFERENCES messages (local_messages_id)
 )
 ''');
-//Таблица
-      await txn.execute('''
-CREATE TABLE ${DatabaseConst.userLastTimeOnlineTable}(
-  ${DatabaseConst.userLastTimeOnlineColumnId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
-  ${DatabaseConst.usersColumnId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
-  ${DatabaseConst.userLastTimeOnlineColumnisOnline} ${DatabaseConst.integer} ${DatabaseConst.notNull},
-  ${DatabaseConst.userLastTimeOnlineColumnLastTimeOnline} ${DatabaseConst.char26} ${DatabaseConst.notNull},
-   CONSTRAINT LAST_TIME_ONLINE_FK_85_1 FOREIGN KEY ( ${DatabaseConst.usersColumnId} ) REFERENCES ${DatabaseConst.userTable} ( ${DatabaseConst.usersColumnId} ),
- CONSTRAINT LAST_TIME_ONLINE_CHECK_2 CHECK ( LENGTH(${DatabaseConst.userLastTimeOnlineColumnLastTimeOnline}) = 26 ),
- CHECK ((${DatabaseConst.userLastTimeOnlineColumnisOnline} = 0) OR (${DatabaseConst.userLastTimeOnlineColumnisOnline} = 1))
-)
-''');
 
-      await txn.execute('''
-CREATE INDEX LAST_TIME_ONLINE_FK_2 ON ${DatabaseConst.userLastTimeOnlineTable}
-(
- ${DatabaseConst.usersColumnId}
-)
-''');
       await txn.execute('''
 CREATE INDEX CHATS_FK_3 ON ${DatabaseConst.chatsTable}
 (
- ${DatabaseConst.chatsColumnFriendId}
+ ${DatabaseConst.chatsColumnUserId}
 )
 ''');
       await txn.execute('''
@@ -133,9 +129,9 @@ CREATE INDEX MESSAGE_ID_IN_MAIN_FK_1 ON ${DatabaseConst.messageIdTable}
           'email': 't1@t1.t1',
           DatabaseConst.usersColumnProfilePicLink:
               'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
-          DatabaseConst.usersColumnRegistrationDate:
-              '2022-12-02T21:36:32.653712',
-          DatabaseConst.usersColumnMainUsersId: 1
+          DatabaseConst.usersColumnCreatedDate: '2022-12-02T21:36:32.653712',
+          DatabaseConst.usersColumnMainUsersId: 1,
+          DatabaseConst.usersColumnUpdatedDate: '2022-12-02T21:36:32.653712',
         },
       );
       await txn.insert(
@@ -145,18 +141,26 @@ CREATE INDEX MESSAGE_ID_IN_MAIN_FK_1 ON ${DatabaseConst.messageIdTable}
           'email': 't2@t2.t2',
           DatabaseConst.usersColumnProfilePicLink:
               'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
-          DatabaseConst.usersColumnRegistrationDate:
-              '2022-12-02T21:36:32.653712',
-          DatabaseConst.usersColumnMainUsersId: 2
+          DatabaseConst.usersColumnCreatedDate: '2022-12-02T21:36:32.653712',
+          DatabaseConst.usersColumnMainUsersId: 2,
+          DatabaseConst.usersColumnUpdatedDate: '2022-12-02T21:36:32.653712',
         },
       );
       await txn.insert(
         DatabaseConst.chatsTable,
         {
-          DatabaseConst.chatsColumnChatIdMain: 1,
-          DatabaseConst.chatsColumnFriendId: 2,
+          DatabaseConst.chatsColumnUserId: 2,
+          DatabaseConst.chatsColumnCreatedDate:
+              DateTime.now().toIso8601String(),
+          DatabaseConst.chatsColumnUpdatedDate:
+              DateTime.now().toIso8601String(),
         },
       );
+      await txn.insert(DatabaseConst.mainUserTable, {
+        DatabaseConst.mainUserColumnKey: '',
+        DatabaseConst.mainUserColumnUserId: 1,
+        DatabaseConst.mainUserColumnDataSync: DateTime.now().toIso8601String(),
+      });
     });
 
     _updateListen();

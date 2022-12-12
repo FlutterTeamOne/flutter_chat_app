@@ -19,17 +19,18 @@ class LocalMessagesServices implements ILocalMessagesServices {
         DatabaseConst.messagesColumnLocalChatId: localChatId,
         DatabaseConst.messagesColumnSenderLocalId: senderId,
         DatabaseConst.messagesColumnContent: content,
-        DatabaseConst.messagesColumnDate: date
+        DatabaseConst.messagesColumnCreatedDate: date,
+        DatabaseConst.messagesColumnUpdatedDate: date
       },
     );
     var message = await db.rawQuery('''
-            SELECT local_messages_id 
-            FROM messages
+            SELECT ${DatabaseConst.messagesColumnLocalMessagesId} 
+            FROM ${DatabaseConst.messageTable}
             WHERE ((${DatabaseConst.messagesColumnLocalChatId} = $localChatId) AND
                   (${DatabaseConst.messagesColumnSenderLocalId} = $senderId) AND
                   (${DatabaseConst.messagesColumnContent} = '$content') AND
-                  (${DatabaseConst.messagesColumnDate} = '$date'))''');
-    return message[0]['local_messages_id'] as int;
+                  (${DatabaseConst.messagesColumnCreatedDate} = '$date'))''');
+    return message[0][DatabaseConst.messagesColumnLocalMessagesId] as int;
   }
 
   @override
@@ -90,28 +91,28 @@ class LocalMessagesServices implements ILocalMessagesServices {
     //     },
     //     where: '${DatabaseConst.messagesColumnLocalMessagesId} = ?',
     //     whereArgs: [localMessageId]);
-     await DBHelper.instanse.onUpdate(
+    await DBHelper.instanse.onUpdate(
         tableName: 'messages',
         column: DatabaseConst.messagesColumnLocalMessagesId,
         model: {
           DatabaseConst.messagesColumnLocalMessagesId: localMessageId,
           DatabaseConst.messagesColumnLocalChatId: message.localChatId,
           DatabaseConst.messagesColumnSenderLocalId: message.localSendId,
-          DatabaseConst.messagesColumnDate: message.date,
-          DatabaseConst.messagesColumnIsWrittenToDb: message.isWrittenToDb,
+          DatabaseConst.messagesColumnCreatedDate: message.createdDate,
+          DatabaseConst.messagesColumnIsRead: message.isRead,
           DatabaseConst.messagesColumnContent: message.content
         },
         id: localMessageId);
   }
 
   updateWrittenToServer(
-      {required int localMessageId, required int isWrittenToDB}) async {
+      {required int localMessageId, required String updatedDate}) async {
     var db = await DBHelper.instanse.database;
 
     await db.rawUpdate(
-      ''' UPDATE messages 
-          SET is_written_to_db = $isWrittenToDB
-          WHERE local_messages_id = $localMessageId
+      ''' UPDATE ${DatabaseConst.messageTable}
+          SET ${DatabaseConst.messagesColumnUpdatedDate} = $updatedDate
+          WHERE ${DatabaseConst.messagesColumnLocalMessagesId} = $localMessageId
                 ''',
     );
   }

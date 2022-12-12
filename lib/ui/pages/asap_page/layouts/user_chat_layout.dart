@@ -54,7 +54,8 @@ class UserChatLayoutState extends State<UserChatLayout> {
                 localChatId: widget.localChatId,
                 localSendId: 1,
                 content: controller.text,
-                date: DateTime.now().toIso8601String(),
+                createdDate: DateTime.now().toIso8601String(),
+                updatedDate: DateTime.now().toIso8601String(),
               ),
             ),
           );
@@ -73,7 +74,8 @@ class UserChatLayoutState extends State<UserChatLayout> {
                   localChatId: widget.localChatId,
                   localSendId: 1,
                   content: controller.text,
-                  date: DateTime.now().toIso8601String(),
+                  createdDate: DateTime.now().toIso8601String(),
+                  updatedDate: DateTime.now().toIso8601String()
                 ),
                 isEditing: EditState.isEditing),
           );

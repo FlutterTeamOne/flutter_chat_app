@@ -10,7 +10,7 @@ enum GrpcConnectState {
 
 class GrpcConnectionState extends Equatable {
   final GrpcConnectState connectState;
-  const GrpcConnectionState({this.connectState = GrpcConnectState.connecting});
+  const GrpcConnectionState({this.connectState = GrpcConnectState.idle});
   GrpcConnectionState copyWith({
     GrpcConnectState? connectState,
   }) {
