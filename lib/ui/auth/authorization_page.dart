@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 part '../auth/widgets/user_card.dart';
 
-class AuthPage1 extends StatelessWidget {
-  const AuthPage1({super.key});
+class AuthPage extends StatelessWidget {
+  const AuthPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,18 +21,17 @@ class AuthPage1 extends StatelessWidget {
         children: [
           // ...textmap,
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(width: 350),
               UserCard(
                   text: userInfo[0],
                   image:
                       'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png'),
+              SizedBox(width: 150),
               UserCard(
                   text: userInfo[0],
                   image:
                       'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png'),
-              SizedBox(width: 350),
             ],
           ),
         ],

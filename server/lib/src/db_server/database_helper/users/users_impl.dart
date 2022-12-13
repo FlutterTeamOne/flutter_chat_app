@@ -1,3 +1,5 @@
+import 'package:server/src/generated/grpc_manager.pb.dart';
+
 import '../../../library/library_server.dart';
 
 class UsersServices implements IUsersServices {
@@ -43,7 +45,21 @@ class UsersServices implements IUsersServices {
   getAllUsers() async {
     var db = await dbServerServices.openDatabase();
 
-    return await db.rawQuery('''SELECT * FROM users''');
+    //тут json
+    var users = await db.rawQuery('''SELECT * FROM users''');
+
+    ///
+    ///Преобразовать json в List<User>
+    ///
+    ///Где User {
+    ///string name = 1;
+    ///int32 id = 2;}
+    ///
+    ///Таблица Users находится в server/lib/src/db_server/services/database_impl.dart
+    ///c 30 строки название колонок в таблице юзерс
+    ///
+    List<User> usersList = [];
+    return usersList;
   }
 
   @override

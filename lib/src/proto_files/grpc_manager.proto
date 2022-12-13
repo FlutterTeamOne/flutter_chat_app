@@ -6,6 +6,7 @@ service  GrpcChat{
     rpc createMessage (Message) returns (MessageBase) {}
     rpc createMessages (stream Message) returns (stream MessageBase) {}
     rpc synchronization (LastMessage) returns (stream MessageFromBase) {}
+    rpc getAllUsers(Empty) returns (AllUsers){}
 }
 
 
@@ -18,7 +19,7 @@ message User{
 }
 
 message AllUsers{
-
+repeated User users=1;
 }
 
 message Message {

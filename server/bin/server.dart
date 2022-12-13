@@ -68,6 +68,15 @@ class GrpcChat extends GrpcChatServiceBase {
       }
     }
   }
+
+  @override
+  Future<AllUsers> getAllUsers(ServiceCall call, Empty request) async {
+    var users = AllUsers();
+
+    ///Сделать запрос и поместить юзеров в переменную
+    users = usersService.getAllUsers();
+    return AllUsers();
+  }
 }
 
 ///

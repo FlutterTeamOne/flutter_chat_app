@@ -3,6 +3,7 @@ syntax = "proto3";
 //import "google/protobuf/timestamp.proto";
 service  GrpcChat{
     rpc connecting (Empty) returns (Empty) {}
+    rpc getAllUsers (Empty) returns (AllUsers) {}    
     rpc createMessage (Message) returns (MessageBase) {}
     rpc createMessages (stream Message) returns (stream MessageBase) {}
     rpc synchronization (LastMessage) returns (stream MessageFromBase) {}
@@ -10,6 +11,14 @@ service  GrpcChat{
 
 
 message Empty {}
+
+message User{
+    string name = 1;
+    int32 id = 2;
+}
+message AllUsers{
+    repeated User users = 1;
+}
 
 message Message {
     int32 chatIdMaint = 1;

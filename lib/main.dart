@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chat_app/src/generated/grpc_manager/grpc_manager.pbgrpc.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';
 import 'ui/pages/library/library_pages.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
@@ -19,6 +20,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
   final GrpcClient grpcClient = GrpcClient();
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -60,7 +62,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => AuthPage1(),
+        '/': (context) => AuthPage(),
         '/mainLayout': (context) => const MainLayout(),
         '/Settings page': (context) => const SettingsPage(),
       },
