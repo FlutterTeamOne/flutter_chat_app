@@ -18,39 +18,7 @@ class MyMessageCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // var items = [
-    //   PopupMenuItem(
-    //     onTap: () {
-    //       //
-    //     },
-    //     mouseCursor: MouseCursor.uncontrolled,
-    //     padding: const EdgeInsets.symmetric(horizontal: 12),
-    //     height: 38,
-    //     child: Row(
-    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //       children: [
-    //         Text('Edit', style: Theme.of(context).textTheme.bodyMedium),
-    //         const Icon(Icons.edit, size: 18),
-    //       ],
-    //     ),
-    //   ),
-    //   PopupMenuItem(
-    //     onTap: () {
-    //       //
-    //     },
-    //     mouseCursor: MouseCursor.uncontrolled,
-    //     padding: const EdgeInsets.symmetric(horizontal: 12),
-    //     height: 38,
-    //     child: Row(
-    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //       children: [
-    //         Text('Delete', style: Theme.of(context).textTheme.bodyMedium),
-    //         const Icon(Icons.delete, size: 18),
-    //       ],
-    //     ),
-    //   ),
-    // ];
-
+    
     final currentWidth = MediaQuery.of(context).size.width;
     return Align(
       alignment: Alignment.centerRight,
@@ -59,7 +27,7 @@ class MyMessageCardWidget extends StatelessWidget {
           maxWidth: currentWidth > 1150 ? 750 : 350,
         ),
         child: isSuccess == 1
-            ? AppCardWidget(message: message, marginIndex: 15)
+            ? AppCardWidget(message: message,textController: textController, marginIndex: 15)
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -67,7 +35,8 @@ class MyMessageCardWidget extends StatelessWidget {
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            AppCardWidget(marginIndex: 5, message: message),
+                            AppCardWidget(
+                                marginIndex: 5,textController: textController, message: message),
                             const Icon(
                               Icons.error,
                               //color: AppColor.colorF44336,
@@ -76,6 +45,7 @@ class MyMessageCardWidget extends StatelessWidget {
                         )
                       : AppCardWidget(
                           marginIndex: 10,
+                          textController: textController,
                           message: message,
                         ),
                   const Text(

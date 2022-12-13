@@ -32,6 +32,9 @@ dependencies:
   protobuf: ^2.1.0
   connectivity_plus: ^3.0.2
   freezed: ^2.2.0
+  custom_pop_up_menu: ^1.2.4
+  blur: ^3.1.0
+  get_it: ^7.2.0
 
 dev_dependencies:
   flutter_test:
