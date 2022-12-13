@@ -45,8 +45,8 @@ class MyApp extends StatelessWidget {
       ],
       child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
         builder: (context, state) {
-          final ThemeData theme = state.theme;
-          return buildMaterialApp(theme);
+          final ThemeData? theme = state.theme;
+          return buildMaterialApp(theme!);
         },
       ),
     );

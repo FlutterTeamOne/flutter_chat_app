@@ -2,35 +2,42 @@ import 'package:chat_app/modules/style_manager/library/library_style_manager.dar
 import 'package:flutter/material.dart';
 
 class ChangeThemeState {
-  final ThemeData theme;
-  final int index;
-  Map<int, Color> iconColor = {
-    0: Colors.white.withOpacity(0.2),
-    1: Colors.white.withOpacity(0.2),
-    2: Colors.white.withOpacity(0.2),
-    3: Colors.white.withOpacity(0.2),
-    4: Colors.white.withOpacity(0.2),
-    5: Colors.white.withOpacity(0.2),
-  };
-  Map<int, Color> cardColor = {
-    0: CustomTheme().darkThemeDeepPurple.primaryColor,
-    1: CustomTheme().darkThemeLightBlue.primaryColor,
-    2: CustomTheme().darkThemeOrange.primaryColor,
-    };
-  Map<int, Object> selectIcon = {
-    0: Icons.light_mode_outlined,
-    1: Icons.dark_mode_outlined,
-  };
+  final ThemeData? theme;
+  final int? index;
+ // final iconColor = [
+ //    Colors.white.withOpacity(0.2),
+ //    Colors.white.withOpacity(0.2),
+ //    Colors.white.withOpacity(0.2),
+ //    Colors.white.withOpacity(0.2),
+ //    Colors.white.withOpacity(0.2),
+ //    Colors.white.withOpacity(0.2),
+ //  ];
+  final cardColor = <Color>[
+    CustomTheme.darkThemeDeepPurple.primaryColor,
+    CustomTheme.darkThemeDeepPurple.primaryColor,
+    CustomTheme.darkThemeLightBlue.primaryColor,
+    CustomTheme.darkThemeLightBlue.primaryColor,
+    CustomTheme.darkThemeOrange.primaryColor,
+    CustomTheme.darkThemeOrange.primaryColor,
+    ];
+  final selectIcon = <IconData>[
+    Icons.light_mode_outlined,
+    Icons.dark_mode_outlined,
+    Icons.light_mode_outlined,
+    Icons.dark_mode_outlined,
+    Icons.light_mode_outlined,
+    Icons.dark_mode_outlined,
+  ];
   ChangeThemeState({
-    required this.theme,
-    required this.index,
+    this.theme,
+    this.index,
   }) {
-    for (int i = 0; i <= iconColor.length; i++) {
-      if (i == index) {
-        iconColor[i] = Colors.white;
-      } else {
-        iconColor[i] = Colors.white.withOpacity(0.2);
-      }
-    }
+    // for (int i = 0; i <= 5; i++) {
+    //   if (i == index) {
+    //     iconColor[i] = Colors.white;
+    //   } else {
+    //     iconColor[i] = Colors.white.withOpacity(0.2);
+    //   }
+    // }
   }
 }
