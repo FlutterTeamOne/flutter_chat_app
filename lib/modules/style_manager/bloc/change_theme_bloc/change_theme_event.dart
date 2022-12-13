@@ -1,6 +1,4 @@
-abstract class ChangeThemeEvent {
-  // late int elementIndex;
-}
+abstract class ChangeThemeEvent {}
 
 class SetThemeEvent extends ChangeThemeEvent {
   final int index;

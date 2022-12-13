@@ -20,10 +20,6 @@ class ChangeThemeState {
   final selectIcon = <IconData>[
     Icons.light_mode_outlined,
     Icons.dark_mode_outlined,
-    Icons.light_mode_outlined,
-    Icons.dark_mode_outlined,
-    Icons.light_mode_outlined,
-    Icons.dark_mode_outlined,
   ];
   ChangeThemeState({
     this.theme,
