@@ -36,7 +36,7 @@ class UserPreferences {
     return sharedPreferences.getInt(MESSAGE_ID_KEY);
   }
 
-  setTheme(String value) async {
+  SetThemeEvent(String value) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     // sharedPreferences.setString(IS_READ_KEY, value);
     sharedPreferences.setString(THEME_KEY, value);

@@ -13,34 +13,37 @@ class GrpcChat extends GrpcChatServiceBase {
 
   @override
   Future<Empty> connecting(ServiceCall call, Empty request) async {
-    // TODO: implement connecting
-    return Empty();
+    return request;
   }
 
+  //   @override
+  // Future<ConnectResponse> connecting(
+  //     ServiceCall call, ConnectRequest request) async {
+  //   //save to db
+  //   print('Connect: id: ${request.id}  hashcode: ${request.hashCode}');
+
+  //   return ConnectResponse(id: request.id, hashConnect: request.hashCode);
+  // }
+
   @override
-  Future<MessageBase> createMessage(ServiceCall call, Message request) async {
+  Future<CreateMessageResponse> createMessage(
+      ServiceCall call, CreateMessageRequest request) async {
     var src = await messagesService.addNewMessage(
-        friendsChatId: request.chatIdMaint,
-        senderId: request.senderMainId,
-        content: request.content,
-        date: request.date);
+      chatId: request.chatIdMain,
+      senderId: request.senderMainId,
+      content: request.content,
+    );
+    print('SRC: $src');
+    var message = CreateMessageResponse();
 
-    var message = MessageBase();
-
-    if (src != 0) {
-      message.ok = true;
-      message.mainMessagesId = src;
+    if (src['message_id'] != 0) {
+      message.dateCreate = src['created_date'] as String;
+      message.mainMessagesId = src['message_id'] as int;
     } else {
-      message.ok = false;
+      message.mainMessagesId = 555; // message.ok = false;
     }
+    print('SERVER MESSAGE: $message');
     return message;
-  }
-
-  @override
-  Stream<MessageBase> createMessages(
-      ServiceCall call, Stream<Message> request) {
-    // TODO: implement createNessages
-    throw UnimplementedError();
   }
 
   @override
@@ -68,6 +71,39 @@ class GrpcChat extends GrpcChatServiceBase {
       }
     }
   }
+
+  @override
+  Future<UpdateMessageResponse> updateMessage(
+      ServiceCall call, UpdateMessageRequest request) async {
+    var timeUpdate = DateTime.now().toIso8601String();
+    var src = await messagesServices.updateMessage(
+        newValues:
+            "content = '${request.content}', updated_date = '$timeUpdate'",
+        condition: "message_id = ${request.idMessageMain}");
+    print('UPD SRC:$src');
+    var message = UpdateMessageResponse();
+    if (src != 0) {
+      message.idMessageMain = request.idMessageMain;
+      message.dateUpdate = timeUpdate;
+    }
+    print('UPD MSG: $message');
+    return message;
+  }
+
+  @override
+  Future<DeleteMessageResponse> deleteMessage(
+      ServiceCall call, DeleteMessageRequest request) async {
+    var timeDelete = DateTime.now().toIso8601String();
+    var src = await messagesService.updateMessage(
+        newValues: "deleted_date = '$timeDelete', updated_date = '$timeDelete'",
+        condition: "message_id = ${request.idMessageMain}");
+    var message = DeleteMessageResponse();
+    if (src != 0) {
+      message.dateDelete = timeDelete;
+      message.idMessageMain = request.idMessageMain;
+    }
+    return message;
+  }
 }
 
 ///
@@ -83,7 +119,7 @@ Future<void> main() async {
     CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
   );
 
-  await server.serve(port: 50000);
+  await server.serve(port: 5000);
   await dbServerServices.openDatabase();
   print('✅ Server listening on port ${server.port}...');
 }

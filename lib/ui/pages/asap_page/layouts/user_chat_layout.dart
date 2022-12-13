@@ -2,7 +2,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../src/libraries/library_all.dart';
-import '../../../widgets/asap_page/widgets/chat_widget.dart';
 import '../../../widgets/library/library_widgets.dart';
 
 class UserChatLayout extends StatefulWidget {
@@ -32,46 +31,58 @@ class UserChatLayoutState extends State<UserChatLayout> {
         Expanded(
           child: context.watch<MessageBloc>().state.messages != null
               ? ChatWidget(
-                  messages: context.watch<MessageBloc>().state.messages!)
+                  textController: controller,
+                  messages: context.watch<MessageBloc>().state.messages!,
+                )
               : const Center(child: CircularProgressIndicator()),
         ),
         TextInputWidget(
-          onSubmitted: (text) {
-            if (controller.text.isNotEmpty) {
-              context.read<MessageBloc>().add(
-                    CreateMessageEvent(
-                      message: MessageDto(
-                        // localMessageId: 1,
-                        localChatId: widget.localChatId,
-                        localSendId: 1,
-                        content: text,
-                        date: DateTime.now().toIso8601String(),
-                      ),
-                    ),
-                  );
-              controller.clear();
-            } else {
-              return null;
-            }
-          },
+          onSubmitted: (text) => _sendAndChange(),
           controller: controller,
-          onTap: () {
-            // if (controller.text.isNotEmpty) {
-            //   final message = MessageModel(
-            //     message: controller.text,
-            //     date: DateTime.now(),
-            //     isSentByMe: true,
-            //   );
-            //   setState(() => messages.add(message));
-            //   print(controller.text);
-            //   controller.clear();
-            // } else {
-            //   return null;
-            // }
-          },
+          onTap: () => _sendAndChange(),
         ),
       ],
     );
+  }
+
+  _sendAndChange() {
+    if (context.read<MessageBloc>().state.editState == EditState.isNotEditing &&
+        controller.text.isNotEmpty) {
+      context.read<MessageBloc>().add(
+            CreateMessageEvent(
+              message: MessageDto(
+                localChatId: widget.localChatId,
+                localSendId: 1,
+                content: controller.text,
+                createdDate: DateTime.now().toIso8601String(),
+                updatedDate: DateTime.now().toIso8601String(),
+              ),
+            ),
+          );
+      FocusScope.of(context).unfocus();
+      controller.clear();
+    }
+    // print('IS EDIT F:${context.read<MessageBloc>().isEditing}');
+    if (context.read<MessageBloc>().state.editState ==
+            EditState.isPreparation &&
+        controller.text.isNotEmpty) {
+      print("EDITING");
+
+      context.read<MessageBloc>().add(
+            UpdateMessageEvent(
+                message: MessageDto(
+                  localChatId: widget.localChatId,
+                  localSendId: 1,
+                  content: controller.text,
+                  createdDate: DateTime.now().toIso8601String(),
+                  updatedDate: DateTime.now().toIso8601String()
+                ),
+                isEditing: EditState.isEditing),
+          );
+      controller.clear();
+    } else {
+      return null;
+    }
   }
 
   @override

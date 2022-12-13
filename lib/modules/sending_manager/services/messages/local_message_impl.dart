@@ -1,6 +1,6 @@
-import 'package:chat_app/src/constants/db_constants.dart';
-import 'package:chat_app/domain/data/library/library_data.dart';
-import 'package:chat_app/modules/storage_manager/library/library_storage_manager.dart';
+import '../../../../src/constants/db_constants.dart';
+import '../../../../domain/data/library/library_data.dart';
+import '../../../storage_manager/library/library_storage_manager.dart';
 
 import 'local_message_int.dart';
 
@@ -19,17 +19,18 @@ class LocalMessagesServices implements ILocalMessagesServices {
         DatabaseConst.messagesColumnLocalChatId: localChatId,
         DatabaseConst.messagesColumnSenderLocalId: senderId,
         DatabaseConst.messagesColumnContent: content,
-        DatabaseConst.messagesColumnDate: date
+        DatabaseConst.messagesColumnCreatedDate: date,
+        DatabaseConst.messagesColumnUpdatedDate: date
       },
     );
     var message = await db.rawQuery('''
-            SELECT local_messages_id 
-            FROM messages
+            SELECT ${DatabaseConst.messagesColumnLocalMessagesId} 
+            FROM ${DatabaseConst.messageTable}
             WHERE ((${DatabaseConst.messagesColumnLocalChatId} = $localChatId) AND
                   (${DatabaseConst.messagesColumnSenderLocalId} = $senderId) AND
                   (${DatabaseConst.messagesColumnContent} = '$content') AND
-                  (${DatabaseConst.messagesColumnDate} = '$date'))''');
-    return message[0]['local_messages_id'] as int;
+                  (${DatabaseConst.messagesColumnCreatedDate} = '$date'))''');
+    return message[0][DatabaseConst.messagesColumnLocalMessagesId] as int;
   }
 
   @override
@@ -45,15 +46,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
     var db = await DBHelper.instanse.database;
     var message = await db.rawQuery('SELECT * FROM messages');
 
-    return message
-        .map((item) => MessageDto(
-            localMessageId: item['local_messages_id'] as int,
-            localChatId: item['local_chat_id'] as int,
-            localSendId: item['sender_is_user'] as int,
-            date: item['date'] as String,
-            content: item['content'] as String,
-            isWrittenToDb: item['is_written_to_db'] as int))
-        .toList();
+    return message.map((item) => MessageDto.fromMap(item)).toList();
   }
 
   @override
@@ -69,7 +62,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
       {required int chatID}) async {
     var db = await DBHelper.instanse.database;
     var messages = await db
-        .rawQuery('SELECT * FROM messages where local_chats_id = $chatID}');
+        .rawQuery('SELECT * FROM messages where local_chats_id = $chatID');
     return messages;
   }
 
@@ -83,17 +76,67 @@ class LocalMessagesServices implements ILocalMessagesServices {
   }
 
   @override
-  updateMessage({required String newValues, required String condition}) {}
+  Future updateMessage(
+      {required MessageDto message, required int localMessageId}) async {
+    var db = await DBHelper.instanse.database;
+    // return await db.update(
+    //     'messages',
+    //     {
+    //       DatabaseConst.messagesColumnLocalMessagesId: localMessageId,
+    //       DatabaseConst.messagesColumnLocalChatId: message.localChatId,
+    //       DatabaseConst.messagesColumnSenderLocalId: message.localSendId,
+    //       DatabaseConst.messagesColumnDate: message.date,
+    //       DatabaseConst.messagesColumnIsWrittenToDb: message.isWrittenToDb,
+    //       DatabaseConst.messagesColumnContent: message.content
+    //     },
+    //     where: '${DatabaseConst.messagesColumnLocalMessagesId} = ?',
+    //     whereArgs: [localMessageId]);
+    await DBHelper.instanse.onUpdate(
+        tableName: 'messages',
+        column: DatabaseConst.messagesColumnLocalMessagesId,
+        model: {
+          DatabaseConst.messagesColumnLocalMessagesId: localMessageId,
+          DatabaseConst.messagesColumnLocalChatId: message.localChatId,
+          DatabaseConst.messagesColumnSenderLocalId: message.localSendId,
+          DatabaseConst.messagesColumnCreatedDate: message.createdDate,
+          DatabaseConst.messagesColumnIsRead: message.isRead,
+          DatabaseConst.messagesColumnContent: message.content
+        },
+        id: localMessageId);
+  }
 
   updateWrittenToServer(
-      {required int localMessageId, required int isWrittenToDB}) async {
+      {required int localMessageId,
+      required int messagesId,
+      required String updatedDate}) async {
     var db = await DBHelper.instanse.database;
 
     await db.rawUpdate(
-      ''' UPDATE messages 
-          SET is_written_to_db = $isWrittenToDB
-          WHERE local_messages_id = $localMessageId
+      ''' UPDATE ${DatabaseConst.messageTable}
+          SET ${DatabaseConst.messagesColumnMessageId} = $messagesId, ${DatabaseConst.messagesColumnUpdatedDate} = '$updatedDate'
+          WHERE ${DatabaseConst.messagesColumnLocalMessagesId} = $localMessageId
                 ''',
     );
+  }
+
+  deleteWrittenToServer(
+      {required int localMessageId, required String deletedDate}) async {
+    var db = await DBHelper.instanse.database;
+
+    await db.rawUpdate(
+      ''' UPDATE ${DatabaseConst.messageTable}
+          SET ${DatabaseConst.messagesColumnDeletedDate} = '$deletedDate'
+          WHERE ${DatabaseConst.messagesColumnLocalMessagesId} = $localMessageId
+                ''',
+    );
+  }
+
+  @override
+  Future<int> deleteAllMessagesInChat({required int chatID}) async {
+    var db = await DBHelper.instanse.database;
+    return await db.rawDelete('''
+DELETE FROM messages
+WHERE  local_chats_id = $chatID
+''');
   }
 }

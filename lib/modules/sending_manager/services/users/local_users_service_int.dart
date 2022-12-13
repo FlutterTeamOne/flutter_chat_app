@@ -1,5 +1,5 @@
-import 'package:chat_app/domain/data/library/library_data.dart';
-import 'package:chat_app/modules/sending_manager/library/library_sending_manager.dart';
+import '../../../../domain/data/library/library_data.dart';
+import '../../library/library_sending_manager.dart';
 
 abstract class ILocalUsersServices {
   factory ILocalUsersServices() => LocalUsersServices();

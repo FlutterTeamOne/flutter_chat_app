@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
+
+import 'modules/signal_service/service_locator/locator.dart';
 import 'ui/pages/library/library_pages.dart';
-import 'package:chat_app/src/libraries/library_all.dart';
+import 'src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_size/window_size.dart';
@@ -11,6 +14,7 @@ Future<void> main() async {
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowMinSize(const Size(960, 480));
   }
+  Locator.setUp();
   await DBHelper.instanse.initDB();
   runApp(MyApp());
 }
@@ -18,12 +22,21 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
   final GrpcClient grpcClient = GrpcClient();
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider<ConnectionBloc>(
           create: (context) => ConnectionBloc(),
+          // lazy: false,
+        ),
+        BlocProvider(
+          create: (_) => GrpcConnectionBloc(grpcClient, ConnectionBloc())
+            ..add(
+              const GrpcConnectionStarted(),
+            ),
+          // lazy: false,
         ),
         BlocProvider<UserBloc>(
           create: (context) => UserBloc()..add(ReadUsersEvent()),
@@ -33,8 +46,10 @@ class MyApp extends StatelessWidget {
               ChatBloc(userBloc: UserBloc())..add(ReadChatEvent()),
         ),
         BlocProvider<MessageBloc>(
-          create: (context) =>
-              MessageBloc(grpcClient: grpcClient)..add(ReadMessageEvent()),
+          create: (context) => MessageBloc(
+              grpcClient: grpcClient,
+              grpcConnection: context.read<GrpcConnectionBloc>())
+            ..add(ReadMessageEvent()),
         ),
         BlocProvider<MessageIdInMainBloc>(
           create: (context) => MessageIdInMainBloc(),

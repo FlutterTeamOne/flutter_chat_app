@@ -1,5 +1,4 @@
-import 'package:chat_app/domain/data/library/library_data.dart';
-
+import '../model_dto.dart';
 class LastUnreadMessageDto extends ModelDto {
 
   final int lastUnreadMessageId;

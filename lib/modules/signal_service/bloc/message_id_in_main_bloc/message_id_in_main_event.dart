@@ -1,6 +1,6 @@
 part of 'message_id_in_main_bloc.dart';
 
-abstract class MessageIdInMainEvent {}
+abstract class MessageIdInMainEvent extends Equatable {}
 
 class CreateMessageIdInMainEvent extends MessageIdInMainEvent {
   final MessageIdInMainDto messageIdInMain;
@@ -8,5 +8,7 @@ class CreateMessageIdInMainEvent extends MessageIdInMainEvent {
   CreateMessageIdInMainEvent({
     required this.messageIdInMain,
   });
-}
 
+  @override
+  List<Object?> get props => [messageIdInMain];
+}
