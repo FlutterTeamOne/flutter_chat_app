@@ -4,6 +4,7 @@ import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../src/libraries/library_all.dart';
+import '../floating_window.dart';
 import 'list_tile_widget.dart';
 
 class AppCardWidget extends StatefulWidget {
@@ -62,19 +63,7 @@ class _AppCardWidgetState extends State<AppCardWidget> {
       enablePassEvent: false,
       verticalMargin: -2,
       pressType: PressType.singleClick,
-      menuBuilder: () => Container(
-        width: 160,
-        padding: const EdgeInsets.all(10),
-        decoration: const BoxDecoration(
-          color: Color(0xFF4C4C4C),
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(8),
-            bottomRight: Radius.circular(8),
-            topLeft: Radius.circular(8),
-          ),
-        ),
-        child: Column(children: items),
-      ),
+      menuBuilder: () => FloatingWindowWidget(items: items),
       child: Card(
         color: Theme.of(context).primaryColor,
         elevation: 2,

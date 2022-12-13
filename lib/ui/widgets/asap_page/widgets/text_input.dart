@@ -1,4 +1,5 @@
 ﻿import 'package:chat_app/modules/signal_service/library/library_signal_service.dart';
+import 'package:chat_app/ui/widgets/asap_page/widgets/app_circle_button.dart';
 import 'package:flutter/material.dart';
 
 class TextInputWidget extends StatefulWidget {
@@ -41,23 +42,8 @@ class TextInputWidgetState extends State<TextInputWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const SizedBox(width: 10),
-              InkWell(
-                onTap: () {},
-                child: CircleAvatar(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.emoji_emotions_outlined,
-                        size: 22,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              AppCircleButtonWidget(
+                  onTap: () {}, icon: Icons.emoji_emotions_outlined),
               const SizedBox(width: 10),
               Expanded(
                 flex: 9,
@@ -116,22 +102,9 @@ class TextInputWidgetState extends State<TextInputWidget> {
                 ),
               ),
               const SizedBox(width: 10),
-              InkWell(
+              AppCircleButtonWidget(
                 onTap: widget.onTap,
-                child: CircleAvatar(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.send_rounded,
-                        size: 22,
-                      ),
-                    ),
-                  ),
-                ),
+                icon: Icons.send_rounded,
               ),
               const SizedBox(width: 10),
             ],
