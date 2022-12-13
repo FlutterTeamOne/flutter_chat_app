@@ -41,7 +41,7 @@ class ChatWidgetState extends State<ChatWidget> {
           } else {
             return MyMessageCardWidget(
               message: message,
-              isSuccess: message.isRead,
+              isSuccess: message.messageId,
               textController: widget.textController,
             );
           }

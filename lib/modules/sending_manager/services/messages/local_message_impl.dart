@@ -106,12 +106,26 @@ class LocalMessagesServices implements ILocalMessagesServices {
   }
 
   updateWrittenToServer(
-      {required int localMessageId, required String updatedDate}) async {
+      {required int localMessageId,
+      required int messagesId,
+      required String updatedDate}) async {
     var db = await DBHelper.instanse.database;
 
     await db.rawUpdate(
       ''' UPDATE ${DatabaseConst.messageTable}
-          SET ${DatabaseConst.messagesColumnUpdatedDate} = $updatedDate
+          SET ${DatabaseConst.messagesColumnMessageId} = $messagesId, ${DatabaseConst.messagesColumnUpdatedDate} = '$updatedDate'
+          WHERE ${DatabaseConst.messagesColumnLocalMessagesId} = $localMessageId
+                ''',
+    );
+  }
+
+  deleteWrittenToServer(
+      {required int localMessageId, required String deletedDate}) async {
+    var db = await DBHelper.instanse.database;
+
+    await db.rawUpdate(
+      ''' UPDATE ${DatabaseConst.messageTable}
+          SET ${DatabaseConst.messagesColumnDeletedDate} = '$deletedDate'
           WHERE ${DatabaseConst.messagesColumnLocalMessagesId} = $localMessageId
                 ''',
     );

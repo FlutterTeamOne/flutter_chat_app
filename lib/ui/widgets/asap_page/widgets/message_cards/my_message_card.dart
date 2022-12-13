@@ -7,13 +7,13 @@ import 'package:flutter/material.dart';
 class MyMessageCardWidget extends StatelessWidget {
   const MyMessageCardWidget({
     super.key,
-    this.isSuccess = 1,
+    this.isSuccess,
     required this.message,
     required this.textController,
   });
 
   final MessageDto message;
-  final int isSuccess;
+  final int? isSuccess;
   final TextEditingController textController;
 
   @override
@@ -76,7 +76,7 @@ class MyMessageCardWidget extends StatelessWidget {
         child: ConstrainedBox(
           constraints:
               BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 145),
-          child: isSuccess == 1
+          child: isSuccess != null
               ? AppCardWidget(message: message.content, marginIndex: 15)
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.end,

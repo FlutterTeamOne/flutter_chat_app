@@ -70,7 +70,7 @@ class MessageDto extends ModelDto {
         localSendId: map[DatabaseConst.messagesColumnSenderLocalId] as int,
         createdDate: map[DatabaseConst.messagesColumnCreatedDate] as String,
         content: map[DatabaseConst.messagesColumnContent] as String,
-        messageId: map[DatabaseConst.messagesColumnMessageId] ,
+        messageId: map[DatabaseConst.messagesColumnMessageId],
         updatedDate: map[DatabaseConst.messagesColumnUpdatedDate] as String,
         deletedDate: map[DatabaseConst.messagesColumnDeletedDate] ?? '',
         isRead: map[DatabaseConst.messagesColumnIsRead] as int);

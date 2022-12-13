@@ -3,6 +3,7 @@ syntax = "proto3";
 //import "google/protobuf/timestamp.proto";
 service  GrpcChat{
     rpc connecting (Empty) returns (Empty) {}
+    // rpc connecting (ConnectRequest) return (ConnectResponse) {}
     rpc createMessage (CreateMessageRequest) returns (CreateMessageResponse) {}
     rpc updateMessage (UpdateMessageRequest) returns (UpdateMessageResponse) {}
     rpc deleteMessage (DeleteMessageRequest) returns (DeleteMessageResponse) {}
@@ -11,6 +12,15 @@ service  GrpcChat{
 
 
 message Empty {}
+
+// message ConnectRequest {
+//     int32 id = 1;
+// }
+
+// message ConnectResponse {
+//     int32 id = 1;
+//     int32 hashConnect = 2;
+// }
 
 message CreateMessageRequest {
     int32 chatIdMain = 1;

@@ -35,7 +35,7 @@ class DbServerServices implements IDbServerServices {
       await txn.execute('''
           CREATE TABLE users
           (
-          main_users_id     integer PRIMARY KEY AUTOINCREMENT,
+          user_id     integer PRIMARY KEY AUTOINCREMENT,
           name              char(50) NOT NULL,
           email             char(50) NOT NULL,
           created_date      char(26) NOT NULL,

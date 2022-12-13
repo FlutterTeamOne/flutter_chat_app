@@ -1,32 +1,89 @@
 import 'package:flutter/material.dart';
 
 class CustomTheme {
-  ThemeData lightThemeDeepPurple = ThemeData(
-    brightness: Brightness.light,
-    primarySwatch: Colors.deepPurple,
-  );
-  ThemeData darkThemeDeepPurple = ThemeData(
+static final themes = [
+    CustomTheme.lightThemeDeepPurple,
+     CustomTheme.darkThemeDeepPurple,
+     CustomTheme.lightThemeLightBlue,
+     CustomTheme.darkThemeLightBlue,
+     CustomTheme.lightThemeOrange,
+     CustomTheme.lightThemeOrange,
+];
+ static final ThemeData lightThemeDeepPurple = ThemeData(
+
+
+      brightness: Brightness.light,
+      primarySwatch: Colors.deepPurple,
+      primaryColor: Colors.deepPurple,
+      errorColor: Colors.redAccent.shade200,
+      backgroundColor: Colors.white70,
+      indicatorColor: Colors.white,
+      // hintColor: Colors.white70,
+      textSelectionTheme: const TextSelectionThemeData(
+        cursorColor: Colors.black26,
+        selectionColor: Colors.black26,
+        selectionHandleColor: Colors.black26,
+      ));
+static final  ThemeData darkThemeDeepPurple = ThemeData(
     brightness: Brightness.dark,
     primarySwatch: Colors.deepPurple,
+    primaryColor: Colors.deepPurple,
+    errorColor: Colors.redAccent.shade200,
+    indicatorColor: Colors.white,
+    // backgroundColor: Colors.blueGrey,
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.white70,
+      selectionColor: Colors.white70,
+      selectionHandleColor: Colors.white70,
+    ),
   );
 
-
-  ThemeData darkThemeLightBlue = ThemeData(
+ static final ThemeData darkThemeLightBlue = ThemeData(
     brightness: Brightness.dark,
-    primarySwatch: Colors.lightBlue,
+    primarySwatch: Colors.indigo,
+    primaryColor: Colors.indigo,
+    errorColor: Colors.redAccent.shade200,
+    // backgroundColor: Colors.black45,
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.white70,
+      selectionColor: Colors.white70,
+      selectionHandleColor: Colors.white70,
+    ),
   );
-  ThemeData lightThemeLightBlue = ThemeData(
-    brightness: Brightness.light,
-    primarySwatch: Colors.lightBlue,
-  );
+ static final ThemeData lightThemeLightBlue = ThemeData(
+      brightness: Brightness.light,
+      primarySwatch: Colors.indigo,
+      primaryColor: Colors.indigo,
+      errorColor: Colors.redAccent.shade200,
+      // backgroundColor: Colors.white70,
+      textSelectionTheme: const TextSelectionThemeData(
+        cursorColor: Colors.black26,
+        selectionColor: Colors.black26,
+        selectionHandleColor: Colors.black26,
+      ));
 
-
-  ThemeData darkThemeOrange = ThemeData(
+ static final ThemeData darkThemeOrange = ThemeData(
     brightness: Brightness.dark,
-    primarySwatch: Colors.orange,
+    primarySwatch: Colors.blueGrey,
+    primaryColor: Colors.blueGrey,
+    errorColor: Colors.redAccent.shade200,
+    // backgroundColor: Colors.black45,
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.white70,
+      selectionColor: Colors.white70,
+      selectionHandleColor: Colors.white70,
+    ),
   );
-  ThemeData lightThemeOrange = ThemeData(
+ static final ThemeData lightThemeOrange = ThemeData(
     brightness: Brightness.light,
-    primarySwatch: Colors.orange,
+    primarySwatch: Colors.blueGrey,
+    primaryColor: Colors.blueGrey,
+    errorColor: Colors.redAccent.shade200,
+    // backgroundColor: Colors.white70,
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.black26,
+      selectionColor: Colors.black26,
+      selectionHandleColor: Colors.black26,
+    ),
   );
 }

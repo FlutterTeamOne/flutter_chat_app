@@ -8,9 +8,6 @@ abstract class IMessagesServices {
     required int chatId,
     required int senderId,
     required String content,
-    required String createdDate,
-    required String updatedDate,
-    required String deletedDate,
   });
 
   getMessageById({required int id});

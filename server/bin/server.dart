@@ -16,33 +16,34 @@ class GrpcChat extends GrpcChatServiceBase {
     return request;
   }
 
+  //   @override
+  // Future<ConnectResponse> connecting(
+  //     ServiceCall call, ConnectRequest request) async {
+  //   //save to db
+  //   print('Connect: id: ${request.id}  hashcode: ${request.hashCode}');
+
+  //   return ConnectResponse(id: request.id, hashConnect: request.hashCode);
+  // }
+
   @override
   Future<CreateMessageResponse> createMessage(
       ServiceCall call, CreateMessageRequest request) async {
     var src = await messagesService.addNewMessage(
-        chatId: request.chatIdMain,
-        senderId: request.senderMainId,
-        content: request.content,
-        createdDate: DateTime.now().toIso8601String(),
-        updatedDate: DateTime.now().toIso8601String());
+      chatId: request.chatIdMain,
+      senderId: request.senderMainId,
+      content: request.content,
+    );
     print('SRC: $src');
     var message = CreateMessageResponse();
 
-    if (src != 0) {
-      message.dateCreate = DateTime.now().toIso8601String();
-      message.mainMessagesId = src;
+    if (src['message_id'] != 0) {
+      message.dateCreate = src['created_date'] as String;
+      message.mainMessagesId = src['message_id'] as int;
     } else {
-      // message.ok = false;
+      message.mainMessagesId = 555; // message.ok = false;
     }
     print('SERVER MESSAGE: $message');
     return message;
-  }
-
-  @override
-  Future<DeleteMessageResponse> deleteMessage(
-      ServiceCall call, DeleteMessageRequest request) {
-    // TODO: implement deleteMessage
-    throw UnimplementedError();
   }
 
   @override
@@ -73,9 +74,35 @@ class GrpcChat extends GrpcChatServiceBase {
 
   @override
   Future<UpdateMessageResponse> updateMessage(
-      ServiceCall call, UpdateMessageRequest request) {
-    // TODO: implement updateMessage
-    throw UnimplementedError();
+      ServiceCall call, UpdateMessageRequest request) async {
+    var timeUpdate = DateTime.now().toIso8601String();
+    var src = await messagesServices.updateMessage(
+        newValues:
+            "content = '${request.content}', updated_date = '$timeUpdate'",
+        condition: "message_id = ${request.idMessageMain}");
+    print('UPD SRC:$src');
+    var message = UpdateMessageResponse();
+    if (src != 0) {
+      message.idMessageMain = request.idMessageMain;
+      message.dateUpdate = timeUpdate;
+    }
+    print('UPD MSG: $message');
+    return message;
+  }
+
+  @override
+  Future<DeleteMessageResponse> deleteMessage(
+      ServiceCall call, DeleteMessageRequest request) async {
+    var timeDelete = DateTime.now().toIso8601String();
+    var src = await messagesService.updateMessage(
+        newValues: "deleted_date = '$timeDelete', updated_date = '$timeDelete'",
+        condition: "message_id = ${request.idMessageMain}");
+    var message = DeleteMessageResponse();
+    if (src != 0) {
+      message.dateDelete = timeDelete;
+      message.idMessageMain = request.idMessageMain;
+    }
+    return message;
   }
 }
 

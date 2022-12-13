@@ -5,22 +5,19 @@ import '../../../library/library_server.dart';
 
 class MessagesServices implements IMessagesServices {
   @override
-  Future<int> addNewMessage({
+  Future<Map<String, Object?>> addNewMessage({
     required int chatId,
     required int senderId,
     required String content,
-    required String createdDate,
-    required String updatedDate,
-    String? deletedDate,
   }) async {
+    var date = DateTime.now().toIso8601String();
     Database db = await dbServerServices.openDatabase();
     await db.insert('messages', {
       'chat_id': chatId,
       'sender_id': senderId,
       'content': content,
-      'created_date': createdDate,
-      'updated_date': updatedDate,
-      'deleted_date': deletedDate??""
+      'created_date': date,
+      'updated_date': date
     });
     // await db.execute('''
     //   INSERT INTO messages (chat_id, sender_id, content, created_date, updated_date, deleted_date) VALUES (
@@ -33,8 +30,8 @@ class MessagesServices implements IMessagesServices {
     //   )
     //   ''');
 
-    var id = await db.rawQuery('''
-      SELECT message_id FROM messages
+    var idAndDate = await db.rawQuery('''
+      SELECT message_id, created_date FROM messages
       WHERE (
         (chat_id = $chatId) 
         AND 
@@ -42,12 +39,12 @@ class MessagesServices implements IMessagesServices {
         AND
         (content = '$content')
         AND
-        (created_date = '$createdDate')
+        (created_date = '$date')
         AND
-        (updated_date = '$updatedDate')       
+        (updated_date = '$date')       
         )
     ''');
-    return id[0]['message_id'] as int;
+    return idAndDate[0];
   }
 
   @override
@@ -90,11 +87,13 @@ class MessagesServices implements IMessagesServices {
   }
 
   @override
-  updateMessage({required String newValues, required String condition}) async {
+  Future<int> updateMessage(
+      {required String newValues, required String condition}) async {
     var db = await dbServerServices.openDatabase();
 
     return await db
-        .rawUpdate('''UPDATE messages SET $newValues WHERE ($condition)''');
+            .rawUpdate('''UPDATE messages SET $newValues WHERE ($condition)''')
+        as int;
   }
 
   @override

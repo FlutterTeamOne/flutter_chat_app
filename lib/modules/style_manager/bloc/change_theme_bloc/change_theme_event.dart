@@ -1,13 +1,10 @@
-abstract class ChangeThemeEvent {}
+abstract class ChangeThemeEvent {
+  late int index;
+}
 
-class LightThemeDeepPurpleEvent extends ChangeThemeEvent {}
-
-class LightThemeLightBlueEvent extends ChangeThemeEvent {}
-
-class LightThemeOrangeEvent extends ChangeThemeEvent {}
-
-class DarkThemeDeepPurpleEvent extends ChangeThemeEvent {}
-
-class DarkThemeLightBlueEvent extends ChangeThemeEvent {}
-
-class DarkThemeOrangeEvent extends ChangeThemeEvent {}
+class SetThemeEvent extends ChangeThemeEvent {
+  final int index;
+  SetThemeEvent({
+    required this.index,
+  });
+}
