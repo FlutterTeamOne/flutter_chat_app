@@ -69,7 +69,10 @@ class MyMessageCardWidget extends StatelessWidget {
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              AppCardWidget(marginIndex: 5, message: message),
+                              Expanded(
+                                child: AppCardWidget(
+                                    marginIndex: 5, message: message),
+                              ),
                               Icon(
                                 Icons.error,
                                 color: Theme.of(context).errorColor,
@@ -82,7 +85,9 @@ class MyMessageCardWidget extends StatelessWidget {
                           ),
                     Text(
                       'Not Delivered',
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme.of(context).textTheme.caption?.copyWith(
+                            color: Theme.of(context).errorColor,
+                          ),
                     )
                   ],
                 ),
