@@ -7,12 +7,15 @@ class MeetNetPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        // color: AppColor.color7E57C2,
-        child: Text(
-          'MeetNet',
-          // style: AppTextStyle.s36Abel,
+    return Container(
+
+      child: Center(
+        child: Container(
+          // color: AppColor.color7E57C2,
+          child: Text(
+            'MeetNet',
+            // style: AppTextStyle.s36Abel,
+          ),
         ),
       ),
     );

@@ -60,6 +60,7 @@ class MyMessageCardWidget extends StatelessWidget {
     ];
 
     final currentWidth = MediaQuery.of(context).size.width;
+
     return PopupMenuButton(
       tooltip: '',
       shape: const RoundedRectangleBorder(
@@ -85,13 +86,13 @@ class MyMessageCardWidget extends StatelessWidget {
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              AppCardWidget(
-                                marginIndex: 5,
-                                message: message.content,
+                              Expanded(
+                                child: AppCardWidget(
+                                    marginIndex: 5, message: message),
                               ),
-                              const Icon(
+                              Icon(
                                 Icons.error,
-                                //color: AppColor.colorF44336,
+                                color: Theme.of(context).errorColor,
                               )
                             ],
                           )
@@ -99,10 +100,11 @@ class MyMessageCardWidget extends StatelessWidget {
                             marginIndex: 10,
                             message: message.content,
                           ),
-                    const Text(
+                    Text(
                       'Not Delivered',
-                      // style: AppTextStyle.s14AbelGrey
-                      //     .copyWith(color: AppColor.colorF44336),
+                      style: Theme.of(context).textTheme.caption?.copyWith(
+                            color: Theme.of(context).errorColor,
+                          ),
                     )
                   ],
                 ),

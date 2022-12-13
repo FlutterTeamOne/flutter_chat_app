@@ -38,11 +38,13 @@ class UserPreferences {
 
   SetThemeEvent(String value) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString(IS_READ_KEY, value);
+    // sharedPreferences.setString(IS_READ_KEY, value);
+    sharedPreferences.setString(THEME_KEY, value);
   }
 
   getTheme() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getString(IS_READ_KEY);
+    // return sharedPreferences.getString(IS_READ_KEY);
+    return sharedPreferences.getString(THEME_KEY);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:google_fonts/google_fonts.dart';
 
 class CustomTheme {
 static final themes = [
@@ -76,14 +77,6 @@ static final  ThemeData darkThemeDeepPurple = ThemeData(
   );
  static final ThemeData lightThemeOrange = ThemeData(
     brightness: Brightness.light,
-    primarySwatch: Colors.blueGrey,
-    primaryColor: Colors.blueGrey,
-    errorColor: Colors.redAccent.shade200,
-    // backgroundColor: Colors.white70,
-    textSelectionTheme: const TextSelectionThemeData(
-      cursorColor: Colors.black26,
-      selectionColor: Colors.black26,
-      selectionHandleColor: Colors.black26,
-    ),
+    primarySwatch: Colors.orange,
   );
 }

@@ -12,14 +12,18 @@ class SearchFieldWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
       height: 52,
-      decoration: const BoxDecoration(
-        border: Border.symmetric(
-          horizontal: BorderSide(),
-        ),
-      ),
+      // decoration: const BoxDecoration(
+      //   border: Border.symmetric(
+      //     horizontal: BorderSide(),
+      //   ),
+      // ),
       child: TextField(
+        cursorWidth: 1,
+        cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
         controller: controller,
         decoration: InputDecoration(
+          // filled: true,
+          // fillColor: Theme.of(context).colorScheme.outline.withOpacity(0.3),
           prefixIcon: const Icon(
             Icons.search_rounded,
           ),
