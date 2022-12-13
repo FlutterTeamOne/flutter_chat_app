@@ -39,7 +39,7 @@ class TextInputWidgetState extends State<TextInputWidget> {
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               const SizedBox(width: 10),
               AppCircleButtonWidget(
@@ -50,23 +50,16 @@ class TextInputWidgetState extends State<TextInputWidget> {
                 child: Column(
                   children: [
                     if (widget.editState == EditState.isPreparation)
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.565,
-                            child: Card(
-                              child: ListTile(
-                                leading: const Icon(Icons.edit),
-                                title: const Text('Редактирование'),
-                                subtitle: Text(widget.editText),
-                                trailing: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  onPressed: widget.cancelEdit,
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
+                      Card(
+                        child: ListTile(
+                          leading: const Icon(Icons.edit),
+                          title: const Text('Редактирование'),
+                          subtitle: Text(widget.editText),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.close),
+                            onPressed: widget.cancelEdit,
+                          ),
+                        ),
                       ),
                     TextField(
                       cursorWidth: 1,
