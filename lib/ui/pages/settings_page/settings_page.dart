@@ -13,7 +13,7 @@ class SettingsPage extends StatelessWidget {
   Center themeSettings(BuildContext context) {
     return Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
           height: 200,
@@ -40,31 +40,24 @@ Widget CardWidget(BuildContext context, int index) {
     child: SizedBox(
       height: 40,
       width: 40,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         IconButton(
           onPressed: () {
             changeThemeBloc.add(SetThemeEvent(index: index * 2 + 0));
-            print('COLOR ${changeThemeBloc.state.iconColor[0]}');
-
           },
           icon: Icon(
             changeThemeBloc.state.selectIcon[0],
-            color:
-                changeThemeBloc.state.iconColor[0],
+            color: changeThemeBloc.state.iconColor[index * 2 + 0],
           ),
           iconSize: 20,
         ),
         IconButton(
           onPressed: () {
             changeThemeBloc.add(SetThemeEvent(index: index * 2 + 1));
-
           },
           icon: Icon(
             changeThemeBloc.state.selectIcon[1],
-            color:
-                changeThemeBloc.state.iconColor[index * 2 + 1],
+            color: changeThemeBloc.state.iconColor[index * 2 + 1],
           ),
           iconSize: 20,
         ),

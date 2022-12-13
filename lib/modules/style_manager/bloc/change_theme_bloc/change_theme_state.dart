@@ -29,13 +29,11 @@ class ChangeThemeState {
     this.theme,
     this.index,
   }) {
-    void changeIconColor() {
-      for (int i = 0; i <= 5; i++) {
-        if (i == index) {
-          iconColor[i] = Colors.white;
-        } else {
-          iconColor[i] = Colors.white.withOpacity(0.2);
-        }
+    for (int i = 0; i <= 5; i++) {
+      if (i == index) {
+        iconColor[i] = Colors.white;
+      } else {
+        iconColor[i] = Colors.white.withOpacity(0.2);
       }
     }
   }
