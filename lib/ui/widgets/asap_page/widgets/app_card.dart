@@ -27,9 +27,11 @@ class AppCardWidget extends StatelessWidget {
         text: 'Edit',
         onTap: () {
           textController.text = message.content;
-          context.read<MessageBloc>().add(UpdateMessageEvent(
-              messageId: message.localMessageId,
-              isEditing: EditState.isPreparation));
+          context.read<MessageBloc>().add(
+                UpdateMessageEvent(
+                    messageId: message.localMessageId,
+                    isEditing: EditState.isPreparation),
+              );
         },
       ),
       const SizedBox(height: 5),
@@ -44,6 +46,7 @@ class AppCardWidget extends StatelessWidget {
       ),
     ];
     return CustomPopupMenu(
+      // controller: ,
       showArrow: false,
       position: PreferredPosition.bottom,
       barrierColor: Colors.transparent,
@@ -71,7 +74,7 @@ class AppCardWidget extends StatelessWidget {
           side: BorderSide.none,
         ),
         margin:
-            EdgeInsets.only(left: 320, bottom: 5, top: 5, right: marginIndex),
+            EdgeInsets.only(left: 10, bottom: 5, top: 5, right: marginIndex),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child: SelectableText(
