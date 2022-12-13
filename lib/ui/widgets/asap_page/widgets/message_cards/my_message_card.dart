@@ -61,25 +61,36 @@ class MyMessageCardWidget extends StatelessWidget {
 
     final currentWidth = MediaQuery.of(context).size.width;
 
-    return PopupMenuButton(
-      tooltip: '',
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10),
-            topLeft: Radius.circular(10)),
-      ),
-      position: PopupMenuPosition.under,
-      splashRadius: 0,
-      itemBuilder: (context) => items,
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: ConstrainedBox(
-          constraints:
-              BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 145),
-          child: isSuccess != null
-              ? AppCardWidget(message: message.content, marginIndex: 15)
-              : Column(
+    return Align(
+      alignment: Alignment.centerRight,
+      child: ConstrainedBox(
+        constraints:
+            BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 145),
+        child: isSuccess != null
+            ? PopupMenuButton(
+                tooltip: '',
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                      topLeft: Radius.circular(10)),
+                ),
+                position: PopupMenuPosition.under,
+                splashRadius: 0,
+                itemBuilder: (context) => items,
+                child: AppCardWidget(message: message.content, marginIndex: 15))
+            : PopupMenuButton(
+                tooltip: '',
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                      topLeft: Radius.circular(10)),
+                ),
+                position: PopupMenuPosition.under,
+                splashRadius: 0,
+                itemBuilder: (context) => items,
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     currentWidth > 888.8
@@ -88,7 +99,7 @@ class MyMessageCardWidget extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: AppCardWidget(
-                                    marginIndex: 5, message: message),
+                                    marginIndex: 5, message: message.content),
                               ),
                               Icon(
                                 Icons.error,
@@ -108,7 +119,7 @@ class MyMessageCardWidget extends StatelessWidget {
                     )
                   ],
                 ),
-        ),
+              ),
       ),
     );
   }

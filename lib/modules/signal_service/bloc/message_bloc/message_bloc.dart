@@ -153,7 +153,6 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         }
       } catch (e) {}
     }
-    //TODO: запрос на редактирование сообщение на сервере
   }
 
   ///Удаление сообщения по ид
@@ -174,7 +173,6 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       // await _messagesServices.updateWrittenToServer(localMessageId: localMessageId, updatedDate: updatedDate)
     } catch (e) {}
 
-    //TODO: отправить запрос в grpc на удаление сообщения и получить ответ
   }
 
   ///Очистка истории в определенном чате
