@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../src/libraries/library_all.dart';
 import 'list_tile_widget.dart';
 
-class AppCardWidget extends StatelessWidget {
+class AppCardWidget extends StatefulWidget {
   const AppCardWidget({
     Key? key,
     required this.message,
@@ -19,6 +19,13 @@ class AppCardWidget extends StatelessWidget {
   final TextEditingController textController;
 
   @override
+  State<AppCardWidget> createState() => _AppCardWidgetState();
+}
+
+class _AppCardWidgetState extends State<AppCardWidget> {
+  final CustomPopupMenuController popupmenuController =
+      CustomPopupMenuController();
+  @override
   Widget build(BuildContext context) {
     final items = [
       // Тут находится то чо отображается в плавающем окне
@@ -26,12 +33,13 @@ class AppCardWidget extends StatelessWidget {
         icon: Icons.edit,
         text: 'Edit',
         onTap: () {
-          textController.text = message.content;
+          widget.textController.text = widget.message.content;
           context.read<MessageBloc>().add(
                 UpdateMessageEvent(
-                    messageId: message.localMessageId,
+                    messageId: widget.message.localMessageId,
                     isEditing: EditState.isPreparation),
               );
+          popupmenuController.hideMenu();
         },
       ),
       const SizedBox(height: 5),
@@ -40,13 +48,14 @@ class AppCardWidget extends StatelessWidget {
         text: 'Delete',
         onTap: () {
           context.read<MessageBloc>().add(
-                DeleteMessageEvent(messageId: message.localMessageId!),
+                DeleteMessageEvent(messageId: widget.message.localMessageId!),
               );
+          popupmenuController.hideMenu();
         },
       ),
     ];
     return CustomPopupMenu(
-      // controller: ,
+      controller: popupmenuController,
       showArrow: false,
       position: PreferredPosition.bottom,
       barrierColor: Colors.transparent,
@@ -73,16 +82,22 @@ class AppCardWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           side: BorderSide.none,
         ),
-        margin:
-            EdgeInsets.only(left: 10, bottom: 5, top: 5, right: marginIndex),
+        margin: EdgeInsets.only(
+            left: 10, bottom: 5, top: 5, right: widget.marginIndex),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child: SelectableText(
-            message.content,
+            widget.message.content,
             style: const TextStyle(color: Colors.white),
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    popupmenuController.dispose();
+    super.dispose();
   }
 }
