@@ -1,5 +1,5 @@
 abstract class ChangeThemeEvent {
-  late int index;
+  // late int elementIndex;
 }
 
 class SetThemeEvent extends ChangeThemeEvent {
