@@ -1,8 +1,6 @@
 name: chat_app
 description: A new Flutter project.
 
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
@@ -34,9 +32,6 @@ dependencies:
   protobuf: ^2.1.0
   connectivity_plus: ^3.0.2
   freezed: ^2.2.0
-  get_it: ^7.2.0
-  sqlite3: ^1.9.1
-  blur: ^3.1.0
 
 dev_dependencies:
   flutter_test:
