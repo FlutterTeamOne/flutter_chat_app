@@ -51,26 +51,22 @@ class SettingsPage extends StatelessWidget {
   //   );
   // }
 
-  SizedBox themeSettings(BuildContext context) {
+  Center themeSettings(BuildContext context) {
     final ChangeThemeBloc changeThemeBloc = context.read<ChangeThemeBloc>();
-    return SizedBox(
-      width: 200,
-      height: 200,
-      child: Center(
-          child: Container(
-        color: Colors.red,
-        child: Column(
-          children: [
-            Expanded(
-                child: ListView.builder(
-                    itemCount: 3,
-                    itemBuilder: (BuildContext context, int index) {
-                      return CardWidget(context, index);
-                    }))
-          ],
-        ),
-      )),
-    );
+    return Center(
+        child: Container(
+      color: Colors.red,
+      child: Column(
+        children: [
+          Expanded(
+              child: ListView.builder(
+                  itemCount: 3,
+                  itemBuilder: (BuildContext context, int index) {
+                    return CardWidget(context, index);
+                  }))
+        ],
+      ),
+    ));
   }
 }
 
@@ -81,41 +77,48 @@ Widget CardWidget(BuildContext context, int index) {
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(20.0),
     ),
-    child: Row(children: [
-      Expanded(
-          child: Icon(
-        changeThemeBloc.state.selectIcon[index],
-        color: Colors.red,
-      ))
-    ]),
+    child: Expanded(
+      child: Row(children: [
+        Expanded(
+          child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: 2,
+              itemBuilder: (context, int index) {
+                return Icon(
+                  Icons.add,
+                  color: Colors.red,
+                );
+              }),
+        ),
+      ]),
+    ),
   );
 }
-        // child: ListView.builder(
-        //     itemCount: 3,
-        //     itemBuilder: (BuildContext context, int cardIndex) {
-              // return Card(
-              //     shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(20.0)),
-              //     color: changeThemeBloc.state.cardColor[cardIndex],
-              //     child: Wrap(children: [
-              //       ListView.builder(
-              //           scrollDirection: Axis.horizontal,
-              //           itemCount: 2,
-              //           itemBuilder: (BuildContext context, int iconIndex) {
-              //             return IconButton(
-              //               onPressed: () {
-              //                 // changeThemeBloc.add(SetThemeEvent(
-              //                 //     activeElementIndex: cardIndex * 2 + iconIndex));
-              //               },
-              //               icon: Icon(
-              //                 changeThemeBloc.state.selectIcon[iconIndex],
-              //                 color: Colors.red,
-              //                 // changeThemeBloc.state
-              //                 //     .iconColor[changeThemeBloc.state.elementIndex],
-              //               ),
-              //               iconSize: 20,
-              //             );
-              //           }),
-              //     ]));
-            // }),
-
+// child: ListView.builder(
+//     itemCount: 3,
+//     itemBuilder: (BuildContext context, int cardIndex) {
+// return Card(
+//     shape: RoundedRectangleBorder(
+//         borderRadius: BorderRadius.circular(20.0)),
+//     color: changeThemeBloc.state.cardColor[cardIndex],
+//     child: Wrap(children: [
+//       ListView.builder(
+//           scrollDirection: Axis.horizontal,
+//           itemCount: 2,
+//           itemBuilder: (BuildContext context, int iconIndex) {
+//             return IconButton(
+//               onPressed: () {
+//                 // changeThemeBloc.add(SetThemeEvent(
+//                 //     activeElementIndex: cardIndex * 2 + iconIndex));
+//               },
+//               icon: Icon(
+//                 changeThemeBloc.state.selectIcon[iconIndex],
+//                 color: Colors.red,
+//                 // changeThemeBloc.state
+//                 //     .iconColor[changeThemeBloc.state.elementIndex],
+//               ),
+//               iconSize: 20,
+//             );
+//           }),
+//     ]));
+// }),
