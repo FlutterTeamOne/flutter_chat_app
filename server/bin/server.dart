@@ -1,6 +1,7 @@
-import 'package:grpc/grpc.dart';
-import 'package:server/src/generated/users.pbgrpc.dart';
+import 'dart:async';
 
+import 'package:grpc/grpc.dart';
+import '../lib/src/generated/users.pbgrpc.dart';
 import '../lib/src/generated/grpc_manager.pbgrpc.dart';
 import '../lib/src/library/library_server.dart';
 
@@ -11,11 +12,7 @@ class GrpcChat extends GrpcChatServiceBase {
   var messagesService = MessagesServices();
   var chatsService = ChatsServices();
   var usersService = UsersServices();
-
-  @override
-  Future<Empty> connecting(ServiceCall call, Empty request) async {
-    return request;
-  }
+  var _controller = <int, StreamController<MessageFromBase>>{};
 
   //   @override
   // Future<ConnectResponse> connecting(
@@ -44,6 +41,24 @@ class GrpcChat extends GrpcChatServiceBase {
       message.mainMessagesId = 555; // message.ok = false;
     }
     print('SERVER MESSAGE: $message');
+    var mes =
+        await messagesService.getMessageById(id: src['message_id'] as int);
+    print('MES: $mes');
+    var messageFromBase = MessageFromBase(
+        chatIdMain: mes[0]['chat_id'],
+        senderMainId: mes[0]['sender_id'],
+        content: mes[0]['content'],
+        date: mes[0]['created_date'],
+        mainIdMessage: mes[0]['message_id']);
+    print('MESfrom: $messageFromBase');
+    var receiverId = await usersService.getUserIdByChat(
+        senderId: request.senderMainId, chatId: request.chatIdMain);
+    print('receiverId: $receiverId');
+    var hashConnect = await usersService.getHashCodeById(id: receiverId);
+    print("HASH: $hashConnect");
+    hashConnect != null
+        ? _controller[hashConnect]?.sink.add(messageFromBase)
+        : print("user $receiverId not connecting");
     return message;
   }
 
@@ -105,6 +120,48 @@ class GrpcChat extends GrpcChatServiceBase {
     }
     return message;
   }
+
+  @override
+  Stream<MessageFromBase> connectings(
+      ServiceCall call, Stream<ConnectRequest> request) async* {
+    var connectController = StreamController<MessageFromBase>();
+    _controller[request.hashCode] = connectController;
+    late int id;
+    request.listen((mes) {
+      print('listening...${request.hashCode}');
+      // print('Request ${req.id} (#${request.hashCode})');
+      id = mes.id;
+      // var userId = req.id;
+      usersService.updateUser(
+          newValues: 'hash_connect = ${request.hashCode}',
+          condition: 'user_id = ${mes.id}');
+
+      // _controller.forEach((nowController, _) {
+      //   if (nowController != connectController) {
+      //     nowController.sink.add(req);
+      //   }
+
+      // });
+    }).onError((dynamic e) {
+      print(e);
+      _controller.remove(request.hashCode);
+      connectController.close();
+      usersService.updateUser(
+          newValues: 'hash_connect = null', condition: 'user_id = $id');
+      print('Disconnected: #${request.hashCode}');
+    });
+
+    await for (final message in connectController.stream) {
+      print('yield');
+      yield message;
+    }
+  }
+
+  @override
+  Future<Empty> connecting(ServiceCall call, Empty request) {
+    // TODO: implement connecting
+    throw UnimplementedError();
+  }
 }
 
 class GrpcUsers extends GrpcUsersServiceBase {
@@ -146,15 +203,27 @@ class GrpcUsers extends GrpcUsersServiceBase {
   Future<GetUserResponse> getUser(
       ServiceCall call, GetUserRequest request) async {
     var getUserResponse = GetUserResponse();
-
-    var src = await UsersServices().getUser(id: request.id);
-
-    if (src[0]['user_id'] != 0 && src[0]['user_id'] != null) {
-      getUserResponse.id = src[0]['user_id'] as int;
-      getUserResponse.dateUpdated = src[0]['updated_date'] as String;
-      getUserResponse.dateDeleted = src[0]['deleted_date'] as String;
+    var src;
+    if (!request.id.isNaN) {
+      src = await UsersServices()
+          .getUserByField(field: 'user_id', fieldValue: request.id);
+    } else if (request.name.isNotEmpty) {
+      src = await UsersServices()
+          .getUserByField(field: 'name', fieldValue: request.name);
+    } else if (request.email.isNotEmpty) {
+      src = await UsersServices()
+          .getUserByField(field: 'email', fieldValue: request.email);
+    } else if (request.dateCreation.isNotEmpty) {
+      src = await UsersServices().getUserByField(
+          field: 'created_date', fieldValue: request.dateCreation);
+    } else {
+      // // return GrpcError.invalidArgument()
     }
-
+    // if (src[]) {}
+    // request.dateCreation;
+    // request.email;
+    // request.id;
+    // request.name;
     return getUserResponse;
   }
 
@@ -187,8 +256,7 @@ Future<void> main() async {
     CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
   );
 
-  await server.serve(port: 5000);
+  await server.serve(port: 50000);
   await DbServerServices.instanse.openDatabase();
-
   print('✅ Server listening on port ${server.port}...');
 }

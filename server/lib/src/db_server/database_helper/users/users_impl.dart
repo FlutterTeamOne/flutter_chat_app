@@ -50,7 +50,7 @@ class UsersServices implements IUsersServices {
   getAllUsers() async {
     Database db = await DbServerServices.instanse.database;
 
-    return await db.rawQuery('''SELECT * FROM users''');
+    return await db.rawQuery('''SELECT hash_connect FROM users''');
   }
 
   @override
@@ -82,5 +82,27 @@ class UsersServices implements IUsersServices {
   getUserByField({required String field, required Object fieldValue}) {
     // TODO: implement getUserByField
     throw UnimplementedError();
+  }
+
+  @override
+  getUserIdByChat({required int senderId, required int chatId}) async {
+    Database db = await DbServerServices.instanse.database;
+
+    var friends = await db.rawQuery('''SELECT friend1_id, friend2_id 
+        FROM chats 
+        WHERE chat_id = $chatId''');
+    return friends[0]['friend1_id'] == senderId
+        ? friends[0]['friend2_id'] as int
+        : friends[0]['friend1_id'] as int;
+  }
+
+  @override
+  getHashCodeById({required int id}) async {
+    Database db = await DbServerServices.instanse.database;
+
+    var hash = await db.rawQuery('''SELECT hash_connect 
+        FROM users 
+        WHERE user_id = $id''');
+    return hash[0]['hash_connect'] as int;
   }
 }

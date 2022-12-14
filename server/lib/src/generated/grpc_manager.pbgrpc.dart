@@ -18,6 +18,12 @@ class GrpcChatClient extends $grpc.Client {
       '/GrpcChat/connecting',
       ($0.Empty value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Empty.fromBuffer(value));
+  static final _$connectings =
+      $grpc.ClientMethod<$0.ConnectRequest, $0.MessageFromBase>(
+          '/GrpcChat/connectings',
+          ($0.ConnectRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.MessageFromBase.fromBuffer(value));
   static final _$createMessage =
       $grpc.ClientMethod<$0.CreateMessageRequest, $0.CreateMessageResponse>(
           '/GrpcChat/createMessage',
@@ -51,6 +57,12 @@ class GrpcChatClient extends $grpc.Client {
   $grpc.ResponseFuture<$0.Empty> connecting($0.Empty request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$connecting, request, options: options);
+  }
+
+  $grpc.ResponseStream<$0.MessageFromBase> connectings(
+      $async.Stream<$0.ConnectRequest> request,
+      {$grpc.CallOptions? options}) {
+    return $createStreamingCall(_$connectings, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.CreateMessageResponse> createMessage(
@@ -91,6 +103,13 @@ abstract class GrpcChatServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
         ($0.Empty value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.ConnectRequest, $0.MessageFromBase>(
+        'connectings',
+        connectings,
+        true,
+        true,
+        ($core.List<$core.int> value) => $0.ConnectRequest.fromBuffer(value),
+        ($0.MessageFromBase value) => value.writeToBuffer()));
     $addMethod(
         $grpc.ServiceMethod<$0.CreateMessageRequest, $0.CreateMessageResponse>(
             'createMessage',
@@ -156,6 +175,8 @@ abstract class GrpcChatServiceBase extends $grpc.Service {
   }
 
   $async.Future<$0.Empty> connecting($grpc.ServiceCall call, $0.Empty request);
+  $async.Stream<$0.MessageFromBase> connectings(
+      $grpc.ServiceCall call, $async.Stream<$0.ConnectRequest> request);
   $async.Future<$0.CreateMessageResponse> createMessage(
       $grpc.ServiceCall call, $0.CreateMessageRequest request);
   $async.Future<$0.UpdateMessageResponse> updateMessage(
