@@ -26,7 +26,7 @@ Future main() async {
         'email': 't1@t1.t1',
         DatabaseConst.usersColumnProfilePicLink:
             'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
-        DatabaseConst.usersColumnRegistrationDate: '2022-12-02T21:36:32.653712',
+        //DatabaseConst.usersColumnRegistrationDate: '2022-12-02T21:36:32.653712',
         DatabaseConst.usersColumnMainUsersId: usersCont,
         'local_users_id': usersCont,
       };
@@ -45,7 +45,7 @@ Future main() async {
         'email': 't2@t2.t2',
         DatabaseConst.usersColumnProfilePicLink:
             'https://static.more.tv/actor/avatar/5feab82564aa7.jpeg',
-        DatabaseConst.usersColumnRegistrationDate: '2022-12-02T21:37:32.653712',
+        //DatabaseConst.usersColumnRegistrationDate: '2022-12-02T21:37:32.653712',
         DatabaseConst.usersColumnMainUsersId: usersCont + 1,
         'local_users_id': usersCont + 1,
       };
@@ -62,10 +62,10 @@ Future main() async {
               ''');
       expect(users.last, user);
 
-      await dbHelper.onUpdate(
-          tableName: DatabaseConst.userTable,
-          column: DatabaseConst.usersColumnId,
-          model: user);
+      // await dbHelper.onUpdate(
+      //     tableName: DatabaseConst.userTable,
+      //     column: DatabaseConst.usersColumnId,
+      //     model: user);
 
       expect(users.last, user);
     });
@@ -75,16 +75,16 @@ Future main() async {
           onCreate: (db, version) async {
         await db.transaction((txn) async {
           //Таблица User
-          await txn.execute('''
-CREATE TABLE ${DatabaseConst.userTable} (
-  ${DatabaseConst.usersColumnId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
-  ${DatabaseConst.usersColumnName} ${DatabaseConst.char350} ${DatabaseConst.notNull},
-  ${DatabaseConst.usersColumnEmail} ${DatabaseConst.char350} ${DatabaseConst.notNull},
-  ${DatabaseConst.usersColumnRegistrationDate} ${DatabaseConst.date} ${DatabaseConst.notNull},
-  ${DatabaseConst.usersColumnProfilePicLink} ${DatabaseConst.char350} ${DatabaseConst.notNull},
-  ${DatabaseConst.usersColumnMainUsersId} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique}
-  )
-''');
+//           await txn.execute('''
+// CREATE TABLE ${DatabaseConst.userTable} (
+//   ${DatabaseConst.usersColumnId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
+//   ${DatabaseConst.usersColumnName} ${DatabaseConst.char350} ${DatabaseConst.notNull},
+//   ${DatabaseConst.usersColumnEmail} ${DatabaseConst.char350} ${DatabaseConst.notNull},
+//   ${DatabaseConst.usersColumnRegistrationDate} ${DatabaseConst.date} ${DatabaseConst.notNull},
+//   ${DatabaseConst.usersColumnProfilePicLink} ${DatabaseConst.char350} ${DatabaseConst.notNull},
+//   ${DatabaseConst.usersColumnMainUsersId} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique}
+//   )
+// ''');
         });
       });
     });
@@ -92,22 +92,22 @@ CREATE TABLE ${DatabaseConst.userTable} (
       var db = await openDatabase(inMemoryDatabasePath, version: 1,
           onCreate: (db, version) async {
         await db.transaction((txn) async {
-//Таблица Messages
-          await txn.execute('''
-CREATE TABLE ${DatabaseConst.messageTable} (
- ${DatabaseConst.messagesColumnLocalMessagesId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
- ${DatabaseConst.messagesColumnLocalChatId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
- ${DatabaseConst.messagesColumnDate} ${DatabaseConst.integer} ${DatabaseConst.notNull},
- ${DatabaseConst.messagesColumnSenderLocalId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
- ${DatabaseConst.messagesColumnIsWrittenToDb} ${DatabaseConst.integer} ${DatabaseConst.notNull} DEFAULT 0,
- ${DatabaseConst.messagesColumnContent} ${DatabaseConst.char350} ${DatabaseConst.notNull},
- ${DatabaseConst.constraint} MESSAGES_FK_79 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnLocalChatId} ) ${DatabaseConst.references} ${DatabaseConst.chatsTable} ( local_chats_id ),
- ${DatabaseConst.constraint} MESSAGES_FK_80 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnSenderLocalId} ) ${DatabaseConst.references} ${DatabaseConst.userTable} ( local_users_id ),
- CHECK ((is_written_to_db = 0) OR (is_written_to_db = 1))
- CHECK ((sender_is_user = 0) OR (sender_is_user = 1))
- CHECK (LENGTH(date) = 26)
-)
-''');
+// //Таблица Messages
+//           await txn.execute('''
+// CREATE TABLE ${DatabaseConst.messageTable} (
+//  ${DatabaseConst.messagesColumnLocalMessagesId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
+//  ${DatabaseConst.messagesColumnLocalChatId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
+//  ${DatabaseConst.messagesColumnDate} ${DatabaseConst.integer} ${DatabaseConst.notNull},
+//  ${DatabaseConst.messagesColumnSenderLocalId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
+//  ${DatabaseConst.messagesColumnIsWrittenToDb} ${DatabaseConst.integer} ${DatabaseConst.notNull} DEFAULT 0,
+//  ${DatabaseConst.messagesColumnContent} ${DatabaseConst.char350} ${DatabaseConst.notNull},
+//  ${DatabaseConst.constraint} MESSAGES_FK_79 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnLocalChatId} ) ${DatabaseConst.references} ${DatabaseConst.chatsTable} ( local_chats_id ),
+//  ${DatabaseConst.constraint} MESSAGES_FK_80 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnSenderLocalId} ) ${DatabaseConst.references} ${DatabaseConst.userTable} ( local_users_id ),
+//  CHECK ((is_written_to_db = 0) OR (is_written_to_db = 1))
+//  CHECK ((sender_is_user = 0) OR (sender_is_user = 1))
+//  CHECK (LENGTH(date) = 26)
+// )
+// ''');
         });
       });
     });

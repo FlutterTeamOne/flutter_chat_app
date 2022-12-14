@@ -38,11 +38,12 @@ dependencies:
   sqlite3: ^1.9.1
   blur: ^3.1.0
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
-
+  mockito: ^5.3.2
   build_runner: ^2.3.0
 
 flutter:
