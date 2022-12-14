@@ -2,7 +2,6 @@ import 'package:grpc/grpc.dart';
 
 import '../lib/src/generated/grpc_manager.pbgrpc.dart';
 
-
 class Client {
   ClientChannel? channel;
   //Класс заглушка, определяет все функции которые есть на сервере
@@ -19,15 +18,6 @@ class Client {
     stub = GrpcChatClient(channel!,
         options: CallOptions(timeout: Duration(seconds: 30)));
 
-    // while (executionInProgress) {
-    //   try {
-    //     print('---- Welcome to the dart store API ---');
-    //     print('   ---- what do you want to do? ---');
-    //     print('👉 0: Connecting');
-    //     print('👉 1: Send Message to server');
-    //     var option = int.parse(stdin.readLineSync()!);
-    // switch (option) {
-    //   case 1:
     try {
       response = await stub!.createMessage(message);
     } catch (e) {

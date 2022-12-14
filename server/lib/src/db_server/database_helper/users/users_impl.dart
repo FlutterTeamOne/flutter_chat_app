@@ -58,8 +58,17 @@ class UsersServices implements IUsersServices {
     ///Таблица Users находится в server/lib/src/db_server/services/database_impl.dart
     ///c 30 строки название колонок в таблице юзерс
     ///
+    ///
+    ///Проверка запроса осуществляется в server/lib/src/test_db/test.dart
     List<User> usersList = [];
-    return usersList;
+    final user = User();
+    // usersList.  ;
+    print(user.name);
+    // for (var element in User(id: , name: )) {
+    // final a =
+    // usersList.add(value)
+    // }
+    // return usersList;
   }
 
   @override
