@@ -12,9 +12,7 @@ message GetUserRequest {
     string name = 2;
     string email = 3;
     string dateCreation = 4;
-    string profilePicUrl = 5;
-    string password = 6;
-    
+   
 }
 message GetUserResponse {
     int32 id = 1;
@@ -39,8 +37,6 @@ message CreateUserResponse {
     string dateCreated = 6;
 }
 
-
-
 message UpdateUserRequest{
     int32 id = 1;
     string name = 2;
@@ -57,6 +53,6 @@ message DeleteUserRequest{
     string dateDeleted=2;
 }
 message DeleteUserResponse{
-    int32 isDeleted=1;
+    bool isDeleted=1;
     
 }

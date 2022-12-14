@@ -1,3 +1,5 @@
+import 'package:sqflite_common/sqlite_api.dart';
+
 import '../../../library/library_server.dart';
 
 class UsersServices implements IUsersServices {
@@ -6,7 +8,8 @@ class UsersServices implements IUsersServices {
       {required String name,
       required String email,
       required String registrationDate,
-      required String profilePicUrl}) async {
+      required String profilePicUrl,
+      required String password}) async {
     var db = await dbServerServices.openDatabase();
 
     await db.execute('''
@@ -14,7 +17,8 @@ class UsersServices implements IUsersServices {
         $name,
         $email,
         $registrationDate,
-        $profilePicUrl
+        $profilePicUrl,
+        $password
       );
       ''');
 
@@ -27,13 +31,17 @@ class UsersServices implements IUsersServices {
         AND
         (registration_date = $registrationDate)
         AND
-        (profile_pic_url = $profilePicUrl));
+        (profile_pic_url = $profilePicUrl)
+        AND
+        (password = $password)
+        );
     ''');
   }
 
   @override
-  deleteUser({required int id}) async {
-    var db = await dbServerServices.openDatabase();
+  deleteUser({required Database db, required int id}) async {
+    var db = await db.instance.database;
+    //bla bla blaaaaaaaaaaaaaaaa
 
     return await db
         .rawDelete('''SELETE FROM users WHERE (main_users_id = id)''');
@@ -47,9 +55,10 @@ class UsersServices implements IUsersServices {
   }
 
   @override
-  getUserByField({required String field, required String fieldValue}) async {
+  getUserByField({required String field, required Object fieldValue}) async {
     var db = await dbServerServices.openDatabase();
-
+    var s = await db
+        .rawQuery('''SELECT * FROM users WHERE ($field = $fieldValue)''');
     return await db
         .rawQuery('''SELECT * FROM users WHERE ($field = $fieldValue)''');
   }

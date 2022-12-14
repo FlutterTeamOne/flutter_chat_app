@@ -15,8 +15,6 @@ class GetUserRequest extends $pb.GeneratedMessage {
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'email')
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dateCreation', protoName: 'dateCreation')
-    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'profilePicUrl', protoName: 'profilePicUrl')
-    ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'password')
     ..hasRequiredFields = false
   ;
 
@@ -26,8 +24,6 @@ class GetUserRequest extends $pb.GeneratedMessage {
     $core.String? name,
     $core.String? email,
     $core.String? dateCreation,
-    $core.String? profilePicUrl,
-    $core.String? password,
   }) {
     final _result = create();
     if (id != null) {
@@ -41,12 +37,6 @@ class GetUserRequest extends $pb.GeneratedMessage {
     }
     if (dateCreation != null) {
       _result.dateCreation = dateCreation;
-    }
-    if (profilePicUrl != null) {
-      _result.profilePicUrl = profilePicUrl;
-    }
-    if (password != null) {
-      _result.password = password;
     }
     return _result;
   }
@@ -106,24 +96,6 @@ class GetUserRequest extends $pb.GeneratedMessage {
   $core.bool hasDateCreation() => $_has(3);
   @$pb.TagNumber(4)
   void clearDateCreation() => clearField(4);
-
-  @$pb.TagNumber(5)
-  $core.String get profilePicUrl => $_getSZ(4);
-  @$pb.TagNumber(5)
-  set profilePicUrl($core.String v) { $_setString(4, v); }
-  @$pb.TagNumber(5)
-  $core.bool hasProfilePicUrl() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearProfilePicUrl() => clearField(5);
-
-  @$pb.TagNumber(6)
-  $core.String get password => $_getSZ(5);
-  @$pb.TagNumber(6)
-  set password($core.String v) { $_setString(5, v); }
-  @$pb.TagNumber(6)
-  $core.bool hasPassword() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearPassword() => clearField(6);
 }
 
 class GetUserResponse extends $pb.GeneratedMessage {
@@ -662,13 +634,13 @@ class DeleteUserRequest extends $pb.GeneratedMessage {
 
 class DeleteUserResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'DeleteUserResponse', createEmptyInstance: create)
-    ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isDeleted', $pb.PbFieldType.O3, protoName: 'isDeleted')
+    ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isDeleted', protoName: 'isDeleted')
     ..hasRequiredFields = false
   ;
 
   DeleteUserResponse._() : super();
   factory DeleteUserResponse({
-    $core.int? isDeleted,
+    $core.bool? isDeleted,
   }) {
     final _result = create();
     if (isDeleted != null) {
@@ -698,9 +670,9 @@ class DeleteUserResponse extends $pb.GeneratedMessage {
   static DeleteUserResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.int get isDeleted => $_getIZ(0);
+  $core.bool get isDeleted => $_getBF(0);
   @$pb.TagNumber(1)
-  set isDeleted($core.int v) { $_setSignedInt32(0, v); }
+  set isDeleted($core.bool v) { $_setBool(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasIsDeleted() => $_has(0);
   @$pb.TagNumber(1)

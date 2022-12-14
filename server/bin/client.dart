@@ -88,6 +88,7 @@ class Client {
 // await channel!.shutdown();
   Future<UpdateUserResponse> updateUser(UpdateUserRequest user) async {
     var resp = UpdateUserResponse();
+
     return resp;
   }
 }
@@ -141,6 +142,8 @@ void main() async {
   updateUser.email = 'test@test.test';
   updateUser.password = 'new pas';
   updateUser.profilePicUrl = 'new image url';
+
   print("Обратный ответ:");
+  print('update User: ${updateUser.writeToJsonMap()}');
   print(await client.updateUser(updateUser));
 }
