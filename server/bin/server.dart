@@ -174,8 +174,6 @@ class GrpcUsers extends GrpcUsersServiceBase {
   }
 }
 
-class 
-
 ///
 ///Настройка
 ///

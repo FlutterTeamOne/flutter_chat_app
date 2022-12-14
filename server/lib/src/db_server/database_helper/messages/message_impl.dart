@@ -1,3 +1,4 @@
+import 'package:server/src/generated/messages.pb.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 
 import '../../../library/library_server.dart';
