@@ -146,7 +146,7 @@ class GrpcUsers extends GrpcUsersServiceBase {
   Future<GetUserResponse> getUser(
       ServiceCall call, GetUserRequest request) async {
     var getUserResponse = GetUserResponse();
-    var src;
+    var src = <Map<String, Object>>[];
     if (!request.id.isNaN) {
       src = await UsersServices()
           .getUserByField(field: 'user_id', fieldValue: request.id);
@@ -162,11 +162,12 @@ class GrpcUsers extends GrpcUsersServiceBase {
     } else {
       // // return GrpcError.invalidArgument()
     }
-    if (src[]) {}
-    request.dateCreation;
-    request.email;
-    request.id;
-    request.name;
+    if (src[0]['user_id'] != 0 && src[0]['user_id'] != null) {
+      getUserResponse.id = src[0]['user_id'] as int;
+      getUserResponse.dateUpdated = src[0]['updated_date'] as String;
+      getUserResponse.dateDeleted = src[0]['deleted_date'] as String;
+    }
+
     return getUserResponse;
   }
 
@@ -200,6 +201,7 @@ Future<void> main() async {
   );
 
   await server.serve(port: 5000);
-  await dbServerServices.openDatabase();
+  await DbServerServices.instanse.openDatabase();
+
   print('✅ Server listening on port ${server.port}...');
 }
