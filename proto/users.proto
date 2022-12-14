@@ -1,0 +1,58 @@
+syntax = 'proto3';
+
+service GrpcUsers {
+    rpc getUser (GetUserRequest) returns (GetUserResponse);
+    rpc createUser (CreateUserRequest) returns (CreateUserResponse);
+    rpc updateUser (UpdateUserRequest) returns (UpdateUserResponse);
+    rpc deleteUser (DeleteUserRequest) returns (DeleteUserResponse);
+}
+
+message GetUserRequest {
+    int32 id = 1;
+    string name = 2;
+    string email = 3;
+    string dateCreation = 4;
+   
+}
+message GetUserResponse {
+    int32 id = 1;
+    string dateUpdated = 2;
+    string dateDeleted = 3;
+}
+message CreateUserRequest {
+    int32 id = 1;
+    string name = 2;
+    string email = 3;
+    string profilePicUrl = 4;
+    string password = 5;
+    string dateCreated = 6;
+}
+
+message CreateUserResponse {
+    int32 id = 1;
+    string name = 2;
+    string email = 3;
+    string profilePicUrl = 4;
+    string password = 5;
+    string dateCreated = 6;
+}
+
+message UpdateUserRequest{
+    int32 id = 1;
+    string name = 2;
+    string email = 3;
+    string profilePicUrl = 4;
+    string password = 5;
+}
+message UpdateUserResponse{
+    string dateUpdated = 1;
+    bool isUpdated = 2;
+}
+message DeleteUserRequest{
+    int32 id = 1;
+    string dateDeleted=2;
+}
+message DeleteUserResponse{
+    bool isDeleted=1;
+    
+}

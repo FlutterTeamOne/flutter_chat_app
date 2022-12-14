@@ -1,12 +1,12 @@
 ﻿import 'package:flutter/material.dart';
 
 class DefaultUserChatLayout extends StatelessWidget {
-  const DefaultUserChatLayout();
+  const DefaultUserChatLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           left: BorderSide.none,
           right: BorderSide.none,

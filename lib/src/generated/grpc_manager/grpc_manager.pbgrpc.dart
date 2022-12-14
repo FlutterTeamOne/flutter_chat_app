@@ -18,19 +18,24 @@ class GrpcChatClient extends $grpc.Client {
       '/GrpcChat/connecting',
       ($0.Empty value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Empty.fromBuffer(value));
-  static final _$getAllUsers = $grpc.ClientMethod<$0.Empty, $0.AllUsers>(
-      '/GrpcChat/getAllUsers',
-      ($0.Empty value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.AllUsers.fromBuffer(value));
-  static final _$createMessage = $grpc.ClientMethod<$0.Message, $0.MessageBase>(
-      '/GrpcChat/createMessage',
-      ($0.Message value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.MessageBase.fromBuffer(value));
-  static final _$createMessages =
-      $grpc.ClientMethod<$0.Message, $0.MessageBase>(
-          '/GrpcChat/createMessages',
-          ($0.Message value) => value.writeToBuffer(),
-          ($core.List<$core.int> value) => $0.MessageBase.fromBuffer(value));
+  static final _$createMessage =
+      $grpc.ClientMethod<$0.CreateMessageRequest, $0.CreateMessageResponse>(
+          '/GrpcChat/createMessage',
+          ($0.CreateMessageRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.CreateMessageResponse.fromBuffer(value));
+  static final _$updateMessage =
+      $grpc.ClientMethod<$0.UpdateMessageRequest, $0.UpdateMessageResponse>(
+          '/GrpcChat/updateMessage',
+          ($0.UpdateMessageRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.UpdateMessageResponse.fromBuffer(value));
+  static final _$deleteMessage =
+      $grpc.ClientMethod<$0.DeleteMessageRequest, $0.DeleteMessageResponse>(
+          '/GrpcChat/deleteMessage',
+          ($0.DeleteMessageRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.DeleteMessageResponse.fromBuffer(value));
   static final _$synchronization =
       $grpc.ClientMethod<$0.LastMessage, $0.MessageFromBase>(
           '/GrpcChat/synchronization',
@@ -53,15 +58,22 @@ class GrpcChatClient extends $grpc.Client {
     return $createUnaryCall(_$getAllUsers, request, options: options);
   }
 
-  $grpc.ResponseFuture<$0.MessageBase> createMessage($0.Message request,
+  $grpc.ResponseFuture<$0.CreateMessageResponse> createMessage(
+      $0.CreateMessageRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$createMessage, request, options: options);
   }
 
-  $grpc.ResponseStream<$0.MessageBase> createMessages(
-      $async.Stream<$0.Message> request,
+  $grpc.ResponseFuture<$0.UpdateMessageResponse> updateMessage(
+      $0.UpdateMessageRequest request,
       {$grpc.CallOptions? options}) {
-    return $createStreamingCall(_$createMessages, request, options: options);
+    return $createUnaryCall(_$updateMessage, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.DeleteMessageResponse> deleteMessage(
+      $0.DeleteMessageRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$deleteMessage, request, options: options);
   }
 
   $grpc.ResponseStream<$0.MessageFromBase> synchronization(
@@ -84,13 +96,6 @@ abstract class GrpcChatServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
         ($0.Empty value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.Empty, $0.AllUsers>(
-        'getAllUsers',
-        getAllUsers_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
-        ($0.AllUsers value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.Message, $0.MessageBase>(
         'createMessage',
         createMessage_Pre,
@@ -124,9 +129,22 @@ abstract class GrpcChatServiceBase extends $grpc.Service {
     return getAllUsers(call, await request);
   }
 
-  $async.Future<$0.MessageBase> createMessage_Pre(
-      $grpc.ServiceCall call, $async.Future<$0.Message> request) async {
+  $async.Future<$0.CreateMessageResponse> createMessage_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$0.CreateMessageRequest> request) async {
     return createMessage(call, await request);
+  }
+
+  $async.Future<$0.UpdateMessageResponse> updateMessage_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$0.UpdateMessageRequest> request) async {
+    return updateMessage(call, await request);
+  }
+
+  $async.Future<$0.DeleteMessageResponse> deleteMessage_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$0.DeleteMessageRequest> request) async {
+    return deleteMessage(call, await request);
   }
 
   $async.Stream<$0.MessageFromBase> synchronization_Pre(
@@ -135,8 +153,6 @@ abstract class GrpcChatServiceBase extends $grpc.Service {
   }
 
   $async.Future<$0.Empty> connecting($grpc.ServiceCall call, $0.Empty request);
-  $async.Future<$0.AllUsers> getAllUsers(
-      $grpc.ServiceCall call, $0.Empty request);
   $async.Future<$0.MessageBase> createMessage(
       $grpc.ServiceCall call, $0.Message request);
   $async.Stream<$0.MessageBase> createMessages(

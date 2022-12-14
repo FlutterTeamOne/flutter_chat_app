@@ -1,6 +1,8 @@
 import 'dart:async';
-import 'package:chat_app/domain/data/library/library_data.dart';
-import 'package:chat_app/modules/sending_manager/library/library_sending_manager.dart';
+import 'package:equatable/equatable.dart';
+
+import '../../../../domain/data/library/library_data.dart';
+import '../../../sending_manager/library/library_sending_manager.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'user_event.dart';
@@ -10,7 +12,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   late LocalUsersServices _usersServices;
   late StreamSubscription _subscription;
   // final GrpcClient grpcClient;
-  UserBloc() : super(UserState()) {
+  UserBloc() : super(const UserState()) {
     on<ReadUsersEvent>(_onReadUsersEvent);
     on<CreateUserEvent>(_onCreateUserEvent);
   }

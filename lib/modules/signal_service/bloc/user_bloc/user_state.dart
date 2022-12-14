@@ -1,11 +1,10 @@
 part of 'user_bloc.dart';
 
-class UserState {
+class UserState extends Equatable {
   final List<UserDto>? users;
-  UserState({
+  const UserState({
     this.users,
   });
-
 
   UserState copyWith({
     List<UserDto>? users,
@@ -14,4 +13,7 @@ class UserState {
       users: users ?? this.users,
     );
   }
+
+  @override
+  List<Object?> get props => [users];
 }

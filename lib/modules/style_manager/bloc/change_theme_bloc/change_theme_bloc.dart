@@ -1,4 +1,5 @@
-import 'package:bloc/bloc.dart';
+import 'package:chat_app/modules/style_manager/themes/saved_theme.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chat_app/modules/storage_manager/preferences/user_preferences.dart';
 import 'package:chat_app/modules/style_manager/themes/custom_themes.dart';
 
@@ -6,50 +7,21 @@ import 'change_theme_event.dart';
 import 'change_theme_state.dart';
 
 class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
-  // final initTheme = CustomTheme().darkThemeDeepPurple;
+  static int initIndex = SavedTheme().initThemeIndex;
   ChangeThemeBloc()
-      : super(ChangeThemeState(theme: CustomTheme().darkThemeDeepPurple)) {
-    on<LightThemeDeepPurpleEvent>(_setLightThemeDeepPurple);
-    on<LightThemeLightBlueEvent>(_setLightThemeLightBlue);
-    on<LightThemeOrangeEvent>(_setLightThemeOrange);
-    on<DarkThemeDeepPurpleEvent>(_setDarkThemeDeepPurple);
-    on<DarkThemeLightBlueEvent>(_setDarkThemeLightBlue);
-    on<DarkThemeOrangeEvent>(_setDarkThemeOrange);
+      : super(ChangeThemeState(
+          theme: CustomTheme().themes[initIndex],
+          index: initIndex,
+        )) {
+    on<SetThemeEvent>(_setThemeEvent);
   }
 
-  void _setLightThemeDeepPurple(
-      ChangeThemeEvent event, Emitter<ChangeThemeState> emit) async {
-    await UserPreferences().setTheme('lightThemeDeepPurple');
-    emit(ChangeThemeState(theme: CustomTheme().lightThemeDeepPurple));
-  }
-
-  void _setLightThemeLightBlue(
-      ChangeThemeEvent event, Emitter<ChangeThemeState> emit) async {
-    await UserPreferences().setTheme('lightThemeLightBlue');
-    emit(ChangeThemeState(theme: CustomTheme().lightThemeLightBlue));
-  }
-
-  void _setLightThemeOrange(
-      ChangeThemeEvent event, Emitter<ChangeThemeState> emit) async {
-    await UserPreferences().setTheme('lightThemeOrange');
-    emit(ChangeThemeState(theme: CustomTheme().lightThemeOrange));
-  }
-
-  void _setDarkThemeDeepPurple(
-      ChangeThemeEvent event, Emitter<ChangeThemeState> emit) async {
-    await UserPreferences().setTheme('darkThemeDeepPurple');
-    emit(ChangeThemeState(theme: CustomTheme().darkThemeDeepPurple));
-  }
-
-  void _setDarkThemeLightBlue(
-      ChangeThemeEvent event, Emitter<ChangeThemeState> emit) async {
-    await UserPreferences().setTheme('darkThemeLightBlue');
-    emit(ChangeThemeState(theme: CustomTheme().darkThemeLightBlue));
-  }
-
-  void _setDarkThemeOrange(
-      ChangeThemeEvent event, Emitter<ChangeThemeState> emit) async {
-    await UserPreferences().setTheme('darkThemeOrange');
-    emit(ChangeThemeState(theme: CustomTheme().darkThemeOrange));
+  void _setThemeEvent(
+      SetThemeEvent event, Emitter<ChangeThemeState> emit) async {
+    SavedTheme().initThemeIndex = event.index;
+    var i = await UserPreferences().getTheme();
+    print(i);
+    emit(ChangeThemeState(
+        theme: CustomTheme().themes[event.index], index: event.index));
   }
 }

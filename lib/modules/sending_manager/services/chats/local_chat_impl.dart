@@ -1,26 +1,27 @@
-import 'package:chat_app/src/constants/db_constants.dart';
-import 'package:chat_app/domain/data/library/library_data.dart';
-import 'package:chat_app/modules/sending_manager/library/library_sending_manager.dart';
-import 'package:chat_app/modules/storage_manager/library/library_storage_manager.dart';
+import '../../../../src/constants/db_constants.dart';
+import '../../../../domain/data/library/library_data.dart';
+import '../../library/library_sending_manager.dart';
+import '../../../storage_manager/library/library_storage_manager.dart';
 
 class LocalChatServices implements ILocalChatsServices {
   LocalChatServices();
 
   @override
   Future<dynamic> createChat(
-      {required int chatIdMainDB, required int friendId}) async {
+      {required String createDate, required int userId}) async {
     return await DBHelper.instanse
         .onAdd(tableName: DatabaseConst.chatsTable, model: {
-      DatabaseConst.chatsColumnChatIdMain: chatIdMainDB,
-      DatabaseConst.chatsColumnFriendId: friendId
+      DatabaseConst.chatsColumnUserId: userId,
+      DatabaseConst.chatsColumnCreatedDate: createDate,
+      DatabaseConst.chatsColumnUpdatedDate: createDate
     });
   }
 
   @override
-  deleteChat({required int id}) async {
+  Future<int> deleteChat({required int id}) async {
     var db = await DBHelper.instanse.database;
-    return db.rawDelete(
-        'DELETE FROM ${DatabaseConst.chatsTable} WHERE ${DatabaseConst.chatsColumnChatIdMain}=$id');
+    return await db.rawDelete(
+        'DELETE FROM ${DatabaseConst.chatsTable} WHERE ${DatabaseConst.chatsColumnUserId}=$id');
   }
 
   @override
@@ -30,12 +31,7 @@ class LocalChatServices implements ILocalChatsServices {
               SELECT *
               FROM ${DatabaseConst.chatsTable}
               ''');
-    return await chats
-        .map((item) => ChatDto(
-            localChatId: item[DatabaseConst.chatsColumnLocalChatId] as int,
-            chatIdMain: item[DatabaseConst.chatsColumnChatIdMain] as int,
-            friendId: item[DatabaseConst.chatsColumnFriendId] as int))
-        .toList();
+    return chats.map((item) => ChatDto.fromMap(item)).toList();
   }
 
   @override
@@ -53,8 +49,14 @@ class LocalChatServices implements ILocalChatsServices {
   Future<int> getMainIdChatByMessage({required int localId}) async {
     var db = await DBHelper.instanse.database;
     var chat = await db.rawQuery(
-        'SELECT chat_id_main FROM chats WHERE local_chat_id = $localId');
+        'SELECT ${DatabaseConst.chatsColumnLocalChatId} FROM ${DatabaseConst.chatsTable} WHERE ${DatabaseConst.chatsColumnLocalChatId} = $localId');
 
-    return chat[0]['chat_id_main'] as int;
+    return chat[0][DatabaseConst.chatsColumnLocalChatId] as int;
+  }
+
+  @override
+  Future<int> updateChat({required int chatId}) {
+    // TODO: изменение в БД информации о чате
+    throw UnimplementedError();
   }
 }

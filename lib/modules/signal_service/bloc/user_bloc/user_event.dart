@@ -1,6 +1,9 @@
 part of 'user_bloc.dart';
 
-abstract class UserEvent {}
+abstract class UserEvent extends Equatable {
+  @override
+  List<Object?> get props => [];
+}
 
 class CreateUserEvent extends UserEvent {
   final UserDto user;
@@ -8,6 +11,8 @@ class CreateUserEvent extends UserEvent {
   CreateUserEvent({
     required this.user,
   });
+  @override
+  List<Object?> get props => [user];
 }
 
 class ReadUsersEvent extends UserEvent {
@@ -15,4 +20,6 @@ class ReadUsersEvent extends UserEvent {
   final int? localId;
 
   ReadUsersEvent({this.localId, this.users});
+  @override
+  List<Object?> get props => [users, localId];
 }

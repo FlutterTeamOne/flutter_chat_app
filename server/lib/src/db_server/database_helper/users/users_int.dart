@@ -7,14 +7,15 @@ abstract class IUsersServices {
       {required String name,
       required String email,
       required String registrationDate,
-      required String profilePicUrl});
+      required String profilePicUrl,
+      required String password});
 
-  getUserByField({required String field, required String fieldValue});
+  getUserByField({required String field, required Object fieldValue});
 
   updateUser({required String newValues, required String condition});
 
   deleteUser({required int id});
-
+  Future<List<Map<String, Object?>>> getUser({required int id});
   getAllUsers();
 }
 

@@ -1,4 +1,4 @@
-import 'package:chat_app/src/libraries/library_all.dart';
+import '../../src/libraries/library_all.dart';
 
 class UnreadMessage {
   final userPreferences = UserPreferences();

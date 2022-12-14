@@ -1,7 +1,15 @@
 import 'dart:async';
-import 'package:chat_app/src/generated/grpc_manager/grpc_manager.pbgrpc.dart';
-import 'package:chat_app/src/libraries/library_all.dart';
+import 'package:chat_app/domain/data/dto/user_dto/main_user_dto.dart';
+import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:grpc/grpc.dart';
+import 'package:grpc/grpc_connection_interface.dart';
+
+import '../../../../src/generated/grpc_manager/grpc_manager.pbgrpc.dart';
+import '../../../../src/libraries/library_all.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../service_locator/locator.dart';
 part 'message_event.dart';
 part 'message_state.dart';
 
@@ -9,39 +17,51 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   late LocalMessagesServices _messagesServices;
   late MessageIdServices _messageIdServices;
   late StreamSubscription _subscription;
+  StreamController<List<MessageDto>> messageController =
+      StreamController.broadcast();
   final GrpcClient grpcClient;
-
-  MessageBloc({required this.grpcClient}) : super(MessageState()) {
+  final GrpcConnectionBloc grpcConnection;
+  var stub = GrpcChatClient(Locator.getIt<GrpcClient>().channel);
+  MessageBloc({required this.grpcClient, required this.grpcConnection})
+      : super(const MessageState()) {
     _messagesServices = LocalMessagesServices();
     // _subscription = _messageService.onMessagesStream().listen((value) {
     //   add(ReadMessageEvent(messages: value.messages));
     //   print('MESSAGE: ${value.messages}');
     // });
+
     _messageIdServices = MessageIdServices();
     _subscription =
         DBHelper.instanse.updateListenController.stream.listen((event) async {
       if (event == true) {
-        add(ReadMessageEvent(
-            messages: await _messagesServices.getAllMessages()));
+        var messages = await _messagesServices.getAllMessages();
+        // messages.sort((a, b) => a.localMessageId!.compareTo(b.localMessageId!));
+        print('sort message:$messages');
+        add(ReadMessageEvent(messages: messages));
+        // state.copyWith(messages: messages);
       }
     });
+
     on<ReadMessageEvent>(_onReadMessageEvent);
     on<CreateMessageEvent>(_onCreateMessageEvent);
+    on<UpdateMessageEvent>(_onUpdateMessageEvent);
+//TODO:добавить удаление сообщения
+    on<DeleteMessageEvent>(_onDeleteMessageEvent);
+    on<DeleteHistoryMessageEvent>(_onDeleteHistoryMessageEvent);
   }
 
   FutureOr<void> _onReadMessageEvent(
       ReadMessageEvent event, Emitter<MessageState> emit) async {
-    var message = LocalMessagesServices();
-    var chats = LocalChatServices();
-    // print(await message.getAllMessages());
-    // if (event.messages == null) {
-    var messages = await _messagesServices.getAllMessages();
-    print("MESSAGES:$messages");
-    emit(state.copyWith(messages: messages));
-    // } else {
-    //   emit(state.copyWith(messages: event.messages));
-    //   print(event.messages);
-    // }
+    if (event.messages == null) {
+      var messages = await _messagesServices.getAllMessages();
+      print("MESSAGES:$messages");
+
+      messageController.add(messages);
+      emit(state.copyWith(messages: messages));
+    } else {
+      print('EVENT MSG: ${event.messages}');
+      emit(state.copyWith(messages: event.messages));
+    }
   }
 
   FutureOr<void> _onCreateMessageEvent(
@@ -56,49 +76,115 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       localChatId: message.localChatId,
       senderId: 1,
       content: message.content,
-      date: message.date,
+      date: message.createdDate,
     );
-    var messageToServer = Message();
-    messageToServer.chatIdMaint =
-        await chats.getMainIdChatByMessage(localId: message.localChatId);
-    messageToServer.content = message.content;
-    messageToServer.date = message.date;
-    messageToServer.senderMainId =
-        await localUsersServices.getMainIdUserByLocalId(localId: 1);
+
+    var messageToServer = CreateMessageRequest(
+        chatIdMain:
+            await chats.getMainIdChatByMessage(localId: message.localChatId),
+        content: message.content,
+        senderMainId:
+            await localUsersServices.getMainIdUserByLocalId(localId: 1));
+
+    // messageToServer.chatIdMain =
+    //     await chats.getMainIdChatByMessage(localId: message.localChatId);
+    // messageToServer.content = message.content;
+    // messageToServer.senderMainId = await localUsersServices
+    //     .getMainIdUserByLocalId(localId: 1); ////поменять запрос на mainUserTabl
     print('message to server \n $messageToServer');
 
+    var messageResponse =
+        await Locator.getIt<GrpcChatClient>().createMessage(messageToServer);
+    messageResponse.mainMessagesId;
+    print("messageOK:/n $messageResponse");
+    // grpcConnection.add(const GrpcConnectionStarted());
+    // await for (var grpcState in grpcConnection.stream) {
+    print('get grpc State');
+    // print('grpc message state2:${grpcState.connectState}');
+    // if (grpcState.connectState == GrpcConnectState.ready) {
+    // print('grpc message state3:${grpcState.connectState}');
     try {
-      var messageOk = await GrpcChatClient(grpcClient.channel)
-          .createMessage(messageToServer);
-      print("messageOK:/n $messageOk");
-      if (messageOk.ok) {
+      print("messageOK:/n $messageResponse");
+      if (messageResponse.mainMessagesId != 0) {
         await _messagesServices.updateWrittenToServer(
-            localMessageId: message.localMessageId!, isWrittenToDB: 1);
-        emit(state.copyWith(
-            messages: await localMessagesServices.getAllMessages()));
-        var updateWrittenToServer =
-            await _messagesServices.getMessageById(id: message.localMessageId!);
-        print('UPDATE WRITTEN TO SERVER: $updateWrittenToServer');
-        var createMessageId = await _messageIdServices.createMessageId(
-            mainId: messageOk.mainMessagesId, localId: message.localMessageId!);
-        print('CREATE MESSAGE ID $createMessageId');
+            localMessageId: message.localMessageId!,
+            messagesId: messageResponse.mainMessagesId,
+            updatedDate: messageResponse.dateCreate);
+
+        emit(
+            state.copyWith(messages: await _messagesServices.getAllMessages()));
       }
     } catch (e) {
       print(e);
     }
-    // MessagesServices().addNewMessage(
-    //   friendsChatId: 2,
-    //   senderId: 1,
-    //   content: message.content,
-    //   date: message.date,
+    // }
+    // }
     // );
-    // print('MODEL: $model');
-    // _messagesServices.onCreateMessage(
-    //     userMainId1: message.userMainId1,
-    //     userMainId12: message.userMainId2,
-    //     senderMainId: message.senderMainId,
-    //     content: message.content,
-    //     date: message.date);
+  }
+
+  ///Обновление сообщения
+  FutureOr<void> _onUpdateMessageEvent(
+      UpdateMessageEvent event, Emitter<MessageState> emit) async {
+    if (event.isEditing == EditState.isPreparation) {
+      emit(state.copyWith(
+          editState: EditState.isPreparation, messageId: event.messageId));
+    }
+    if (event.isEditing == EditState.isEditing) {
+      //Обновляем сообщение в локальном хранилище
+      await _messagesServices.updateMessage(
+          message: event.message!, localMessageId: state.messageId!);
+      emit(state.copyWith(editState: EditState.isNotEditing));
+
+      try {
+        //отправляем обновленное сообщение на сервер
+        var messageUpdateRequest = UpdateMessageRequest(
+            idMessageMain: state.messageId, content: event.message!.content);
+        //получаем от сервера ответ
+        var messageUpdateResponse =
+            await stub.updateMessage(messageUpdateRequest);
+//записываем в локальную бд полученные данные от сервера
+        if (messageUpdateResponse.idMessageMain == state.messageId) {
+          await _messagesServices.updateWrittenToServer(
+              localMessageId: state.messageId!,
+              messagesId: messageUpdateResponse.idMessageMain,
+              updatedDate: messageUpdateResponse.dateUpdate);
+          print('id Message Main: ${messageUpdateResponse.idMessageMain}');
+          print('date update: ${messageUpdateResponse.dateUpdate}');
+        }
+      } catch (e) {}
+    }
+    if (event.isEditing == EditState.isNotEditing) {
+      emit(state.copyWith(editState: EditState.isNotEditing));
+    }
+  }
+
+  ///Удаление сообщения по ид
+  FutureOr<void> _onDeleteMessageEvent(
+      DeleteMessageEvent event, Emitter<MessageState> emit) async {
+    await _messagesServices.deleteMessage(id: event.messageId);
+    add(ReadMessageEvent());
+    print('message ID: ${event.messageId}');
+    emit(state.copyWith(
+        deleteState: DeleteState.isDeleted, editState: EditState.isNotEditing));
+    var messageDelete = DeleteMessageRequest(idMessageMain: event.messageId);
+    try {
+      var response = await stub.deleteMessage(messageDelete);
+      await _messagesServices.deleteWrittenToServer(
+          localMessageId: response.idMessageMain,
+          deletedDate: response.dateDelete);
+      print('DEL DATE: ${response.dateDelete}');
+      print('DEL ID: ${response.idMessageMain}');
+
+      // await _messagesServices.updateWrittenToServer(localMessageId: localMessageId, updatedDate: updatedDate)
+    } catch (e) {}
+  }
+
+  ///Очистка истории в определенном чате
+  FutureOr<void> _onDeleteHistoryMessageEvent(
+      DeleteHistoryMessageEvent event, Emitter<MessageState> emit) async {
+    await _messagesServices.deleteAllMessagesInChat(chatID: event.chatID);
+    print('CHAT ID: ${event.chatID}');
+    add(ReadMessageEvent());
   }
 
   @override

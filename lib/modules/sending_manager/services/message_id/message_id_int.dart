@@ -1,5 +1,5 @@
 
-import 'package:chat_app/modules/sending_manager/library/library_sending_manager.dart';
+import '../../library/library_sending_manager.dart';
 
 abstract class IMessageIdServices {
   factory IMessageIdServices() => MessageIdServices();
