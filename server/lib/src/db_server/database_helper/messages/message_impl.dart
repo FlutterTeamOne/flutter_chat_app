@@ -11,7 +11,7 @@ class MessagesServices implements IMessagesServices {
     required String content,
   }) async {
     var date = DateTime.now().toIso8601String();
-    Database db = await dbServerServices.openDatabase();
+    Database db = await DbServerServices.instanse.database;
     await db.insert('messages', {
       'chat_id': chatId,
       'sender_id': senderId,
@@ -49,7 +49,7 @@ class MessagesServices implements IMessagesServices {
 
   @override
   deleteMessage({required int id}) async {
-    var db = await dbServerServices.openDatabase();
+    Database db = await DbServerServices.instanse.database;
 
     return await db
         .rawDelete('''DELETE FROM messages WHERE (message_id = $id)''');
@@ -57,14 +57,14 @@ class MessagesServices implements IMessagesServices {
 
   @override
   getAllMessages() async {
-    var db = await dbServerServices.openDatabase();
+    Database db = await DbServerServices.instanse.database;
 
     return await db.rawQuery('''SELECT * FROM messages''');
   }
 
   @override
   getMessageById({required int id}) async {
-    var db = await dbServerServices.openDatabase();
+    Database db = await DbServerServices.instanse.database;
 
     return await db.rawQuery('''SELECT * FROM messages 
         WHERE (message_id = $id)''');
@@ -72,16 +72,14 @@ class MessagesServices implements IMessagesServices {
 
   @override
   getMessagesByChatId({required int chatId}) async {
-    var db = await dbServerServices.openDatabase();
-
+    Database db = await DbServerServices.instanse.database;
     return await db
         .rawQuery('''SELECT * FROM messages WHERE (chat_id = $chatId)''');
   }
 
   @override
   getMessagesBySenderId({required int senderId}) async {
-    var db = await dbServerServices.openDatabase();
-
+    Database db = await DbServerServices.instanse.database;
     return await db
         .rawQuery('''SELECT * FROM messages WHERE (sender_id = $senderId)''');
   }
@@ -89,8 +87,7 @@ class MessagesServices implements IMessagesServices {
   @override
   Future<int> updateMessage(
       {required String newValues, required String condition}) async {
-    var db = await dbServerServices.openDatabase();
-
+    Database db = await DbServerServices.instanse.database;
     return await db
             .rawUpdate('''UPDATE messages SET $newValues WHERE ($condition)''')
         as int;
@@ -98,7 +95,7 @@ class MessagesServices implements IMessagesServices {
 
   @override
   getRecentMessages({required LastMessage message}) async {
-    var db = await dbServerServices.openDatabase();
+    Database db = await DbServerServices.instanse.database;
     var messages = await db.rawQuery('''SELECT *
       FROM messages, chats AS friend
       WHERE (main_messages_id > ${message.mainIdMessage} AND

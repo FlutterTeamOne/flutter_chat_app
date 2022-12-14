@@ -117,6 +117,7 @@ class CreateMessageResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CreateMessageResponse', createEmptyInstance: create)
     ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mainMessagesId', $pb.PbFieldType.O3, protoName: 'mainMessagesId')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dateCreate', protoName: 'dateCreate')
+    ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isWritten', protoName: 'isWritten')
     ..hasRequiredFields = false
   ;
 
@@ -124,6 +125,7 @@ class CreateMessageResponse extends $pb.GeneratedMessage {
   factory CreateMessageResponse({
     $core.int? mainMessagesId,
     $core.String? dateCreate,
+    $core.bool? isWritten,
   }) {
     final _result = create();
     if (mainMessagesId != null) {
@@ -131,6 +133,9 @@ class CreateMessageResponse extends $pb.GeneratedMessage {
     }
     if (dateCreate != null) {
       _result.dateCreate = dateCreate;
+    }
+    if (isWritten != null) {
+      _result.isWritten = isWritten;
     }
     return _result;
   }
@@ -172,6 +177,15 @@ class CreateMessageResponse extends $pb.GeneratedMessage {
   $core.bool hasDateCreate() => $_has(1);
   @$pb.TagNumber(2)
   void clearDateCreate() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.bool get isWritten => $_getBF(2);
+  @$pb.TagNumber(3)
+  set isWritten($core.bool v) { $_setBool(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasIsWritten() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearIsWritten() => clearField(3);
 }
 
 class UpdateMessageRequest extends $pb.GeneratedMessage {

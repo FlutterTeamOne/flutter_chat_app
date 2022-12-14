@@ -18,7 +18,6 @@ class MyMessageCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     final currentWidth = MediaQuery.of(context).size.width;
     return Align(
       alignment: Alignment.centerRight,

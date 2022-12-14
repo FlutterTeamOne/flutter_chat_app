@@ -17,8 +17,9 @@ class ConnectionBloc extends Bloc<ConnectionEvent, ConnectionStatusState> {
         : emit(const InActiveConnectionState(message: 'connection Inactive')));
 
     connectStream = _connectivity.onConnectivityChanged.listen(
-            (ConnectivityResult result) => result == ConnectivityResult.wifi ||
-            result == ConnectivityResult.mobile
+        (ConnectivityResult result) => result == ConnectivityResult.wifi ||
+                result == ConnectivityResult.mobile ||
+                result == ConnectivityResult.ethernet
             ? add(ActiveConnectionEvent())
             : add(InActiveConnectionEvent()));
   }

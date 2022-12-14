@@ -6,24 +6,23 @@ import "dart:io" as io;
 
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-class DbServerServices implements IDbServerServices {
-  @override
+class DbServerServices {
+  DbServerServices._();
+  static final DbServerServices instanse = DbServerServices._();
+  static Database? _database;
+
+  ///Обращение к локальной БД извне
+  Future<Database> get database async => _database ??= await openDatabase();
+
   Future<Database> openDatabase() async {
     sqfliteFfiInit();
 
     var databaseFactory = databaseFactoryFfi;
     var path = ".dart_tool/sqflite_common_ffi/databases/main_db.db";
 
-    var dbExists = await io.File(path).exists();
+    // var dbExists = await io.File(path).exists();
 
-    if (!dbExists) {
-      return await databaseFactory.openDatabase('main_db.db',
-          options: OpenDatabaseOptions(
-            version: 1,
-            onCreate: _createDatabase,
-          ));
-    }
-    return await databaseFactory.openDatabase('main_db.db',
+    return await databaseFactory.openDatabase(path,
         options: OpenDatabaseOptions(
           version: 1,
           onCreate: _createDatabase,
@@ -119,4 +118,4 @@ class DbServerServices implements IDbServerServices {
       });
     });
   }
-} 
+}

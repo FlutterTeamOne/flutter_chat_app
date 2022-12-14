@@ -4,7 +4,7 @@ class GrpcClient {
   final ClientChannel _channel;
 
   GrpcClient()
-      : _channel = ClientChannel('192.168.16.102',
+      : _channel = ClientChannel('localhost',
             port: 5000,
             options: const ChannelOptions(
               credentials: ChannelCredentials.insecure(),
@@ -12,6 +12,4 @@ class GrpcClient {
 
   ClientChannel get channel => _channel;
   Stream<ConnectionState> get channelState => _channel.onConnectionStateChanged;
-  
-  
 }
