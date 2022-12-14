@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:grpc/grpc.dart';
@@ -30,17 +31,15 @@ Future<void> main(List<String> args) async {
     print("ошибка");
   }
   print("before true");
-  // while (true) {
-  //   final lines = stdin.readLineSync();
-  //   print("a");
-  //   try {
-  //     print("b");
-  //     await createMes(CreateMessageRequest(
-  //         chatIdMain: 1, senderMainId: id, content: lines));
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
+  while (true) {
+    final lines = stdin.readLineSync();
+    try {
+      await createMes(CreateMessageRequest(
+          chatIdMain: 1, senderMainId: id, content: lines));
+    } catch (e) {
+      print(e);
+    }
+  }
 }
 
 Future<void> createMes(CreateMessageRequest message) async {
@@ -59,12 +58,22 @@ Future<void> createMes(CreateMessageRequest message) async {
 }
 
 Future<void> connectChat(int id) async {
+  StreamController<MessageFromBase> connect = StreamController.broadcast();
+
   Stream<ConnectRequest> enter(int id_1) async* {
     yield ConnectRequest(id: id_1);
   }
 
   final call = stub.connectings(enter(id));
-  await for (final res in call) {
-    print('[${res.chatIdMain}] ${res.content}');
-  }
+  call.listen((value) {
+    Future.delayed(Duration(milliseconds: 100), () => connect.add(value));
+    print(value);
+  });
+  // await for (final res in call) {
+  //   connect.add(res);
+  //   print('[${res.chatIdMain}] ${res.content}');
+  // }
+  // await for (var res in connect.stream) {
+  //   print(res);
+  // }
 }
