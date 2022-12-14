@@ -1,0 +1,14 @@
+syntax ="proto3";
+
+service GrpcChats{
+
+}
+
+message GetChatRequest{}
+message GetChatResponse{}
+message CreateChatRequest{}
+message CreateChatResponse{}
+message UpdateChatRequest{}
+message UpdateChatResponse{}
+message DeleteChatRequest{}
+message DeleteChatRespone{}

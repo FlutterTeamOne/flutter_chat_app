@@ -1,9 +1,11 @@
+import 'package:sqflite_common/sqlite_api.dart';
+
 import '../../../library/library_server.dart';
 
 class ChatsServices implements IChatsServices {
   @override
   createChat({required int friend1_id, required int friend2_id}) async {
-    var db = await dbServerServices.openDatabase();
+    Database db = await DbServerServices.instanse.database;
 
     await db.execute('''
       INSERT INTO chats (friend1_id, friend2_id) VALUES (
@@ -23,14 +25,14 @@ class ChatsServices implements IChatsServices {
 
   @override
   getAllChats() async {
-    var db = await dbServerServices.openDatabase();
+    Database db = await DbServerServices.instanse.database;
 
     return await db.rawQuery('''SELECT * FROM chats''');
   }
 
   @override
   getChatById({required int id}) async {
-    var db = await dbServerServices.openDatabase();
+    Database db = await DbServerServices.instanse.database;
 
     return await db.rawQuery('''
       SELECT * FROM chats 
@@ -40,22 +42,22 @@ class ChatsServices implements IChatsServices {
 
   @override
   updateChat({required String newValues, required String condition}) async {
-    var db = await dbServerServices.openDatabase();
+    Database db = await DbServerServices.instanse.database;
     return await db
         .rawUpdate('''UPDATE chats SET $newValues WHERE ($condition)''');
   }
 
   @override
   deleteChat({required int id}) async {
-    var db = await dbServerServices.openDatabase();
+    Database db = await DbServerServices.instanse.database;
 
-    return await db.rawDelete(
-        '''DELETE FROM chats WHERE (main_friends_chat_id = $id)''');
+    return await db
+        .rawDelete('''DELETE FROM chats WHERE (main_friends_chat_id = $id)''');
   }
 
   @override
   getChatByTwoIds({required int friend1_id, required int friend2_id}) async {
-    var db = await dbServerServices.openDatabase();
+    Database db = await DbServerServices.instanse.database;
 
     var id_chat = await db.rawQuery('''
       SELECT f.main_friends_chat_id FROM chats f 
@@ -68,7 +70,7 @@ class ChatsServices implements IChatsServices {
 
   @override
   getChatsByUserId({required int userID}) async {
-    var db = await dbServerServices.openDatabase();
+    Database db = await DbServerServices.instanse.database;
 
     return await db.rawQuery('''SELECT * FROM chats f 
 	    WHERE ((f.friend1_id = $userID) OR (f.friend2_id = $userID))''');

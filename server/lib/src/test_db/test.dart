@@ -9,7 +9,6 @@ Future<void> main() async {
   ///
 
   //открыть базу
-  await dbServerServices.openDatabase();
 
   //Обращаемся к методам работы с таблицей чатов через:
   var chatsHelper = ChatsServices();
@@ -31,8 +30,7 @@ Future<void> main() async {
   print(await messagesService.getMessageById(id: 4));
   var timeUpdate = DateTime.now().toIso8601String();
   var src = await messagesServices.updateMessage(
-      newValues:
-          "content = '${request.content}', updated_date = '$timeUpdate'",
+      newValues: "content = '${request.content}', updated_date = '$timeUpdate'",
       condition: "message_id = ${request.idMessageMain}");
   print("src: $src");
   print(await messagesService.getMessageById(id: 4));

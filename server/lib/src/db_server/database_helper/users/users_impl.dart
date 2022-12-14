@@ -1,3 +1,5 @@
+import 'package:sqflite_common/sqlite_api.dart';
+
 import '../../../library/library_server.dart';
 
 class UsersServices implements IUsersServices {
@@ -6,15 +8,17 @@ class UsersServices implements IUsersServices {
       {required String name,
       required String email,
       required String registrationDate,
-      required String profilePicUrl}) async {
-    var db = await dbServerServices.openDatabase();
+      required String profilePicUrl,
+      required String password}) async {
+    Database db = await DbServerServices.instanse.database;
 
     await db.execute('''
       INSERT INTO users (name, email) VALUES (
         $name,
         $email,
         $registrationDate,
-        $profilePicUrl
+        $profilePicUrl,
+        $password
       );
       ''');
 
@@ -27,13 +31,16 @@ class UsersServices implements IUsersServices {
         AND
         (registration_date = $registrationDate)
         AND
-        (profile_pic_url = $profilePicUrl));
+        (profile_pic_url = $profilePicUrl)
+        AND
+        (password = $password)
+        );
     ''');
   }
 
   @override
   deleteUser({required int id}) async {
-    var db = await dbServerServices.openDatabase();
+    Database db = await DbServerServices.instanse.database;
 
     return await db
         .rawDelete('''SELETE FROM users WHERE (main_users_id = id)''');
@@ -41,14 +48,23 @@ class UsersServices implements IUsersServices {
 
   @override
   getAllUsers() async {
-    var db = await dbServerServices.openDatabase();
+    Database db = await DbServerServices.instanse.database;
 
     return await db.rawQuery('''SELECT * FROM users''');
   }
 
   @override
-  getUserByField({required String field, required String fieldValue}) async {
-    var db = await dbServerServices.openDatabase();
+  Future<List<Map<String, Object?>>> getUser({required int id}) async {
+    Database db = await DbServerServices.instanse.database;
+
+    return await db.rawQuery(
+        '''SELECT user_id, updated_date, deleted_date FROM users WHERE (user_id = $id)''');
+  }
+
+  @override
+  Future<List<Map<String, Object?>>> getUserById(
+      {required String field, required Object fieldValue}) async {
+    Database db = await DbServerServices.instanse.database;
 
     return await db
         .rawQuery('''SELECT * FROM users WHERE ($field = $fieldValue)''');
@@ -56,9 +72,15 @@ class UsersServices implements IUsersServices {
 
   @override
   updateUser({required String newValues, required String condition}) async {
-    var db = await dbServerServices.openDatabase();
+    Database db = await DbServerServices.instanse.database;
 
     return await db
         .rawUpdate('''UPDATE users SET $newValues WHERE ($condition)''');
+  }
+
+  @override
+  getUserByField({required String field, required Object fieldValue}) {
+    // TODO: implement getUserByField
+    throw UnimplementedError();
   }
 }
