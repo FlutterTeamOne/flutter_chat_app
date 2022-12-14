@@ -164,6 +164,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     await _messagesServices.deleteMessage(id: event.messageId);
     add(ReadMessageEvent());
     print('message ID: ${event.messageId}');
+    emit(state.copyWith(
+        deleteState: DeleteState.isDeleted, editState: EditState.isNotEditing));
     var messageDelete = DeleteMessageRequest(idMessageMain: event.messageId);
     try {
       var response = await stub.deleteMessage(messageDelete);

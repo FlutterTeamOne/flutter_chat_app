@@ -62,7 +62,7 @@ class TextInputWidgetState extends State<TextInputWidget> {
               Expanded(
                 flex: 9,
                 child: Column(
-                  children: [
+                  children: [ 
                     if (widget.editState == EditState.isPreparation)
                       Row(
                         children: [
