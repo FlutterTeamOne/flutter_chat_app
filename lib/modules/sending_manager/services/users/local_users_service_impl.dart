@@ -1,7 +1,7 @@
-import 'package:chat_app/src/constants/db_constants.dart';
-import 'package:chat_app/domain/data/library/library_data.dart';
-import 'package:chat_app/modules/sending_manager/library/library_sending_manager.dart';
-import 'package:chat_app/modules/storage_manager/library/library_storage_manager.dart';
+import '../../../../src/constants/db_constants.dart';
+import '../../../../domain/data/library/library_data.dart';
+import '../../library/library_sending_manager.dart';
+import '../../../storage_manager/library/library_storage_manager.dart';
 
 class LocalUsersServices implements ILocalUsersServices {
   LocalUsersServices();
@@ -18,7 +18,7 @@ class LocalUsersServices implements ILocalUsersServices {
     return await db.insert(DatabaseConst.userTable, {
       DatabaseConst.usersColumnName: name,
       DatabaseConst.usersColumnEmail: email,
-      DatabaseConst.usersColumnRegistrationDate: registrationDate,
+      DatabaseConst.usersColumnCreatedDate: registrationDate,
       DatabaseConst.usersColumnProfilePicLink: profilePicUrl,
       DatabaseConst.usersColumnMainUsersId: mainUserId,
     });
@@ -38,17 +38,7 @@ class LocalUsersServices implements ILocalUsersServices {
               SELECT *
               FROM ${DatabaseConst.userTable}
               ''');
-    return users
-        .map((item) => UserDto(
-            localUserId: item[DatabaseConst.usersColumnId] as int,
-            name: item[DatabaseConst.usersColumnName] as String,
-            email: item[DatabaseConst.usersColumnEmail] as String,
-            registrationDate:
-                item[DatabaseConst.usersColumnRegistrationDate] as String,
-            profilePicLink:
-                item[DatabaseConst.usersColumnProfilePicLink] as String,
-            mainUsersId: item[DatabaseConst.usersColumnMainUsersId] as int))
-        .toList();
+    return users.map((item) => UserDto.fromMap(item)).toList();
   }
 
   @override
@@ -68,11 +58,11 @@ class LocalUsersServices implements ILocalUsersServices {
     var db = await DBHelper.instanse.database;
 
     var user = await db.rawQuery('''
-              SELECT ${DatabaseConst.usersColumnMainUsersId}
-              FROM ${DatabaseConst.userTable}
-              WHERE ${DatabaseConst.usersColumnId} = $localId
+              SELECT ${DatabaseConst.mainUserColumnUserId}
+              FROM ${DatabaseConst.mainUserTable}
+              WHERE ${DatabaseConst.mainUserColumnUserId} = $localId
               ''');
-    return user[0]['main_users_id'] as int;
+    return user[0]['user_id'] as int;
   }
 
   @override

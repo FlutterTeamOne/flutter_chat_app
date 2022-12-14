@@ -19,7 +19,6 @@ dependencies:
       path: plugins/window_size
   flutter_bloc:
   shared_preferences: ^2.0.15
-  test:
   sidebarx: ^0.14.0
   google_fonts: ^3.0.1
   intl: ^0.17.0
@@ -35,6 +34,8 @@ dependencies:
   protobuf: ^2.1.0
   connectivity_plus: ^3.0.2
   freezed: ^2.2.0
+  get_it: ^7.2.0
+  sqlite3: ^1.9.1
   blur: ^3.1.0
 
 dev_dependencies:

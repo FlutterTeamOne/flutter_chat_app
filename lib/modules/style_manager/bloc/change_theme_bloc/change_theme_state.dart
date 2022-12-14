@@ -1,10 +1,13 @@
 import 'package:chat_app/modules/style_manager/library/library_style_manager.dart';
 import 'package:flutter/material.dart';
 
+import '../../themes/custom_themes.dart';
+
 class ChangeThemeState {
   final ThemeData? theme;
   final int? index;
   final iconColor = [
+
     Colors.white.withOpacity(0.2),
     Colors.white.withOpacity(0.2),
     Colors.white.withOpacity(0.2),
@@ -34,3 +37,4 @@ class ChangeThemeState {
     }
   }
 }
+

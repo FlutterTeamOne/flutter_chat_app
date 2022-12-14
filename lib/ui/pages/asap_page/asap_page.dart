@@ -1,4 +1,4 @@
-﻿import 'package:chat_app/src/libraries/library_all.dart';
+﻿import '../../../src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,7 +28,7 @@ class AsapPage extends StatelessWidget {
                 // Список чатов
                 Expanded(
                     child: chatState.chats == null
-                        ? Text('Sorry')
+                        ? const Text('Sorry')
                         : ChatListLayout(
                             chatModel: chatState.chats!,
                             messageModel: messageState.messages!)),
@@ -36,7 +36,7 @@ class AsapPage extends StatelessWidget {
                 Expanded(
                     flex: 3,
                     child: chatState.chatId == null
-                        ? DefaultUserChatLayout()
+                        ? const DefaultUserChatLayout()
                         : UserChatLayout(
                             chatId: chatState.chatId!,
                             localChatId: chatState.localChatId!)),

@@ -1,18 +1,33 @@
-﻿import 'package:chat_app/ui/widgets/library/library_widgets.dart';
+﻿import 'package:chat_app/src/libraries/library_all.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../library/library_widgets.dart';
 import 'package:flutter/material.dart';
 
 class MyMessageCardWidget extends StatelessWidget {
-  const MyMessageCardWidget(
-      {super.key, required this.message, this.isSuccess = 1});
+  const MyMessageCardWidget({
+    super.key,
+    this.isSuccess,
+    required this.message,
+    required this.textController,
+  });
 
-  final String message;
-  final int isSuccess;
+  final MessageDto message;
+  final int? isSuccess;
+  final TextEditingController textController;
+
   @override
   Widget build(BuildContext context) {
     var items = [
       PopupMenuItem(
         onTap: () {
-          //
+          textController.text = message.content;
+
+          context.read<MessageBloc>().add(UpdateMessageEvent(
+              messageId: message.localMessageId,
+              isEditing: EditState.isPreparation));
+
+          // print('IS EDITING: ${context.read<MessageBloc>().isEditing}');
         },
         mouseCursor: MouseCursor.uncontrolled,
         padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -27,7 +42,9 @@ class MyMessageCardWidget extends StatelessWidget {
       ),
       PopupMenuItem(
         onTap: () {
-          //
+          context.read<MessageBloc>().add(
+                DeleteMessageEvent(messageId: message.localMessageId!),
+              );
         },
         mouseCursor: MouseCursor.uncontrolled,
         padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -44,32 +61,46 @@ class MyMessageCardWidget extends StatelessWidget {
 
     final currentWidth = MediaQuery.of(context).size.width;
 
-    return PopupMenuButton(
-      tooltip: '',
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10),
-            topLeft: Radius.circular(10)),
-      ),
-      position: PopupMenuPosition.under,
-      splashRadius: 0,
-      itemBuilder: (context) => items,
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: ConstrainedBox(
-          constraints:
-              BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 145),
-          child: isSuccess == 1
-              ? AppCardWidget(message: message, marginIndex: 15)
-              : Column(
+    return Align(
+      alignment: Alignment.centerRight,
+      child: ConstrainedBox(
+        constraints:
+            BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 145),
+        child: isSuccess != null
+            ? PopupMenuButton(
+                tooltip: '',
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                      topLeft: Radius.circular(10)),
+                ),
+                position: PopupMenuPosition.under,
+                splashRadius: 0,
+                itemBuilder: (context) => items,
+                child: AppCardWidget(message: message.content, marginIndex: 15))
+            : PopupMenuButton(
+                tooltip: '',
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                      topLeft: Radius.circular(10)),
+                ),
+                position: PopupMenuPosition.under,
+                splashRadius: 0,
+                itemBuilder: (context) => items,
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     currentWidth > 888.8
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              AppCardWidget(marginIndex: 5, message: message),
+                              Expanded(
+                                child: AppCardWidget(
+                                    marginIndex: 5, message: message.content),
+                              ),
                               Icon(
                                 Icons.error,
                                 color: Theme.of(context).errorColor,
@@ -78,15 +109,17 @@ class MyMessageCardWidget extends StatelessWidget {
                           )
                         : AppCardWidget(
                             marginIndex: 10,
-                            message: message,
+                            message: message.content,
                           ),
                     Text(
                       'Not Delivered',
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme.of(context).textTheme.caption?.copyWith(
+                            color: Theme.of(context).errorColor,
+                          ),
                     )
                   ],
                 ),
-        ),
+              ),
       ),
     );
   }

@@ -56,6 +56,7 @@ class TextInputWidgetState extends State<TextInputWidget> {
                 flex: 9,
                 child: TextField(
                   cursorWidth: 1,
+                  maxLength: 350,
                   cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
                   onSubmitted: widget.onSubmitted,
                   controller: widget.controller,
@@ -64,6 +65,7 @@ class TextInputWidgetState extends State<TextInputWidget> {
                   //   overflow: TextOverflow.clip,
                   // ),
                   decoration: InputDecoration(
+                    counterText: '',
                     contentPadding:
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                     // hintStyle: AppTextStyle.s17Abel.copyWith(fontSize: 16),

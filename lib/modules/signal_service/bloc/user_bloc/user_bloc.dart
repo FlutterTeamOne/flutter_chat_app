@@ -1,6 +1,8 @@
 import 'dart:async';
-import 'package:chat_app/domain/data/library/library_data.dart';
-import 'package:chat_app/modules/sending_manager/library/library_sending_manager.dart';
+import 'package:equatable/equatable.dart';
+
+import '../../../../domain/data/library/library_data.dart';
+import '../../../sending_manager/library/library_sending_manager.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'user_event.dart';
