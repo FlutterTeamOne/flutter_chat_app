@@ -14,11 +14,9 @@ class SideMenuWidget extends StatelessWidget {
     final currentWidth = MediaQuery.of(context).size.width;
     return Container(
       decoration: BoxDecoration(
-        border: Border(right: BorderSide(
-          width: 1,
-          color: Theme.of(context).dividerColor
-        ))
-      ),
+          border: Border(
+              right:
+                  BorderSide(width: 1, color: Theme.of(context).dividerColor))),
       // color: Theme.of(context).backgroundColor,
       child: SidebarX(
         showToggleButton: false,
@@ -38,10 +36,8 @@ class SideMenuWidget extends StatelessWidget {
             ? Column(
                 children: [
                   const SizedBox(height: 20),
-                  Text(
-                    'Sfera'.toUpperCase(),
-                    style: TextStyle(color: Theme.of(context).primaryColor)
-                  ),
+                  Text('Sfera'.toUpperCase(),
+                      style: TextStyle(color: Theme.of(context).primaryColor)),
                   const SizedBox(height: 20),
                 ],
               )
@@ -78,6 +74,9 @@ class SideMenuWidget extends StatelessWidget {
                 ),
                 SidebarXItem(
                   icon: Icons.settings_outlined,
+                ),
+                SidebarXItem(
+                  icon: Icons.add_outlined,
                 ),
               ]
             : const [
@@ -121,6 +120,10 @@ class SideMenuWidget extends StatelessWidget {
                   icon: Icons.settings,
                   label: 'Settings',
                 ),
+                SidebarXItem(
+                  icon: Icons.add_outlined,
+                  label: 'Add new user',
+                ),
               ],
       ),
     );
@@ -140,8 +143,8 @@ class SideMenuWidget extends StatelessWidget {
       selectedItemTextPadding: const EdgeInsets.only(left: 30),
       itemTextPadding: const EdgeInsets.only(left: 30),
       decoration: BoxDecoration(
-        // color: Theme.of(context).colorScheme.primary,
-      ),
+          // color: Theme.of(context).colorScheme.primary,
+          ),
     );
   }
 }
