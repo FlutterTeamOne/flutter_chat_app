@@ -12,7 +12,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   late LocalUsersServices _usersServices;
   late StreamSubscription _subscription;
   // final GrpcClient grpcClient;
-  UserBloc() : super(UserState()) {
+  UserBloc() : super(const UserState()) {
     on<ReadUsersEvent>(_onReadUsersEvent);
     on<CreateUserEvent>(_onCreateUserEvent);
   }

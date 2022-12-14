@@ -143,7 +143,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         var messageUpdateResponse =
             await stub.updateMessage(messageUpdateRequest);
 //записываем в локальную бд полученные данные от сервера
-        if (messageUpdateResponse.idMessageMain != 0) {
+        if (messageUpdateResponse.idMessageMain == state.messageId) {
           await _messagesServices.updateWrittenToServer(
               localMessageId: state.messageId!,
               messagesId: messageUpdateResponse.idMessageMain,
@@ -153,6 +153,9 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         }
       } catch (e) {}
     }
+    if (event.isEditing == EditState.isNotEditing) {
+      emit(state.copyWith(editState: EditState.isNotEditing));
+    }
   }
 
   ///Удаление сообщения по ид
@@ -161,6 +164,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     await _messagesServices.deleteMessage(id: event.messageId);
     add(ReadMessageEvent());
     print('message ID: ${event.messageId}');
+    emit(state.copyWith(
+        deleteState: DeleteState.isDeleted, editState: EditState.isNotEditing));
     var messageDelete = DeleteMessageRequest(idMessageMain: event.messageId);
     try {
       var response = await stub.deleteMessage(messageDelete);
@@ -172,7 +177,6 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
       // await _messagesServices.updateWrittenToServer(localMessageId: localMessageId, updatedDate: updatedDate)
     } catch (e) {}
-
   }
 
   ///Очистка истории в определенном чате
