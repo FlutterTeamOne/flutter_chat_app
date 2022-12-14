@@ -47,8 +47,8 @@ class MyMessageCardWidget extends StatelessWidget {
               );
         },
         mouseCursor: MouseCursor.uncontrolled,
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        height: 38,
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        height: 25,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
