@@ -146,22 +146,9 @@ class GrpcUsers extends GrpcUsersServiceBase {
   Future<GetUserResponse> getUser(
       ServiceCall call, GetUserRequest request) async {
     var getUserResponse = GetUserResponse();
-    var src = <Map<String, Object>>[];
-    if (!request.id.isNaN) {
-      src = await UsersServices()
-          .getUserByField(field: 'user_id', fieldValue: request.id);
-    } else if (request.name.isNotEmpty) {
-      src = await UsersServices()
-          .getUserByField(field: 'name', fieldValue: request.name);
-    } else if (request.email.isNotEmpty) {
-      src = await UsersServices()
-          .getUserByField(field: 'email', fieldValue: request.email);
-    } else if (request.dateCreation.isNotEmpty) {
-      src = await UsersServices().getUserByField(
-          field: 'created_date', fieldValue: request.dateCreation);
-    } else {
-      // // return GrpcError.invalidArgument()
-    }
+
+    var src = await UsersServices().getUser(id: request.id);
+
     if (src[0]['user_id'] != 0 && src[0]['user_id'] != null) {
       getUserResponse.id = src[0]['user_id'] as int;
       getUserResponse.dateUpdated = src[0]['updated_date'] as String;
