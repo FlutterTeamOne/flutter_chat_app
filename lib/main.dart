@@ -1,7 +1,7 @@
 import 'dart:io';
 
+import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
 import 'package:chat_app/ui/pages/authentication_page/authentication_page.dart';
-
 
 import 'ui/pages/library/library_pages.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
@@ -36,8 +36,10 @@ class MyApp extends StatelessWidget {
               ChatBloc(userBloc: UserBloc())..add(ReadChatEvent()),
         ),
         BlocProvider<MessageBloc>(
-          create: (context) =>
-              MessageBloc(grpcClient: grpcClient)..add(ReadMessageEvent()),
+          create: (context) => MessageBloc(
+              grpcClient: grpcClient,
+              grpcConnection: context.read<GrpcConnectionBloc>())
+            ..add(ReadMessageEvent()),
         ),
         BlocProvider<MessageIdInMainBloc>(
           create: (context) => MessageIdInMainBloc(),
