@@ -1,6 +1,5 @@
 import 'package:grpc/grpc.dart';
-import 'package:server/src/generated/messages.pbgrpc.dart';
-import 'package:server/src/generated/users.pbgrpc.dart';
+
 
 import '../lib/src/library/library_server.dart';
 
@@ -8,7 +7,7 @@ import '../lib/src/library/library_server.dart';
 ///Заполняем все методы как и в Protoc файле
 ///
 class GrpcChat extends GrpcMessagesServiceBase {
-  var messagesService = MessagesServices();
+   var messagesService = MessagesServices();
   var chatsService = ChatsServices();
   var usersService = UsersServices();
 
@@ -105,8 +104,33 @@ class GrpcChat extends GrpcMessagesServiceBase {
     }
     return message;
   }
+ 
 }
+class GrpcChats extends GrpcChatsServiceBase{
+  @override
+  Future<CreateChatResponse> createChat(ServiceCall call, CreateChatRequest request) async{
+    // TODO: implement createChat
+    throw UnimplementedError();
+  }
 
+  @override
+  Future<DeleteChatResponse> deleteChat(ServiceCall call, DeleteChatRequest request)async {
+    // TODO: implement deleteChat
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<GetChatResponse> getChat(ServiceCall call, GetChatRequest request) {
+    // TODO: implement getChat
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UpdateChatResponse> updateChat(ServiceCall call, UpdateChatRequest request) {
+    // TODO: implement updateChat
+    throw UnimplementedError();
+  }
+}
 class GrpcUsers extends GrpcUsersServiceBase {
   @override
   Future<CreateUserResponse> createUser(
