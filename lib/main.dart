@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
+import 'package:chat_app/ui/auth/authorization_page.dart';
 import 'package:chat_app/ui/pages/authentication_page/authentication_page.dart';
 import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
 import 'ui/pages/library/library_pages.dart';
@@ -76,7 +77,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => const MainLayout(),
+        '/': (context) => const AuthPage(),
         '/authentication page': (context) => const AuthenticationPage(),
         '/mainLayout': (context) => const MainLayout(),
         '/Settings page': (context) => const SettingsPage(),

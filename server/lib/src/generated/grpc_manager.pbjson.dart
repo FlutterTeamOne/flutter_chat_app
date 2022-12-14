@@ -15,36 +15,9 @@ const Empty$json = const {
 
 /// Descriptor for `Empty`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List emptyDescriptor = $convert.base64Decode('CgVFbXB0eQ==');
-<<<<<<< HEAD
-@$core.Deprecated('Use userDescriptor instead')
-const User$json = const {
-  '1': 'User',
-  '2': const [
-    const {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
-    const {'1': 'id', '3': 2, '4': 1, '5': 5, '10': 'id'},
-  ],
-};
-
-/// Descriptor for `User`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List userDescriptor = $convert.base64Decode('CgRVc2VyEhIKBG5hbWUYASABKAlSBG5hbWUSDgoCaWQYAiABKAVSAmlk');
-@$core.Deprecated('Use allUsersDescriptor instead')
-const AllUsers$json = const {
-  '1': 'AllUsers',
-  '2': const [
-    const {'1': 'users', '3': 1, '4': 3, '5': 11, '6': '.User', '10': 'users'},
-  ],
-};
-
-/// Descriptor for `AllUsers`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List allUsersDescriptor = $convert.base64Decode('CghBbGxVc2VycxIbCgV1c2VycxgBIAMoCzIFLlVzZXJSBXVzZXJz');
-@$core.Deprecated('Use messageDescriptor instead')
-const Message$json = const {
-  '1': 'Message',
-=======
 @$core.Deprecated('Use createMessageRequestDescriptor instead')
 const CreateMessageRequest$json = const {
   '1': 'CreateMessageRequest',
->>>>>>> main
   '2': const [
     const {'1': 'chatIdMain', '3': 1, '4': 1, '5': 5, '10': 'chatIdMain'},
     const {'1': 'senderMainId', '3': 2, '4': 1, '5': 5, '10': 'senderMainId'},

@@ -38,9 +38,9 @@ class Empty extends $pb.GeneratedMessage {
   static Empty? _defaultInstance;
 }
 
-class Message extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Message', createEmptyInstance: create)
-    ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'chatIdMaint', $pb.PbFieldType.O3, protoName: 'chatIdMaint')
+class CreateMessageRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CreateMessageRequest', createEmptyInstance: create)
+    ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'chatIdMain', $pb.PbFieldType.O3, protoName: 'chatIdMain')
     ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'senderMainId', $pb.PbFieldType.O3, protoName: 'senderMainId')
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'content')
     ..hasRequiredFields = false

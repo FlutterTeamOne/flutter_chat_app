@@ -65,10 +65,7 @@ class UsersServices implements IUsersServices {
     ///
     ///
     ///Проверка запроса осуществляется в server/lib/src/test_db/test.dart
-    List<User> usersList = [];
-    final user = User();
     // usersList.  ;
-    print(user.name);
     // for (var element in User(id: , name: )) {
     // final a =
     // usersList.add(value)
