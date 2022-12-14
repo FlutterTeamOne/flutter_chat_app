@@ -1,13 +1,12 @@
 import 'package:grpc/grpc.dart';
 
-
 import '../lib/src/library/library_server.dart';
 
 ///
 ///Заполняем все методы как и в Protoc файле
 ///
-class GrpcChat extends GrpcMessagesServiceBase {
-   var messagesService = MessagesServices();
+class GrpcMessage extends GrpcMessagesServiceBase {
+  var messagesService = MessagesServices();
   var chatsService = ChatsServices();
   var usersService = UsersServices();
 
@@ -104,33 +103,56 @@ class GrpcChat extends GrpcMessagesServiceBase {
     }
     return message;
   }
- 
 }
-class GrpcChats extends GrpcChatsServiceBase{
+
+class GrpcChats extends GrpcChatsServiceBase {
   @override
-  Future<CreateChatResponse> createChat(ServiceCall call, CreateChatRequest request) async{
-    // TODO: implement createChat
-    throw UnimplementedError();
+  Future<CreateChatResponse> createChat(
+      ServiceCall call, CreateChatRequest request) async {
+    var src = await ChatsServices().createChat(
+        friend1_id: request.friend1Id, friend2_id: request.friend1Id);
+    var createChatResponse = CreateChatResponse();
+    if (src[0]['chat_id'] != 0) {
+      createChatResponse.id = src[0]['chat_id'];
+      createChatResponse.createdDate = DateTime.now().toIso8601String();
+    }
+    return createChatResponse;
   }
 
   @override
-  Future<DeleteChatResponse> deleteChat(ServiceCall call, DeleteChatRequest request)async {
-    // TODO: implement deleteChat
-    throw UnimplementedError();
+  Future<DeleteChatResponse> deleteChat(
+      ServiceCall call, DeleteChatRequest request) async {
+    var deleteResponse = DeleteChatResponse();
+    var src = await ChatsServices().deleteChat(id: request.id);
+    if (src != 0) {
+      deleteResponse.dateDeleted = DateTime.now().toIso8601String();
+    }
+    return deleteResponse;
   }
 
   @override
-  Future<GetChatResponse> getChat(ServiceCall call, GetChatRequest request) {
-    // TODO: implement getChat
-    throw UnimplementedError();
+  Future<GetChatResponse> getChat(
+      ServiceCall call, GetChatRequest request) async {
+    var getChatResp = GetChatResponse();
+    var src = await ChatsServices().getChatById(id: request.id);
+
+    if (src[0]['user_id'] != 0 && src[0]['user_id'] != null) {
+      getChatResp.friend1Id = src[0]['friend1_id'];
+      getChatResp.friend2Id = src[0]['friend2_id'];
+      getChatResp.createdDate = DateTime.now().toIso8601String();
+    }
+    return getChatResp;
   }
 
   @override
-  Future<UpdateChatResponse> updateChat(ServiceCall call, UpdateChatRequest request) {
-    // TODO: implement updateChat
-    throw UnimplementedError();
+  Future<UpdateChatResponse> updateChat(
+      ServiceCall call, UpdateChatRequest request) async {
+    var updateChatResp = UpdateChatResponse();
+
+    return updateChatResp;
   }
 }
+
 class GrpcUsers extends GrpcUsersServiceBase {
   @override
   Future<CreateUserResponse> createUser(
@@ -178,7 +200,6 @@ class GrpcUsers extends GrpcUsersServiceBase {
       getUserResponse.dateUpdated = src[0]['updated_date'] as String;
       getUserResponse.dateDeleted = src[0]['deleted_date'] as String;
     }
-
     return getUserResponse;
   }
 
@@ -203,7 +224,7 @@ class GrpcUsers extends GrpcUsersServiceBase {
 ///
 Future<void> main() async {
   final server = Server(
-    [GrpcChat(), GrpcUsers()], //
+    [GrpcMessage(), GrpcUsers(), GrpcChats()], //
 
     const <Interceptor>[], //Перехватчик
 
