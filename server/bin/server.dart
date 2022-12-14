@@ -1,4 +1,5 @@
 import 'package:grpc/grpc.dart';
+import 'package:server/src/generated/users.pbgrpc.dart';
 
 import '../lib/src/generated/grpc_manager.pbgrpc.dart';
 import '../lib/src/library/library_server.dart';
@@ -103,6 +104,43 @@ class GrpcChat extends GrpcChatServiceBase {
       message.idMessageMain = request.idMessageMain;
     }
     return message;
+  }
+}
+
+class GrpcUsers extends GrpcUsersServiceBase {
+  @override
+  Future<CreateUserResponse> createUser(
+      ServiceCall call, CreateUserRequest request) async {
+    await UsersServices().createUser(
+        name: request.name,
+        email: request.email,
+        registrationDate: request.dateCreated,
+        profilePicUrl: request.profilePicUrl);
+    var createUserResponse = CreateUserResponse();
+    return createUserResponse;
+  }
+
+  @override
+  Future<DeleteUserResponse> deleteUser(
+      ServiceCall call, DeleteUserRequest request) async {
+    var deleteUserResponse = DeleteUserResponse();
+    return deleteUserResponse;
+  }
+
+  @override
+  Future<GetUserResponse> getUser(
+      ServiceCall call, GetUserRequest request) async {
+    var getUserResponse = GetUserResponse();
+    return getUserResponse;
+  }
+
+  @override
+  Future<UpdateUserResponse> updateUser(
+      ServiceCall call, UpdateUserRequest request) async {
+       print('WRITE TO MAP: ${request.writeToJsonMap()}');
+    // await UsersServices().updateUser(newValues: '', condition: condition);
+    var updatUserResponse = UpdateUserResponse();
+    return updatUserResponse;
   }
 }
 
