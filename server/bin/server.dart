@@ -1,13 +1,13 @@
 import 'package:grpc/grpc.dart';
+import 'package:server/src/generated/messages.pbgrpc.dart';
 import 'package:server/src/generated/users.pbgrpc.dart';
 
-import '../lib/src/generated/grpc_manager.pbgrpc.dart';
 import '../lib/src/library/library_server.dart';
 
 ///
 ///Заполняем все методы как и в Protoc файле
 ///
-class GrpcChat extends GrpcChatServiceBase {
+class GrpcChat extends GrpcMessagesServiceBase {
   var messagesService = MessagesServices();
   var chatsService = ChatsServices();
   var usersService = UsersServices();
@@ -173,6 +173,8 @@ class GrpcUsers extends GrpcUsersServiceBase {
     return updateUserResponse;
   }
 }
+
+class 
 
 ///
 ///Настройка
