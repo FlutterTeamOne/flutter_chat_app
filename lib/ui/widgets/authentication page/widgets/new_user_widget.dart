@@ -25,7 +25,7 @@ class NewUserWidget extends StatelessWidget {
       0%B0%D1%86%D0%B8%D1%8F-%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80
       %D0%B0.jpg?s=612x612&w=0&k=20&c=Po5TTi0yw6lM7qz6yay5vUbUBy3
       kAEWrpQmDaUMWnek=""";
-  static final String newUserCreateDate = DateTime.now().toString();
+  static final String newUserCreateDate = DateTime.now().toIso8601String();
 
   final UserDto newUser = UserDto(
       name: newUserNameText.text,
