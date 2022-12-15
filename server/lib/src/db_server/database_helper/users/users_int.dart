@@ -15,7 +15,7 @@ abstract class IUsersServices {
   updateUser({required String newValues, required String condition});
 
   deleteUser({required int id});
-
+  Future<List<Map<String, Object?>>> getUser({required int id});
   getAllUsers();
 }
 
