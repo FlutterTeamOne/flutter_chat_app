@@ -47,5 +47,13 @@ class UserClient extends GrpcClient {
       ..dateCreated = user.registrationDate;
     var response = await stub.createUser(request);
     print(response);
+    return UserDto(
+      mainUsersId: response.id,
+      name: response.name, 
+      email: response.email, 
+      password: response.password, 
+      registrationDate: response.dateCreated, 
+      profilePicLink: response.profilePicUrl, 
+      updatedDate: response.dateCreated);
   }
 }
