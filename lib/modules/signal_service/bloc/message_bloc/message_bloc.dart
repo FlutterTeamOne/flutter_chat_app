@@ -56,7 +56,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     var lst = await _messagesServices.getAllMessagesNotNull();
     lastMSG.mainIdMessage = lst.last.messageId!;
     var stub = Locator.getIt<GrpcChatClient>().synchronization(lastMSG);
-
+stub.
     if (event.messages == null) {
       var messages = await _messagesServices.getAllMessages();
       print("MESSAGES:$messages");
