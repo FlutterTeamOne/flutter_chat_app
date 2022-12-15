@@ -17,7 +17,12 @@ class UserClient extends GrpcClient {
       ..dateCreation = '2022-12-02T21:36:32.653712';
     var response = await stub.getUser(request);
     print(response);
-    return response;
+    return UserDto(
+      mainUsersId: response.id,
+      name: response.name, 
+      email: response.email,  
+      registrationDate: response.dateCreated, 
+      updatedDate: response.dateUpdated);
   }
 
   Future createUser({required UserDto user}) async {
@@ -27,8 +32,8 @@ class UserClient extends GrpcClient {
     var request = CreateUserRequest()
       ..name = user.name
       ..email = user.email
-      ..profilePicUrl = user.profilePicLink
-      ..password = user.password
+      ..profilePicUrl = user.profilePicLink!
+      ..password = user.password!
       ..dateCreated = user.registrationDate;
     var response = await stub.createUser(request);
     print(response);

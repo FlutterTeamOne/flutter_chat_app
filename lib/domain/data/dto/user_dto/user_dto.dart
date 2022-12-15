@@ -8,9 +8,9 @@ class UserDto extends ModelDto {
   final int? localUserId;
   final String name;
   final String email;
-  final String password;
+  final String? password;
   final String registrationDate;
-  final String profilePicLink;
+  final String? profilePicLink;
   final int? mainUsersId;
   final String updatedDate;
   final String? deletedDate;
@@ -19,9 +19,9 @@ class UserDto extends ModelDto {
     this.localUserId,
     required this.name,
     required this.email,
-    required this.password,
+    this.password,
     required this.registrationDate,
-    required this.profilePicLink,
+    this.profilePicLink,
     this.mainUsersId,
     required this.updatedDate,
     this.deletedDate,
