@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'dart:io' as io;
 
 class DBHelper {
   //Singleton
@@ -26,21 +27,30 @@ class DBHelper {
   ///Инициализация локальной БД. Если ее нет,
   ///то создается новая БД
   Future<Database> initDB({UserDto? user}) async {
-    sqfliteFfiInit();
+    UserDto _user = user!;    sqfliteFfiInit();
     var dbFactory = databaseFactoryFfi;
     // var dbPath = await dbFactory.getDatabasesPath();
     var dbPath = await getTemporaryDirectory();
     // print('PATH: ${dbPath.path}');
-    String path = join('dbPath, ${user!.name}', '${DatabaseConst.dbFileName}_${user.name}.db');
-    return await dbFactory.openDatabase(path,
-        options: OpenDatabaseOptions(
-          version: DatabaseConst.dbVersion,
-          onCreate: _onCreate,
-        ));
+    String path = join('dbPath, ${user.name}', '${DatabaseConst.dbFileName}_${user.name}.db');
+
+    var dbExists = io.File(path).exists();
+    var db =  await dbFactory.openDatabase(path,
+      options: OpenDatabaseOptions(
+        version: DatabaseConst.dbVersion,
+        onCreate: _onCreate,
+    ));
+    if (await dbExists) {
+      return db;
+    }
+    else {
+      addInitialUser(user: user);
+      return db;
+    }
   }
 
   ///Функция создания начальной таблицы БД
-  Future _onCreate(Database db, int version, {UserDto? user}) async {
+  Future _onCreate(Database db, int version) async {
     await db.transaction((txn) async {
       //Таблица User
       await txn.execute('''
@@ -114,20 +124,7 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
 )
 ''');
 
-      await txn.insert(
-        DatabaseConst.userTable,
-        {
-          'name': 'test1',
-          'email': 't1@t1.t1',
-          DatabaseConst.usersColumnProfilePicLink:
-              'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
-          DatabaseConst.usersColumnCreatedDate:
-              DateTime.now().toIso8601String(),
-          DatabaseConst.usersColumnMainUsersId: 1,
-          DatabaseConst.usersColumnUpdatedDate:
-              DateTime.now().toIso8601String(),
-        },
-      );
+
       // await txn.insert(
       //   DatabaseConst.userTable,
       //   {
@@ -174,6 +171,27 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
     });
 
     _updateListen();
+  }
+
+  Future<void> addInitialUser({required UserDto user}) async {
+    Database db = await instanse.database;
+    await db.transaction((txn) async {
+      await txn.insert(
+        DatabaseConst.userTable,
+        {
+          'name': user.name,
+          'email': user.email,
+          DatabaseConst.usersColumnProfilePicLink:
+              user.profilePicLink,
+          DatabaseConst.usersColumnCreatedDate:
+              DateTime.now().toIso8601String(),
+          DatabaseConst.usersColumnMainUsersId: user.mainUsersId,
+          DatabaseConst.usersColumnUpdatedDate:
+              DateTime.now().toIso8601String(),
+        },
+      );
+    });
+
   }
 
   ///Функция считывания/получения данных из БД
@@ -224,6 +242,8 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
     });
     _updateListen();
   }
+
+  
 
 // ///Функция создания временной таблицы
 // Future onCreateTemp() async {

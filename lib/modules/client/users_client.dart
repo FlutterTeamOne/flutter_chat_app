@@ -20,9 +20,11 @@ class UserClient extends GrpcClient {
     return UserDto(
       mainUsersId: response.id,
       name: response.name, 
-      email: response.email,  
+      email: response.email, 
+      password: response.password, 
       registrationDate: response.dateCreated, 
-      updatedDate: response.dateUpdated);
+      profilePicLink: response.profilePicUrl, 
+      updatedDate: response.dateCreated);
   }
 
   Future createUser({required UserDto user}) async {

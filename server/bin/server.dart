@@ -313,7 +313,8 @@ class GrpcUsers extends GrpcUsersServiceBase {
       getUserResponse.name = src[0]['name'] as String;
       getUserResponse.email = src[0]['email'] as String;
       getUserResponse.dateCreated = src[0]['created_date'] as String;
-      getUserResponse.dateUpdated = src[0]['updated_date'] as String;
+      getUserResponse.profilePicUrl = src[0]['profile_pic_url'] as String;
+      getUserResponse.password = src[0]['password'] as String;
     }
     return getUserResponse;
   }
