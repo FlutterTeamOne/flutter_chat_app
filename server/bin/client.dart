@@ -1,11 +1,13 @@
 import 'package:grpc/grpc.dart';
+import 'package:server/src/generated/messages.pb.dart';
+import 'package:server/src/generated/messages.pbgrpc.dart';
+import 'package:server/src/generated/users.pb.dart';
 
-import '../lib/src/generated/grpc_manager.pbgrpc.dart';
 
 class Client {
   ClientChannel? channel;
   //Класс заглушка, определяет все функции которые есть на сервере
-  GrpcChatClient? stub;
+  GrpcMessagesClient? stub;
   late CreateMessageResponse response;
   bool executionInProgress = true;
 
@@ -16,7 +18,7 @@ class Client {
         options:
             const ChannelOptions(credentials: ChannelCredentials.insecure()));
 
-    stub = GrpcChatClient(channel!,
+    stub =  GrpcMessagesClient(channel!,
         options: CallOptions(timeout: Duration(seconds: 30)));
 
     // while (executionInProgress) {
@@ -59,7 +61,7 @@ class Client {
         options:
             const ChannelOptions(credentials: ChannelCredentials.insecure()));
 
-    stub = GrpcChatClient(channel!,
+    stub =  GrpcMessagesClient(channel!,
         options: CallOptions(timeout: Duration(seconds: 30)));
     var response = UpdateMessageResponse();
     try {
@@ -83,7 +85,13 @@ class Client {
     // var result = stdin.readLineSync() ?? 'y';
     // executionInProgress = result.toLowerCase() != 'y';
   }
+
 // await channel!.shutdown();
+  Future<UpdateUserResponse> updateUser(UpdateUserRequest user) async {
+    var resp = UpdateUserResponse();
+
+    return resp;
+  }
 }
 
 Future<DeleteMessageResponse> deleteMessage(
@@ -127,9 +135,16 @@ void main() async {
   // print(await client.SendMessage(message));
 
   //Обновление сообщения
-  var messageUpdate = UpdateMessageRequest();
-  messageUpdate.content = "HELL";
-  messageUpdate.idMessageMain = 4;
+  // var messageUpdate = UpdateMessageRequest();
+  // messageUpdate.content = "HELL";
+  // messageUpdate.idMessageMain = 4;
+  var updateUser = UpdateUserRequest();
+  updateUser.name = 'bob';
+  updateUser.email = 'test@test.test';
+  updateUser.password = 'new pas';
+  updateUser.profilePicUrl = 'new image url';
+
   print("Обратный ответ:");
-  print(await client.UpdateMessage(messageUpdate));
+  print('update User: ${updateUser.writeToJsonMap()}');
+  print(await client.updateUser(updateUser));
 }

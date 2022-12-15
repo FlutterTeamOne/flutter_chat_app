@@ -63,7 +63,7 @@ dart .\server\lib\src\test_db\test.dart
 2. В консоли из директории приложения запустить команду ./run_server.sh.
 ![image ./run_server.sh](assets/images/for_readme/20221210145111.png)
 
-Скрипт перейдет в папку sh, и вызовет оттуда скрипты ger_nessessary_files.sh (запускает pub get как для основного приложения, так и для сервера; генерирует proto для grpc) и server.sh (запускает сервер в консоли).
+Скрипт запустит pub get как для основного приложения, так и для сервера; сгенерирует protoc для grpc; запустит сервер в консоли).
 ![image resolving dependences](assets/images/for_readme/20221210145136.png)
 
 3. Открыть новую консоль, не закрывая предыдущую.

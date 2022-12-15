@@ -1,12 +1,11 @@
 import 'package:grpc/grpc.dart';
 
-import '../lib/src/generated/grpc_manager.pbgrpc.dart';
 import '../lib/src/library/library_server.dart';
 
 ///
 ///Заполняем все методы как и в Protoc файле
 ///
-class GrpcChat extends GrpcChatServiceBase {
+class GrpcMessage extends GrpcMessagesServiceBase {
   var messagesService = MessagesServices();
   var chatsService = ChatsServices();
   var usersService = UsersServices();
@@ -106,12 +105,130 @@ class GrpcChat extends GrpcChatServiceBase {
   }
 }
 
+class GrpcChats extends GrpcChatsServiceBase {
+  @override
+  Future<CreateChatResponse> createChat(
+      ServiceCall call, CreateChatRequest request) async {
+    var src = await ChatsServices().createChat(
+        friend1_id: request.friend1Id, friend2_id: request.friend1Id);
+    var createChatResponse = CreateChatResponse();
+    if (src[0]['chat_id'] != 0) {
+      createChatResponse.id = src[0]['chat_id'];
+      createChatResponse.createdDate = DateTime.now().toIso8601String();
+    }
+    return createChatResponse;
+  }
+
+  @override
+  Future<DeleteChatResponse> deleteChat(
+      ServiceCall call, DeleteChatRequest request) async {
+    var deleteResponse = DeleteChatResponse();
+    var src = await ChatsServices().deleteChat(id: request.id);
+    if (src != 0) {
+      deleteResponse.dateDeleted = DateTime.now().toIso8601String();
+    }
+    return deleteResponse;
+  }
+
+  @override
+  Future<GetChatResponse> getChat(
+      ServiceCall call, GetChatRequest request) async {
+    var getChatResp = GetChatResponse();
+    var src = await ChatsServices().getChatById(id: request.id);
+
+    if (src[0]['user_id'] != 0 && src[0]['user_id'] != null) {
+      getChatResp.friend1Id = src[0]['friend1_id'];
+      getChatResp.friend2Id = src[0]['friend2_id'];
+      getChatResp.createdDate = DateTime.now().toIso8601String();
+    }
+    return getChatResp;
+  }
+
+  @override
+  Future<UpdateChatResponse> updateChat(
+      ServiceCall call, UpdateChatRequest request) async {
+    var updateChatResp = UpdateChatResponse();
+
+    return updateChatResp;
+  }
+}
+
+class GrpcUsers extends GrpcUsersServiceBase {
+  @override
+  Future<CreateUserResponse> createUser(
+      ServiceCall call, CreateUserRequest request) async {
+    var src = await UsersServices().createUser(
+        name: request.name,
+        email: request.email,
+        createdDate: request.dateCreated,
+        profilePicUrl: request.profilePicUrl,
+        updatedDate: request
+        password: request.password);
+    var createUserResponse = CreateUserResponse();
+    if (src['main_users_id'] != 0) {
+      createUserResponse.dateCreated = request.dateCreated;
+      createUserResponse.email = request.email;
+      createUserResponse.name = request.name;
+      createUserResponse.profilePicUrl = request.profilePicUrl;
+      createUserResponse.id = src['main_users_id'];
+    }
+    return createUserResponse;
+  }
+
+  @override
+  Future<DeleteUserResponse> deleteUser(
+      ServiceCall call, DeleteUserRequest request) async {
+    var deleteUserResponse = DeleteUserResponse();
+    var dateDeleted = DateTime.now().toIso8601String();
+    var src = await UsersServices().updateUser(
+        newValues: 'deleted_date = $dateDeleted',
+        condition: 'user_id = ${request.id}');
+    if (src != 0) {
+      deleteUserResponse.isDeleted = true;
+    }
+    return deleteUserResponse;
+  }
+
+  @override
+  Future<GetUserResponse> getUser(
+      ServiceCall call, GetUserRequest request) async {
+    var getUserResponse = GetUserResponse();
+
+    var src = await UsersServices().getUser(id: request.id);
+
+    if (src[0]['user_id'] != 0 && src[0]['user_id'] != null) {
+      getUserResponse.id = src[0]['user_id'] as int;
+      getUserResponse.name = src[0]['name'] as String;
+      getUserResponse.email = src[0]['email'] as String;
+      getUserResponse.dateCreated = src[0]['created_date'] as String;
+      getUserResponse.dateUpdated = src[0]['updated_date'] as String;
+      getUserResponse.dateDeleted = src[0]['deleted_date'] as String;
+    }
+    return getUserResponse;
+  }
+
+  @override
+  Future<UpdateUserResponse> updateUser(
+      ServiceCall call, UpdateUserRequest request) async {
+    var updateUserResponse = UpdateUserResponse();
+    updateUserResponse.dateUpdated = DateTime.now().toIso8601String();
+    var src = await UsersServices().updateUser(
+        newValues:
+            'name = ${request.name}, email = ${request.email}, profile_pic_url = ${request.profilePicUrl}, password = ${request.password}, updated_date = ${updateUserResponse.dateUpdated}',
+        condition: 'user_id = ${request.id}');
+    if (src != 0) {
+      updateUserResponse.isUpdated = true;
+    }
+    return updateUserResponse;
+  }
+}
+
 ///
 ///Настройка
 ///
 Future<void> main() async {
   final server = Server(
-    [GrpcChat()], //
+    [GrpcMessage(), GrpcUsers(), GrpcChats()], //
 
     const <Interceptor>[], //Перехватчик
 
@@ -120,6 +237,7 @@ Future<void> main() async {
   );
 
   await server.serve(port: 5000);
-  await dbServerServices.openDatabase();
+  await DbServerServices.instanse.openDatabase();
+
   print('✅ Server listening on port ${server.port}...');
 }
