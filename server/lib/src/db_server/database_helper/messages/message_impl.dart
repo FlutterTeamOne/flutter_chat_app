@@ -1,6 +1,6 @@
+import 'package:server/src/generated/messages.pb.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 
-import '../../../generated/grpc_manager.pb.dart';
 import '../../../library/library_server.dart';
 
 class MessagesServices implements IMessagesServices {

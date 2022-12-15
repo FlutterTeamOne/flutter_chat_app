@@ -1,6 +1,5 @@
-import 'package:chat_app/modules/client/grpc_client.dart';
 import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
-import 'package:chat_app/src/generated/grpc_manager/grpc_manager.pbgrpc.dart';
+import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:get_it/get_it.dart';
 
@@ -21,6 +20,6 @@ class Locator {
     getIt.registerLazySingleton<MessageIdInMainBloc>(
         () => MessageIdInMainBloc());
     getIt.registerLazySingleton<ChangeThemeBloc>(() => ChangeThemeBloc());
-    getIt.registerFactory<GrpcChatClient>(() => GrpcChatClient(getIt<GrpcClient>().channel));
+    getIt.registerFactory<GrpcMessagesClient>(() => GrpcMessagesClient(getIt<GrpcClient>().channel));
   }
 }
