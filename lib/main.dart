@@ -52,9 +52,6 @@ class MyApp extends StatelessWidget {
               grpcConnection: context.read<GrpcConnectionBloc>())
             ..add(ReadMessageEvent()),
         ),
-        BlocProvider<MessageIdInMainBloc>(
-          create: (context) => MessageIdInMainBloc(),
-        ),
         BlocProvider(
           create: (context) => ChangeThemeBloc(),
         ),

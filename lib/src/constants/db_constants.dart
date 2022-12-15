@@ -8,11 +8,7 @@ class DatabaseConst {
   static const userTable = 'users';
   static const chatsTable = 'chats';
   static const mainUserTable = 'main_user';
-  static const messageIdTable = 'message_id_in_main'; // Для синхронизации
   static const userLastTimeOnlineTable = 'user_last_time_online';
-
-  static const messageUpdatedTable = 'message_updated';
-  static const messageDeletedTable = 'message_deleted';
 
   //название колонок таблиц
   //users
@@ -48,23 +44,10 @@ class DatabaseConst {
   static const mainUserColumnKey = 'user_key';
   static const mainUserColumnDataSync = 'date_sync';
 
-  //message_id_in_main
-  static const messageIdColumn = "main_messages_id";
-  static const messageIdColumnLocal = "local_messages_id";
-
   //user_had_been_online
   static const userLastTimeOnlineColumnId = 'user_last_time_online_id';
   static const userLastTimeOnlineColumnisOnline = 'is_online';
   static const userLastTimeOnlineColumnLastTimeOnline = 'last_time_online';
-
-  //message_updated
-  static const messageUpdatedColumnMessageIsUpdatedId = 'message_is_updated_id';
-  static const messageUpdatedColumnLocalMessagesId = 'local_messages_id';
-  static const messageUpdatedColumnWhenUpdated = 'when_updated';
-
-  //message_deleted
-  static const messageDeletedColumnID = 'message_deleted_id';
-  static const messageDeletedColumnWhenDeleted = 'when_deleted';
 
   //ключи
   static const integer = 'INTEGER';
