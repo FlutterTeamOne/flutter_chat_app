@@ -40,6 +40,14 @@ class UserChatLayoutState extends State<UserChatLayout> {
           onSubmitted: (text) => _sendAndChange(),
           controller: controller,
           onTap: () => _sendAndChange(),
+          editState: context.read<MessageBloc>().state.editState,
+          editText: controller.text,
+          cancelEdit: () {
+            context
+                .read<MessageBloc>()
+                .add(UpdateMessageEvent(isEditing: EditState.isNotEditing));
+            controller.clear();
+          },
         ),
       ],
     );
@@ -71,12 +79,11 @@ class UserChatLayoutState extends State<UserChatLayout> {
       context.read<MessageBloc>().add(
             UpdateMessageEvent(
                 message: MessageDto(
-                  localChatId: widget.localChatId,
-                  localSendId: 1,
-                  content: controller.text,
-                  createdDate: DateTime.now().toIso8601String(),
-                  updatedDate: DateTime.now().toIso8601String()
-                ),
+                    localChatId: widget.localChatId,
+                    localSendId: 1,
+                    content: controller.text,
+                    createdDate: DateTime.now().toIso8601String(),
+                    updatedDate: DateTime.now().toIso8601String()),
                 isEditing: EditState.isEditing),
           );
       controller.clear();

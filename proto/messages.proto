@@ -3,7 +3,7 @@ syntax = "proto3";
 //import "google/protobuf/timestamp.proto";
 service  GrpcMessages{
     rpc connecting (Empty) returns (Empty) {}
-    // rpc connecting (ConnectRequest) return (ConnectResponse) {}
+    rpc connectings (stream ConnectRequest) returns (stream MessageFromBase) {}
     rpc createMessage (CreateMessageRequest) returns (CreateMessageResponse) {}
     rpc updateMessage (UpdateMessageRequest) returns (UpdateMessageResponse) {}
     rpc deleteMessage (DeleteMessageRequest) returns (DeleteMessageResponse) {}
@@ -13,9 +13,9 @@ service  GrpcMessages{
 
 message Empty {}
 
-// message ConnectRequest {
-//     int32 id = 1;
-// }
+message ConnectRequest {
+    int32 id = 1;
+}
 
 // message ConnectResponse {
 //     int32 id = 1;

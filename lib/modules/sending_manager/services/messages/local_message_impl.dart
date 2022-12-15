@@ -49,6 +49,14 @@ class LocalMessagesServices implements ILocalMessagesServices {
     return message.map((item) => MessageDto.fromMap(item)).toList();
   }
 
+  Future<List<MessageDto>> getAllMessagesNotNull() async {
+    var db = await DBHelper.instanse.database;
+    var message =
+        await db.rawQuery('SELECT * FROM messages WHERE message_id != null');
+
+    return message.map((item) => MessageDto.fromMap(item)).toList();
+  }
+
   @override
   Future<Map<String, Object?>> getMessageById({required int id}) async {
     var db = await DBHelper.instanse.database;

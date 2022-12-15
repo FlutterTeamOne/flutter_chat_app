@@ -93,16 +93,6 @@ CREATE TABLE ${DatabaseConst.messageTable} (
 )
 ''');
 
-// Таблица Messages Id In Main
-      await txn.execute('''
-CREATE TABLE ${DatabaseConst.messageIdTable}
-(
- ${DatabaseConst.messageIdColumn} ${DatabaseConst.integer} ${DatabaseConst.primaryKey},
- ${DatabaseConst.messageIdColumnLocal} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique},
-CONSTRAINT MESSAGE_ID_IN_MAIN_FK_86 FOREIGN KEY (local_messages_id) REFERENCES messages (local_messages_id)
-)
-''');
-
       await txn.execute('''
 CREATE INDEX CHATS_FK_3 ON ${DatabaseConst.chatsTable}
 (
@@ -116,9 +106,9 @@ CREATE INDEX MESSAGES_FK_2 ON ${DatabaseConst.messageTable}
 );
 ''');
       await txn.execute('''
-CREATE INDEX MESSAGE_ID_IN_MAIN_FK_1 ON ${DatabaseConst.messageIdTable}
+CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
 (
- ${DatabaseConst.messagesColumnLocalMessagesId}
+ ${DatabaseConst.usersColumnId}
 )
 ''');
 
@@ -130,9 +120,11 @@ CREATE INDEX MESSAGE_ID_IN_MAIN_FK_1 ON ${DatabaseConst.messageIdTable}
           'email': 't1@t1.t1',
           DatabaseConst.usersColumnProfilePicLink:
               'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
-          DatabaseConst.usersColumnCreatedDate: '2022-12-02T21:36:32.653712',
+          DatabaseConst.usersColumnCreatedDate:
+              DateTime.now().toIso8601String(),
           DatabaseConst.usersColumnMainUsersId: 1,
-          DatabaseConst.usersColumnUpdatedDate: '2022-12-02T21:36:32.653712',
+          DatabaseConst.usersColumnUpdatedDate:
+              DateTime.now().toIso8601String(),
         },
       );
       await txn.insert(
@@ -142,9 +134,11 @@ CREATE INDEX MESSAGE_ID_IN_MAIN_FK_1 ON ${DatabaseConst.messageIdTable}
           'email': 't2@t2.t2',
           DatabaseConst.usersColumnProfilePicLink:
               'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
-          DatabaseConst.usersColumnCreatedDate: '2022-12-02T21:36:32.653712',
+          DatabaseConst.usersColumnCreatedDate:
+              DateTime.now().toIso8601String(),
           DatabaseConst.usersColumnMainUsersId: 2,
-          DatabaseConst.usersColumnUpdatedDate: '2022-12-02T21:36:32.653712',
+          DatabaseConst.usersColumnUpdatedDate:
+              DateTime.now().toIso8601String(),
         },
       );
       await txn.insert(

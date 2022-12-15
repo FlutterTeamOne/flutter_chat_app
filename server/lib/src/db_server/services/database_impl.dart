@@ -120,9 +120,10 @@ class DbServerServices {
               '2022-12-02T21:36:32.653712', 
               12345678, 
               'pass')
+
       ''');
       await txn.execute('''
-          INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, deleted_date, hash_connect, password) VALUES ('test2', 't2@t2.t2', '2022-12-02T21:36:32.653712', 'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg', '2022-12-02T21:36:32.653712', '', 23456789, 'pass')
+          INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, deleted_date, password) VALUES ('test2', 't2@t2.t2', '2022-12-02T21:36:32.653712', 'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg', '2022-12-02T21:36:32.653712', '', 'pass')
       ''');
       await txn.insert('chats', {
         'friend1_id': 1,

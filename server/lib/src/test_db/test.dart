@@ -23,16 +23,21 @@ Future<void> main() async {
   //         WHERE main_message_id = '22';
   //               ''');
 
-  var request = UpdateMessageRequest();
-  request.idMessageMain = 4;
-  request.content = "Zdarova PAPASHA";
-  print(await messagesService.getMessageById(id: 4));
-  var timeUpdate = DateTime.now().toIso8601String();
-  var src = await messagesServices.updateMessage(
-      newValues: "content = '${request.content}', updated_date = '$timeUpdate'",
-      condition: "message_id = ${request.idMessageMain}");
-  print("src: $src");
-  print(await messagesService.getMessageById(id: 4));
+  // var request = UpdateMessageRequest();
+  // request.idMessageMain = 4;
+  // request.content = "Zdarova PAPASHA";
+  // print(await messagesService.getMessageById(id: 4));
+  // var timeUpdate = DateTime.now().toIso8601String();
+  // var src = await messagesServices.updateMessage(
+  //     newValues: "content = '${request.content}', updated_date = '$timeUpdate'",
+  //     condition: "message_id = ${request.idMessageMain}");
+  // print("src: $src");
+  // print(await messagesService.getMessageById(id: 4));
+
+  var a = await usersService.getAllUsers();
+  for (var b in a) {
+    print(b);
+  }
 
   ///
   ///Вывод таблицы сообщений

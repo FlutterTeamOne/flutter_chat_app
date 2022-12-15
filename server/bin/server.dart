@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:grpc/grpc.dart';
 
 import '../lib/src/library/library_server.dart';
@@ -9,11 +11,7 @@ class GrpcMessage extends GrpcMessagesServiceBase {
   var messagesService = MessagesServices();
   var chatsService = ChatsServices();
   var usersService = UsersServices();
-
-  @override
-  Future<Empty> connecting(ServiceCall call, Empty request) async {
-    return request;
-  }
+  var _controller = <int, StreamController<MessageFromBase>>{};
 
   //   @override
   // Future<ConnectResponse> connecting(
@@ -42,6 +40,29 @@ class GrpcMessage extends GrpcMessagesServiceBase {
       message.mainMessagesId = 555; // message.ok = false;
     }
     print('SERVER MESSAGE: $message');
+    var mes =
+        await messagesService.getMessageById(id: src['message_id'] as int);
+    print('MES: $mes');
+    var messageFromBase = MessageFromBase(
+        chatIdMain: mes[0]['chat_id'],
+        senderMainId: mes[0]['sender_id'],
+        content: mes[0]['content'],
+        date: mes[0]['created_date'],
+        mainIdMessage: mes[0]['message_id']);
+    print('MESfrom: $messageFromBase');
+    var receiverId = await usersService.getUserIdByChat(
+        senderId: request.senderMainId, chatId: request.chatIdMain);
+    print('receiverId: $receiverId');
+    var hashConnect;
+    try {
+      hashConnect = await usersService.getHashCodeById(id: receiverId);
+    } catch (e) {
+      print(e);
+    }
+    print("HASH: $hashConnect");
+    hashConnect != null
+        ? _controller[hashConnect]?.sink.add(messageFromBase)
+        : print("user $receiverId not connecting");
     return message;
   }
 
@@ -102,6 +123,97 @@ class GrpcMessage extends GrpcMessagesServiceBase {
       message.idMessageMain = request.idMessageMain;
     }
     return message;
+  }
+
+  @override
+  Stream<MessageFromBase> connectings(
+      ServiceCall call, Stream<ConnectRequest> request) async* {
+    var connectController = StreamController<MessageFromBase>();
+
+    late int id;
+    request.listen((mes) async {
+      print('listening...${mes.hashCode}');
+      id = mes.id;
+      _controller[mes.hashCode] = connectController;
+      await usersService.updateUser(
+          newValues: 'hash_connect = ${mes.hashCode}',
+          condition: 'user_id = ${mes.id}');
+    }).onError((dynamic e) async {
+      print(e);
+      _controller.remove(await usersService.getHashCodeById(id: id));
+      connectController.close();
+      await usersService.updateUser(
+          newValues: 'hash_connect = null', condition: 'user_id = $id');
+      print('Disconnected: #${request.hashCode}');
+    });
+    try {
+      await for (final message in connectController.stream) {
+        print('yield');
+        yield message;
+      }
+    } on GrpcError catch (e) {
+      print(e);
+    } finally {
+      _controller.remove(await usersService.getHashCodeById(id: id));
+      connectController.close();
+      await usersService.updateUser(
+          newValues: 'hash_connect = null', condition: 'user_id = $id');
+      print('Disconnected: #${request.hashCode}');
+    }
+  }
+
+  @override
+  Future<Empty> connecting(ServiceCall call, Empty request) {
+    // TODO: implement connecting
+    throw UnimplementedError();
+  }
+}
+
+class GrpcChats extends GrpcChatsServiceBase {
+  @override
+  Future<CreateChatResponse> createChat(
+      ServiceCall call, CreateChatRequest request) async {
+    var src = await ChatsServices().createChat(
+        friend1_id: request.friend1Id, friend2_id: request.friend1Id);
+    var createChatResponse = CreateChatResponse();
+    if (src[0]['chat_id'] != 0) {
+      createChatResponse.id = src[0]['chat_id'];
+      createChatResponse.createdDate = DateTime.now().toIso8601String();
+    }
+    return createChatResponse;
+  }
+
+  @override
+  Future<DeleteChatResponse> deleteChat(
+      ServiceCall call, DeleteChatRequest request) async {
+    var deleteResponse = DeleteChatResponse();
+    var src = await ChatsServices().deleteChat(id: request.id);
+    if (src != 0) {
+      deleteResponse.dateDeleted = DateTime.now().toIso8601String();
+    }
+    return deleteResponse;
+  }
+
+  @override
+  Future<GetChatResponse> getChat(
+      ServiceCall call, GetChatRequest request) async {
+    var getChatResp = GetChatResponse();
+    var src = await ChatsServices().getChatById(id: request.id);
+
+    if (src[0]['user_id'] != 0 && src[0]['user_id'] != null) {
+      getChatResp.friend1Id = src[0]['friend1_id'];
+      getChatResp.friend2Id = src[0]['friend2_id'];
+      getChatResp.createdDate = DateTime.now().toIso8601String();
+    }
+    return getChatResp;
+  }
+
+  @override
+  Future<UpdateChatResponse> updateChat(
+      ServiceCall call, UpdateChatRequest request) async {
+    var updateChatResp = UpdateChatResponse();
+
+    return updateChatResp;
   }
 }
 
@@ -193,7 +305,6 @@ class GrpcUsers extends GrpcUsersServiceBase {
   Future<GetUserResponse> getUser(
       ServiceCall call, GetUserRequest request) async {
     var getUserResponse = GetUserResponse();
-
     var src = await UsersServices().getUser(id: request.id);
 
     if (src[0]['user_id'] != 0 && src[0]['user_id'] != null) {
@@ -235,8 +346,7 @@ Future<void> main() async {
     CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
   );
 
-  await server.serve(port: 5000);
+  await server.serve(port: 50000);
   await DbServerServices.instanse.openDatabase();
-
   print('✅ Server listening on port ${server.port}...');
 }
