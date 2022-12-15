@@ -162,7 +162,7 @@ class GrpcUsers extends GrpcUsersServiceBase {
         email: request.email,
         createdDate: request.dateCreated,
         profilePicUrl: request.profilePicUrl,
-        updatedDate: request
+        updatedDate: request.dateCreated,
         password: request.password);
     var createUserResponse = CreateUserResponse();
     if (src['main_users_id'] != 0) {

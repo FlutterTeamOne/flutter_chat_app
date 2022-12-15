@@ -3,12 +3,16 @@ import '../../../library/library_server.dart';
 abstract class IUsersServices {
   factory IUsersServices() => UsersServices();
 
-  createUser(
-      {required String name,
-      required String email,
-      required String registrationDate,
-      required String profilePicUrl,
-      required String password});
+  createUser({
+    required String name,
+    required String email,
+    required String createdDate,
+    required String profilePicUrl,
+    required String updatedDate,
+    required String password,
+    String? deletedDate,
+    int? hashConnect,
+  });
 
   getUserByField({required String field, required Object fieldValue});
 
