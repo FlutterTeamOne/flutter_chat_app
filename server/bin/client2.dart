@@ -2,9 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:grpc/grpc.dart';
-import 'package:server/src/generated/grpc_manager.pbgrpc.dart';
 
-late GrpcChatClient stub;
+late GrpcMessageClient stub;
 
 Future<void> main(List<String> args) async {
   if (args.isEmpty) {
@@ -21,7 +20,7 @@ Future<void> main(List<String> args) async {
       credentials: ChannelCredentials.insecure(),
     ),
   );
-  stub = GrpcChatClient(channel);
+  stub = GrpcMessageClient(channel);
   print("before try");
   try {
     print("try");

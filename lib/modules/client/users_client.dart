@@ -12,7 +12,7 @@ Future<void> main() async {
       name: 'name',
       email: 'email',
       password: 'pass',
-      registrationDate: '20220120026210360320653712',
+      registrationDate: '2022-12-02T21:36:32.653712',
       profilePicLink: 'profilePicLinkasdfasdf',
       updatedDate: 'updatedDate');
 
