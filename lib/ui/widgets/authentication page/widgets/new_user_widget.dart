@@ -1,60 +1,42 @@
+import 'package:chat_app/domain/data/dto/user_dto/user_dto.dart';
+import 'package:chat_app/ui/widgets/authentication%20page/bloc/new_user/new_user_bloc.dart';
+import 'package:chat_app/ui/widgets/authentication%20page/bloc/new_user/new_user_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NewUserWidget extends StatelessWidget {
   NewUserWidget({Key? key}) : super(key: key);
   static const double textFieldWidth = 200;
   static const double textPadding = 15;
-  final newUserNameText = TextEditingController();
-  final newUserEmailText = TextEditingController();
-  final newUserPasswordText = TextEditingController();
-  final newUserPictureUrlText = TextEditingController();
+  static final newUserNameText = TextEditingController();
+  static final newUserEmailText = TextEditingController();
+  static final newUserPasswordText = TextEditingController();
+  static final newUserPictureUrlText = TextEditingController();
+
   static const String newUserPictureUrl =
-      'https://media.istockphoto.com/id/1300845620/ru/%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80%D0%BD%D0%B0%D1%8F/%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8C-icon-flat-%D0%B8%D0%B7%D0%BE%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD-%D0%BD%D0%B0-%D0%B1%D0%B5%D0%BB%D0%BE%D0%BC-%D1%84%D0%BE%D0%BD%D0%B5-%D1%81%D0%B8%D0%BC%D0%B2%D0%BE%D0%BB-%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F-%D0%B8%D0%BB%D0%BB%D1%8E%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F-%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80%D0%B0.jpg?s=612x612&w=0&k=20&c=Po5TTi0yw6lM7qz6yay5vUbUBy3kAEWrpQmDaUMWnek=';
-  final String newUserCreateDate = DateTime.now().toIso8601String();
+      """https://media.istockphoto.com/id/1300845620/ru/%D0%B2%D0
+      %B5%D0%BA%D1%82%D0%BE%D1%80%D0%BD%D0%B0%D1%8F/%D0%BF%D0%BE%
+      D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8C
+      -icon-flat-%D0%B8%D0%B7%D0%BE%D0%BB%D0%B8%D1%80%D0%BE%D0%B2
+      %D0%B0%D0%BD-%D0%BD%D0%B0-%D0%B1%D0%B5%D0%BB%D0%BE%D0%BC-%D
+      1%84%D0%BE%D0%BD%D0%B5-%D1%81%D0%B8%D0%BC%D0%B2%D0%BE%D0%BB
+      -%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%
+      B5%D0%BB%D1%8F-%D0%B8%D0%BB%D0%BB%D1%8E%D1%81%D1%82%D1%80%D
+      0%B0%D1%86%D0%B8%D1%8F-%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80
+      %D0%B0.jpg?s=612x612&w=0&k=20&c=Po5TTi0yw6lM7qz6yay5vUbUBy3
+      kAEWrpQmDaUMWnek=""";
+  static final String newUserCreateDate = DateTime.now().toString();
+
+  final UserDto newUser = UserDto(
+      name: newUserNameText.text,
+      email: newUserEmailText.text,
+      password: newUserPasswordText.text,
+      registrationDate: newUserCreateDate,
+      profilePicLink: newUserPictureUrl,
+      updatedDate: newUserCreateDate);
 
   @override
   Widget build(BuildContext context) {
-    final int newUserId;
-    final String newUserName;
-    final String newUserEmail;
-    final String newUserPassword;
-    const String newUserPictureUrl =
-        'https://media.istockphoto.com/id/1300845620/ru/%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80%D0%BD%D0%B0%D1%8F/%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8C-icon-flat-%D0%B8%D0%B7%D0%BE%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD-%D0%BD%D0%B0-%D0%B1%D0%B5%D0%BB%D0%BE%D0%BC-%D1%84%D0%BE%D0%BD%D0%B5-%D1%81%D0%B8%D0%BC%D0%B2%D0%BE%D0%BB-%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F-%D0%B8%D0%BB%D0%BB%D1%8E%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F-%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80%D0%B0.jpg?s=612x612&w=0&k=20&c=Po5TTi0yw6lM7qz6yay5vUbUBy3kAEWrpQmDaUMWnek=';
-    final String newUserCreateDate;
-
-    final newUserNameText = TextEditingController();
-    final newUserEmailText = TextEditingController();
-    final newUserPasswordText = TextEditingController();
-    // final newUserPictureUrlText = TextEditingController();
-    @override
-    void disposenewUserNameText() {
-      // Clean up the controller when the widget is removed from the
-      // widget tree.
-      newUserNameText.dispose();
-      // super.disposenewUserNameText();
-    }
-    @override
-    void disposenewUserEmailText() {
-      // Clean up the controller when the widget is removed from the
-      // widget tree.
-      newUserEmailText.dispose();
-      // super.disposenewUserEmailText();
-    }
-    @override
-    void disposenewUserPasswordText() {
-      // Clean up the controller when the widget is removed from the
-      // widget tree.
-      newUserPasswordText.dispose();
-      // super.disposenewUserPasswordText();
-    }
-    @override
-    void disposenewUserPictureUrlText() {
-      // Clean up the controller when the widget is removed from the
-      // widget tree.
-      newUserPictureUrlText.dispose();
-      // super.disposenewUserPictureUrlText();
-    }
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -73,7 +55,7 @@ class NewUserWidget extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-                    buildCreateNewUserButton(),
+                    buildCreateNewUserButton(context),
                   ],
                 ),
               ],
@@ -90,13 +72,15 @@ class NewUserWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(right: textPadding),
             child: Text('Password'),
           ),
-          SizedBox(width: textFieldWidth, child: TextField(
-            controller: newUserPasswordText,
-          )),
+          SizedBox(
+              width: textFieldWidth,
+              child: TextField(
+                controller: newUserPasswordText,
+              )),
         ],
       ),
     );
@@ -108,13 +92,15 @@ class NewUserWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(right: textPadding),
             child: Text('Email'),
           ),
-          SizedBox(width: textFieldWidth, child: TextField(
-            controller: newUserEmailText,
-          )),
+          SizedBox(
+              width: textFieldWidth,
+              child: TextField(
+                controller: newUserEmailText,
+              )),
         ],
       ),
     );
@@ -126,33 +112,48 @@ class NewUserWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(right: textPadding),
             child: Text('Name'),
           ),
-          SizedBox(width: textFieldWidth, child: TextField(
-            controller: newUserNameText,
-          )),
+          SizedBox(
+              width: textFieldWidth,
+              child: TextField(
+                controller: newUserNameText,
+              )),
         ],
       ),
     );
   }
 
-  Padding buildCreateNewUserButton() {
+  Padding buildCreateNewUserButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 100.0),
-      child: ElevatedButton(
-          style: ButtonStyle(
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ))),
-          onPressed: () {
-            print('${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , $newUserPictureUrl'
-            );
-
-          },
-          child: const Text('Create new user')),
+      child: BlocProvider(
+        create: (context) => NewUserBloc(),
+        child: ElevatedButton(
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ))),
+            onPressed: () {
+              BlocProvider.of<NewUserBloc>(context)
+                  .add(SetNewUserEvent(user: newUser));
+              print(
+                  '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , $newUserPictureUrl');
+              disposeText();
+            },
+            child: const Text('Create new user')),
+      ),
     );
+  }
+
+  void disposeText() {
+    newUserNameText.dispose();
+    newUserEmailText.dispose();
+    newUserPasswordText.dispose();
+    newUserPictureUrlText.dispose();
+    // super.disposeText();
   }
 }

@@ -1,3 +1,10 @@
-abstract class New_userEvent {}
+import '../../../../../domain/data/dto/user_dto/user_dto.dart';
 
-class InitEvent extends New_userEvent {}
+abstract class NewUserEvent {}
+
+class SetNewUserEvent extends NewUserEvent {
+  final UserDto user;
+  SetNewUserEvent({
+    required this.user
+});
+}

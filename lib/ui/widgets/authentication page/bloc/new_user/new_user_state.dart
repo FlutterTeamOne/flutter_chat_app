@@ -1,9 +1,8 @@
-class New_userState {
-  New_userState init() {
-    return New_userState();
-  }
+import 'package:chat_app/domain/data/dto/user_dto/user_dto.dart';
 
-  New_userState clone() {
-    return New_userState();
-  }
+class NewUserState {
+ late final UserDto newUser;
+ NewUserState({
+   required this.newUser
+});
 }
