@@ -25,13 +25,13 @@ class DBHelper {
 
   ///Инициализация локальной БД. Если ее нет,
   ///то создается новая БД
-  Future<Database> initDB({required UserDto user}) async {
+  Future<Database> initDB({UserDto? user}) async {
     sqfliteFfiInit();
     var dbFactory = databaseFactoryFfi;
     // var dbPath = await dbFactory.getDatabasesPath();
     var dbPath = await getTemporaryDirectory();
-    print('PATH: ${dbPath.path}');
-    String path = join(dbPath.path, DatabaseConst.dbFileName);
+    // print('PATH: ${dbPath.path}');
+    String path = join('dbPath, ${user!.name}', '${DatabaseConst.dbFileName}_${user.name}.db');
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(
           version: DatabaseConst.dbVersion,
@@ -40,7 +40,7 @@ class DBHelper {
   }
 
   ///Функция создания начальной таблицы БД
-  Future _onCreate(Database db, int version) async {
+  Future _onCreate(Database db, int version, {UserDto? user}) async {
     await db.transaction((txn) async {
       //Таблица User
       await txn.execute('''
@@ -114,7 +114,6 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
 )
 ''');
 
-      // //Первичная запись юзера в таблицу
       await txn.insert(
         DatabaseConst.userTable,
         {
@@ -129,20 +128,34 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
               DateTime.now().toIso8601String(),
         },
       );
-      await txn.insert(
-        DatabaseConst.userTable,
-        {
-          'name': 'test2',
-          'email': 't2@t2.t2',
-          DatabaseConst.usersColumnProfilePicLink:
-              'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
-          DatabaseConst.usersColumnCreatedDate:
-              DateTime.now().toIso8601String(),
-          DatabaseConst.usersColumnMainUsersId: 2,
-          DatabaseConst.usersColumnUpdatedDate:
-              DateTime.now().toIso8601String(),
-        },
-      );
+      // await txn.insert(
+      //   DatabaseConst.userTable,
+      //   {
+      //     'name': 'test1',
+      //     'email': 't1@t1.t1',
+      //     DatabaseConst.usersColumnProfilePicLink:
+      //         'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
+      //     DatabaseConst.usersColumnCreatedDate:
+      //         DateTime.now().toIso8601String(),
+      //     DatabaseConst.usersColumnMainUsersId: 1,
+      //     DatabaseConst.usersColumnUpdatedDate:
+      //         DateTime.now().toIso8601String(),
+      //   },
+      // );
+      // await txn.insert(
+      //   DatabaseConst.userTable,
+      //   {
+      //     'name': 'test2',
+      //     'email': 't2@t2.t2',
+      //     DatabaseConst.usersColumnProfilePicLink:
+      //         'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
+      //     DatabaseConst.usersColumnCreatedDate:
+      //         DateTime.now().toIso8601String(),
+      //     DatabaseConst.usersColumnMainUsersId: 2,
+      //     DatabaseConst.usersColumnUpdatedDate:
+      //         DateTime.now().toIso8601String(),
+      //   },
+      // );
       await txn.insert(
         DatabaseConst.chatsTable,
         {
