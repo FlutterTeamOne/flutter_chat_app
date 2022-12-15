@@ -6,10 +6,11 @@ import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DBHelper {
+  //Singleton
   DBHelper._();
   static final DBHelper instanse = DBHelper._();
 
-  static Database? _database; 
+  static Database? _database;
 
   ///Обращение к локальной БД извне
   Future<Database> get database async => _database ??= await initDB();

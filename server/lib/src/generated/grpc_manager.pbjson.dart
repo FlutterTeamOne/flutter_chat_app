@@ -33,11 +33,12 @@ const CreateMessageResponse$json = const {
   '2': const [
     const {'1': 'mainMessagesId', '3': 1, '4': 1, '5': 5, '10': 'mainMessagesId'},
     const {'1': 'dateCreate', '3': 2, '4': 1, '5': 9, '10': 'dateCreate'},
+    const {'1': 'isWritten', '3': 3, '4': 1, '5': 8, '10': 'isWritten'},
   ],
 };
 
 /// Descriptor for `CreateMessageResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createMessageResponseDescriptor = $convert.base64Decode('ChVDcmVhdGVNZXNzYWdlUmVzcG9uc2USJgoObWFpbk1lc3NhZ2VzSWQYASABKAVSDm1haW5NZXNzYWdlc0lkEh4KCmRhdGVDcmVhdGUYAiABKAlSCmRhdGVDcmVhdGU=');
+final $typed_data.Uint8List createMessageResponseDescriptor = $convert.base64Decode('ChVDcmVhdGVNZXNzYWdlUmVzcG9uc2USJgoObWFpbk1lc3NhZ2VzSWQYASABKAVSDm1haW5NZXNzYWdlc0lkEh4KCmRhdGVDcmVhdGUYAiABKAlSCmRhdGVDcmVhdGUSHAoJaXNXcml0dGVuGAMgASgIUglpc1dyaXR0ZW4=');
 @$core.Deprecated('Use updateMessageRequestDescriptor instead')
 const UpdateMessageRequest$json = const {
   '1': 'UpdateMessageRequest',

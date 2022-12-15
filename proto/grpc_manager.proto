@@ -31,6 +31,7 @@ message CreateMessageRequest {
 message CreateMessageResponse {
     int32 mainMessagesId = 1;
     string dateCreate = 2; //26 symbols
+    bool isWritten =3; 
 }
 
 message UpdateMessageRequest {
