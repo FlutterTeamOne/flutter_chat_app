@@ -7,17 +7,22 @@ class UsersServices implements IUsersServices {
   createUser(
       {required String name,
       required String email,
-      required String registrationDate,
+      required String createdDate,
       required String profilePicUrl,
-      required String password}) async {
+      required String updatedDate,
+      required String password,
+      String? deletedDate,
+      int? hashConnect, 
+      }) async {
     Database db = await DbServerServices.instanse.database;
 
     await db.execute('''
-      INSERT INTO users (name, email) VALUES (
+      INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, password) VALUES (
         $name,
         $email,
-        $registrationDate,
+        $createdDate,
         $profilePicUrl,
+        $createdDate,
         $password
       );
       ''');
@@ -29,9 +34,11 @@ class UsersServices implements IUsersServices {
         AND 
         (email = $email)
         AND
-        (registration_date = $registrationDate)
+        (created_date = $createdDate)
         AND
         (profile_pic_url = $profilePicUrl)
+        AND
+        (updated_date = $updatedDate)
         AND
         (password = $password)
         );

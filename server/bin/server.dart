@@ -160,8 +160,9 @@ class GrpcUsers extends GrpcUsersServiceBase {
     var src = await UsersServices().createUser(
         name: request.name,
         email: request.email,
-        registrationDate: request.dateCreated,
+        createdDate: request.dateCreated,
         profilePicUrl: request.profilePicUrl,
+        updatedDate: request
         password: request.password);
     var createUserResponse = CreateUserResponse();
     if (src['main_users_id'] != 0) {
@@ -197,6 +198,9 @@ class GrpcUsers extends GrpcUsersServiceBase {
 
     if (src[0]['user_id'] != 0 && src[0]['user_id'] != null) {
       getUserResponse.id = src[0]['user_id'] as int;
+      getUserResponse.name = src[0]['name'] as String;
+      getUserResponse.email = src[0]['email'] as String;
+      getUserResponse.dateCreated = src[0]['created_date'] as String;
       getUserResponse.dateUpdated = src[0]['updated_date'] as String;
       getUserResponse.dateDeleted = src[0]['deleted_date'] as String;
     }
