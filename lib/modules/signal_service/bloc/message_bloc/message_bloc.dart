@@ -17,6 +17,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   late StreamSubscription _subscription;
   StreamController<List<MessageDto>> messageController =
       StreamController.broadcast();
+  StreamController<List<MessageFromBase>> streamMessageFromBase =
+      StreamController.broadcast();
   final GrpcClient grpcClient;
   final GrpcConnectionBloc grpcConnection;
   var stub = GrpcMessagesClient(Locator.getIt<GrpcClient>().channel);
@@ -40,17 +42,15 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         // state.copyWith(messages: messages);
       }
     });
-
+    on<MessageStreamEvent>(_onMessageStreamEvent);
     on<ReadMessageEvent>(_onReadMessageEvent);
     on<CreateMessageEvent>(_onCreateMessageEvent);
     on<UpdateMessageEvent>(_onUpdateMessageEvent);
-//TODO:добавить удаление сообщения
     on<DeleteMessageEvent>(_onDeleteMessageEvent);
     on<DeleteHistoryMessageEvent>(_onDeleteHistoryMessageEvent);
   }
-
-  FutureOr<void> _onReadMessageEvent(
-      ReadMessageEvent event, Emitter<MessageState> emit) async {
+  FutureOr<void> _onMessageStreamEvent(
+      MessageStreamEvent event, Emitter<MessageState> emit) async {
     var lastMSG = LastMessage(
         mainIdMessage: 0, mainIdUser: await _mainUserServices.getUserID());
     var lst = await _messagesServices.getAllMessagesNotNull();
@@ -61,7 +61,14 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     if (lst.isNotEmpty) {
       lastMSG.mainIdMessage = lst.last.messageId!;
     }
+   
     var stub = Locator.getIt<GrpcMessagesClient>().synchronization(lastMSG);
+    stub.asBroadcastStream(
+      onListen: (subscription) {
+        print('sub: $subscription');
+      },
+    );
+
     var list = <MessageFromBase>[];
     await for (var mes in stub) {
       print('MES CHAT ID ${mes.chatIdMain}');
@@ -70,23 +77,24 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       print('MES SENDER ID: ${mes.senderMainId}');
       print('MES DATE CREATE: ${mes.date}');
       list.add(mes);
-      // await _messagesServices.addNewMessageFromBase(
-      //     chatId: mes.chatIdMain,
-      //     senderId: mes.senderMainId,
-      //     content: mes.content,
-      //     date: mes.date,
-      //     messageId: mes.mainIdMessage);
     }
+    if (list[0].chatIdMain != 0) {
+      await _messagesServices.addNewMessageFromBase(messages: list);
+    }
+    streamMessageFromBase.sink.add(list);
+    add(ReadMessageEvent());
+  }
 
-    await _messagesServices.addNewMessageFromBase(messages: list);
+  FutureOr<void> _onReadMessageEvent(
+      ReadMessageEvent event, Emitter<MessageState> emit) async {
     if (event.messages == null) {
       var messages = await _messagesServices.getAllMessages();
-      //print("MESSAGES:$messages");
+      print("MESSAGES:$messages");
 
       messageController.add(messages);
       emit(state.copyWith(messages: messages));
     } else {
-      //print('EVENT MSG: ${event.messages}');
+      print('EVENT MSG: ${event.messages}');
       emit(state.copyWith(messages: event.messages));
     }
   }

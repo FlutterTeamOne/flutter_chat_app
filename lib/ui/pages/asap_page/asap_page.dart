@@ -20,7 +20,6 @@ class AsapPage extends StatelessWidget {
       builder: (context, chatState) {
         return BlocConsumer<MessageBloc, MessageState>(
           listener: (context, messageState) {
-            // TODO: implement listener
           },
           builder: (context, messageState) {
             return Row(

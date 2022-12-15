@@ -38,42 +38,34 @@ class LocalMessagesServices implements ILocalMessagesServices {
   Future addNewMessageFromBase(
       {required List<MessageFromBase> messages}) async {
     var db = await DBHelper.instanse.database;
-    var listNames = <String>[
-      DatabaseConst.messagesColumnChatId,
-      DatabaseConst.messagesColumnSenderId,
-      DatabaseConst.messagesColumnContent,
-      DatabaseConst.messagesColumnCreatedDate,
-      DatabaseConst.messagesColumnUpdatedDate,
-      DatabaseConst.messagesColumnMessageId
-    ];
-    var result = '';
-    for (int i = 0; i < messages.length; i++) {
-      if (i != 0) {
-        result += ',';
-      }
-      result =
-          '(${messages[i].chatIdMain}, ${messages[i].senderMainId}, "${messages[i].content}", "${messages[i].date}", "${messages[i].date}", ${messages[i].mainIdMessage})';
-    }
-    // var model = {};
-    // var models = [];
-    // messages.forEach((message) {
-    //   model[DatabaseConst.messagesColumnChatId] = message.chatIdMain;
-    //   model[DatabaseConst.messagesColumnSenderId] = message.senderMainId;
-    //   model[DatabaseConst.messagesColumnContent] = message.content;
-    //   model[DatabaseConst.messagesColumnCreatedDate] = message.date;
-    //   model[DatabaseConst.messagesColumnUpdatedDate] = message.date;
-    //   model[DatabaseConst.messagesColumnMessageId] = message.mainIdMessage;
-    //   models.add(model);
-    // });
+    var msgMap = <Map<String, Object>>[];
+    var messageMap = <String, Object>{};
+     messages.map((msg) {
+      msgMap.add({
+        DatabaseConst.messagesColumnChatId: msg.chatIdMain,
+        DatabaseConst.messagesColumnSenderId: msg.senderMainId,
+        DatabaseConst.messagesColumnContent: msg.content,
+        DatabaseConst.messagesColumnCreatedDate: msg.date,
+        DatabaseConst.messagesColumnUpdatedDate: msg.date,
+        DatabaseConst.messagesColumnMessageId: msg.mainIdMessage
+      });
+    }).toList();
+    // for (var msg in messages) {
+    //   msgMap.add({
+    //     DatabaseConst.messagesColumnChatId: msg.chatIdMain,
+    //     DatabaseConst.messagesColumnSenderId: msg.senderMainId,
+    //     DatabaseConst.messagesColumnContent: msg.content,
+    //     DatabaseConst.messagesColumnCreatedDate: msg.date,
+    //     DatabaseConst.messagesColumnUpdatedDate: msg.date,
+    //     DatabaseConst.messagesColumnMessageId: msg.mainIdMessage
+    //   });
+    // }
 
-    return await db.rawInsert('''INSERT INTO ${DatabaseConst.messageTable}
-      (${DatabaseConst.messagesColumnChatId},
-      ${DatabaseConst.messagesColumnSenderId},
-      ${DatabaseConst.messagesColumnContent},
-      ${DatabaseConst.messagesColumnCreatedDate},
-      ${DatabaseConst.messagesColumnUpdatedDate},
-      ${DatabaseConst.messagesColumnMessageId}) 
-      VALUES $result''');
+    for (var msg in msgMap) {
+      messageMap.addAll(msg);
+    }
+    await db.insert(DatabaseConst.messageTable, messageMap);
+    // return
   }
 
   @override

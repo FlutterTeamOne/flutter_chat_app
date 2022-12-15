@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 
 class ChatWidget extends StatefulWidget {
-  ChatWidget({
+  const ChatWidget({
     Key? key,
     required this.messages,
     required this.textController,
@@ -32,11 +32,11 @@ class ChatWidgetState extends State<ChatWidget> {
             TimeCardWidget(date: message.createdDate),
         groupComparator: (value1, value2) => value2,
         itemBuilder: (context, MessageDto message) {
-          if (message.localSendId == 0) {
+          if (message.localSendId == 2) {
             // print(message.isSentByMe);
             // print(message.message);
             return OtherMessageCardWidget(
-              message: message.createdDate,
+              message: message.content,
             );
           } else {
             return MyMessageCardWidget(
