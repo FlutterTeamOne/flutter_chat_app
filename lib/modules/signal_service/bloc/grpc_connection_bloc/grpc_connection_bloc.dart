@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:chat_app/src/generated/grpc_manager/grpc_manager.pbgrpc.dart';
+import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +25,7 @@ class GrpcConnectionBloc
       GrpcConnectionStarted event, Emitter<GrpcConnectionState> emit) async {
     await for (var connectState in connectionBloc.stream) {
       if (connectState is ActiveConnectionState) {
-        GrpcChatClient(grpcClient.channel).connecting(Empty());
+        GrpcMessagesClient(grpcClient.channel).connecting(Empty());
         await for (var grpcState
             in grpcClient.channel.onConnectionStateChanged) {
           switch (grpcState) {

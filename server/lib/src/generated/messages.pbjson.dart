@@ -1,6 +1,6 @@
 ///
 //  Generated code. Do not modify.
-//  source: grpc_manager.proto
+//  source: messages.proto
 //
 // @dart = 2.12
 // ignore_for_file: annotate_overrides,camel_case_types,constant_identifier_names,deprecated_member_use_from_same_package,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
@@ -15,6 +15,16 @@ const Empty$json = const {
 
 /// Descriptor for `Empty`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List emptyDescriptor = $convert.base64Decode('CgVFbXB0eQ==');
+@$core.Deprecated('Use connectRequestDescriptor instead')
+const ConnectRequest$json = const {
+  '1': 'ConnectRequest',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 5, '10': 'id'},
+  ],
+};
+
+/// Descriptor for `ConnectRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List connectRequestDescriptor = $convert.base64Decode('Cg5Db25uZWN0UmVxdWVzdBIOCgJpZBgBIAEoBVICaWQ=');
 @$core.Deprecated('Use createMessageRequestDescriptor instead')
 const CreateMessageRequest$json = const {
   '1': 'CreateMessageRequest',

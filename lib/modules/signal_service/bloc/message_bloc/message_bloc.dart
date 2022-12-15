@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'package:chat_app/domain/data/dto/user_dto/main_user_dto.dart';
 import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
+import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:equatable/equatable.dart';
-import 'package:grpc/grpc.dart';
-import 'package:grpc/grpc_connection_interface.dart';
 
-import '../../../../src/generated/grpc_manager/grpc_manager.pbgrpc.dart';
 import '../../../../src/libraries/library_all.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,7 +18,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       StreamController.broadcast();
   final GrpcClient grpcClient;
   final GrpcConnectionBloc grpcConnection;
-  var stub = GrpcChatClient(Locator.getIt<GrpcClient>().channel);
+  var stub = GrpcMessagesClient(Locator.getIt<GrpcClient>().channel);
   MessageBloc({required this.grpcClient, required this.grpcConnection})
       : super(const MessageState()) {
     _messagesServices = LocalMessagesServices();
@@ -97,8 +94,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     //     .getMainIdUserByLocalId(localId: 1); ////поменять запрос на mainUserTabl
     print('message to server \n $messageToServer');
 
-    var messageResponse =
-        await Locator.getIt<GrpcChatClient>().createMessage(messageToServer);
+    var messageResponse = await Locator.getIt<GrpcMessagesClient>()
+        .createMessage(messageToServer);
     messageResponse.mainMessagesId;
     print("messageOK:/n $messageResponse");
     // grpcConnection.add(const GrpcConnectionStarted());

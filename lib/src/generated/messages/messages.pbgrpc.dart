@@ -1,6 +1,6 @@
 ///
 //  Generated code. Do not modify.
-//  source: grpc_manager.proto
+//  source: messages.proto
 //
 // @dart = 2.12
 // ignore_for_file: annotate_overrides,camel_case_types,constant_identifier_names,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
@@ -10,40 +10,40 @@ import 'dart:async' as $async;
 import 'dart:core' as $core;
 
 import 'package:grpc/service_api.dart' as $grpc;
-import 'grpc_manager.pb.dart' as $0;
-export 'grpc_manager.pb.dart';
+import 'messages.pb.dart' as $0;
+export 'messages.pb.dart';
 
-class GrpcChatClient extends $grpc.Client {
+class GrpcMessagesClient extends $grpc.Client {
   static final _$connecting = $grpc.ClientMethod<$0.Empty, $0.Empty>(
-      '/GrpcChat/connecting',
+      '/GrpcMessages/connecting',
       ($0.Empty value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Empty.fromBuffer(value));
   static final _$createMessage =
       $grpc.ClientMethod<$0.CreateMessageRequest, $0.CreateMessageResponse>(
-          '/GrpcChat/createMessage',
+          '/GrpcMessages/createMessage',
           ($0.CreateMessageRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.CreateMessageResponse.fromBuffer(value));
   static final _$updateMessage =
       $grpc.ClientMethod<$0.UpdateMessageRequest, $0.UpdateMessageResponse>(
-          '/GrpcChat/updateMessage',
+          '/GrpcMessages/updateMessage',
           ($0.UpdateMessageRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.UpdateMessageResponse.fromBuffer(value));
   static final _$deleteMessage =
       $grpc.ClientMethod<$0.DeleteMessageRequest, $0.DeleteMessageResponse>(
-          '/GrpcChat/deleteMessage',
+          '/GrpcMessages/deleteMessage',
           ($0.DeleteMessageRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.DeleteMessageResponse.fromBuffer(value));
   static final _$synchronization =
       $grpc.ClientMethod<$0.LastMessage, $0.MessageFromBase>(
-          '/GrpcChat/synchronization',
+          '/GrpcMessages/synchronization',
           ($0.LastMessage value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.MessageFromBase.fromBuffer(value));
 
-  GrpcChatClient($grpc.ClientChannel channel,
+  GrpcMessagesClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
       $core.Iterable<$grpc.ClientInterceptor>? interceptors})
       : super(channel, options: options, interceptors: interceptors);
@@ -80,10 +80,10 @@ class GrpcChatClient extends $grpc.Client {
   }
 }
 
-abstract class GrpcChatServiceBase extends $grpc.Service {
-  $core.String get $name => 'GrpcChat';
+abstract class GrpcMessagesServiceBase extends $grpc.Service {
+  $core.String get $name => 'GrpcMessages';
 
-  GrpcChatServiceBase() {
+  GrpcMessagesServiceBase() {
     $addMethod($grpc.ServiceMethod<$0.Empty, $0.Empty>(
         'connecting',
         connecting_Pre,

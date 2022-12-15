@@ -1,14 +1,37 @@
 syntax ="proto3";
 
 service GrpcChats{
-
+    rpc getChat (GetChatRequest) returns (GetChatResponse);
+    rpc createChat (CreateChatRequest) returns (CreateChatResponse);
+    rpc updateChat (UpdateChatRequest) returns (UpdateChatResponse);
+    rpc deleteChat (DeleteChatRequest) returns (DeleteChatResponse);
 }
 
-message GetChatRequest{}
-message GetChatResponse{}
-message CreateChatRequest{}
-message CreateChatResponse{}
-message UpdateChatRequest{}
-message UpdateChatResponse{}
-message DeleteChatRequest{}
-message DeleteChatRespone{}
+message GetChatRequest{
+    int32 id = 1;
+}
+message GetChatResponse{
+    int32 friend1Id = 1;
+    int32 friend2Id = 2;
+    string createdDate = 3;
+}
+message CreateChatRequest{
+    int32 friend1Id = 1;
+    int32 friend2Id = 2;
+}
+message CreateChatResponse{
+    int32 id = 1;
+    string createdDate = 2;
+}
+message UpdateChatRequest{
+
+}
+message UpdateChatResponse{
+
+}
+message DeleteChatRequest{
+    int32 id = 1;
+}
+message DeleteChatResponse{
+    string dateDeleted = 1;
+}
