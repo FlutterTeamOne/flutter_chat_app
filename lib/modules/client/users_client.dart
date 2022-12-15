@@ -4,21 +4,6 @@ import 'package:chat_app/src/generated/grpc_lib/grpc_user_lib.dart';
 import 'package:chat_app/src/generated/messages/messages.pbgrpc.dart';
 import 'package:grpc/service_api.dart';
 
-Future<void> main() async {
-  final _channel = GrpcClient().channel;
-
-  UserClient().getUser(id: 1);
-  var user = UserDto(
-      name: 'name',
-      email: 'email',
-      password: 'pass',
-      registrationDate: '2022-12-02T21:36:32.653712',
-      profilePicLink: 'profilePicLinkasdfasdf',
-      updatedDate: 'updatedDate');
-
-  UserClient().createUser(user: user);
-}
-
 class UserClient extends GrpcClient {
   Future getUser({required int id}) async {
     late GrpcUsersClient stub;
