@@ -17,7 +17,7 @@ Future<void> main() async {
     setWindowMinSize(const Size(960, 480));
   }
   Locator.setUp();
-  await DBHelper.instanse.initDB();
+
   runApp(MyApp());
 }
 
