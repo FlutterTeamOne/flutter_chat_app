@@ -52,7 +52,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         mainUserId: user.mainUsersId);
 //Добавляем в main_user table main_id, date_sync and key
 
-    var stub = await GrpcUsersClient(Locator.getIt<GrpcClient>().channel)
-        .createUser(user.mainUsersId);
+    // var stub = await GrpcUsersClient(Locator.getIt<GrpcClient>().channel)
+    //     .createUser(user.mainUsersId);
   }
 }
