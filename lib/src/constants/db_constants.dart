@@ -12,19 +12,18 @@ class DatabaseConst {
 
   //название колонок таблиц
   //users
-  static const usersColumnId = 'user_id';
+  static const usersColumnUserId = 'user_id';
   static const usersColumnName = 'name';
   static const usersColumnEmail = 'email';
   static const usersColumnProfilePicLink = 'profile_pic_link';
   static const usersColumnCreatedDate = 'created_date';
-  static const usersColumnMainUsersId = 'main_users_id';
   static const usersColumnUpdatedDate = 'updated_date';
   static const usersColumnsDeletedDate = 'deleted_date';
 
   //Messages
   static const messagesColumnLocalMessagesId = 'local_messages_id';
-  static const messagesColumnLocalChatId = 'local_chat_id';
-  static const messagesColumnSenderLocalId = 'sender_is_user';
+  static const messagesColumnChatId = 'chat_id';
+  static const messagesColumnSenderId = 'sender_id';
   static const messagesColumnMessageId = 'message_id';
   static const messagesColumnCreatedDate = 'created_date';
   static const messagesColumnIsRead = 'is_read';
@@ -33,7 +32,7 @@ class DatabaseConst {
   static const messagesColumnDeletedDate = 'deleted_date';
 
   //chats
-  static const chatsColumnLocalChatId = 'local_chat_id';
+  static const chatsColumnChatId = 'chat_id';
   static const chatsColumnUserId = 'user_id';
   static const chatsColumnCreatedDate = 'created_date';
   static const chatsColumnUpdatedDate = 'update_date';

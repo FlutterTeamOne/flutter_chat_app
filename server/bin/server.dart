@@ -69,25 +69,19 @@ class GrpcMessage extends GrpcMessagesServiceBase {
   @override
   Stream<MessageFromBase> synchronization(
       ServiceCall call, LastMessage request) async* {
-    if (request.mainIdMessage == 0) {
-      MessageFromBase lastMessage = MessageFromBase();
+    var messages = await messagesService.getRecentMessages(message: request);
+    MessageFromBase lastMessage = MessageFromBase();
+    if (messages.length == 0) {
       yield lastMessage;
     } else {
-      var messages = await messagesService.getRecentMessages(message: request);
-      MessageFromBase lastMessage = MessageFromBase();
-      if (messages.length == 0) {
+      for (int i = 0; i < messages.length; i++) {
         MessageFromBase lastMessage = MessageFromBase();
+        lastMessage.mainIdMessage = messages[i]['message_id'];
+        lastMessage.chatIdMain = messages[i]['chat_id'];
+        lastMessage.senderMainId = messages[i]['sender_id'];
+        lastMessage.content = messages[i]['content'];
+        lastMessage.date = messages[i]['created_date'];
         yield lastMessage;
-      } else {
-        for (int i = 0; i < messages.length; i++) {
-          MessageFromBase lastMessage = MessageFromBase();
-          lastMessage.mainIdMessage = messages[i]['main_messages_id'];
-          lastMessage.chatIdMain = messages[i]['friends_chat_id'];
-          lastMessage.senderMainId = messages[i]['sender_id'];
-          lastMessage.content = messages[i]['content'];
-          lastMessage.date = messages[i]['date'];
-          yield lastMessage;
-        }
       }
     }
   }
@@ -166,54 +160,6 @@ class GrpcMessage extends GrpcMessagesServiceBase {
   Future<Empty> connecting(ServiceCall call, Empty request) {
     // TODO: implement connecting
     throw UnimplementedError();
-  }
-}
-
-class GrpcChats extends GrpcChatsServiceBase {
-  @override
-  Future<CreateChatResponse> createChat(
-      ServiceCall call, CreateChatRequest request) async {
-    var src = await ChatsServices().createChat(
-        friend1_id: request.friend1Id, friend2_id: request.friend1Id);
-    var createChatResponse = CreateChatResponse();
-    if (src[0]['chat_id'] != 0) {
-      createChatResponse.id = src[0]['chat_id'];
-      createChatResponse.createdDate = DateTime.now().toIso8601String();
-    }
-    return createChatResponse;
-  }
-
-  @override
-  Future<DeleteChatResponse> deleteChat(
-      ServiceCall call, DeleteChatRequest request) async {
-    var deleteResponse = DeleteChatResponse();
-    var src = await ChatsServices().deleteChat(id: request.id);
-    if (src != 0) {
-      deleteResponse.dateDeleted = DateTime.now().toIso8601String();
-    }
-    return deleteResponse;
-  }
-
-  @override
-  Future<GetChatResponse> getChat(
-      ServiceCall call, GetChatRequest request) async {
-    var getChatResp = GetChatResponse();
-    var src = await ChatsServices().getChatById(id: request.id);
-
-    if (src[0]['user_id'] != 0 && src[0]['user_id'] != null) {
-      getChatResp.friend1Id = src[0]['friend1_id'];
-      getChatResp.friend2Id = src[0]['friend2_id'];
-      getChatResp.createdDate = DateTime.now().toIso8601String();
-    }
-    return getChatResp;
-  }
-
-  @override
-  Future<UpdateChatResponse> updateChat(
-      ServiceCall call, UpdateChatRequest request) async {
-    var updateChatResp = UpdateChatResponse();
-
-    return updateChatResp;
   }
 }
 

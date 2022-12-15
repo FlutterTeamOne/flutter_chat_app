@@ -20,7 +20,7 @@ class GrpcMessagesClient extends $grpc.Client {
       ($core.List<$core.int> value) => $0.Empty.fromBuffer(value));
   static final _$connectings =
       $grpc.ClientMethod<$0.ConnectRequest, $0.MessageFromBase>(
-          '/GrpcChat/connectings',
+          '/GrpcMessages/connectings',
           ($0.ConnectRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.MessageFromBase.fromBuffer(value));

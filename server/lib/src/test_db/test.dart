@@ -1,4 +1,3 @@
-
 import '../library/library_server.dart';
 
 Future<void> main() async {
@@ -8,7 +7,7 @@ Future<void> main() async {
   ///
 
   //открыть базу
-
+  var db = await DbServerServices.instanse.openDatabase();
   //Обращаемся к методам работы с таблицей чатов через:
   var chatsHelper = ChatsServices();
 
@@ -34,10 +33,10 @@ Future<void> main() async {
   // print("src: $src");
   // print(await messagesService.getMessageById(id: 4));
 
-  var a = await usersService.getAllUsers();
-  for (var b in a) {
-    print(b);
-  }
+  // var a = await usersService.getAllUsers();
+  // for (var b in a) {
+  //   print(b);
+  // }
 
   ///
   ///Вывод таблицы сообщений
@@ -72,26 +71,12 @@ Future<void> main() async {
   ///
   ///Проверка запроса с синхронизацией
   ///
-  // var db = await dbServerServices.openDatabase();
-  // var main_messages_id = 21;
-  // var mainIdMessage = 1;
-  // var messages = await db.rawQuery('''SELECT *
-  //     FROM messages, friends_chat AS friend
-  //     WHERE (main_messages_id > $main_messages_id AND
-  //       (friend.friend1_id = $mainIdMessage OR
-  //       friend.friend2_id = $mainIdMessage))''');
-  // if (messages.length == 0) {
-  //   MessageFromBase lastMessage = MessageFromBase();
-  //   print(lastMessage);
-  // } else {
-  //   for (int i = 0; i < messages.length; i++) {
-  //     MessageFromBase lastMessage = MessageFromBase();
-  //     lastMessage.mainIdMessage = messages[i]['main_messages_id'];
-  //     lastMessage.chatIdMain = messages[i]['friends_chat_id'];
-  //     lastMessage.senderMainId = messages[i]['sender_id'];
-  //     lastMessage.content = messages[i]['content'];
-  //     lastMessage.date = messages[i]['date'];
-  //     print(lastMessage);
-  //   }
-  // }
+  var main_messages_id = 70;
+  var mainIdUser = 1;
+  var messages = await messagesService.getRecentMessages(
+      message:
+          LastMessage(mainIdMessage: main_messages_id, mainIdUser: mainIdUser));
+  for (var mes in messages) {
+    print(mes);
+  }
 }

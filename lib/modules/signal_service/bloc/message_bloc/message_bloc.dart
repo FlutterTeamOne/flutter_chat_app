@@ -13,6 +13,7 @@ part 'message_state.dart';
 class MessageBloc extends Bloc<MessageEvent, MessageState> {
   late LocalMessagesServices _messagesServices;
   late LocalUsersServices _userServices;
+  late MainUserServices _mainUserServices;
   late StreamSubscription _subscription;
   StreamController<List<MessageDto>> messageController =
       StreamController.broadcast();
@@ -27,6 +28,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     //   print('MESSAGE: ${value.messages}');
     // });
     _userServices = LocalUsersServices();
+    _mainUserServices = MainUserServices();
 
     _subscription =
         DBHelper.instanse.updateListenController.stream.listen((event) async {
@@ -49,18 +51,42 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
   FutureOr<void> _onReadMessageEvent(
       ReadMessageEvent event, Emitter<MessageState> emit) async {
-    var lastMSG = LastMessage();
+    var lastMSG = LastMessage(
+        mainIdMessage: 0, mainIdUser: await _mainUserServices.getUserID());
     var lst = await _messagesServices.getAllMessagesNotNull();
-    lastMSG.mainIdMessage = lst.last.messageId!;
-    var stub = Locator.getIt<GrpcChatClient>().synchronization(lastMSG);
+
+    ///
+    ///
+    ///
+    if (lst.isNotEmpty) {
+      lastMSG.mainIdMessage = lst.last.messageId!;
+    }
+    var stub = Locator.getIt<GrpcMessagesClient>().synchronization(lastMSG);
+    var list = <MessageFromBase>[];
+    await for (var mes in stub) {
+      print('MES CHAT ID ${mes.chatIdMain}');
+      print('MES CONTENT: ${mes.content}');
+      print('MES MAIN ID MSG: ${mes.mainIdMessage}');
+      print('MES SENDER ID: ${mes.senderMainId}');
+      print('MES DATE CREATE: ${mes.date}');
+      list.add(mes);
+      // await _messagesServices.addNewMessageFromBase(
+      //     chatId: mes.chatIdMain,
+      //     senderId: mes.senderMainId,
+      //     content: mes.content,
+      //     date: mes.date,
+      //     messageId: mes.mainIdMessage);
+    }
+
+    await _messagesServices.addNewMessageFromBase(messages: list);
     if (event.messages == null) {
       var messages = await _messagesServices.getAllMessages();
-      print("MESSAGES:$messages");
+      //print("MESSAGES:$messages");
 
       messageController.add(messages);
       emit(state.copyWith(messages: messages));
     } else {
-      print('EVENT MSG: ${event.messages}');
+      //print('EVENT MSG: ${event.messages}');
       emit(state.copyWith(messages: event.messages));
     }
   }
@@ -74,7 +100,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     // DBHelper.instanse
     //     .onAdd(tableName: 'messages', model: messageMapToDB(model));
     message.localMessageId = await _messagesServices.addNewMessage(
-      localChatId: message.localChatId,
+      chatId: message.localChatId,
       senderId: 1,
       content: message.content,
       date: message.createdDate,

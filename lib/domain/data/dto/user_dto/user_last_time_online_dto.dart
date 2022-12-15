@@ -33,7 +33,7 @@ class UserLastTimeOnlineDto extends ModelDto {
   Map<String, dynamic> toMap() {
     return {
       DatabaseConst.userLastTimeOnlineColumnId: userLastTimeOnlineId,
-      DatabaseConst.usersColumnId: localUsersId,
+      DatabaseConst.usersColumnUserId: localUsersId,
       DatabaseConst.userLastTimeOnlineColumnisOnline: isOnline,
       DatabaseConst.userLastTimeOnlineColumnLastTimeOnline: lastTimeOnline,
     };
@@ -43,7 +43,7 @@ class UserLastTimeOnlineDto extends ModelDto {
     return UserLastTimeOnlineDto(
       userLastTimeOnlineId:
           map[DatabaseConst.userLastTimeOnlineColumnId] as int,
-      localUsersId: map[DatabaseConst.usersColumnId],
+      localUsersId: map[DatabaseConst.usersColumnUserId],
       isOnline: map[DatabaseConst.userLastTimeOnlineColumnisOnline] == 1,
       lastTimeOnline: map[DatabaseConst.userLastTimeOnlineColumnLastTimeOnline],
     );

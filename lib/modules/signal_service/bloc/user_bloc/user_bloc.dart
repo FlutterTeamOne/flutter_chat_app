@@ -45,11 +45,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     //создаем юзера на локальном бд
 
     await _usersServices.createUser(
-        name: user.name,
-        email: user.email,
-        registrationDate: user.registrationDate,
-        profilePicUrl: user.profilePicLink,
-        mainUserId: user.mainUsersId);
+      userId: user.userId!,
+      name: user.name,
+      email: user.email,
+      registrationDate: user.registrationDate,
+      profilePicUrl: user.profilePicLink,
+    );
 //Добавляем в main_user table main_id, date_sync and key
 
     // var stub = await GrpcUsersClient(Locator.getIt<GrpcClient>().channel)
