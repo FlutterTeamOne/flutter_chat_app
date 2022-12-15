@@ -4,43 +4,43 @@ import '../../../library/library_server.dart';
 
 class UsersServices implements IUsersServices {
   @override
-  createUser(
-      {required String name,
-      required String email,
-      required String createdDate,
-      required String profilePicUrl,
-      required String updatedDate,
-      required String password,
-      String? deletedDate,
-      int? hashConnect, 
-      }) async {
+  createUser({
+    required String name,
+    required String email,
+    required String createdDate,
+    required String profilePicUrl,
+    required String updatedDate,
+    required String password,
+    String? deletedDate,
+    int? hashConnect,
+  }) async {
     Database db = await DbServerServices.instanse.database;
 
     await db.execute('''
       INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, password) VALUES (
-        $name,
-        $email,
-        $createdDate,
-        $profilePicUrl,
-        $createdDate,
-        $password
+        '$name',
+        '$email',
+        '$createdDate',
+        '$profilePicUrl',
+        '$createdDate',
+        '$password'
       );
       ''');
 
     return await db.rawQuery('''
-      SELECT main_users_id FROM users 
+      SELECT * FROM users 
       WHERE (
-        (name = $name) 
+        (name = '$name') 
         AND 
-        (email = $email)
+        (email = '$email')
         AND
-        (created_date = $createdDate)
+        (created_date = '$createdDate')
         AND
-        (profile_pic_url = $profilePicUrl)
+        (profile_pic_url = '$profilePicUrl')
         AND
-        (updated_date = $updatedDate)
+        (updated_date = '$updatedDate')
         AND
-        (password = $password)
+        (password = '$password')
         );
     ''');
   }
@@ -65,7 +65,7 @@ class UsersServices implements IUsersServices {
     Database db = await DbServerServices.instanse.database;
 
     return await db.rawQuery(
-        '''SELECT user_id, updated_date, deleted_date FROM users WHERE (user_id = $id)''');
+        '''SELECT * FROM users WHERE (user_id = $id)''');
   }
 
   @override

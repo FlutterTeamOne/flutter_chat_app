@@ -8,9 +8,10 @@ class UserDto extends ModelDto {
   final int? localUserId;
   final String name;
   final String email;
+  final String password;
   final String registrationDate;
   final String profilePicLink;
-  final int mainUsersId;
+  final int? mainUsersId;
   final String updatedDate;
   final String? deletedDate;
 
@@ -18,9 +19,10 @@ class UserDto extends ModelDto {
     this.localUserId,
     required this.name,
     required this.email,
+    required this.password,
     required this.registrationDate,
     required this.profilePicLink,
-    required this.mainUsersId,
+    this.mainUsersId,
     required this.updatedDate,
     this.deletedDate,
   });
@@ -29,6 +31,7 @@ class UserDto extends ModelDto {
     int? localUserId,
     String? name,
     String? email,
+    String? password,
     String? registrationDate,
     String? profilePicLink,
     int? mainUsersId,
@@ -39,6 +42,7 @@ class UserDto extends ModelDto {
       localUserId: localUserId ?? this.localUserId,
       name: name ?? this.name,
       email: email ?? this.email,
+      password: password ?? this.password,
       registrationDate: registrationDate ?? this.registrationDate,
       profilePicLink: profilePicLink ?? this.profilePicLink,
       mainUsersId: mainUsersId ?? this.mainUsersId,
@@ -52,6 +56,7 @@ class UserDto extends ModelDto {
       DatabaseConst.usersColumnId: localUserId,
       DatabaseConst.usersColumnName: name,
       DatabaseConst.usersColumnEmail: email,
+      DatabaseConst.usersColumnPassword: password,
       DatabaseConst.usersColumnCreatedDate: registrationDate,
       DatabaseConst.usersColumnProfilePicLink: profilePicLink,
       DatabaseConst.usersColumnMainUsersId: mainUsersId,
@@ -65,8 +70,10 @@ class UserDto extends ModelDto {
       // localUserId: map[DatabaseConst.usersColumnId] as int,
       name: map[DatabaseConst.usersColumnName] as String,
       email: map[DatabaseConst.usersColumnEmail] as String,
+      password: map[DatabaseConst.usersColumnPassword] as String,
       registrationDate: map[DatabaseConst.usersColumnCreatedDate] as String,
       profilePicLink: map[DatabaseConst.usersColumnProfilePicLink] as String,
+
       mainUsersId: map[DatabaseConst.usersColumnMainUsersId] as int,
       updatedDate: map[DatabaseConst.usersColumnUpdatedDate] as String,
       deletedDate: map[DatabaseConst.usersColumnsDeletedDate] ?? '',
@@ -80,7 +87,7 @@ class UserDto extends ModelDto {
 
   @override
   String toString() {
-    return 'UserDto(localUserId: $localUserId, name: $name, email: $email, registrationDate: $registrationDate, profilePicLink: $profilePicLink, mainUsersId: $mainUsersId, updatedDate: $updatedDate, deletedDate: $deletedDate)';
+    return 'UserDto(localUserId: $localUserId, name: $name, email: $email, password: $password, registrationDate: $registrationDate, profilePicLink: $profilePicLink, mainUsersId: $mainUsersId, updatedDate: $updatedDate, deletedDate: $deletedDate)';
   }
 
   @override
@@ -91,6 +98,7 @@ class UserDto extends ModelDto {
         other.localUserId == localUserId &&
         other.name == name &&
         other.email == email &&
+        other.password == password &&
         other.registrationDate == registrationDate &&
         other.profilePicLink == profilePicLink &&
         other.mainUsersId == mainUsersId &&
@@ -103,6 +111,7 @@ class UserDto extends ModelDto {
     return localUserId.hashCode ^
         name.hashCode ^
         email.hashCode ^
+        password.hashCode ^
         registrationDate.hashCode ^
         profilePicLink.hashCode ^
         mainUsersId.hashCode ^

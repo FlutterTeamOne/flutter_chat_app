@@ -19,6 +19,7 @@ class DatabaseConst {
   static const usersColumnId = 'user_id';
   static const usersColumnName = 'name';
   static const usersColumnEmail = 'email';
+  static const usersColumnPassword = 'password';
   static const usersColumnProfilePicLink = 'profile_pic_link';
   static const usersColumnCreatedDate = 'created_date';
   static const usersColumnMainUsersId = 'main_users_id';

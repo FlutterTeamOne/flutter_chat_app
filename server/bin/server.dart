@@ -202,7 +202,6 @@ class GrpcUsers extends GrpcUsersServiceBase {
       getUserResponse.email = src[0]['email'] as String;
       getUserResponse.dateCreated = src[0]['created_date'] as String;
       getUserResponse.dateUpdated = src[0]['updated_date'] as String;
-      getUserResponse.dateDeleted = src[0]['deleted_date'] as String;
     }
     return getUserResponse;
   }
