@@ -50,7 +50,7 @@ class UsersServices implements IUsersServices {
   getAllUsers() async {
     Database db = await DbServerServices.instanse.database;
 
-    return await db.rawQuery('''SELECT hash_connect FROM users''');
+    return await db.rawQuery('''SELECT user_id, hash_connect FROM users''');
   }
 
   @override

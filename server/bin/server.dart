@@ -54,7 +54,12 @@ class GrpcChat extends GrpcChatServiceBase {
     var receiverId = await usersService.getUserIdByChat(
         senderId: request.senderMainId, chatId: request.chatIdMain);
     print('receiverId: $receiverId');
-    var hashConnect = await usersService.getHashCodeById(id: receiverId);
+    var hashConnect;
+    try {
+      hashConnect = await usersService.getHashCodeById(id: receiverId);
+    } catch (e) {
+      print(e);
+    }
     print("HASH: $hashConnect");
     hashConnect != null
         ? _controller[hashConnect]?.sink.add(messageFromBase)
@@ -125,35 +130,36 @@ class GrpcChat extends GrpcChatServiceBase {
   Stream<MessageFromBase> connectings(
       ServiceCall call, Stream<ConnectRequest> request) async* {
     var connectController = StreamController<MessageFromBase>();
-    _controller[request.hashCode] = connectController;
+
     late int id;
-    request.listen((mes) {
-      print('listening...${request.hashCode}');
-      // print('Request ${req.id} (#${request.hashCode})');
+    request.listen((mes) async {
+      print('listening...${mes.hashCode}');
       id = mes.id;
-      // var userId = req.id;
-      usersService.updateUser(
-          newValues: 'hash_connect = ${request.hashCode}',
+      _controller[mes.hashCode] = connectController;
+      await usersService.updateUser(
+          newValues: 'hash_connect = ${mes.hashCode}',
           condition: 'user_id = ${mes.id}');
-
-      // _controller.forEach((nowController, _) {
-      //   if (nowController != connectController) {
-      //     nowController.sink.add(req);
-      //   }
-
-      // });
-    }).onError((dynamic e) {
+    }).onError((dynamic e) async {
       print(e);
-      _controller.remove(request.hashCode);
+      _controller.remove(await usersService.getHashCodeById(id: id));
       connectController.close();
-      usersService.updateUser(
+      await usersService.updateUser(
           newValues: 'hash_connect = null', condition: 'user_id = $id');
       print('Disconnected: #${request.hashCode}');
     });
-
-    await for (final message in connectController.stream) {
-      print('yield');
-      yield message;
+    try {
+      await for (final message in connectController.stream) {
+        print('yield');
+        yield message;
+      }
+    } on GrpcError catch (e) {
+      print(e);
+    } finally {
+      _controller.remove(await usersService.getHashCodeById(id: id));
+      connectController.close();
+      await usersService.updateUser(
+          newValues: 'hash_connect = null', condition: 'user_id = $id');
+      print('Disconnected: #${request.hashCode}');
     }
   }
 

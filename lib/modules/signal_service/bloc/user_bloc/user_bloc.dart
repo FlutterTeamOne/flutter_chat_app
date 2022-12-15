@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:chat_app/modules/client/grpc_client.dart';
+import 'package:chat_app/modules/signal_service/service_locator/locator.dart';
+import 'package:chat_app/src/generated/users/users.pbgrpc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../../domain/data/library/library_data.dart';
@@ -38,5 +41,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         registrationDate: user.registrationDate,
         profilePicUrl: user.profilePicLink,
         mainUserId: user.mainUsersId);
+    var stub = GrpcUsersClient(Locator.getIt<GrpcClient>().channel)
+        .createUser(request);
   }
 }

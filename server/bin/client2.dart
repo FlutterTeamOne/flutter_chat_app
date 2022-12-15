@@ -39,6 +39,11 @@ Future<void> main(List<String> args) async {
     } catch (e) {
       print(e);
     }
+    if (lines == 'bue') {
+      print("bue");
+      channel.shutdown();
+      break;
+    }
   }
 }
 

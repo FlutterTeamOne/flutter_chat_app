@@ -18,9 +18,8 @@ class Locator {
     getIt.registerLazySingleton<MessageBloc>(() => MessageBloc(
         grpcClient: getIt<GrpcClient>(),
         grpcConnection: getIt<GrpcConnectionBloc>()));
-    getIt.registerLazySingleton<MessageIdInMainBloc>(
-        () => MessageIdInMainBloc());
     getIt.registerLazySingleton<ChangeThemeBloc>(() => ChangeThemeBloc());
-    getIt.registerFactory<GrpcChatClient>(() => GrpcChatClient(getIt<GrpcClient>().channel));
+    getIt.registerFactory<GrpcChatClient>(
+        () => GrpcChatClient(getIt<GrpcClient>().channel));
   }
 }

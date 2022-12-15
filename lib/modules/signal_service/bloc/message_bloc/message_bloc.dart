@@ -15,7 +15,7 @@ part 'message_state.dart';
 
 class MessageBloc extends Bloc<MessageEvent, MessageState> {
   late LocalMessagesServices _messagesServices;
-  late MessageIdServices _messageIdServices;
+  late LocalUsersServices _userServices;
   late StreamSubscription _subscription;
   StreamController<List<MessageDto>> messageController =
       StreamController.broadcast();
@@ -29,8 +29,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     //   add(ReadMessageEvent(messages: value.messages));
     //   print('MESSAGE: ${value.messages}');
     // });
+    _userServices = LocalUsersServices();
 
-    _messageIdServices = MessageIdServices();
     _subscription =
         DBHelper.instanse.updateListenController.stream.listen((event) async {
       if (event == true) {
@@ -52,6 +52,11 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
   FutureOr<void> _onReadMessageEvent(
       ReadMessageEvent event, Emitter<MessageState> emit) async {
+    var lastMSG = LastMessage();
+    var lst = await _messagesServices.getAllMessagesNotNull();
+    lastMSG.mainIdMessage = lst.last.messageId!;
+    var stub = Locator.getIt<GrpcChatClient>().synchronization(lastMSG);
+
     if (event.messages == null) {
       var messages = await _messagesServices.getAllMessages();
       print("MESSAGES:$messages");
