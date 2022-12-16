@@ -1,6 +1,5 @@
 import 'package:sqflite_common/sqlite_api.dart';
-
-import '../../../library/library_server.dart';
+import 'package:server/src/library/library_server.dart';
 
 class MessagesServices implements IMessagesServices {
   @override
