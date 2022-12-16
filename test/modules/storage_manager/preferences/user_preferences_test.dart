@@ -41,15 +41,15 @@ void main() async {
     test('setLightTheme', () async {
       final myPreferences = UserPreferences();
 
-      //await myPreferences.setTheme('light_theme');
-      expect(await myPreferences.getTheme(), 'light_theme');
+      await myPreferences.setThemeEvent(0);
+      expect(await myPreferences.getTheme(), 0);
     });
 
     test('setDarkTheme', () async {
       final myPreferences = UserPreferences();
 
-      //await myPreferences.setTheme('dark_theme');
-      expect(await myPreferences.getTheme(), 'dark_theme');
+      await myPreferences.setThemeEvent(1);
+      expect(await myPreferences.getTheme(), 1);
     });
   });
 }

@@ -70,8 +70,16 @@ class CustomTheme {
   );
 
     static final ThemeData lightThemeOrange = ThemeData(
-    brightness: Brightness.light,
-    primarySwatch: Colors.orange,
+      brightness: Brightness.light,
+      primarySwatch: Colors.blueGrey,
+      primaryColor: Colors.blueGrey,
+      errorColor: Colors.redAccent.shade200,
+      // backgroundColor: Colors.black45,
+      textSelectionTheme: const TextSelectionThemeData(
+        cursorColor: Colors.white70,
+        selectionColor: Colors.white70,
+        selectionHandleColor: Colors.white70,
+      ),
   );
     final themes = [
       CustomTheme.lightThemeDeepPurple,

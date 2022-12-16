@@ -1,6 +1,6 @@
 class DatabaseConst {
   //название и версия бд
-  static const dbFileName = 'sfera.db';
+  static const dbFileName = 'sfera';
   static const dbVersion = 1;
 
   //название таблиц
@@ -15,6 +15,7 @@ class DatabaseConst {
   static const usersColumnUserId = 'user_id';
   static const usersColumnName = 'name';
   static const usersColumnEmail = 'email';
+  static const usersColumnPassword = 'password';
   static const usersColumnProfilePicLink = 'profile_pic_link';
   static const usersColumnCreatedDate = 'created_date';
   static const usersColumnUpdatedDate = 'updated_date';
