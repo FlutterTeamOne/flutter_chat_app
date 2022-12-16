@@ -33,6 +33,12 @@ migrate_working_dir/
 /build/
 ./coverage
 ./vs-code
+./server/windows/flutter/*
+./server/linux/flutter/*
+./server/macos/Flutter/*
+./windows/flutter/*
+./linux/flutter/*
+./macos/Flutter/*
 
 # Symbolication related
 app.*.symbols
