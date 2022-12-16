@@ -174,16 +174,30 @@ class GrpcMessage extends GrpcMessagesServiceBase {
     _controllers[clientController] = null;
 
     // yield Dynamic(readMessageRequest: ReadMessageRequest(message: Message()));
-    request.listen((req) {
-      _controllers.forEach((controller, _) {
+    request.listen((req) async {
+      _controllers.forEach((controller, _) async {
         print('for Each');
         if (controller != clientController) {
-          usersService.updateUser(
-            newValues: 'hash_connect = ${request.hashCode}',
-            condition: 'user_id = ${req.createMessage.message.senderId}');
+          await usersService.updateUser(
+              newValues: 'hash_connect = ${request.hashCode}',
+              condition:
+                  'user_id = ${req.readMessageRequest.message.senderId}');
           print('REQ message: ${req.readMessageRequest.message}');
           // messages.add(req.message);
           if (req.messageState == MessageStateEnum.isCreateMessage) {
+            var newMessage = await messagesService.addNewMessage(
+              chatId: req.readMessageRequest.message.chatId,
+              senderId: req.readMessageRequest.message.senderId,
+              content: req.readMessageRequest.message.content,
+            );
+
+            req.readMessageRequest.message.messageId =
+                newMessage['message_id'] as int;
+            req.readMessageRequest.message.dateCreate =
+                newMessage['created_date'] as String;
+            req.readMessageRequest.message.dateUpdate =
+                newMessage['updated_date'] as String;
+
             controller.sink.add(
               Dynamic(
                   readMessageRequest: ReadMessageRequest(
