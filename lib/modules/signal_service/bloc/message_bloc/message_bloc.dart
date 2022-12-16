@@ -110,6 +110,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
   FutureOr<void> _onReadMessageEvent(
       ReadMessageEvent event, Emitter<MessageState> emit) async {
+
     var stub = GrpcMessagesClient(grpcClient.channel);
     var dyn = Stream<Dynamic>.value(
         Dynamic(readMessageRequest: ReadMessageRequest()));
@@ -127,6 +128,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       emit(state.copyWith(messages: event.messages));
       messageController.add(mes);
     });
+
     if (event.messages == null) {
       var messages = await _messagesServices.getAllMessages();
       print("MESSAGES:$messages");

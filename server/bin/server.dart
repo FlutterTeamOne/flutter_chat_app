@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:grpc/grpc.dart';
 
-import '../lib/src/library/library_server.dart';
+import 'package:server/src/library/library_server.dart';
 
 ///
 ///Заполняем все методы как и в Protoc файле
