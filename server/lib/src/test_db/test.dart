@@ -1,5 +1,3 @@
-import 'package:server/src/generated/grpc_manager.pb.dart';
-
 import '../library/library_server.dart';
 
 Future<void> main() async {
@@ -24,24 +22,6 @@ Future<void> main() async {
   //         WHERE main_message_id = '22';
   //               ''');
 
-  var users = await db
-      .rawQuery('''SELECT user_id, name, email, profile_pic_url FROM users''');
-  List<User> userList = [];
-
-  for (var user in users) {
-    var userForList = User();
-    print(user);
-    userForList.id = user['user_id'] as int;
-    userForList.name = user['name'] as String;
-    userForList.email = user['email'] as String;
-    userForList.picture = user['profile_pic_url'] as String;
-    userList.add(userForList);
-    print("userList: $userList");
-  }
-
-  print(userList.length);
-  var userForClient = Users(users: userList);
-  print(userForClient);
   // var request = UpdateMessageRequest();
   // request.idMessageMain = 4;
   // request.content = "Zdarova PAPASHA";
@@ -86,26 +66,12 @@ Future<void> main() async {
   ///
   ///Проверка запроса с синхронизацией
   ///
-  // var db = await dbServerServices.openDatabase();
-  // var main_messages_id = 21;
-  // var mainIdMessage = 1;
-  // var messages = await db.rawQuery('''SELECT *
-  //     FROM messages, friends_chat AS friend
-  //     WHERE (main_messages_id > $main_messages_id AND
-  //       (friend.friend1_id = $mainIdMessage OR
-  //       friend.friend2_id = $mainIdMessage))''');
-  // if (messages.length == 0) {
-  //   MessageFromBase lastMessage = MessageFromBase();
-  //   print(lastMessage);
-  // } else {
-  //   for (int i = 0; i < messages.length; i++) {
-  //     MessageFromBase lastMessage = MessageFromBase();
-  //     lastMessage.mainIdMessage = messages[i]['main_messages_id'];
-  //     lastMessage.chatIdMain = messages[i]['friends_chat_id'];
-  //     lastMessage.senderMainId = messages[i]['sender_id'];
-  //     lastMessage.content = messages[i]['content'];
-  //     lastMessage.date = messages[i]['date'];
-  //     print(lastMessage);
-  //   }
-  // }
+  var main_messages_id = 70;
+  var mainIdUser = 1;
+  var messages = await messagesService.getRecentMessages(
+      message:
+          LastMessage(mainIdMessage: main_messages_id, mainIdUser: mainIdUser));
+  for (var mes in messages) {
+    print(mes);
+  }
 }

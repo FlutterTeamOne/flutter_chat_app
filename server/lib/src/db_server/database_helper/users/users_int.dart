@@ -17,7 +17,10 @@ abstract class IUsersServices {
 
   deleteUser({required int id});
   Future<List<Map<String, Object?>>> getUser({required int id});
-  Future getAllUsers();
+  getAllUsers();
+
+  getUserIdByChat({required int senderId, required int chatId});
+  getHashCodeById({required int id});
 }
 
 final usersServices = IUsersServices();

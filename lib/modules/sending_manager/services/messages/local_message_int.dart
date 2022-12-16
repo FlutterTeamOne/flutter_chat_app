@@ -5,7 +5,7 @@ abstract class ILocalMessagesServices {
   factory ILocalMessagesServices() => LocalMessagesServices();
 
   Future<dynamic> addNewMessage(
-      {required int localChatId,
+      {required int chatId,
       required int senderId,
       required String content,
       required String date});
@@ -13,7 +13,7 @@ abstract class ILocalMessagesServices {
   Future<Map<String, Object?>> getMessageById({required int id});
 
   Future updateMessage(
-      {required  MessageDto message, required int localMessageId});
+      {required MessageDto message, required int localMessageId});
 
   Future<int> deleteMessage({required int id});
 

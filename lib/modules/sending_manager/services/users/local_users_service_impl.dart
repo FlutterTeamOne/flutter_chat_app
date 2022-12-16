@@ -7,20 +7,21 @@ class LocalUsersServices implements ILocalUsersServices {
   LocalUsersServices();
 
   @override
-  Future<int> createUser(
-      {required String name,
-      required String email,
-      required String registrationDate,
-      required String profilePicUrl,
-      required int mainUserId}) async {
+  Future<int> createUser({
+    required int userId,
+    required String name,
+    required String email,
+    required String registrationDate,
+    required String profilePicUrl,
+  }) async {
     var db = await DBHelper.instanse.database;
 
     return await db.insert(DatabaseConst.userTable, {
+      DatabaseConst.usersColumnUserId: userId,
       DatabaseConst.usersColumnName: name,
       DatabaseConst.usersColumnEmail: email,
       DatabaseConst.usersColumnCreatedDate: registrationDate,
       DatabaseConst.usersColumnProfilePicLink: profilePicUrl,
-      DatabaseConst.usersColumnMainUsersId: mainUserId,
     });
   }
 
@@ -28,7 +29,7 @@ class LocalUsersServices implements ILocalUsersServices {
   Future<int> deleteUser({required int id}) async {
     var db = await DBHelper.instanse.database;
     return await db.rawDelete(
-        'DELETE FROM ${DatabaseConst.userTable} WHERE ${DatabaseConst.usersColumnId}=$id');
+        'DELETE FROM ${DatabaseConst.userTable} WHERE ${DatabaseConst.usersColumnUserId}=$id');
   }
 
   @override
@@ -70,9 +71,9 @@ class LocalUsersServices implements ILocalUsersServices {
     var db = await DBHelper.instanse.database;
 
     var user = await db.rawQuery('''
-              SELECT ${DatabaseConst.usersColumnMainUsersId}
+              SELECT ${DatabaseConst.usersColumnUserId}
               FROM ${DatabaseConst.userTable}
-              WHERE ${DatabaseConst.usersColumnId} = $localId
+              WHERE ${DatabaseConst.usersColumnUserId} = $localId
               ''');
     return user[0] as UserDto;
   }

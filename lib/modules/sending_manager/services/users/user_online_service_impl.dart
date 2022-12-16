@@ -8,7 +8,7 @@ class UserOnlinveService implements IUserOnlineService {
       {required int localUsersId}) async {
     var db = await DBHelper.instanse.database;
     return await db.query(DatabaseConst.userLastTimeOnlineTable,
-        where: '${DatabaseConst.usersColumnId}=$localUsersId');
+        where: '${DatabaseConst.usersColumnUserId}=$localUsersId');
   }
 
   @override

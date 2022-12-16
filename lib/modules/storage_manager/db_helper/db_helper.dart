@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:chat_app/domain/data/dto/user_dto/user_dto.dart';
+
 import '../../../src/constants/db_constants.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -43,11 +45,10 @@ class DBHelper {
       //Таблица User
       await txn.execute('''
 CREATE TABLE ${DatabaseConst.userTable} (
-  ${DatabaseConst.usersColumnId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
+  ${DatabaseConst.usersColumnUserId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey},
   ${DatabaseConst.usersColumnName} ${DatabaseConst.char50} ${DatabaseConst.notNull},
   ${DatabaseConst.usersColumnEmail} ${DatabaseConst.char50} ${DatabaseConst.notNull},
   ${DatabaseConst.usersColumnProfilePicLink} ${DatabaseConst.char50} ${DatabaseConst.notNull},
-  ${DatabaseConst.usersColumnMainUsersId} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique},
   ${DatabaseConst.usersColumnCreatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
   ${DatabaseConst.usersColumnUpdatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
   ${DatabaseConst.usersColumnsDeletedDate} ${DatabaseConst.char26}
@@ -64,12 +65,12 @@ CREATE TABLE ${DatabaseConst.mainUserTable}(
 //Таблица Chats
       await txn.execute('''
 CREATE TABLE ${DatabaseConst.chatsTable}(
- ${DatabaseConst.chatsColumnLocalChatId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
+ ${DatabaseConst.chatsColumnChatId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey},
  ${DatabaseConst.chatsColumnUserId} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique},
  ${DatabaseConst.chatsColumnCreatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
  ${DatabaseConst.chatsColumnUpdatedDate} ${DatabaseConst.char26},
  ${DatabaseConst.chatsColumnDeletedDate} ${DatabaseConst.char26},
- ${DatabaseConst.constraint} CHATS_FK_84 ${DatabaseConst.foreignKey} ( ${DatabaseConst.chatsColumnUserId} ) ${DatabaseConst.references} ${DatabaseConst.userTable} ( local_users_id )
+ ${DatabaseConst.constraint} CHATS_FK_84 ${DatabaseConst.foreignKey} ( ${DatabaseConst.chatsColumnUserId} ) ${DatabaseConst.references} ${DatabaseConst.userTable} ( ${DatabaseConst.usersColumnUserId} )
 )
 ''');
 
@@ -77,31 +78,21 @@ CREATE TABLE ${DatabaseConst.chatsTable}(
       await txn.execute('''
 CREATE TABLE ${DatabaseConst.messageTable} (
  ${DatabaseConst.messagesColumnLocalMessagesId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
- ${DatabaseConst.messagesColumnLocalChatId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
+ ${DatabaseConst.messagesColumnChatId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
  ${DatabaseConst.messagesColumnCreatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
- ${DatabaseConst.messagesColumnSenderLocalId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
+ ${DatabaseConst.messagesColumnSenderId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
  ${DatabaseConst.messagesColumnMessageId} ${DatabaseConst.integer},
  ${DatabaseConst.messagesColumnIsRead} ${DatabaseConst.integer} ${DatabaseConst.notNull} DEFAULT 0,
  ${DatabaseConst.messagesColumnContent} ${DatabaseConst.char50} ${DatabaseConst.notNull},
  ${DatabaseConst.messagesColumnUpdatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
  ${DatabaseConst.messagesColumnDeletedDate} ${DatabaseConst.char26}, 
- ${DatabaseConst.constraint} MESSAGES_FK_79 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnLocalChatId} ) ${DatabaseConst.references} ${DatabaseConst.chatsTable} ( local_chats_id ),
- ${DatabaseConst.constraint} MESSAGES_FK_80 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnSenderLocalId} ) ${DatabaseConst.references} ${DatabaseConst.userTable} ( local_users_id ),
+ ${DatabaseConst.constraint} MESSAGES_FK_79 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnChatId} ) ${DatabaseConst.references} ${DatabaseConst.chatsTable} ( ${DatabaseConst.chatsColumnChatId} ),
+ ${DatabaseConst.constraint} MESSAGES_FK_80 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnSenderId} ) ${DatabaseConst.references} ${DatabaseConst.userTable} ( ${DatabaseConst.usersColumnUserId} ),
  CHECK ((is_read = 0) OR (is_read = 1))
- CHECK ((sender_is_user = 0) OR (sender_is_user = 1))
  CHECK (LENGTH(${DatabaseConst.messagesColumnCreatedDate}) = 26)
 )
 ''');
-
-// Таблица Messages Id In Main
-      await txn.execute('''
-CREATE TABLE ${DatabaseConst.messageIdTable}
-(
- ${DatabaseConst.messageIdColumn} ${DatabaseConst.integer} ${DatabaseConst.primaryKey},
- ${DatabaseConst.messageIdColumnLocal} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique},
-CONSTRAINT MESSAGE_ID_IN_MAIN_FK_86 FOREIGN KEY (local_messages_id) REFERENCES messages (local_messages_id)
-)
-''');
+// CHECK ((sender_is_user = 0) OR (sender_is_user = 1))
 
       await txn.execute('''
 CREATE INDEX CHATS_FK_3 ON ${DatabaseConst.chatsTable}
@@ -112,13 +103,13 @@ CREATE INDEX CHATS_FK_3 ON ${DatabaseConst.chatsTable}
       await txn.execute('''
 CREATE INDEX MESSAGES_FK_2 ON ${DatabaseConst.messageTable}
 (
- ${DatabaseConst.chatsColumnLocalChatId}
+ ${DatabaseConst.chatsColumnChatId}
 );
 ''');
       await txn.execute('''
-CREATE INDEX MESSAGE_ID_IN_MAIN_FK_1 ON ${DatabaseConst.messageIdTable}
+CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
 (
- ${DatabaseConst.messagesColumnLocalMessagesId}
+ ${DatabaseConst.usersColumnUserId}
 )
 ''');
 
@@ -130,9 +121,11 @@ CREATE INDEX MESSAGE_ID_IN_MAIN_FK_1 ON ${DatabaseConst.messageIdTable}
           'email': 't1@t1.t1',
           DatabaseConst.usersColumnProfilePicLink:
               'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
-          DatabaseConst.usersColumnCreatedDate: '2022-12-02T21:36:32.653712',
-          DatabaseConst.usersColumnMainUsersId: 1,
-          DatabaseConst.usersColumnUpdatedDate: '2022-12-02T21:36:32.653712',
+          DatabaseConst.usersColumnCreatedDate:
+              DateTime.now().toIso8601String(),
+          DatabaseConst.usersColumnUserId: 1,
+          DatabaseConst.usersColumnUpdatedDate:
+              DateTime.now().toIso8601String(),
         },
       );
       await txn.insert(
@@ -142,9 +135,11 @@ CREATE INDEX MESSAGE_ID_IN_MAIN_FK_1 ON ${DatabaseConst.messageIdTable}
           'email': 't2@t2.t2',
           DatabaseConst.usersColumnProfilePicLink:
               'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
-          DatabaseConst.usersColumnCreatedDate: '2022-12-02T21:36:32.653712',
-          DatabaseConst.usersColumnMainUsersId: 2,
-          DatabaseConst.usersColumnUpdatedDate: '2022-12-02T21:36:32.653712',
+          DatabaseConst.usersColumnCreatedDate:
+              DateTime.now().toIso8601String(),
+          DatabaseConst.usersColumnUserId: 2,
+          DatabaseConst.usersColumnUpdatedDate:
+              DateTime.now().toIso8601String(),
         },
       );
       await txn.insert(

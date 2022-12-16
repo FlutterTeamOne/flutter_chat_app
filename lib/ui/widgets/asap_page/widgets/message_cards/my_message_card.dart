@@ -25,8 +25,11 @@ class MyMessageCardWidget extends StatelessWidget {
         constraints: BoxConstraints(
           maxWidth: currentWidth > 1150 ? 750 : 350,
         ),
-        child: isSuccess == 1
-            ? AppCardWidget(message: message,textController: textController, marginIndex: 15)
+        child: isSuccess != null
+            ? AppCardWidget(
+                message: message,
+                textController: textController,
+                marginIndex: 15)
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -35,7 +38,9 @@ class MyMessageCardWidget extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             AppCardWidget(
-                                marginIndex: 5,textController: textController, message: message),
+                                marginIndex: 5,
+                                textController: textController,
+                                message: message),
                             const Icon(
                               Icons.error,
                               //color: AppColor.colorF44336,

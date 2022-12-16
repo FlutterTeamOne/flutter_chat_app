@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'package:chat_app/domain/data/dto/user_dto/main_user_dto.dart';
 import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
+import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:equatable/equatable.dart';
-import 'package:grpc/grpc.dart';
-import 'package:grpc/grpc_connection_interface.dart';
 
-import '../../../../src/generated/grpc_manager/grpc_manager.pbgrpc.dart';
 import '../../../../src/libraries/library_all.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,13 +12,16 @@ part 'message_state.dart';
 
 class MessageBloc extends Bloc<MessageEvent, MessageState> {
   late LocalMessagesServices _messagesServices;
-  late MessageIdServices _messageIdServices;
+  late LocalUsersServices _userServices;
+  late MainUserServices _mainUserServices;
   late StreamSubscription _subscription;
   StreamController<List<MessageDto>> messageController =
       StreamController.broadcast();
+  StreamController<List<MessageFromBase>> streamMessageFromBase =
+      StreamController.broadcast();
   final GrpcClient grpcClient;
   final GrpcConnectionBloc grpcConnection;
-  var stub = GrpcChatClient(Locator.getIt<GrpcClient>().channel);
+  var stub = GrpcMessagesClient(Locator.getIt<GrpcClient>().channel);
   MessageBloc({required this.grpcClient, required this.grpcConnection})
       : super(const MessageState()) {
     _messagesServices = LocalMessagesServices();
@@ -29,8 +29,9 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     //   add(ReadMessageEvent(messages: value.messages));
     //   print('MESSAGE: ${value.messages}');
     // });
+    _userServices = LocalUsersServices();
+    _mainUserServices = MainUserServices();
 
-    _messageIdServices = MessageIdServices();
     _subscription =
         DBHelper.instanse.updateListenController.stream.listen((event) async {
       if (event == true) {
@@ -41,17 +42,55 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         // state.copyWith(messages: messages);
       }
     });
-
+    on<MessageStreamEvent>(_onMessageStreamEvent);
     on<ReadMessageEvent>(_onReadMessageEvent);
     on<CreateMessageEvent>(_onCreateMessageEvent);
     on<UpdateMessageEvent>(_onUpdateMessageEvent);
-//TODO:добавить удаление сообщения
     on<DeleteMessageEvent>(_onDeleteMessageEvent);
     on<DeleteHistoryMessageEvent>(_onDeleteHistoryMessageEvent);
+  }
+  FutureOr<void> _onMessageStreamEvent(
+      MessageStreamEvent event, Emitter<MessageState> emit) async {
+    var lastMSG = LastMessage(
+        mainIdMessage: 0, mainIdUser: await _mainUserServices.getUserID());
+    var lst = await _messagesServices.getAllMessagesNotNull();
+
+    ///
+    ///
+    ///
+    if (lst.isNotEmpty) {
+      lastMSG.mainIdMessage = lst.last.messageId!;
+    }
+   
+    var stub = Locator.getIt<GrpcMessagesClient>().synchronization(lastMSG);
+    stub.asBroadcastStream(
+      onListen: (subscription) {
+        print('sub: $subscription');
+      },
+    );
+
+    var list = <MessageFromBase>[];
+    await for (var mes in stub) {
+      print('MES CHAT ID ${mes.chatIdMain}');
+      print('MES CONTENT: ${mes.content}');
+      print('MES MAIN ID MSG: ${mes.mainIdMessage}');
+      print('MES SENDER ID: ${mes.senderMainId}');
+      print('MES DATE CREATE: ${mes.date}');
+      list.add(mes);
+    }
+    if (list[0].chatIdMain != 0) {
+      await _messagesServices.addNewMessageFromBase(messages: list);
+    }
+    streamMessageFromBase.sink.add(list);
+    add(ReadMessageEvent());
   }
 
   FutureOr<void> _onReadMessageEvent(
       ReadMessageEvent event, Emitter<MessageState> emit) async {
+    var lastMSG = LastMessage();
+    var lst = await _messagesServices.getAllMessagesNotNull();
+    lastMSG.mainIdMessage = lst.last.messageId!;
+    var stub = Locator.getIt<GrpcMessagesClient>().synchronization(lastMSG);
     if (event.messages == null) {
       var messages = await _messagesServices.getAllMessages();
       print("MESSAGES:$messages");
@@ -73,7 +112,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     // DBHelper.instanse
     //     .onAdd(tableName: 'messages', model: messageMapToDB(model));
     message.localMessageId = await _messagesServices.addNewMessage(
-      localChatId: message.localChatId,
+      chatId: message.localChatId,
       senderId: 1,
       content: message.content,
       date: message.createdDate,
@@ -93,8 +132,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     //     .getMainIdUserByLocalId(localId: 1); ////поменять запрос на mainUserTabl
     print('message to server \n $messageToServer');
 
-    var messageResponse =
-        await Locator.getIt<GrpcChatClient>().createMessage(messageToServer);
+    var messageResponse = await Locator.getIt<GrpcMessagesClient>()
+        .createMessage(messageToServer);
     messageResponse.mainMessagesId;
     print("messageOK:/n $messageResponse");
     // grpcConnection.add(const GrpcConnectionStarted());
