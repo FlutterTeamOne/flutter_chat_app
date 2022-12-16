@@ -12,12 +12,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_size/window_size.dart';
 
 Future<void> main() async {
+  UserDto initUser = UserDto(
+      name: '1',
+      email: "1",
+      password: "1",
+      updatedDate: "1",
+      registrationDate: "1",
+      profilePicLink: '1'
+  );
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowMinSize(const Size(960, 480));
   }
   Locator.setUp();
-
+  await DBHelper.instanse.initDB(user: initUser);
   runApp(MyApp());
 }
 
