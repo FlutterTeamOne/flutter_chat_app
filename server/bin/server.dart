@@ -120,7 +120,6 @@ class GrpcMessage extends GrpcMessagesServiceBase {
   }
 
   @override
-
   Future<Users> getAllUsers(ServiceCall call, Empty request) async {
     var users = await usersService.getAllUsers();
     List<User> userList = [];
@@ -133,6 +132,7 @@ class GrpcMessage extends GrpcMessagesServiceBase {
       userList.add(userForList);
     }
     return Users(users: userList);
+  }
 
   Stream<MessageFromBase> connectings(
       ServiceCall call, Stream<ConnectRequest> request) async* {
@@ -222,7 +222,6 @@ class GrpcChats extends GrpcChatsServiceBase {
     var updateChatResp = UpdateChatResponse();
 
     return updateChatResp;
-
   }
 }
 

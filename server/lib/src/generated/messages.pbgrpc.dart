@@ -49,7 +49,7 @@ class GrpcMessagesClient extends $grpc.Client {
           ($core.List<$core.int> value) =>
               $0.MessageFromBase.fromBuffer(value));
   static final _$getAllUsers = $grpc.ClientMethod<$0.Empty, $0.Users>(
-      '/GrpcChat/getAllUsers',
+      '/GrpcMessages/getAllUsers',
       ($0.Empty value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Users.fromBuffer(value));
 

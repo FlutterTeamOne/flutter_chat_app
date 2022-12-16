@@ -1,4 +1,3 @@
-import '../../../generated/grpc_manager.pb.dart';
 import '../../../library/library_server.dart';
 
 abstract class IUsersServices {

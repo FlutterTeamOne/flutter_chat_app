@@ -1,7 +1,6 @@
 import 'package:grpc/grpc.dart';
-import 'package:server/src/generated/messages.pb.dart';
-import 'package:server/src/generated/messages.pbgrpc.dart';
-import 'package:server/src/generated/users.pb.dart';
+
+import 'package:server/src/library/library_server.dart';
 
 class Client {
   ClientChannel? channel;
@@ -82,7 +81,7 @@ class Client {
         options:
             const ChannelOptions(credentials: ChannelCredentials.insecure()));
 
-    stub = GrpcChatClient(channel!,
+    stub = GrpcMessagesClient(channel!,
         options: CallOptions(timeout: Duration(seconds: 1)));
     print('after stub');
     var response;

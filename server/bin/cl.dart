@@ -1,12 +1,10 @@
 import 'package:grpc/grpc.dart';
-import 'package:server/src/generated/users.pb.dart';
-
-import '../lib/src/generated/grpc_manager.pbgrpc.dart';
+import 'package:server/src/library/library_server.dart';
 
 class Client {
   ClientChannel? channel;
   //Класс заглушка, определяет все функции которые есть на сервере
-  GrpcChatClient? stub;
+  GrpcMessagesClient? stub;
   late CreateMessageResponse response;
   bool executionInProgress = true;
 
@@ -82,7 +80,7 @@ class Client {
         options:
             const ChannelOptions(credentials: ChannelCredentials.insecure()));
 
-    stub = GrpcChatClient(channel!, options: CallOptions());
+    stub = GrpcMessagesClient(channel!, options: CallOptions());
 
     var response = Users();
     try {
