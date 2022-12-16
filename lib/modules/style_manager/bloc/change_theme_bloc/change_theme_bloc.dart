@@ -7,20 +7,20 @@ import 'change_theme_event.dart';
 import 'change_theme_state.dart';
 
 class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
-  static int initIndex = SavedTheme().initThemeIndex;
+  // static int initIndex = SavedTheme().initThemeIndex;
   ChangeThemeBloc()
       : super(ChangeThemeState(
-          theme: CustomTheme().themes[initIndex],
-          index: initIndex,
+          theme: CustomTheme().themes[1],
+          index: 1,
         )) {
     on<SetThemeEvent>(_setThemeEvent);
   }
 
   void _setThemeEvent(
       SetThemeEvent event, Emitter<ChangeThemeState> emit) async {
-    SavedTheme().initThemeIndex = event.index;
-    var i = await UserPreferences().getTheme();
-    print(i);
+    // SavedTheme().initThemeIndex = event.index;
+    // var i = await UserPreferences().getTheme();
+    // print(i);
     emit(ChangeThemeState(
         theme: CustomTheme().themes[event.index], index: event.index));
   }

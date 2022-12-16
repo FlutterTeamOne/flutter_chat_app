@@ -1,8 +1,6 @@
 import 'package:grpc/grpc.dart';
-import 'package:server/src/generated/messages.pb.dart';
-import 'package:server/src/generated/messages.pbgrpc.dart';
-import 'package:server/src/generated/users.pb.dart';
 
+import 'package:server/src/library/library_server.dart';
 
 class Client {
   ClientChannel? channel;
@@ -18,21 +16,12 @@ class Client {
         options:
             const ChannelOptions(credentials: ChannelCredentials.insecure()));
 
-    stub =  GrpcMessagesClient(channel!,
+    stub = GrpcMessagesClient(channel!,
         options: CallOptions(timeout: Duration(seconds: 30)));
 
-    // while (executionInProgress) {
-    //   try {
-    //     print('---- Welcome to the dart store API ---');
-    //     print('   ---- what do you want to do? ---');
-    //     print('👉 0: Connecting');
-    //     print('👉 1: Send Message to server');
-    //     var option = int.parse(stdin.readLineSync()!);
-    // switch (option) {
-    //   case 1:
     try {
       response = CreateMessageResponse();
-      print('message: $message');
+      //print('message: $message');
       response = await stub!.createMessage(message);
       print('rc: ${response.dateCreate} ');
       print('id: ${response.mainMessagesId}');
@@ -61,11 +50,11 @@ class Client {
         options:
             const ChannelOptions(credentials: ChannelCredentials.insecure()));
 
-    stub =  GrpcMessagesClient(channel!,
+    stub = GrpcMessagesClient(channel!,
         options: CallOptions(timeout: Duration(seconds: 30)));
     var response = UpdateMessageResponse();
     try {
-      print('message: $message');
+      //print('message: $message');
       response = await stub!.updateMessage(message);
       print('RESP: $response');
     } catch (e) {
@@ -86,10 +75,29 @@ class Client {
     // executionInProgress = result.toLowerCase() != 'y';
   }
 
+  Future<Users> getUsers(Empty message) async {
+    channel = ClientChannel('localhost',
+        port: 5000,
+        options:
+            const ChannelOptions(credentials: ChannelCredentials.insecure()));
+
+    stub = GrpcMessagesClient(channel!,
+        options: CallOptions(timeout: Duration(seconds: 1)));
+    print('after stub');
+    var response;
+    try {
+      response = await stub!.getAllUsers(Empty());
+    } catch (e) {
+      print(e);
+    } finally {
+      await channel!.shutdown();
+    }
+    return response;
+  }
+
 // await channel!.shutdown();
   Future<UpdateUserResponse> updateUser(UpdateUserRequest user) async {
     var resp = UpdateUserResponse();
-
     return resp;
   }
 }
@@ -121,24 +129,22 @@ Future<DeleteMessageResponse> deleteMessage(
 var con = false;
 void main() async {
   var client = Client();
+  // //Создание сообщения
+  // // var message = CreateMessageRequest();
+  // // message.chatIdMain = 1;
+  // // message.senderMainId = 1;
+  // // message.content = "Hello";
+  // ///
+  // ///Если присылает один и тот же mainMessageId
+  // ///поменяй message.date или message.content
+  // ///
+  // // print("Обратный ответ:");
+  // // print(await client.SendMessage(message));
 
-  // Создание сообщения
-  var message = CreateMessageRequest();
-  message.chatIdMain = 1;
-  message.senderMainId = 2;
-  message.content = "Hello";
-
-  ///
-  ///Если присылает один и тот же mainMessageId
-  ///поменяй message.date или message.content
-  ///
-  print("Обратный ответ:");
-  print(await client.SendMessage(message));
-
-  //Обновление сообщения
-  // var messageUpdate = UpdateMessageRequest();
-  // messageUpdate.content = "HELL";
-  // messageUpdate.idMessageMain = 4;
+  // //Обновление сообщения
+  // // var messageUpdate = UpdateMessageRequest();
+  // // messageUpdate.content = "HELL";
+  // // messageUpdate.idMessageMain = 4;
   // var updateUser = UpdateUserRequest();
   // updateUser.name = 'bob';
   // updateUser.email = 'test@test.test';
@@ -148,4 +154,9 @@ void main() async {
   // print("Обратный ответ:");
   // print('update User: ${updateUser.writeToJsonMap()}');
   // print(await client.updateUser(updateUser));
+
+  var messageEmpty = Empty();
+  print("Обратный ответ:");
+
+  print(await client.getUsers(messageEmpty));
 }

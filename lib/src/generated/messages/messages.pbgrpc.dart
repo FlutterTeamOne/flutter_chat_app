@@ -48,6 +48,10 @@ class GrpcMessagesClient extends $grpc.Client {
           ($0.LastMessage value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.MessageFromBase.fromBuffer(value));
+  static final _$getAllUsers = $grpc.ClientMethod<$0.Empty, $0.Users>(
+      '/GrpcMessages/getAllUsers',
+      ($0.Empty value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.Users.fromBuffer(value));
 
   GrpcMessagesClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -89,6 +93,11 @@ class GrpcMessagesClient extends $grpc.Client {
     return $createStreamingCall(
         _$synchronization, $async.Stream.fromIterable([request]),
         options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Users> getAllUsers($0.Empty request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getAllUsers, request, options: options);
   }
 }
 
@@ -144,6 +153,13 @@ abstract class GrpcMessagesServiceBase extends $grpc.Service {
         true,
         ($core.List<$core.int> value) => $0.LastMessage.fromBuffer(value),
         ($0.MessageFromBase value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.Empty, $0.Users>(
+        'getAllUsers',
+        getAllUsers_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
+        ($0.Users value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.Empty> connecting_Pre(
@@ -174,6 +190,11 @@ abstract class GrpcMessagesServiceBase extends $grpc.Service {
     yield* synchronization(call, await request);
   }
 
+  $async.Future<$0.Users> getAllUsers_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
+    return getAllUsers(call, await request);
+  }
+
   $async.Future<$0.Empty> connecting($grpc.ServiceCall call, $0.Empty request);
   $async.Stream<$0.MessageFromBase> connectings(
       $grpc.ServiceCall call, $async.Stream<$0.ConnectRequest> request);
@@ -185,4 +206,5 @@ abstract class GrpcMessagesServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.DeleteMessageRequest request);
   $async.Stream<$0.MessageFromBase> synchronization(
       $grpc.ServiceCall call, $0.LastMessage request);
+  $async.Future<$0.Users> getAllUsers($grpc.ServiceCall call, $0.Empty request);
 }
