@@ -85,12 +85,12 @@ class NewUserWidget extends StatelessWidget {
               child: TextFormField(
                 key: _passwordKey,
                 controller: newUserPasswordText,
-                // validator: (value) {
-                //   if (value == null || value.isEmpty) {
-                //     return 'Enter password';
-                //   }
-                //   return null;
-                // },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Enter password';
+                  }
+                  return null;
+                },
               )),
         ],
       ),
@@ -112,12 +112,12 @@ class NewUserWidget extends StatelessWidget {
               child: TextFormField(
                 key: _emailKey,
                 controller: newUserEmailText,
-                // validator: (value) {
-                //   if (value == null || value.isEmpty) {
-                //     return 'Enter email';
-                //   }
-                //   return null;
-                // },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Enter email';
+                  }
+                  return null;
+                },
               )),
         ],
       ),
@@ -139,12 +139,12 @@ class NewUserWidget extends StatelessWidget {
               child: TextFormField(
                 key: _nameKey,
                 controller: newUserNameText,
-                // validator: (value) {
-                //   if (value == null || value.isEmpty) {
-                //     return 'Enter name';
-                //   }
-                //   return null;
-                // },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Enter name';
+                  }
+                  return null;
+                },
               )),
         ],
       ),

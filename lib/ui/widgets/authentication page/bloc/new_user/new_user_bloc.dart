@@ -10,12 +10,12 @@ class NewUserBloc extends Bloc<NewUserEvent, NewUserState> {
   NewUserBloc()
       : super(NewUserState(
             newUser: UserDto(
-                name: '',
-                email: "",
-                password: "",
-                updatedDate: "",
-                registrationDate: "",
-                profilePicLink: ''))) {
+                name: '1',
+                email: "1",
+                password: "1",
+                updatedDate: "1",
+                registrationDate: "1",
+                profilePicLink: '1'))) {
     on<SetNewUserEvent>(_setNewUserEvent);
   }
 
