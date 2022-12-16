@@ -2,11 +2,9 @@ import 'dart:io';
 
 import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
 import 'package:chat_app/ui/pages/authentication_page/authentication_page.dart';
-import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
 import 'ui/pages/library/library_pages.dart';
 import 'src/libraries/library_all.dart';
 import 'modules/signal_service/service_locator/locator.dart';
-import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_size/window_size.dart';
@@ -50,7 +48,7 @@ class MyApp extends StatelessWidget {
           create: (context) => MessageBloc(
               grpcClient: grpcClient,
               grpcConnection: context.read<GrpcConnectionBloc>())
-            ..add(MessageStreamEvent()),
+            ..add(ReadMessageEvent()),
         ),
         BlocProvider(
           create: (context) => ChangeThemeBloc(),
