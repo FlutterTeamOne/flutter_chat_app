@@ -18,7 +18,7 @@ class UserClient extends GrpcClient {
     var response = await stub.getUser(request);
     print(response);
     return UserDto(
-      mainUsersId: response.id,
+      userId: response.id,
       name: response.name, 
       email: response.email, 
       password: response.password, 
@@ -34,13 +34,13 @@ class UserClient extends GrpcClient {
     var request = CreateUserRequest()
       ..name = user.name
       ..email = user.email
-      ..profilePicUrl = user.profilePicLink!
-      ..password = user.password!
+      ..profilePicUrl = user.profilePicLink
+      ..password = user.password
       ..dateCreated = user.registrationDate;
     var response = await stub.createUser(request);
     print(response);
     return UserDto(
-      mainUsersId: response.id,
+      userId: response.id,
       name: response.name, 
       email: response.email, 
       password: response.password, 

@@ -13,6 +13,8 @@ class UserDto extends ModelDto {
   final String updatedDate;
   final String? deletedDate;
 
+  final String password;
+
   UserDto({
     this.userId,
     required this.name,
@@ -20,7 +22,7 @@ class UserDto extends ModelDto {
     required this.registrationDate,
     required this.profilePicLink,
     required this.updatedDate,
-    this.deletedDate,
+    this.deletedDate, required this.password,
   });
 
   UserDto copyWith({
@@ -39,7 +41,7 @@ class UserDto extends ModelDto {
       registrationDate: registrationDate ?? this.registrationDate,
       profilePicLink: profilePicLink ?? this.profilePicLink,
       updatedDate: updatedDate ?? this.updatedDate,
-      deletedDate: deletedDate ?? this.deletedDate,
+      deletedDate: deletedDate ?? this.deletedDate, password: password,
     );
   }
 
@@ -63,7 +65,7 @@ class UserDto extends ModelDto {
       registrationDate: map[DatabaseConst.usersColumnCreatedDate] as String,
       profilePicLink: map[DatabaseConst.usersColumnProfilePicLink] as String,
       updatedDate: map[DatabaseConst.usersColumnUpdatedDate] as String,
-      deletedDate: map[DatabaseConst.usersColumnsDeletedDate] ?? '',
+      deletedDate: map[DatabaseConst.usersColumnsDeletedDate] ?? '', password: map[DatabaseConst.usersColumnPassword] as String,
     );
   }
 

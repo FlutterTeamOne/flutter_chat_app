@@ -14,8 +14,17 @@ class DBHelper {
 
   static Database? _database;
 
+  UserDto initUser = UserDto(
+  name: '',
+  email: "",
+  password: "",
+  updatedDate: "",
+  registrationDate: "",
+  profilePicLink: ''
+  );
+
   ///Обращение к локальной БД извне
-  Future<Database> get database async => _database ??= await initDB();
+  Future<Database> get database async => _database ??= await initDB(user: initUser);
 
   ///Стрим контроллер, чтоб слушать изменения в БД
   final _updateListenController = StreamController<bool>.broadcast();
@@ -25,13 +34,13 @@ class DBHelper {
 
   ///Инициализация локальной БД. Если ее нет,
   ///то создается новая БД
-  Future<Database> initDB() async {
+  Future<Database> initDB({required UserDto user}) async {
     sqfliteFfiInit();
     var dbFactory = databaseFactoryFfi;
     // var dbPath = await dbFactory.getDatabasesPath();
     var dbPath = await getTemporaryDirectory();
     print('PATH: ${dbPath.path}');
-    String path = join(dbPath.path, DatabaseConst.dbFileName);
+    String path = join(dbPath.path, user.name);
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(
           version: DatabaseConst.dbVersion,

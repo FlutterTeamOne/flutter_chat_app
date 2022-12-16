@@ -218,7 +218,8 @@ class GrpcUsers extends GrpcUsersServiceBase {
     var src = await UsersServices().createUser(
         name: request.name,
         email: request.email,
-        registrationDate: request.dateCreated,
+        createdDate: request.dateCreated,
+        updatedDate: request.dateCreated,
         profilePicUrl: request.profilePicUrl,
         password: request.password);
     var createUserResponse = CreateUserResponse();
