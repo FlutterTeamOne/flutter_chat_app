@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'dart:io' as io;
 
 class DBHelper {
   //Singleton
@@ -25,18 +26,27 @@ class DBHelper {
 
   ///Инициализация локальной БД. Если ее нет,
   ///то создается новая БД
-  Future<Database> initDB({required UserDto user}) async {
-    sqfliteFfiInit();
+  Future<Database> initDB({UserDto? user}) async {
+    UserDto _user = user!;    sqfliteFfiInit();
     var dbFactory = databaseFactoryFfi;
     // var dbPath = await dbFactory.getDatabasesPath();
     var dbPath = await getTemporaryDirectory();
-    print('PATH: ${dbPath.path}');
-    String path = join(dbPath.path, DatabaseConst.dbFileName);
-    return await dbFactory.openDatabase(path,
-        options: OpenDatabaseOptions(
-          version: DatabaseConst.dbVersion,
-          onCreate: _onCreate,
-        ));
+    // print('PATH: ${dbPath.path}');
+    String path = join('dbPath, ${user.name}', '${DatabaseConst.dbFileName}_${user.name}.db');
+
+    var dbExists = io.File(path).exists();
+    var db =  await dbFactory.openDatabase(path,
+      options: OpenDatabaseOptions(
+        version: DatabaseConst.dbVersion,
+        onCreate: _onCreate,
+    ));
+    if (await dbExists) {
+      return db;
+    }
+    else {
+      addInitialUser(user: user);
+      return db;
+    }
   }
 
   ///Функция создания начальной таблицы БД
@@ -114,35 +124,35 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
 )
 ''');
 
-      // //Первичная запись юзера в таблицу
-      await txn.insert(
-        DatabaseConst.userTable,
-        {
-          'name': 'test1',
-          'email': 't1@t1.t1',
-          DatabaseConst.usersColumnProfilePicLink:
-              'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
-          DatabaseConst.usersColumnCreatedDate:
-              DateTime.now().toIso8601String(),
-          DatabaseConst.usersColumnMainUsersId: 1,
-          DatabaseConst.usersColumnUpdatedDate:
-              DateTime.now().toIso8601String(),
-        },
-      );
-      await txn.insert(
-        DatabaseConst.userTable,
-        {
-          'name': 'test2',
-          'email': 't2@t2.t2',
-          DatabaseConst.usersColumnProfilePicLink:
-              'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
-          DatabaseConst.usersColumnCreatedDate:
-              DateTime.now().toIso8601String(),
-          DatabaseConst.usersColumnMainUsersId: 2,
-          DatabaseConst.usersColumnUpdatedDate:
-              DateTime.now().toIso8601String(),
-        },
-      );
+
+      // await txn.insert(
+      //   DatabaseConst.userTable,
+      //   {
+      //     'name': 'test1',
+      //     'email': 't1@t1.t1',
+      //     DatabaseConst.usersColumnProfilePicLink:
+      //         'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
+      //     DatabaseConst.usersColumnCreatedDate:
+      //         DateTime.now().toIso8601String(),
+      //     DatabaseConst.usersColumnMainUsersId: 1,
+      //     DatabaseConst.usersColumnUpdatedDate:
+      //         DateTime.now().toIso8601String(),
+      //   },
+      // );
+      // await txn.insert(
+      //   DatabaseConst.userTable,
+      //   {
+      //     'name': 'test2',
+      //     'email': 't2@t2.t2',
+      //     DatabaseConst.usersColumnProfilePicLink:
+      //         'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
+      //     DatabaseConst.usersColumnCreatedDate:
+      //         DateTime.now().toIso8601String(),
+      //     DatabaseConst.usersColumnMainUsersId: 2,
+      //     DatabaseConst.usersColumnUpdatedDate:
+      //         DateTime.now().toIso8601String(),
+      //   },
+      // );
       await txn.insert(
         DatabaseConst.chatsTable,
         {
@@ -161,6 +171,27 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
     });
 
     _updateListen();
+  }
+
+  Future<void> addInitialUser({required UserDto user}) async {
+    Database db = await instanse.database;
+    await db.transaction((txn) async {
+      await txn.insert(
+        DatabaseConst.userTable,
+        {
+          'name': user.name,
+          'email': user.email,
+          DatabaseConst.usersColumnProfilePicLink:
+              user.profilePicLink,
+          DatabaseConst.usersColumnCreatedDate:
+              DateTime.now().toIso8601String(),
+          DatabaseConst.usersColumnMainUsersId: user.mainUsersId,
+          DatabaseConst.usersColumnUpdatedDate:
+              DateTime.now().toIso8601String(),
+        },
+      );
+    });
+
   }
 
   ///Функция считывания/получения данных из БД
@@ -211,6 +242,8 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
     });
     _updateListen();
   }
+
+  
 
 // ///Функция создания временной таблицы
 // Future onCreateTemp() async {

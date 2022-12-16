@@ -1,6 +1,6 @@
 class DatabaseConst {
   //название и версия бд
-  static const dbFileName = 'sfera.db';
+  static const dbFileName = 'sfera';
   static const dbVersion = 1;
 
   //название таблиц

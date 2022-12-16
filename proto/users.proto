@@ -18,8 +18,9 @@ message GetUserResponse {
     int32 id = 1;
     string name = 2;
     string email = 3;
-    string dateCreated = 4;
-    string dateUpdated = 5;
+    string profilePicUrl = 4;
+    string password = 5;
+    string dateCreated = 6;
 }
 message CreateUserRequest {
     string name = 1;

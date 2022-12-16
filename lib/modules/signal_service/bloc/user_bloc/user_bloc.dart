@@ -48,8 +48,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         name: user.name,
         email: user.email,
         registrationDate: user.registrationDate,
-        profilePicUrl: user.profilePicLink,
-        mainUserId: user.mainUsersId);
+        profilePicUrl: user.profilePicLink!,
+        mainUserId: user.mainUsersId!);
 //Добавляем в main_user table main_id, date_sync and key
 
     // var stub = await GrpcUsersClient(Locator.getIt<GrpcClient>().channel)
