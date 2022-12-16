@@ -1,5 +1,3 @@
-import 'package:server/src/generated/messages.pb.dart';
-
 import '../../../library/library_server.dart';
 
 abstract class IMessagesServices {
