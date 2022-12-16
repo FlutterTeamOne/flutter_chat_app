@@ -45,11 +45,11 @@ class UserDto extends ModelDto {
 
   Map<String, dynamic> toMap() {
     return {
+      DatabaseConst.usersColumnProfilePicLink: profilePicLink,
       DatabaseConst.usersColumnUserId: userId,
       DatabaseConst.usersColumnName: name,
       DatabaseConst.usersColumnEmail: email,
       DatabaseConst.usersColumnCreatedDate: registrationDate,
-      DatabaseConst.usersColumnProfilePicLink: profilePicLink,
       DatabaseConst.usersColumnUpdatedDate: updatedDate,
       DatabaseConst.usersColumnsDeletedDate: deletedDate,
     };

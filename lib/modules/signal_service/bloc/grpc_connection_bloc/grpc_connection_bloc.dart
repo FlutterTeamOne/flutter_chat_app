@@ -25,34 +25,34 @@ class GrpcConnectionBloc
       GrpcConnectionStarted event, Emitter<GrpcConnectionState> emit) async {
     await for (var connectState in connectionBloc.stream) {
       if (connectState is ActiveConnectionState) {
-        GrpcMessagesClient(grpcClient.channel).connecting(Empty());
+        // GrpcMessagesClient(grpcClient.channel).connecting(Empty());
         await for (var grpcState
             in grpcClient.channel.onConnectionStateChanged) {
-          switch (grpcState) {
-            case ConnectionState.connecting:
-              emit(state.copyWith(connectState: GrpcConnectState.connecting));
-              print('grpc connecting:$grpcState');
-              break;
-            case ConnectionState.ready:
-              emit(state.copyWith(connectState: GrpcConnectState.ready));
-              print('grpc ready:$grpcState');
-              break;
-            case ConnectionState.idle:
-              emit(state.copyWith(connectState: GrpcConnectState.idle));
-              print('grpc idle:$grpcState');
-              break;
-            case ConnectionState.shutdown:
-              emit(state.copyWith(connectState: GrpcConnectState.shutdown));
-              print('grpc shutdown:$grpcState');
-              break;
-            case ConnectionState.transientFailure:
-              emit(state.copyWith(
-                  connectState: GrpcConnectState.transientFailure));
-              print('grpc transientFailure:$grpcState');
-              break;
-            default:
-              emit(state.copyWith(connectState: GrpcConnectState.connecting));
-          }
+          // switch (grpcState) {
+          //   case ConnectionState.connecting:
+          //     emit(state.copyWith(connectState: GrpcConnectState.connecting));
+          //     print('grpc connecting:$grpcState');
+          //     break;
+          //   case ConnectionState.ready:
+          //     emit(state.copyWith(connectState: GrpcConnectState.ready));
+          //     print('grpc ready:$grpcState');
+          //     break;
+          //   case ConnectionState.idle:
+          //     emit(state.copyWith(connectState: GrpcConnectState.idle));
+          //     print('grpc idle:$grpcState');
+          //     break;
+          //   case ConnectionState.shutdown:
+          //     emit(state.copyWith(connectState: GrpcConnectState.shutdown));
+          //     print('grpc shutdown:$grpcState');
+          //     break;
+          //   case ConnectionState.transientFailure:
+          //     emit(state.copyWith(
+          //         connectState: GrpcConnectState.transientFailure));
+          //     print('grpc transientFailure:$grpcState');
+          //     break;
+          //   default:
+          //     emit(state.copyWith(connectState: GrpcConnectState.connecting));
+          // }
         }
       }
     }

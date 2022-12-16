@@ -35,6 +35,7 @@ dependencies:
   custom_pop_up_menu: ^1.2.4
   blur: ^3.1.0
   get_it: ^7.2.0
+  stream_transform: ^2.1.0
 
 
 dev_dependencies:

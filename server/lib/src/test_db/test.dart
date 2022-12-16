@@ -71,12 +71,12 @@ Future<void> main() async {
   ///
   ///Проверка запроса с синхронизацией
   ///
-  var main_messages_id = 70;
-  var mainIdUser = 1;
-  var messages = await messagesService.getRecentMessages(
-      message:
-          LastMessage(mainIdMessage: main_messages_id, mainIdUser: mainIdUser));
-  for (var mes in messages) {
-    print(mes);
-  }
+  // var main_messages_id = 70;
+  // var mainIdUser = 1;
+  // var messages = await messagesService.getRecentMessages(
+  //     message:
+  //         LastMessage(mainIdMessage: main_messages_id, mainIdUser: mainIdUser));
+  // for (var mes in messages) {
+  //   print(mes);
+  // }
 }
