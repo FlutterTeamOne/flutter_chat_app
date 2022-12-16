@@ -35,6 +35,10 @@ class NewUserWidget extends StatelessWidget {
       profilePicLink: newUserPictureUrl,
       updatedDate: newUserCreateDate);
 
+  final _nameKey = GlobalKey<FormState>();
+  final _emailKey = GlobalKey<FormState>();
+  final _passwordKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -78,8 +82,15 @@ class NewUserWidget extends StatelessWidget {
           ),
           SizedBox(
               width: textFieldWidth,
-              child: TextField(
+              child: TextFormField(
+                key: _passwordKey,
                 controller: newUserPasswordText,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Enter password';
+                  }
+                  return null;
+                },
               )),
         ],
       ),
@@ -98,8 +109,15 @@ class NewUserWidget extends StatelessWidget {
           ),
           SizedBox(
               width: textFieldWidth,
-              child: TextField(
+              child: TextFormField(
+                key: _emailKey,
                 controller: newUserEmailText,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Enter email';
+                  }
+                  return null;
+                },
               )),
         ],
       ),
@@ -118,8 +136,15 @@ class NewUserWidget extends StatelessWidget {
           ),
           SizedBox(
               width: textFieldWidth,
-              child: TextField(
+              child: TextFormField(
+                key: _nameKey,
                 controller: newUserNameText,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Enter name';
+                  }
+                  return null;
+                },
               )),
         ],
       ),
@@ -138,6 +163,13 @@ class NewUserWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(20.0),
             ))),
             onPressed: () {
+              if (_nameKey.currentState!.validate() &&
+                  _emailKey.currentState!.validate() &&
+                  _passwordKey.currentState!.validate()) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Creating new user')),
+                );
+              }
               BlocProvider.of<NewUserBloc>(context)
                   .add(SetNewUserEvent(user: newUser));
               print(
