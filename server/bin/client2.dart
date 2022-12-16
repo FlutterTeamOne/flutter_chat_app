@@ -33,7 +33,7 @@ Future<void> main(List<String> args) async {
   print('responses:  $responses');
   try {
     await for (final res in responses) {
-      print('[${res..readMessageRequest.message}] ');
+      print('[${res.readMessageRequest.message}] ');
     }
   } catch (e) {
     print(e);
@@ -62,6 +62,7 @@ Stream<Dynamic> postStream(int id) async* {
                 content: line,
                 chatId: 1,
                 senderId: id,
+                messageId: 88,
                 dateCreate: DateTime.now().toIso8601String()),
           ),
           messageState: MessageStateEnum.isCreateMessage);
