@@ -13,33 +13,40 @@ class AsapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<MessageBloc, MessageState>(
-      listener: (context, messageState) {
+    return BlocConsumer<ChatBloc, ChatState>(
+      listener: (context, chatState) {
         // TODO: implement listener
       },
-      builder: (context, messageState) {
-        return BlocConsumer<ChatBloc, ChatState>(
-          listener: (context, chatState) {
-            // TODO: implement listener
+      builder: (context, chatState) {
+        return BlocConsumer<MessageBloc, MessageState>(
+          listener: (context, messageState) {
           },
-          builder: (context, chatState) {
+          builder: (context, messageState) {
             return Row(
               children: [
                 // Список чатов
                 Expanded(
                     child: chatState.chats == null
                         ? const Text('Sorry')
-                        : ChatListLayout(
-                            chatModel: chatState.chats!,
-                            messageModel: messageState.messages!)),
+                        : messageState.messages != null
+                            ? ChatListLayout(
+                                chatModel: chatState.chats!,
+                                messageModel: messageState.messages!)
+                            : Center(
+                                child: CircularProgressIndicator(),
+                              )),
                 // Чат
                 Expanded(
                     flex: 3,
                     child: chatState.chatId == null
                         ? const DefaultUserChatLayout()
-                        : UserChatLayout(
-                            chatId: chatState.chatId!,
-                            localChatId: chatState.localChatId!)),
+                        : messageState.messages != null
+                            ? UserChatLayout(
+                                chatId: chatState.chatId!,
+                                localChatId: chatState.localChatId!)
+                            : Center(
+                                child: CircularProgressIndicator(),
+                              )),
                 // Профиль
                 // Expanded(
                 //   flex: 2,

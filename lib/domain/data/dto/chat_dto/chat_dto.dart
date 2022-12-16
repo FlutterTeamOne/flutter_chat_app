@@ -36,7 +36,7 @@ class ChatDto extends ModelDto {
 
   Map<String, dynamic> toMap() {
     return {
-      DatabaseConst.chatsColumnLocalChatId: chatId,
+      DatabaseConst.chatsColumnChatId: chatId,
       DatabaseConst.chatsColumnUserId: userIdChat,
       DatabaseConst.chatsColumnCreatedDate: createdDate,
       DatabaseConst.chatsColumnUpdatedDate: updatedDate,
@@ -46,7 +46,7 @@ class ChatDto extends ModelDto {
 
   factory ChatDto.fromMap(Map<String, dynamic> map) {
     return ChatDto(
-      chatId: map[DatabaseConst.chatsColumnLocalChatId] as int,
+      chatId: map[DatabaseConst.chatsColumnChatId] as int,
       userIdChat: map[DatabaseConst.chatsColumnUserId] as int,
       createdDate: map[DatabaseConst.chatsColumnCreatedDate] as String,
       updatedDate: map[DatabaseConst.chatsColumnUpdatedDate] as String,

@@ -95,10 +95,10 @@ class MessagesServices implements IMessagesServices {
   getRecentMessages({required LastMessage message}) async {
     Database db = await DbServerServices.instanse.database;
     var messages = await db.rawQuery('''SELECT *
-      FROM messages, chats AS friend
-      WHERE (main_messages_id > ${message.mainIdMessage} AND
-        (friend.friend1_id = ${message.mainIdUser} OR 
-        friend.friend2_id = ${message.mainIdUser}))''');
+      FROM messages, chats
+      WHERE (message_id > ${message.mainIdMessage} AND
+        (chats.friend1_id = ${message.mainIdUser} OR 
+        chats.friend2_id = ${message.mainIdUser}))''');
     return messages;
   }
 }

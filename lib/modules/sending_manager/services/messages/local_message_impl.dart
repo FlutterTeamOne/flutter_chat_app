@@ -1,3 +1,5 @@
+import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
+
 import '../../../../src/constants/db_constants.dart';
 import '../../../../domain/data/library/library_data.dart';
 import '../../../storage_manager/library/library_storage_manager.dart';
@@ -8,7 +10,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
   LocalMessagesServices();
   @override
   Future<dynamic> addNewMessage(
-      {required int localChatId,
+      {required int chatId,
       required int senderId,
       required String content,
       required String date}) async {
@@ -16,8 +18,8 @@ class LocalMessagesServices implements ILocalMessagesServices {
     await DBHelper.instanse.onAdd(
       tableName: DatabaseConst.messageTable,
       model: {
-        DatabaseConst.messagesColumnLocalChatId: localChatId,
-        DatabaseConst.messagesColumnSenderLocalId: senderId,
+        DatabaseConst.messagesColumnChatId: chatId,
+        DatabaseConst.messagesColumnSenderId: senderId,
         DatabaseConst.messagesColumnContent: content,
         DatabaseConst.messagesColumnCreatedDate: date,
         DatabaseConst.messagesColumnUpdatedDate: date
@@ -26,11 +28,44 @@ class LocalMessagesServices implements ILocalMessagesServices {
     var message = await db.rawQuery('''
             SELECT ${DatabaseConst.messagesColumnLocalMessagesId} 
             FROM ${DatabaseConst.messageTable}
-            WHERE ((${DatabaseConst.messagesColumnLocalChatId} = $localChatId) AND
-                  (${DatabaseConst.messagesColumnSenderLocalId} = $senderId) AND
+            WHERE ((${DatabaseConst.messagesColumnChatId} = $chatId) AND
+                  (${DatabaseConst.messagesColumnSenderId} = $senderId) AND
                   (${DatabaseConst.messagesColumnContent} = '$content') AND
                   (${DatabaseConst.messagesColumnCreatedDate} = '$date'))''');
     return message[0][DatabaseConst.messagesColumnLocalMessagesId] as int;
+  }
+
+  Future addNewMessageFromBase(
+      {required List<MessageFromBase> messages}) async {
+    var db = await DBHelper.instanse.database;
+    var msgMap = <Map<String, Object>>[];
+    var messageMap = <String, Object>{};
+     messages.map((msg) {
+      msgMap.add({
+        DatabaseConst.messagesColumnChatId: msg.chatIdMain,
+        DatabaseConst.messagesColumnSenderId: msg.senderMainId,
+        DatabaseConst.messagesColumnContent: msg.content,
+        DatabaseConst.messagesColumnCreatedDate: msg.date,
+        DatabaseConst.messagesColumnUpdatedDate: msg.date,
+        DatabaseConst.messagesColumnMessageId: msg.mainIdMessage
+      });
+    }).toList();
+    // for (var msg in messages) {
+    //   msgMap.add({
+    //     DatabaseConst.messagesColumnChatId: msg.chatIdMain,
+    //     DatabaseConst.messagesColumnSenderId: msg.senderMainId,
+    //     DatabaseConst.messagesColumnContent: msg.content,
+    //     DatabaseConst.messagesColumnCreatedDate: msg.date,
+    //     DatabaseConst.messagesColumnUpdatedDate: msg.date,
+    //     DatabaseConst.messagesColumnMessageId: msg.mainIdMessage
+    //   });
+    // }
+
+    for (var msg in msgMap) {
+      messageMap.addAll(msg);
+    }
+    await db.insert(DatabaseConst.messageTable, messageMap);
+    // return
   }
 
   @override
@@ -51,8 +86,8 @@ class LocalMessagesServices implements ILocalMessagesServices {
 
   Future<List<MessageDto>> getAllMessagesNotNull() async {
     var db = await DBHelper.instanse.database;
-    var message =
-        await db.rawQuery('SELECT * FROM messages WHERE message_id != null');
+    var message = await db
+        .rawQuery('SELECT * FROM messages WHERE message_id IS NOT NULL');
 
     return message.map((item) => MessageDto.fromMap(item)).toList();
   }
@@ -91,7 +126,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
     //     'messages',
     //     {
     //       DatabaseConst.messagesColumnLocalMessagesId: localMessageId,
-    //       DatabaseConst.messagesColumnLocalChatId: message.localChatId,
+    //       DatabaseConst.messagesColumnChatId: message.localChatId,
     //       DatabaseConst.messagesColumnSenderLocalId: message.localSendId,
     //       DatabaseConst.messagesColumnDate: message.date,
     //       DatabaseConst.messagesColumnIsWrittenToDb: message.isWrittenToDb,
@@ -104,8 +139,8 @@ class LocalMessagesServices implements ILocalMessagesServices {
         column: DatabaseConst.messagesColumnLocalMessagesId,
         model: {
           DatabaseConst.messagesColumnLocalMessagesId: localMessageId,
-          DatabaseConst.messagesColumnLocalChatId: message.localChatId,
-          DatabaseConst.messagesColumnSenderLocalId: message.localSendId,
+          DatabaseConst.messagesColumnChatId: message.localChatId,
+          DatabaseConst.messagesColumnSenderId: message.localSendId,
           DatabaseConst.messagesColumnCreatedDate: message.createdDate,
           DatabaseConst.messagesColumnIsRead: message.isRead,
           DatabaseConst.messagesColumnContent: message.content

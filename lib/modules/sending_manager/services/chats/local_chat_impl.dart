@@ -40,7 +40,7 @@ class LocalChatServices implements ILocalChatsServices {
     var chat = await db.rawQuery('''
               SELECT *
               FROM ${DatabaseConst.chatsTable}
-              WHERE ${DatabaseConst.chatsColumnLocalChatId} = $id
+              WHERE ${DatabaseConst.chatsColumnChatId} = $id
               ''');
     return chat[0];
   }
@@ -49,9 +49,9 @@ class LocalChatServices implements ILocalChatsServices {
   Future<int> getMainIdChatByMessage({required int localId}) async {
     var db = await DBHelper.instanse.database;
     var chat = await db.rawQuery(
-        'SELECT ${DatabaseConst.chatsColumnLocalChatId} FROM ${DatabaseConst.chatsTable} WHERE ${DatabaseConst.chatsColumnLocalChatId} = $localId');
+        'SELECT ${DatabaseConst.chatsColumnChatId} FROM ${DatabaseConst.chatsTable} WHERE ${DatabaseConst.chatsColumnChatId} = $localId');
 
-    return chat[0][DatabaseConst.chatsColumnLocalChatId] as int;
+    return chat[0][DatabaseConst.chatsColumnChatId] as int;
   }
 
   @override

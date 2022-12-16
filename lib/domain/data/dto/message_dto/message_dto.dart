@@ -52,8 +52,8 @@ class MessageDto extends ModelDto {
   Map<String, dynamic> toMap() {
     return {
       DatabaseConst.messagesColumnLocalMessagesId: localMessageId,
-      DatabaseConst.messagesColumnLocalChatId: localChatId,
-      DatabaseConst.messagesColumnSenderLocalId: localSendId,
+      DatabaseConst.messagesColumnChatId: localChatId,
+      DatabaseConst.messagesColumnSenderId: localSendId,
       DatabaseConst.messagesColumnCreatedDate: createdDate,
       DatabaseConst.messagesColumnContent: content,
       DatabaseConst.messagesColumnMessageId: messageId,
@@ -66,8 +66,8 @@ class MessageDto extends ModelDto {
   factory MessageDto.fromMap(Map<String, dynamic> map) {
     return MessageDto(
         localMessageId: map[DatabaseConst.messagesColumnLocalMessagesId] as int,
-        localChatId: map[DatabaseConst.messagesColumnLocalChatId] as int,
-        localSendId: map[DatabaseConst.messagesColumnSenderLocalId] as int,
+        localChatId: map[DatabaseConst.messagesColumnChatId] as int,
+        localSendId: map[DatabaseConst.messagesColumnSenderId] as int,
         createdDate: map[DatabaseConst.messagesColumnCreatedDate] as String,
         content: map[DatabaseConst.messagesColumnContent] as String,
         messageId: map[DatabaseConst.messagesColumnMessageId],
@@ -75,7 +75,7 @@ class MessageDto extends ModelDto {
         deletedDate: map[DatabaseConst.messagesColumnDeletedDate] ?? '',
         isRead: map[DatabaseConst.messagesColumnIsRead] as int);
   }
- 
+
   String toJson() => json.encode(toMap());
 
   factory MessageDto.fromJson(String source) =>
