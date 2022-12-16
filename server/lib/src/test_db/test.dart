@@ -9,7 +9,7 @@ Future<void> main() async {
   ///
 
   //открыть базу
-
+  var db = await DbServerServices.instanse.database;
   //Обращаемся к методам работы с таблицей чатов через:
   var chatsHelper = ChatsServices();
 
@@ -24,16 +24,34 @@ Future<void> main() async {
   //         WHERE main_message_id = '22';
   //               ''');
 
-  var request = UpdateMessageRequest();
-  request.idMessageMain = 4;
-  request.content = "Zdarova PAPASHA";
-  print(await messagesService.getMessageById(id: 4));
-  var timeUpdate = DateTime.now().toIso8601String();
-  var src = await messagesServices.updateMessage(
-      newValues: "content = '${request.content}', updated_date = '$timeUpdate'",
-      condition: "message_id = ${request.idMessageMain}");
-  print("src: $src");
-  print(await messagesService.getMessageById(id: 4));
+  var users = await db
+      .rawQuery('''SELECT user_id, name, email, profile_pic_url FROM users''');
+  List<User> userList = [];
+
+  for (var user in users) {
+    var userForList = User();
+    print(user);
+    userForList.id = user['user_id'] as int;
+    userForList.name = user['name'] as String;
+    userForList.email = user['email'] as String;
+    userForList.picture = user['profile_pic_url'] as String;
+    userList.add(userForList);
+    print("userList: $userList");
+  }
+
+  print(userList.length);
+  var userForClient = Users(users: userList);
+  print(userForClient);
+  // var request = UpdateMessageRequest();
+  // request.idMessageMain = 4;
+  // request.content = "Zdarova PAPASHA";
+  // print(await messagesService.getMessageById(id: 4));
+  // var timeUpdate = DateTime.now().toIso8601String();
+  // var src = await messagesServices.updateMessage(
+  //     newValues: "content = '${request.content}', updated_date = '$timeUpdate'",
+  //     condition: "message_id = ${request.idMessageMain}");
+  // print("src: $src");
+  // print(await messagesService.getMessageById(id: 4));
 
   ///
   ///Вывод таблицы сообщений

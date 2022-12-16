@@ -105,6 +105,21 @@ class GrpcChat extends GrpcChatServiceBase {
     }
     return message;
   }
+
+  @override
+  Future<Users> getAllUsers(ServiceCall call, Empty request) async {
+    var users = await usersService.getAllUsers();
+    List<User> userList = [];
+    for (int i = 0; i < users.length; i++) {
+      var userForList = User();
+      userForList.id = users[i]['user_id'] as int;
+      userForList.name = users[i]['name'] as String;
+      userForList.email = users[i]['email'] as String;
+      userForList.picture = users[i]['profile_pic_url'] as String;
+      userList.add(userForList);
+    }
+    return Users(users: userList);
+  }
 }
 
 class GrpcUsers extends GrpcUsersServiceBase {

@@ -1,3 +1,4 @@
+import '../../../generated/grpc_manager.pb.dart';
 import '../../../library/library_server.dart';
 
 abstract class IUsersServices {
@@ -16,7 +17,7 @@ abstract class IUsersServices {
 
   deleteUser({required int id});
   Future<List<Map<String, Object?>>> getUser({required int id});
-  getAllUsers();
+  Future getAllUsers();
 }
 
 final usersServices = IUsersServices();

@@ -1,3 +1,4 @@
+import 'package:server/src/generated/grpc_manager.pb.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 
 import '../../../library/library_server.dart';
@@ -47,30 +48,26 @@ class UsersServices implements IUsersServices {
   }
 
   @override
-  getAllUsers() async {
+  Future getAllUsers() async {
     Database db = await DbServerServices.instanse.database;
 
     //тут json
-    var users = await db.rawQuery('''SELECT * FROM users''');
+    var users = await db.rawQuery(
+        '''SELECT user_id, name, email, profile_pic_url FROM users''');
 
-    ///
-    ///Преобразовать json в List<User>
-    ///
-    ///Где User {
-    ///string name = 1;
-    ///int32 id = 2;}
-    ///
-    ///Таблица Users находится в server/lib/src/db_server/services/database_impl.dart
-    ///c 30 строки название колонок в таблице юзерс
-    ///
-    ///
-    ///Проверка запроса осуществляется в server/lib/src/test_db/test.dart
-    // usersList.  ;
-    // for (var element in User(id: , name: )) {
-    // final a =
-    // usersList.add(value)
+    return users;
+    // List<User> userList = [];
+
+    // for (var user in users) {
+    //Косяк тут был)
+    //   user.forEach((key, value) => userList.add(User(
+    //       id: user['user_id'] as int,
+    //       name: user['name'] as String,
+    //       email: user['email'] as String,
+    //       picture: user['profile_pic_url'] as String)));
     // }
-    // return usersList;
+
+    // return Users(users: userList);
   }
 
   @override

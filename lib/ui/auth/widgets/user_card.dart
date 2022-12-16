@@ -16,13 +16,13 @@ class _UserCardState extends State<UserCard> {
     return Column(
       children: [
         InkWell(
+          hoverColor: Colors.transparent,
+          focusColor: Colors.transparent,
           onTap: (() {}),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(50),
-            child: SizedBox.fromSize(
-              size: Size.fromRadius(120),
-              child: Image.network(widget.image, fit: BoxFit.cover),
-            ),
+            borderRadius: BorderRadius.circular(15),
+            child: Image.network(widget.image,
+                fit: BoxFit.cover, width: 150, height: 150),
           ),
         ),
         Text(

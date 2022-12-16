@@ -1,57 +1,38 @@
+import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 part '../auth/widgets/user_card.dart';
 
-class AuthPage extends StatelessWidget {
+class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final List<String> userInfo = [
-      'Имя фамилия',
-      'Телефонный номер',
-      'id пользователя'
-    ];
+  State<AuthPage> createState() => _AuthPageState();
+}
 
-    // final textmap =
-    //     userInfo.map((element) => UserCard(text: element)).toList();
+class _AuthPageState extends State<AuthPage> {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // ...textmap,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              UserCard(
-                  text: userInfo[0],
-                  image:
-                      'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png'),
-              SizedBox(width: 150),
-              UserCard(
-                  text: userInfo[0],
-                  image:
-                      'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png'),
-            ],
-          ),
-        ],
-      )),
+      body: BlocBuilder<UserBloc, UserState>(builder: (context, usersState) {
+        return usersState.users == null
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Center(
+                child: SizedBox(
+                  height: 300,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: usersState.users!.length,
+                    itemBuilder: ((context, index) => UserCard(
+                        text: usersState.users![index].email,
+                        image: usersState.users![index].profilePicLink)),
+                  ),
+                ),
+              );
+      }),
     );
   }
 }
-
-// class AuthPage extends StatelessWidget {
-//   AuthPage({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: textmap,
-//         ),
-//       ),
-//     );
-//   }
-// }
