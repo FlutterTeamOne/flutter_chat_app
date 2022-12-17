@@ -47,7 +47,7 @@ class Dynamic extends $pb.GeneratedMessage {
     ..aOM<CreateMessageRequest>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'createMessage', protoName: 'createMessage', subBuilder: CreateMessageRequest.create)
     ..aOM<UpdateMessageRequest>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'updateMessage', protoName: 'updateMessage', subBuilder: UpdateMessageRequest.create)
     ..aOM<DeleteMessageRequest>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'deleteMessage', protoName: 'deleteMessage', subBuilder: DeleteMessageRequest.create)
-    ..aOM<ReadMessageRequest>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'ReadMessageRequest', protoName: 'ReadMessageRequest', subBuilder: ReadMessageRequest.create)
+    ..aOM<ReadMessageRequest>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'readMessage', protoName: 'readMessage', subBuilder: ReadMessageRequest.create)
     ..e<MessageStateEnum>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'messageState', $pb.PbFieldType.OE, protoName: 'messageState', defaultOrMaker: MessageStateEnum.connecting, valueOf: MessageStateEnum.valueOf, enumValues: MessageStateEnum.values)
     ..hasRequiredFields = false
   ;
@@ -57,7 +57,7 @@ class Dynamic extends $pb.GeneratedMessage {
     CreateMessageRequest? createMessage,
     UpdateMessageRequest? updateMessage,
     DeleteMessageRequest? deleteMessage,
-    ReadMessageRequest? readMessageRequest,
+    ReadMessageRequest? readMessage,
     MessageStateEnum? messageState,
   }) {
     final _result = create();
@@ -70,8 +70,8 @@ class Dynamic extends $pb.GeneratedMessage {
     if (deleteMessage != null) {
       _result.deleteMessage = deleteMessage;
     }
-    if (readMessageRequest != null) {
-      _result.readMessageRequest = readMessageRequest;
+    if (readMessage != null) {
+      _result.readMessage = readMessage;
     }
     if (messageState != null) {
       _result.messageState = messageState;
@@ -133,15 +133,15 @@ class Dynamic extends $pb.GeneratedMessage {
   DeleteMessageRequest ensureDeleteMessage() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  ReadMessageRequest get readMessageRequest => $_getN(3);
+  ReadMessageRequest get readMessage => $_getN(3);
   @$pb.TagNumber(4)
-  set readMessageRequest(ReadMessageRequest v) { setField(4, v); }
+  set readMessage(ReadMessageRequest v) { setField(4, v); }
   @$pb.TagNumber(4)
-  $core.bool hasReadMessageRequest() => $_has(3);
+  $core.bool hasReadMessage() => $_has(3);
   @$pb.TagNumber(4)
-  void clearReadMessageRequest() => clearField(4);
+  void clearReadMessage() => clearField(4);
   @$pb.TagNumber(4)
-  ReadMessageRequest ensureReadMessageRequest() => $_ensure(3);
+  ReadMessageRequest ensureReadMessage() => $_ensure(3);
 
   @$pb.TagNumber(5)
   MessageStateEnum get messageState => $_getN(4);

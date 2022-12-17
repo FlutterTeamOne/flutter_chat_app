@@ -36,7 +36,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         .streamMessage(messageController.stream)
         .listen((value) {
       var messages = <MessageDto>[];
-      var msg = value.readMessageRequest.message;
+      var msg = value.readMessage.message;
       _messagesServices.addNewMessageFromBase(message: msg);
       messages.add(MessageDto(
           localChatId: msg.chatId,
@@ -175,7 +175,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
             senderId: message.localSendId));
     reqStream.add(request);
     messageController.add(Dynamic(
-        readMessageRequest: request,
+        readMessage: request,
         messageState: MessageStateEnum.isCreateMessage));
     // var messageToServer = CreateMessageRequest(
     //     chatIdMain:

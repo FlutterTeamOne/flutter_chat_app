@@ -36,13 +36,13 @@ const Dynamic$json = const {
     const {'1': 'createMessage', '3': 1, '4': 1, '5': 11, '6': '.CreateMessageRequest', '10': 'createMessage'},
     const {'1': 'updateMessage', '3': 2, '4': 1, '5': 11, '6': '.UpdateMessageRequest', '10': 'updateMessage'},
     const {'1': 'deleteMessage', '3': 3, '4': 1, '5': 11, '6': '.DeleteMessageRequest', '10': 'deleteMessage'},
-    const {'1': 'ReadMessageRequest', '3': 4, '4': 1, '5': 11, '6': '.ReadMessageRequest', '10': 'ReadMessageRequest'},
+    const {'1': 'readMessage', '3': 4, '4': 1, '5': 11, '6': '.ReadMessageRequest', '10': 'readMessage'},
     const {'1': 'messageState', '3': 5, '4': 1, '5': 14, '6': '.MessageStateEnum', '10': 'messageState'},
   ],
 };
 
 /// Descriptor for `Dynamic`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List dynamicDescriptor = $convert.base64Decode('CgdEeW5hbWljEjsKDWNyZWF0ZU1lc3NhZ2UYASABKAsyFS5DcmVhdGVNZXNzYWdlUmVxdWVzdFINY3JlYXRlTWVzc2FnZRI7Cg11cGRhdGVNZXNzYWdlGAIgASgLMhUuVXBkYXRlTWVzc2FnZVJlcXVlc3RSDXVwZGF0ZU1lc3NhZ2USOwoNZGVsZXRlTWVzc2FnZRgDIAEoCzIVLkRlbGV0ZU1lc3NhZ2VSZXF1ZXN0Ug1kZWxldGVNZXNzYWdlEkMKElJlYWRNZXNzYWdlUmVxdWVzdBgEIAEoCzITLlJlYWRNZXNzYWdlUmVxdWVzdFISUmVhZE1lc3NhZ2VSZXF1ZXN0EjUKDG1lc3NhZ2VTdGF0ZRgFIAEoDjIRLk1lc3NhZ2VTdGF0ZUVudW1SDG1lc3NhZ2VTdGF0ZQ==');
+final $typed_data.Uint8List dynamicDescriptor = $convert.base64Decode('CgdEeW5hbWljEjsKDWNyZWF0ZU1lc3NhZ2UYASABKAsyFS5DcmVhdGVNZXNzYWdlUmVxdWVzdFINY3JlYXRlTWVzc2FnZRI7Cg11cGRhdGVNZXNzYWdlGAIgASgLMhUuVXBkYXRlTWVzc2FnZVJlcXVlc3RSDXVwZGF0ZU1lc3NhZ2USOwoNZGVsZXRlTWVzc2FnZRgDIAEoCzIVLkRlbGV0ZU1lc3NhZ2VSZXF1ZXN0Ug1kZWxldGVNZXNzYWdlEjUKC3JlYWRNZXNzYWdlGAQgASgLMhMuUmVhZE1lc3NhZ2VSZXF1ZXN0UgtyZWFkTWVzc2FnZRI1CgxtZXNzYWdlU3RhdGUYBSABKA4yES5NZXNzYWdlU3RhdGVFbnVtUgxtZXNzYWdlU3RhdGU=');
 @$core.Deprecated('Use messageDescriptor instead')
 const Message$json = const {
   '1': 'Message',
