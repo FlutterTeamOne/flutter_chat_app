@@ -180,27 +180,26 @@ class GrpcMessage extends GrpcMessagesServiceBase {
         if (controller != clientController) {
           await usersService.updateUser(
               newValues: 'hash_connect = ${request.hashCode}',
-              condition:
-                  'user_id = ${req.readMessageRequest.message.senderId}');
-          print('REQ message: ${req.readMessageRequest.message}');
+              condition: 'user_id = ${req.readMessage.message.senderId}');
+          print('REQ message: ${req.readMessage.message}');
+          // messages.add(req.message);
           if (req.messageState == MessageStateEnum.isCreateMessage) {
             var newMessage = await messagesService.addNewMessage(
-              chatId: req.readMessageRequest.message.chatId,
-              senderId: req.readMessageRequest.message.senderId,
-              content: req.readMessageRequest.message.content,
+              chatId: req.readMessage.message.chatId,
+              senderId: req.readMessage.message.senderId,
+              content: req.readMessage.message.content,
             );
 
-            req.readMessageRequest.message.messageId =
-                newMessage['message_id'] as int;
-            req.readMessageRequest.message.dateCreate =
+            req.readMessage.message.messageId = newMessage['message_id'] as int;
+            req.readMessage.message.dateCreate =
                 newMessage['created_date'] as String;
-            req.readMessageRequest.message.dateUpdate =
+            req.readMessage.message.dateUpdate =
                 newMessage['updated_date'] as String;
-            print('REQ message UPDATE: ${req.readMessageRequest.message}');
+            print('REQ message UPDATE: ${req.readMessage.message}');
             controller.sink.add(
               Dynamic(
-                  readMessageRequest: ReadMessageRequest(
-                      message: req.readMessageRequest.message),
+                  readMessage:
+                      ReadMessageRequest(message: req.readMessage.message),
                   messageState: MessageStateEnum.isCreateMessage),
             );
           }
@@ -276,8 +275,7 @@ class GrpcMessage extends GrpcMessagesServiceBase {
     await for (final req in clientController.stream) {
       print('  -> piped to #${request.hashCode}');
       yield Dynamic(
-          readMessageRequest:
-              ReadMessageRequest(message: req.readMessageRequest.message));
+          readMessage: ReadMessageRequest(message: req.readMessage.message));
     }
 
     //   if (req.messageState == MessageState.isDelteMesage) {}

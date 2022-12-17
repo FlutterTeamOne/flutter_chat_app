@@ -33,7 +33,7 @@ Future<void> main(List<String> args) async {
   print('responses:  $responses');
   try {
     await for (final res in responses) {
-      print('[${res.readMessageRequest.message}] ');
+      print('[${res.readMessage.message}] ');
     }
   } catch (e) {
     print(e);
@@ -57,7 +57,7 @@ Stream<Dynamic> postStream(int id) async* {
     final lines = stdin.transform(utf8.decoder).transform(const LineSplitter());
     await for (final line in lines) {
       var reqMsg = Dynamic(
-          readMessageRequest: ReadMessageRequest(
+          readMessage: ReadMessageRequest(
             message: Message(
                 content: line,
                 chatId: 1,

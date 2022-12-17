@@ -24,7 +24,7 @@ message Dynamic{
     CreateMessageRequest createMessage = 1;
     UpdateMessageRequest updateMessage = 2;
     DeleteMessageRequest deleteMessage = 3;
-    ReadMessageRequest ReadMessageRequest =4;
+    ReadMessageRequest readMessage =4;
     MessageStateEnum messageState = 5;
 }
 

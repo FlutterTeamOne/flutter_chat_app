@@ -36,7 +36,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         .streamMessage(messageController.stream)
         .listen((value) {
       var messages = <MessageDto>[];
-      var msg = value.readMessageRequest.message;
+      var msg = value.readMessage.message;
       _messagesServices.addNewMessageFromBase(message: msg);
       messages.add(MessageDto(
           localChatId: msg.chatId,
@@ -175,7 +175,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
             senderId: message.localSendId));
     reqStream.add(request);
     messageController.add(Dynamic(
-        readMessageRequest: request,
+        readMessage: request,
         messageState: MessageStateEnum.isCreateMessage));
     // var messageToServer = CreateMessageRequest(
     //     chatIdMain:
@@ -238,7 +238,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       await _messagesServices.updateMessage(
           message: event.message!, localMessageId: state.messageId!);
       emit(state.copyWith(editState: EditState.isNotEditing));
-
+    }
       // try {
       //отправляем обновленное сообщение на сервер
 //         var messageUpdateRequest = UpdateMessageRequest(
@@ -257,9 +257,9 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 //         }
 //       } catch (e) {}
 //     }
-//     if (event.isEditing == EditState.isNotEditing) {
-//       emit(state.copyWith(editState: EditState.isNotEditing));
-//     }
+    if (event.isEditing == EditState.isNotEditing) {
+      emit(state.copyWith(editState: EditState.isNotEditing));
+    }
     }
 
     ///Удаление сообщения по ид
@@ -297,4 +297,4 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       return super.close();
     }
   }
-}
+
