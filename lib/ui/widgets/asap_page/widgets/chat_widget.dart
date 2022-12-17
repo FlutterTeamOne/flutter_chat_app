@@ -1,6 +1,4 @@
-﻿import 'dart:developer';
-
-import '../../../../src/libraries/library_all.dart';
+﻿import '../../../../src/libraries/library_all.dart';
 import '../../library/library_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
@@ -21,16 +19,21 @@ class ChatWidget extends StatefulWidget {
 
 class ChatWidgetState extends State<ChatWidget> {
   ScrollController scrollController = ScrollController();
-
-  scrollToLastMessage() {
-    scrollController.jumpTo(scrollController.position.minScrollExtent);
-    // print(scrollController.offset);
-  }
+  double _bSize = 0;
+  double _iSize = 0;
 
   @override
   void initState() {
     scrollController.addListener(() {
-      log(scrollController.offset.toString());
+      if (scrollController.offset >= 350) {
+        _bSize = 20;
+        _iSize = 24;
+        // setState(() {});
+      } else {
+        _bSize = 0;
+        _iSize = 0;
+        // setState(() {});
+      }
     });
     super.initState();
   }
@@ -38,29 +41,26 @@ class ChatWidgetState extends State<ChatWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton:
-          //  scrollController.offset > 50?
-          AnimatedSize(
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.slowMiddle,
-        child: SizedBox(
-          // height: 45,
-          // width: 45,
-          child: FloatingActionButton(
-            onPressed: () {
-              scrollToLastMessage();
-            },
-            tooltip: 'Scroll to last message',
-            mini: true,
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
+      floatingActionButton: AnimatedSize(
+        duration: const Duration(milliseconds: 500),
+        reverseDuration: const Duration(milliseconds: 500),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(100),
+          onTap: () {
+            scrollController.jumpTo(scrollController.position.minScrollExtent);
+          },
+          child: CircleAvatar(
             backgroundColor: Colors.white.withOpacity(0.6),
+            radius: _bSize,
             child: Icon(
               Icons.keyboard_arrow_down_rounded,
+              size: _iSize,
               color: Colors.black.withOpacity(0.8),
             ),
           ),
         ),
       ),
-      // : const SizedBox.shrink(),
       body: GroupedListView<MessageDto, int>(
         controller: scrollController,
         padding: const EdgeInsets.all(10),
@@ -79,6 +79,7 @@ class ChatWidgetState extends State<ChatWidget> {
               message: message.content,
             );
           } else {
+            print(scrollController.offset);
             return MyMessageCardWidget(
               message: message,
               isSuccess: message.messageId,
