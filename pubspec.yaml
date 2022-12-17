@@ -36,13 +36,14 @@ dependencies:
   blur: ^3.1.0
   get_it: ^7.2.0
   internet_connection_checker: ^1.0.0+1
+  async: ^2.9.0
+
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
-  mockito: ^5.3.2
-  build_runner: ^2.3.0
 
 flutter:
   # The following line ensures that the Material Icons font is

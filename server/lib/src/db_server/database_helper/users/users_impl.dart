@@ -47,10 +47,26 @@ class UsersServices implements IUsersServices {
   }
 
   @override
-  getAllUsers() async {
+  Future getAllUsers() async {
     Database db = await DbServerServices.instanse.database;
 
-    return await db.rawQuery('''SELECT user_id, hash_connect FROM users''');
+    //тут json
+    var users = await db.rawQuery(
+        '''SELECT user_id, name, email, profile_pic_url FROM users''');
+
+    return users;
+    // List<User> userList = [];
+
+    // for (var user in users) {
+    //Косяк тут был)
+    //   user.forEach((key, value) => userList.add(User(
+    //       id: user['user_id'] as int,
+    //       name: user['name'] as String,
+    //       email: user['email'] as String,
+    //       picture: user['profile_pic_url'] as String)));
+    // }
+
+    // return Users(users: userList);
   }
 
   @override
