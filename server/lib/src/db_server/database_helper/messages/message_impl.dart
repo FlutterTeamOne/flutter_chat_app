@@ -87,8 +87,7 @@ class MessagesServices implements IMessagesServices {
       {required String newValues, required String condition}) async {
     Database db = await DbServerServices.instanse.database;
     return await db
-            .rawUpdate('''UPDATE messages SET $newValues WHERE ($condition)''')
-        as int;
+        .rawUpdate('''UPDATE messages SET $newValues WHERE ($condition)''');
   }
 
   // @override

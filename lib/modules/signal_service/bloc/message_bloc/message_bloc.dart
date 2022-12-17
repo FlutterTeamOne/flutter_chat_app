@@ -61,6 +61,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         print('id Message Main: ${updMsg.idMessageMain}');
         print('date update: ${updMsg.idMessageMain}');
       } else if (value.messageState == MessageStateEnum.isDeleteMesage) {
+        var del = value.deleteMessage;
+        await _messagesServices.deleteMessage(id: del.idMessageMain);
       } else if (value.messageState == MessageStateEnum.isCreateMessage) {
         var msg = value.createMessage.message;
         var newMsg = MessageDto(
@@ -253,17 +255,16 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     print('message ID: ${event.messageId}');
     emit(state.copyWith(
         deleteState: DeleteState.isDeleted, editState: EditState.isNotEditing));
-    // var messageDelete = DeleteMessageRequest(idMessageMain: event.messageId);
-    // try {
-    //   var response = await stub.deleteMessage(messageDelete);
-    //   await _messagesServices.deleteWrittenToServer(
-    //       localMessageId: response.idMessageMain,
-    //       deletedDate: response.dateDelete);
-    //   print('DEL DATE: ${response.dateDelete}');
-    //   print('DEL ID: ${response.idMessageMain}');
+    var messageDelete = DynamicRequest(
+        deleteMessage: DeleteMessageRequest(idMessageMain: event.messageId),
+        messageState: MessageStateEnum.isDeleteMesage);
+    try {
+      messageController.add(messageDelete);
+      // print('DEL DATE: ${response.dateDelete}');
+      // print('DEL ID: ${response.idMessageMain}');
 
-    //   // await _messagesServices.updateWrittenToServer(localMessageId: localMessageId, updatedDate: updatedDate)
-    // } catch (e) {}
+      // await _messagesServices.updateWrittenToServer(localMessageId: localMessageId, updatedDate: updatedDate)
+    } catch (e) {}
   }
 
   ///Очистка истории в определенном чате

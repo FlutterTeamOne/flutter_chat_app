@@ -205,7 +205,12 @@ class GrpcMessage extends GrpcMessagesServiceBase {
             clientController: clientController,
             req: req));
       }
-      if (req.messageState == MessageStateEnum.isDeleteMesage) {}
+      if (req.messageState == MessageStateEnum.isDeleteMesage) {
+        _controllers.forEach((controller, _) async => _onDeleteMessage(
+            controller: controller,
+            clientController: clientController,
+            req: req));
+      }
     }).onError((dynamic e) {
       print(e);
 
@@ -332,6 +337,25 @@ class GrpcMessage extends GrpcMessagesServiceBase {
           messageState: MessageStateEnum.isUpdateMessage);
       controller.add(updateMessage);
     }
+  }
+
+  _onDeleteMessage(
+      {required StreamController<DynamicResponse> controller,
+      required StreamController<DynamicResponse> clientController,
+      required DynamicRequest req}) async {
+    var dateDelete = DateTime.now().toIso8601String();
+    await messagesService.updateMessage(
+        newValues: 'deleted_date = $dateDelete',
+        condition: 'message_id=${req.deleteMessage.idMessageMain}');
+    if (controller != clientController) {
+      var delMsg = DynamicResponse(
+          deleteMessage: DeleteMessageResponse(
+            idMessageMain: req.deleteMessage.idMessageMain,
+            dateDelete: dateDelete,
+          ),
+          messageState: MessageStateEnum.isDeleteMesage);
+      controller.add(delMsg);
+    } else {}
   }
 }
 
