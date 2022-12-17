@@ -2,6 +2,7 @@
 import '../../library/library_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
+import '../scroll_down_button.dart';
 
 class ChatWidget extends StatefulWidget {
   const ChatWidget({
@@ -17,24 +18,24 @@ class ChatWidget extends StatefulWidget {
   State<ChatWidget> createState() => ChatWidgetState();
 }
 
-class ChatWidgetState extends State<ChatWidget> {
-  ScrollController scrollController = ScrollController();
-  double _bSize = 0;
-  double _iSize = 0;
+final _btSize = ValueNotifier<double>(0);
+double _icSize = 0;
+ScrollController scrollController = ScrollController();
 
+class ChatWidgetState extends State<ChatWidget> {
   @override
   void initState() {
-    scrollController.addListener(() {
-      if (scrollController.offset >= 350) {
-        _bSize = 20;
-        _iSize = 24;
-        // setState(() {});
-      } else {
-        _bSize = 0;
-        _iSize = 0;
-        // setState(() {});
-      }
-    });
+    scrollController.addListener(
+      () {
+        if (scrollController.offset >= 350) {
+          _btSize.value = 20;
+          _icSize = 24;
+        } else {
+          _btSize.value = 0;
+          _icSize = 0;
+        }
+      },
+    );
     super.initState();
   }
 
@@ -42,23 +43,14 @@ class ChatWidgetState extends State<ChatWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
-      floatingActionButton: AnimatedSize(
-        duration: const Duration(milliseconds: 500),
-        reverseDuration: const Duration(milliseconds: 500),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(100),
+      floatingActionButton: ValueListenableBuilder(
+        valueListenable: _btSize,
+        builder: (context, value, child) => ScrollDownButton(
           onTap: () {
             scrollController.jumpTo(scrollController.position.minScrollExtent);
           },
-          child: CircleAvatar(
-            backgroundColor: Colors.white.withOpacity(0.6),
-            radius: _bSize,
-            child: Icon(
-              Icons.keyboard_arrow_down_rounded,
-              size: _iSize,
-              color: Colors.black.withOpacity(0.8),
-            ),
-          ),
+          buttonSize: _btSize.value,
+          iconSize: _icSize,
         ),
       ),
       body: GroupedListView<MessageDto, int>(
@@ -79,7 +71,6 @@ class ChatWidgetState extends State<ChatWidget> {
               message: message.content,
             );
           } else {
-            print(scrollController.offset);
             return MyMessageCardWidget(
               message: message,
               isSuccess: message.messageId,
