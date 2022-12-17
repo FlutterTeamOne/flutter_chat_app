@@ -238,7 +238,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       await _messagesServices.updateMessage(
           message: event.message!, localMessageId: state.messageId!);
       emit(state.copyWith(editState: EditState.isNotEditing));
-
+    }
       // try {
       //отправляем обновленное сообщение на сервер
 //         var messageUpdateRequest = UpdateMessageRequest(
@@ -257,9 +257,9 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 //         }
 //       } catch (e) {}
 //     }
-//     if (event.isEditing == EditState.isNotEditing) {
-//       emit(state.copyWith(editState: EditState.isNotEditing));
-//     }
+    if (event.isEditing == EditState.isNotEditing) {
+      emit(state.copyWith(editState: EditState.isNotEditing));
+    }
     }
 
     ///Удаление сообщения по ид
@@ -297,4 +297,4 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       return super.close();
     }
   }
-}
+
