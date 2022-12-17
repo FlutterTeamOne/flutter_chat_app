@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
 class CustomTheme {
-    static final ThemeData lightThemeDeepPurple = ThemeData(
+  static final ThemeData lightThemeDeepPurple = ThemeData(
 
       brightness: Brightness.light,
       primarySwatch: Colors.deepPurple,
@@ -16,7 +16,7 @@ class CustomTheme {
         selectionColor: Colors.black26,
         selectionHandleColor: Colors.black26,
       ));
-    static final ThemeData darkThemeDeepPurple = ThemeData(
+  static final ThemeData darkThemeDeepPurple = ThemeData(
     brightness: Brightness.dark,
     primarySwatch: Colors.deepPurple,
     primaryColor: Colors.deepPurple,
@@ -30,7 +30,7 @@ class CustomTheme {
     ),
   );
 
-    static final ThemeData darkThemeLightBlue = ThemeData(
+  static final ThemeData darkThemeLightBlue = ThemeData(
     brightness: Brightness.dark,
     primarySwatch: Colors.indigo,
     primaryColor: Colors.indigo,
@@ -43,7 +43,7 @@ class CustomTheme {
     ),
   );
 
-    static final ThemeData lightThemeLightBlue = ThemeData(
+  static final ThemeData lightThemeLightBlue = ThemeData(
       brightness: Brightness.light,
       primarySwatch: Colors.indigo,
       primaryColor: Colors.indigo,
@@ -56,7 +56,7 @@ class CustomTheme {
       ));
 
 
-    static final ThemeData darkThemeOrange = ThemeData(
+  static final ThemeData darkThemeOrange = ThemeData(
     brightness: Brightness.dark,
     primarySwatch: Colors.blueGrey,
     primaryColor: Colors.blueGrey,
@@ -69,16 +69,24 @@ class CustomTheme {
     ),
   );
 
-    static final ThemeData lightThemeOrange = ThemeData(
+  static final ThemeData lightThemeOrange = ThemeData(
     brightness: Brightness.light,
-    primarySwatch: Colors.orange,
+    primarySwatch: Colors.blueGrey,
+    primaryColor: Colors.blueGrey,
+    errorColor: Colors.redAccent.shade200,
+    // backgroundColor: Colors.black45,
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.white70,
+      selectionColor: Colors.white70,
+      selectionHandleColor: Colors.white70,
+    ),
   );
-    final themes = [
-      CustomTheme.lightThemeDeepPurple,
-      CustomTheme.darkThemeDeepPurple,
-      CustomTheme.lightThemeLightBlue,
-      CustomTheme.darkThemeLightBlue,
-      CustomTheme.lightThemeOrange,
-      CustomTheme.darkThemeOrange,
-    ];
+  final themes = [
+    CustomTheme.lightThemeDeepPurple,
+    CustomTheme.darkThemeDeepPurple,
+    CustomTheme.lightThemeLightBlue,
+    CustomTheme.darkThemeLightBlue,
+    CustomTheme.lightThemeOrange,
+    CustomTheme.darkThemeOrange,
+  ];
 }
