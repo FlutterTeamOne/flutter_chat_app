@@ -101,4 +101,20 @@ class MessagesServices implements IMessagesServices {
         chats.friend2_id = ${message.mainIdUser}))''');
     return messages;
   }
+
+  getMessageByUserId({required int idUser}) async {
+    Database db = await DbServerServices.instanse.database;
+
+    var idChatsFriends = await db.rawQuery(''' SELECT chat_id 
+          FROM chats 
+          WHERE (friend1_id = $idUser) OR (friend2_id = $idUser)''');
+    List<int> idChats = [];
+    for (var idF in idChatsFriends) {
+      idChats.add(idF['chat_id'] as int);
+    }
+    var messages = await db.rawQuery('''SELECT *
+          FROM messages
+          WHERE chat_id IN (${idChats.join(",")})''');
+    return messages;
+  }
 }

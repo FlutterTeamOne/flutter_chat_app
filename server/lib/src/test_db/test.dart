@@ -66,12 +66,20 @@ Future<void> main() async {
   ///
   ///Проверка запроса с синхронизацией
   ///
-  var main_messages_id = 70;
   var mainIdUser = 1;
-  var messages = await messagesService.getRecentMessages(
-      message:
-          LastMessage(mainIdMessage: main_messages_id, mainIdUser: mainIdUser));
-  for (var mes in messages) {
-    print(mes);
+  var users = await usersService.getAllUsersByIDfriend(id: mainIdUser);
+  for (var user in users) {
+    print(user);
+  }
+
+  var chats = await chatsServices.getChatsByUserId(userID: mainIdUser);
+  for (var chat in chats) {
+    print(chat);
+  }
+
+  //await messagesService.addNewMessage(chatId: 1, senderId: 2, content: '222');
+  var messages = await messagesService.getMessageByUserId(idUser: mainIdUser);
+  for (var message in messages) {
+    print(message);
   }
 }

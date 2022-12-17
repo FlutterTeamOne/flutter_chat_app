@@ -12,7 +12,7 @@ class Client {
   Future<CreateMessageResponse> SendMessage(
       CreateMessageRequest message) async {
     channel = ClientChannel('localhost',
-        port: 50000,
+        port: 6000,
         options:
             const ChannelOptions(credentials: ChannelCredentials.insecure()));
 
@@ -43,10 +43,30 @@ class Client {
     // executionInProgress = result.toLowerCase() != 'y';
   }
 
+  Future<DataDBRequest> GetUsersSynh(SynhMainUser mes) async {
+    channel = ClientChannel('localhost',
+        port: 6000,
+        options:
+            const ChannelOptions(credentials: ChannelCredentials.insecure()));
+
+    var mock = GrpcSynchronizationClient(channel!,
+        options: CallOptions(timeout: Duration(seconds: 30)));
+
+    var response = DataDBRequest();
+    try {
+      response = await mock.getUsersSynh(mes);
+    } catch (e) {
+      print(e);
+    } finally {
+      await channel!.shutdown();
+    }
+    return response;
+  }
+
   Future<UpdateMessageResponse> UpdateMessage(
       UpdateMessageRequest message) async {
     channel = ClientChannel('localhost',
-        port: 5000,
+        port: 6000,
         options:
             const ChannelOptions(credentials: ChannelCredentials.insecure()));
 
@@ -77,7 +97,7 @@ class Client {
 
   Future<Users> getUsers(Empty message) async {
     channel = ClientChannel('localhost',
-        port: 5000,
+        port: 6000,
         options:
             const ChannelOptions(credentials: ChannelCredentials.insecure()));
 
@@ -155,8 +175,13 @@ void main() async {
   // print('update User: ${updateUser.writeToJsonMap()}');
   // print(await client.updateUser(updateUser));
 
-  var messageEmpty = Empty();
+  // var messageEmpty = Empty();
+  // print("Обратный ответ:");
+
+  // print(await client.getUsers(messageEmpty));
+
+  var message = SynhMainUser(id: 1);
   print("Обратный ответ:");
 
-  print(await client.getUsers(messageEmpty));
+  print(await client.GetUsersSynh(message));
 }

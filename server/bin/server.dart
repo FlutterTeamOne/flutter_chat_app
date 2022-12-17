@@ -299,12 +299,73 @@ class GrpcUsers extends GrpcUsersServiceBase {
   }
 }
 
+class GrpcSynh extends GrpcSynchronizationServiceBase {
+  @override
+  Future<DataDBRequest> getUsersSynh(
+      ServiceCall call, SynhMainUser request) async {
+    var chats = await ChatsServices().getChatsByUserId(userID: request.id);
+    var users = await UsersServices().getAllUsersByIDfriend(id: request.id);
+    var messages =
+        await MessagesServices().getMessageByUserId(idUser: request.id);
+    print('USERS: $users');
+    print('MESSAGES: $messages');
+    List<SynhUser> userList = [];
+    List<SynhChat> chatList = [];
+    List<SynhMessage> messageList = [];
+
+    for (int i = 0; i < chats.length; i++) {
+      var chatForList = SynhChat();
+      chatForList.chatId = chats[i]['chat_id'] as int;
+      chatForList.userId = chats[i]['friend1_id'] == request.id
+          ? chats[i]['friend2_id'] as int
+          : chats[i]['friend1_id'] as int;
+      chatForList.createdDate = chats[i]['created_date'] as String;
+      chatForList.updateDate = chats[i]['updated_date'] as String;
+      chatForList.deletedDate = chats[i]['deleted_date'] ?? '';
+      chatList.add(chatForList);
+    }
+
+    for (int i = 0; i < users.length; i++) {
+      var userForList = SynhUser();
+      userForList.userId = users[i]['user_id'] as int;
+      userForList.name = users[i]['name'] as String;
+      userForList.email = users[i]['email'] as String;
+      userForList.picture = users[i]['profile_pic_url'] as String;
+      userForList.createdDate = users[i]['created_date'] as String;
+      userForList.updateDate = users[i]['updated_date'] as String;
+      userForList.deletedDate = users[i]['deleted_date'] ?? '';
+      userList.add(userForList);
+    }
+
+    for (int i = 0; i < messages.length; i++) {
+      var messageForList = SynhMessage();
+      messageForList.senderId = messages[i]['sender_id'] as int;
+      messageForList.chatId = messages[i]['chat_id'] as int;
+      messageForList.createdDate = messages[i]['created_date'] as String;
+      messageForList.messageId = messages[i]['message_id'] as int;
+      messageForList.content = messages[i]['content'] as String;
+      messageForList.updatedDate = messages[i]['updated_date'] as String;
+      messageForList.deletedDate = messages[i]['deleted_date'] ?? '';
+      //Параметра нету в базе
+      //messageForList.isRead = messages[i]['is_read'].toInt() ?? 0;
+      messageList.add(messageForList);
+    }
+
+    var dbRequest = DataDBRequest(
+      users: userList,
+      chats: chatList,
+      messages: messageList,
+    );
+    return dbRequest;
+  }
+}
+
 ///
 ///Настройка
 ///
 Future<void> main() async {
   final server = Server(
-    [GrpcMessage(), GrpcUsers(), GrpcChats()], //
+    [GrpcMessage(), GrpcUsers(), GrpcChats(), GrpcSynh()],
 
     const <Interceptor>[], //Перехватчик
 
@@ -312,7 +373,7 @@ Future<void> main() async {
     CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
   );
 
-  await server.serve(port: 50000);
+  await server.serve(port: 6000);
   await DbServerServices.instanse.openDatabase();
   print('✅ Server listening on port ${server.port}...');
 }

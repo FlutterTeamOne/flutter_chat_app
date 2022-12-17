@@ -121,4 +121,24 @@ class UsersServices implements IUsersServices {
         WHERE user_id = $id''');
     return hash[0]['hash_connect'] as int;
   }
+
+  getAllUsersByIDfriend({required int id}) async {
+    Database db = await DbServerServices.instanse.database;
+
+    var idChatsFriends = await db.rawQuery(''' SELECT friend1_id, friend2_id
+          FROM chats 
+          WHERE (friend1_id = $id) OR (friend2_id = $id)''');
+    List<int> idFriends = [];
+
+    for (var idF in idChatsFriends) {
+      var idFriend = (idF['friend1_id'] == id
+          ? idF['friend2_id']
+          : idF['friend1_id']) as int;
+      idFriends.add(idFriend);
+    }
+    var users = await db.rawQuery('''SELECT *
+          FROM users
+          WHERE user_id IN (${idFriends.join(",")})''');
+    return users;
+  }
 }
