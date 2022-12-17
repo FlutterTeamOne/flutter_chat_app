@@ -183,7 +183,6 @@ class GrpcMessage extends GrpcMessagesServiceBase {
               condition:
                   'user_id = ${req.readMessageRequest.message.senderId}');
           print('REQ message: ${req.readMessageRequest.message}');
-          // messages.add(req.message);
           if (req.messageState == MessageStateEnum.isCreateMessage) {
             var newMessage = await messagesService.addNewMessage(
               chatId: req.readMessageRequest.message.chatId,
@@ -197,7 +196,7 @@ class GrpcMessage extends GrpcMessagesServiceBase {
                 newMessage['created_date'] as String;
             req.readMessageRequest.message.dateUpdate =
                 newMessage['updated_date'] as String;
-
+            print('REQ message UPDATE: ${req.readMessageRequest.message}');
             controller.sink.add(
               Dynamic(
                   readMessageRequest: ReadMessageRequest(
@@ -205,8 +204,20 @@ class GrpcMessage extends GrpcMessagesServiceBase {
                   messageState: MessageStateEnum.isCreateMessage),
             );
           }
+
+          ///ТУТ
+          // } else {
+          //   controller.sink.add(
+          //     Dynamic(
+          //         updateMessage: UpdateMessageRequest(
+          //             idMessageMain: req.readMessageRequest.message.messageId),
+          //         messageState: MessageStateEnum.isUpdateMessage),
+          //   );
+          // }
         }
       });
+
+      // messages.add(req.message);
     }).onError((dynamic e) {
       print(e);
 
