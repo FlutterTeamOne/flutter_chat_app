@@ -33,7 +33,12 @@ Future<void> main(List<String> args) async {
   print('responses:  $responses');
   try {
     await for (final res in responses) {
-      print('[${res.readMessage.message}] ');
+      print("res: ${res.messageState}");
+      if (res.messageState == MessageStateEnum.isCreateMessage) {
+        print('[${res.createMessage.message}]');
+      } else if (res.messageState == MessageStateEnum.isReadMessage) {
+        print('[${res.readMessage.message}]');
+      }
     }
   } catch (e) {
     print(e);
@@ -43,22 +48,23 @@ Future<void> main(List<String> args) async {
   }
 }
 
-Stream<Dynamic> postStream(int id) async* {
+Stream<DynamicRequest> postStream(int id) async* {
   var stub = GrpcMessagesClient(ClientChannel('localhost',
       port: 50000,
       options: const ChannelOptions(
         credentials: ChannelCredentials.insecure(),
       )));
-  yield Dynamic(
+  yield DynamicRequest(
       messageState: MessageStateEnum.connecting,
       createMessage: CreateMessageRequest(message: Message(senderId: id)));
   while (true) {
     // var utf8;
     final lines = stdin.transform(utf8.decoder).transform(const LineSplitter());
     await for (final line in lines) {
-      var reqMsg = Dynamic(
-          readMessage: ReadMessageRequest(
+      var reqMsg = DynamicRequest(
+          createMessage: CreateMessageRequest(
             message: Message(
+                localMessgaeId: 72,
                 content: line,
                 chatId: 1,
                 senderId: id,

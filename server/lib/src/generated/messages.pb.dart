@@ -42,8 +42,8 @@ class Empty extends $pb.GeneratedMessage {
   static Empty? _defaultInstance;
 }
 
-class Dynamic extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Dynamic', createEmptyInstance: create)
+class DynamicRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'DynamicRequest', createEmptyInstance: create)
     ..aOM<CreateMessageRequest>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'createMessage', protoName: 'createMessage', subBuilder: CreateMessageRequest.create)
     ..aOM<UpdateMessageRequest>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'updateMessage', protoName: 'updateMessage', subBuilder: UpdateMessageRequest.create)
     ..aOM<DeleteMessageRequest>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'deleteMessage', protoName: 'deleteMessage', subBuilder: DeleteMessageRequest.create)
@@ -52,8 +52,8 @@ class Dynamic extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  Dynamic._() : super();
-  factory Dynamic({
+  DynamicRequest._() : super();
+  factory DynamicRequest({
     CreateMessageRequest? createMessage,
     UpdateMessageRequest? updateMessage,
     DeleteMessageRequest? deleteMessage,
@@ -78,26 +78,26 @@ class Dynamic extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory Dynamic.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory Dynamic.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory DynamicRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory DynamicRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  Dynamic clone() => Dynamic()..mergeFromMessage(this);
+  DynamicRequest clone() => DynamicRequest()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  Dynamic copyWith(void Function(Dynamic) updates) => super.copyWith((message) => updates(message as Dynamic)) as Dynamic; // ignore: deprecated_member_use
+  DynamicRequest copyWith(void Function(DynamicRequest) updates) => super.copyWith((message) => updates(message as DynamicRequest)) as DynamicRequest; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static Dynamic create() => Dynamic._();
-  Dynamic createEmptyInstance() => create();
-  static $pb.PbList<Dynamic> createRepeated() => $pb.PbList<Dynamic>();
+  static DynamicRequest create() => DynamicRequest._();
+  DynamicRequest createEmptyInstance() => create();
+  static $pb.PbList<DynamicRequest> createRepeated() => $pb.PbList<DynamicRequest>();
   @$core.pragma('dart2js:noInline')
-  static Dynamic getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Dynamic>(create);
-  static Dynamic? _defaultInstance;
+  static DynamicRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DynamicRequest>(create);
+  static DynamicRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   CreateMessageRequest get createMessage => $_getN(0);
@@ -153,6 +153,117 @@ class Dynamic extends $pb.GeneratedMessage {
   void clearMessageState() => clearField(5);
 }
 
+class DynamicResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'DynamicResponse', createEmptyInstance: create)
+    ..aOM<CreateMessageResponse>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'createMessage', protoName: 'createMessage', subBuilder: CreateMessageResponse.create)
+    ..aOM<UpdateMessageResponse>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'updateMessage', protoName: 'updateMessage', subBuilder: UpdateMessageResponse.create)
+    ..aOM<DeleteMessageResponse>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'deleteMessage', protoName: 'deleteMessage', subBuilder: DeleteMessageResponse.create)
+    ..aOM<ReadMessageResponse>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'readMessage', protoName: 'readMessage', subBuilder: ReadMessageResponse.create)
+    ..e<MessageStateEnum>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'messageState', $pb.PbFieldType.OE, protoName: 'messageState', defaultOrMaker: MessageStateEnum.connecting, valueOf: MessageStateEnum.valueOf, enumValues: MessageStateEnum.values)
+    ..hasRequiredFields = false
+  ;
+
+  DynamicResponse._() : super();
+  factory DynamicResponse({
+    CreateMessageResponse? createMessage,
+    UpdateMessageResponse? updateMessage,
+    DeleteMessageResponse? deleteMessage,
+    ReadMessageResponse? readMessage,
+    MessageStateEnum? messageState,
+  }) {
+    final _result = create();
+    if (createMessage != null) {
+      _result.createMessage = createMessage;
+    }
+    if (updateMessage != null) {
+      _result.updateMessage = updateMessage;
+    }
+    if (deleteMessage != null) {
+      _result.deleteMessage = deleteMessage;
+    }
+    if (readMessage != null) {
+      _result.readMessage = readMessage;
+    }
+    if (messageState != null) {
+      _result.messageState = messageState;
+    }
+    return _result;
+  }
+  factory DynamicResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory DynamicResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  DynamicResponse clone() => DynamicResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  DynamicResponse copyWith(void Function(DynamicResponse) updates) => super.copyWith((message) => updates(message as DynamicResponse)) as DynamicResponse; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static DynamicResponse create() => DynamicResponse._();
+  DynamicResponse createEmptyInstance() => create();
+  static $pb.PbList<DynamicResponse> createRepeated() => $pb.PbList<DynamicResponse>();
+  @$core.pragma('dart2js:noInline')
+  static DynamicResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DynamicResponse>(create);
+  static DynamicResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  CreateMessageResponse get createMessage => $_getN(0);
+  @$pb.TagNumber(1)
+  set createMessage(CreateMessageResponse v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasCreateMessage() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearCreateMessage() => clearField(1);
+  @$pb.TagNumber(1)
+  CreateMessageResponse ensureCreateMessage() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  UpdateMessageResponse get updateMessage => $_getN(1);
+  @$pb.TagNumber(2)
+  set updateMessage(UpdateMessageResponse v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasUpdateMessage() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearUpdateMessage() => clearField(2);
+  @$pb.TagNumber(2)
+  UpdateMessageResponse ensureUpdateMessage() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  DeleteMessageResponse get deleteMessage => $_getN(2);
+  @$pb.TagNumber(3)
+  set deleteMessage(DeleteMessageResponse v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasDeleteMessage() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearDeleteMessage() => clearField(3);
+  @$pb.TagNumber(3)
+  DeleteMessageResponse ensureDeleteMessage() => $_ensure(2);
+
+  @$pb.TagNumber(4)
+  ReadMessageResponse get readMessage => $_getN(3);
+  @$pb.TagNumber(4)
+  set readMessage(ReadMessageResponse v) { setField(4, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasReadMessage() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearReadMessage() => clearField(4);
+  @$pb.TagNumber(4)
+  ReadMessageResponse ensureReadMessage() => $_ensure(3);
+
+  @$pb.TagNumber(5)
+  MessageStateEnum get messageState => $_getN(4);
+  @$pb.TagNumber(5)
+  set messageState(MessageStateEnum v) { setField(5, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasMessageState() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearMessageState() => clearField(5);
+}
+
 class Message extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Message', createEmptyInstance: create)
     ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'messageId', $pb.PbFieldType.O3, protoName: 'messageId')
@@ -163,6 +274,7 @@ class Message extends $pb.GeneratedMessage {
     ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dateUpdate', protoName: 'dateUpdate')
     ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dateDelete', protoName: 'dateDelete')
     ..a<$core.int>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isRead', $pb.PbFieldType.O3, protoName: 'isRead')
+    ..a<$core.int>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'localMessgaeId', $pb.PbFieldType.O3, protoName: 'localMessgaeId')
     ..hasRequiredFields = false
   ;
 
@@ -176,6 +288,7 @@ class Message extends $pb.GeneratedMessage {
     $core.String? dateUpdate,
     $core.String? dateDelete,
     $core.int? isRead,
+    $core.int? localMessgaeId,
   }) {
     final _result = create();
     if (messageId != null) {
@@ -201,6 +314,9 @@ class Message extends $pb.GeneratedMessage {
     }
     if (isRead != null) {
       _result.isRead = isRead;
+    }
+    if (localMessgaeId != null) {
+      _result.localMessgaeId = localMessgaeId;
     }
     return _result;
   }
@@ -296,6 +412,15 @@ class Message extends $pb.GeneratedMessage {
   $core.bool hasIsRead() => $_has(7);
   @$pb.TagNumber(8)
   void clearIsRead() => clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.int get localMessgaeId => $_getIZ(8);
+  @$pb.TagNumber(9)
+  set localMessgaeId($core.int v) { $_setSignedInt32(8, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasLocalMessgaeId() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearLocalMessgaeId() => clearField(9);
 }
 
 class ReadMessageRequest extends $pb.GeneratedMessage {
@@ -461,17 +586,22 @@ class CreateMessageRequest extends $pb.GeneratedMessage {
 
 class CreateMessageResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CreateMessageResponse', createEmptyInstance: create)
-    ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isWritten', protoName: 'isWritten')
+    ..aOM<Message>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'message', subBuilder: Message.create)
+    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isWriten', $pb.PbFieldType.O3, protoName: 'isWriten')
     ..hasRequiredFields = false
   ;
 
   CreateMessageResponse._() : super();
   factory CreateMessageResponse({
-    $core.bool? isWritten,
+    Message? message,
+    $core.int? isWriten,
   }) {
     final _result = create();
-    if (isWritten != null) {
-      _result.isWritten = isWritten;
+    if (message != null) {
+      _result.message = message;
+    }
+    if (isWriten != null) {
+      _result.isWriten = isWriten;
     }
     return _result;
   }
@@ -496,14 +626,25 @@ class CreateMessageResponse extends $pb.GeneratedMessage {
   static CreateMessageResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreateMessageResponse>(create);
   static CreateMessageResponse? _defaultInstance;
 
+  @$pb.TagNumber(1)
+  Message get message => $_getN(0);
+  @$pb.TagNumber(1)
+  set message(Message v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasMessage() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMessage() => clearField(1);
+  @$pb.TagNumber(1)
+  Message ensureMessage() => $_ensure(0);
+
   @$pb.TagNumber(2)
-  $core.bool get isWritten => $_getBF(0);
+  $core.int get isWriten => $_getIZ(1);
   @$pb.TagNumber(2)
-  set isWritten($core.bool v) { $_setBool(0, v); }
+  set isWriten($core.int v) { $_setSignedInt32(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasIsWritten() => $_has(0);
+  $core.bool hasIsWriten() => $_has(1);
   @$pb.TagNumber(2)
-  void clearIsWritten() => clearField(2);
+  void clearIsWriten() => clearField(2);
 }
 
 class UpdateMessageRequest extends $pb.GeneratedMessage {

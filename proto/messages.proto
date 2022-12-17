@@ -4,13 +4,13 @@ syntax = "proto3";
 service  GrpcMessages{
     // rpc connecting (Empty) returns (Empty) {}
     // rpc connectings (stream ConnectRequest) returns (stream MessageFromBase) {}
-    rpc streamMessage(stream Dynamic) returns (stream Dynamic){}
+    rpc streamMessage(stream DynamicRequest) returns (stream DynamicResponse){}
     // rpc createMessage (CreateMessageRequest) returns (CreateMessageResponse) {}
     // rpc updateMessage (UpdateMessageRequest) returns (UpdateMessageResponse) {}
     // rpc deleteMessage (DeleteMessageRequest) returns (DeleteMessageResponse) {}
     // rpc synchronization (LastMessage) returns (stream MessageFromBase) {}
 }
-
+message Empty {}
 enum MessageStateEnum {
     connecting = 0;
     isReadMessage=1;
@@ -19,12 +19,19 @@ enum MessageStateEnum {
     isDelteMesage = 4;
 }
 
-message Empty {}
-message Dynamic{
+message DynamicRequest{
     CreateMessageRequest createMessage = 1;
     UpdateMessageRequest updateMessage = 2;
     DeleteMessageRequest deleteMessage = 3;
-    ReadMessageRequest readMessage =4;
+    ReadMessageRequest readMessage = 4;
+    MessageStateEnum messageState = 5;
+}
+
+message DynamicResponse{
+    CreateMessageResponse createMessage = 1;
+    UpdateMessageResponse updateMessage = 2;
+    DeleteMessageResponse deleteMessage = 3;
+    ReadMessageResponse readMessage = 4;
     MessageStateEnum messageState = 5;
 }
 
@@ -37,6 +44,7 @@ message Message{
     string dateUpdate = 6;
     string dateDelete = 7;
     int32 isRead = 8;
+    int32 localMessgaeId = 9;
 }
 // message ConnectRequest {
 //     int32 id = 1;
@@ -51,7 +59,7 @@ message ReadMessageRequest{
 }
 
 message ReadMessageResponse{
-     Message message = 1;
+    Message message = 1;
     bool isWritten = 2;
 }
 
@@ -60,7 +68,8 @@ message CreateMessageRequest {
 }
 
 message CreateMessageResponse {
-    bool isWritten = 2; 
+    Message message = 1;
+    int32 isWriten = 2;
 }
 
 message UpdateMessageRequest {

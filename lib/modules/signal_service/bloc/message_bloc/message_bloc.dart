@@ -16,9 +16,10 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   late LocalUsersServices _userServices;
   late MainUserServices _mainUserServices;
   late StreamSubscription _subscription;
-  StreamController<Dynamic> messageController = StreamController.broadcast();
+  StreamController<DynamicRequest> messageController =
+      StreamController.broadcast();
   // StreamController<MessageFromBase> connect = StreamController.broadcast();
-  StreamController<ReadMessageRequest> reqStream = StreamController.broadcast();
+  // StreamController<ReadMessageRequest> reqStream = StreamController.broadcast();
   final GrpcClient grpcClient;
   final GrpcConnectionBloc grpcConnection;
   var stub = GrpcMessagesClient(Locator.getIt<GrpcClient>().channel);
@@ -32,21 +33,28 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     _userServices = LocalUsersServices();
     _mainUserServices = MainUserServices();
 
+    ///
+    ///СЛУШАЕМ ОТВЕТ ОТ СЕРВЕРА
+    ///
     _subscription = GrpcMessagesClient(grpcClient.channel)
         .streamMessage(messageController.stream)
         .listen((value) {
-      var messages = <MessageDto>[];
-      var msg = value.readMessage.message;
-      _messagesServices.addNewMessageFromBase(message: msg);
-      messages.add(MessageDto(
-          localChatId: msg.chatId,
-          localSendId: msg.senderId,
-          messageId: msg.messageId,
-          content: msg.content,
-          createdDate: msg.dateCreate,
-          updatedDate: msg.dateUpdate));
+      if (value.messageState == MessageStateEnum.isReadMessage) {
+        var messages = <MessageDto>[];
+        var msg = value.readMessage.message;
+        _messagesServices.addNewMessageFromBase(message: msg);
+        messages.add(MessageDto(
+            localChatId: msg.chatId,
+            localSendId: msg.senderId,
+            messageId: msg.messageId,
+            content: msg.content,
+            createdDate: msg.dateCreate,
+            updatedDate: msg.dateUpdate));
 
-      add(ReadMessageEvent(messages: messages));
+        add(ReadMessageEvent(messages: messages));
+      } else if (value.messageState == MessageStateEnum.isUpdateMessage) {
+      } else if (value.messageState == MessageStateEnum.isDelteMesage) {
+      } else if (value.messageState == MessageStateEnum.isCreateMessage) {}
     });
     DBHelper.instanse.updateListenController.stream.listen((event) async {
       if (event == true) {
@@ -167,15 +175,15 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       date: message.createdDate,
     );
     var stub = GrpcMessagesClient(grpcClient.channel);
-    var request = ReadMessageRequest(
+    var request = CreateMessageRequest(
         message: Message(
             messageId: message.messageId,
             chatId: message.localChatId,
             content: message.content,
             senderId: message.localSendId));
-    reqStream.add(request);
-    messageController.add(Dynamic(
-        readMessage: request,
+    //reqStream.add(request);
+    messageController.add(DynamicRequest(
+        createMessage: request,
         messageState: MessageStateEnum.isCreateMessage));
     // var messageToServer = CreateMessageRequest(
     //     chatIdMain:
@@ -238,7 +246,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       await _messagesServices.updateMessage(
           message: event.message!, localMessageId: state.messageId!);
       emit(state.copyWith(editState: EditState.isNotEditing));
-    }
+
       // try {
       //отправляем обновленное сообщение на сервер
 //         var messageUpdateRequest = UpdateMessageRequest(
@@ -257,9 +265,9 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 //         }
 //       } catch (e) {}
 //     }
-    if (event.isEditing == EditState.isNotEditing) {
-      emit(state.copyWith(editState: EditState.isNotEditing));
-    }
+//     if (event.isEditing == EditState.isNotEditing) {
+//       emit(state.copyWith(editState: EditState.isNotEditing));
+//     }
     }
 
     ///Удаление сообщения по ид
@@ -297,4 +305,4 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       return super.close();
     }
   }
-
+}
