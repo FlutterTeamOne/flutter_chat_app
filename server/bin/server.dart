@@ -194,64 +194,16 @@ class GrpcMessage extends GrpcMessagesServiceBase {
         req.createMessage.message.dateUpdate =
             newMessage['updated_date'] as String;
         print('REQ message UPDATE: ${req.createMessage.message}, ');
-        _controllers.forEach((controller, _) async {
-          print('for Each Create');
-          var message = DynamicResponse();
-          if (controller != clientController) {
-            message = DynamicResponse(
-                readMessage:
-                    ReadMessageResponse(message: req.createMessage.message),
-                messageState: MessageStateEnum.isReadMessage);
-            print(message.messageState);
-            controller.sink.add(message);
-          } else {
-            print('CREATE MSG: ${req.createMessage.message}');
-            message = DynamicResponse(
-                createMessage:
-                    CreateMessageResponse(message: req.createMessage.message),
-                messageState: MessageStateEnum.isCreateMessage);
-            print(message.messageState);
-            controller.sink.add(message);
-          }
-
-          ///ТУТ
-          // } else {
-          //   controller.sink.add(
-          //     Dynamic(
-          //         updateMessage: UpdateMessageRequest(
-          //             idMessageMain: req.readMessageRequest.message.messageId),
-          //         messageState: MessageStateEnum.isUpdateMessage),
-          //   );
-          // }
-        });
+        _controllers.forEach((controller, _) async => await _onCreateMessage(
+            controller: controller,
+            clientController: clientController,
+            req: req));
       }
       if (req.messageState == MessageStateEnum.isUpdateMessage) {
-        _controllers.forEach((controller, _) async {
-          print('for Each Update');
-          var timeUpdate = DateTime.now().toIso8601String();
-          await messagesService.updateMessage(
-              newValues:
-                  "content = '${req.updateMessage.content}', updated_date = '$timeUpdate'",
-              condition: "message_id = ${req.updateMessage.idMessageMain}");
-          var updateMessage = DynamicResponse();
-          if (controller != clientController) {
-            updateMessage = DynamicResponse(
-              updateMessage: UpdateMessageResponse(
-                  dateUpdate: timeUpdate,
-                  content: req.updateMessage.content,
-                  idMessageMain: req.updateMessage.idMessageMain),
-              messageState: MessageStateEnum.isUpdateMessage,
-            );
-            controller.add(updateMessage);
-          } else {
-            updateMessage = DynamicResponse(
-                updateMessage: UpdateMessageResponse(
-                    dateUpdate: timeUpdate,
-                    idMessageMain: req.updateMessage.idMessageMain),
-                messageState: MessageStateEnum.isUpdateMessage);
-            controller.add(updateMessage);
-          }
-        });
+        _controllers.forEach((controller, _) async => await _onUpdateMessage(
+            controller: controller,
+            clientController: clientController,
+            req: req));
       }
       if (req.messageState == MessageStateEnum.isDeleteMesage) {}
     }).onError((dynamic e) {
@@ -317,6 +269,69 @@ class GrpcMessage extends GrpcMessagesServiceBase {
     //   if (req.messageState == MessageState.isDelteMesage) {}
     //   if (req.messageState == MessageState.isUpdateMessage) {}
     // }
+  }
+
+  _onCreateMessage(
+      {required StreamController<DynamicResponse> controller,
+      required StreamController<DynamicResponse> clientController,
+      required DynamicRequest req}) async {
+    print('for Each Create');
+    var message = DynamicResponse();
+    if (controller != clientController) {
+      message = DynamicResponse(
+          readMessage: ReadMessageResponse(message: req.createMessage.message),
+          messageState: MessageStateEnum.isReadMessage);
+      print(message.messageState);
+      controller.sink.add(message);
+    } else {
+      print('CREATE MSG: ${req.createMessage.message}');
+      message = DynamicResponse(
+          createMessage:
+              CreateMessageResponse(message: req.createMessage.message),
+          messageState: MessageStateEnum.isCreateMessage);
+      print(message.messageState);
+      controller.sink.add(message);
+    }
+
+    ///ТУТ
+    // } else {
+    //   controller.sink.add(
+    //     Dynamic(
+    //         updateMessage: UpdateMessageRequest(
+    //             idMessageMain: req.readMessageRequest.message.messageId),
+    //         messageState: MessageStateEnum.isUpdateMessage),
+    //   );
+    // }
+  }
+
+  _onUpdateMessage(
+      {required StreamController<DynamicResponse> controller,
+      required StreamController<DynamicResponse> clientController,
+      required DynamicRequest req}) async {
+    print('for Each Update');
+    var timeUpdate = DateTime.now().toIso8601String();
+    await messagesService.updateMessage(
+        newValues:
+            "content = '${req.updateMessage.content}', updated_date = '$timeUpdate'",
+        condition: "message_id = ${req.updateMessage.idMessageMain}");
+    var updateMessage = DynamicResponse();
+    if (controller != clientController) {
+      updateMessage = DynamicResponse(
+        updateMessage: UpdateMessageResponse(
+            dateUpdate: timeUpdate,
+            content: req.updateMessage.content,
+            idMessageMain: req.updateMessage.idMessageMain),
+        messageState: MessageStateEnum.isUpdateMessage,
+      );
+      controller.add(updateMessage);
+    } else {
+      updateMessage = DynamicResponse(
+          updateMessage: UpdateMessageResponse(
+              dateUpdate: timeUpdate,
+              idMessageMain: req.updateMessage.idMessageMain),
+          messageState: MessageStateEnum.isUpdateMessage);
+      controller.add(updateMessage);
+    }
   }
 }
 
