@@ -711,18 +711,23 @@ class UpdateMessageRequest extends $pb.GeneratedMessage {
 class UpdateMessageResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'UpdateMessageResponse', createEmptyInstance: create)
     ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'idMessageMain', $pb.PbFieldType.O3, protoName: 'idMessageMain')
-    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dateUpdate', protoName: 'dateUpdate')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'content')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dateUpdate', protoName: 'dateUpdate')
     ..hasRequiredFields = false
   ;
 
   UpdateMessageResponse._() : super();
   factory UpdateMessageResponse({
     $core.int? idMessageMain,
+    $core.String? content,
     $core.String? dateUpdate,
   }) {
     final _result = create();
     if (idMessageMain != null) {
       _result.idMessageMain = idMessageMain;
+    }
+    if (content != null) {
+      _result.content = content;
     }
     if (dateUpdate != null) {
       _result.dateUpdate = dateUpdate;
@@ -760,13 +765,22 @@ class UpdateMessageResponse extends $pb.GeneratedMessage {
   void clearIdMessageMain() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get dateUpdate => $_getSZ(1);
+  $core.String get content => $_getSZ(1);
   @$pb.TagNumber(2)
-  set dateUpdate($core.String v) { $_setString(1, v); }
+  set content($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasDateUpdate() => $_has(1);
+  $core.bool hasContent() => $_has(1);
   @$pb.TagNumber(2)
-  void clearDateUpdate() => clearField(2);
+  void clearContent() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get dateUpdate => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set dateUpdate($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasDateUpdate() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearDateUpdate() => clearField(3);
 }
 
 class DeleteMessageRequest extends $pb.GeneratedMessage {

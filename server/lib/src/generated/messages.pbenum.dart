@@ -14,14 +14,14 @@ class MessageStateEnum extends $pb.ProtobufEnum {
   static const MessageStateEnum isReadMessage = MessageStateEnum._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'isReadMessage');
   static const MessageStateEnum isCreateMessage = MessageStateEnum._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'isCreateMessage');
   static const MessageStateEnum isUpdateMessage = MessageStateEnum._(3, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'isUpdateMessage');
-  static const MessageStateEnum isDelteMesage = MessageStateEnum._(4, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'isDelteMesage');
+  static const MessageStateEnum isDeleteMesage = MessageStateEnum._(4, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'isDeleteMesage');
 
   static const $core.List<MessageStateEnum> values = <MessageStateEnum> [
     connecting,
     isReadMessage,
     isCreateMessage,
     isUpdateMessage,
-    isDelteMesage,
+    isDeleteMesage,
   ];
 
   static final $core.Map<$core.int, MessageStateEnum> _byValue = $pb.ProtobufEnum.initByValue(values);

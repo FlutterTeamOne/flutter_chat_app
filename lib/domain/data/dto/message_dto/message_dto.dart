@@ -10,8 +10,8 @@ class MessageDto extends ModelDto {
   final int localSendId;
   final int? messageId;
   final String content;
-  final String createdDate;
-  final String updatedDate;
+  final String? createdDate;
+  final String? updatedDate;
   final String? deletedDate;
   final int isRead;
 
@@ -21,8 +21,8 @@ class MessageDto extends ModelDto {
     required this.localSendId,
     this.messageId,
     required this.content,
-    required this.createdDate,
-    required this.updatedDate,
+     this.createdDate,
+    this.updatedDate,
     this.deletedDate,
     this.isRead = 0,
   });

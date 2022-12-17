@@ -16,7 +16,7 @@ enum MessageStateEnum {
     isReadMessage=1;
     isCreateMessage = 2;
     isUpdateMessage = 3;
-    isDelteMesage = 4;
+    isDeleteMesage = 4;
 }
 
 message DynamicRequest{
@@ -79,7 +79,8 @@ message UpdateMessageRequest {
 
 message UpdateMessageResponse {
     int32 idMessageMain = 1;
-    string dateUpdate = 2;
+    string content = 2;
+    string dateUpdate = 3;
 }
 
 message DeleteMessageRequest {

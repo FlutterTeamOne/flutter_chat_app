@@ -22,6 +22,7 @@ class UserChatLayoutState extends State<UserChatLayout> {
   @override
   Widget build(BuildContext context) {
     var user = context.read<UserBloc>().state.users![widget.chatId];
+    var messageBloc = context.read<MessageBloc>();
     return Column(
       children: [
         ChatAppBarWidget(
@@ -37,14 +38,13 @@ class UserChatLayoutState extends State<UserChatLayout> {
               : const Center(child: CircularProgressIndicator()),
         ),
         TextInputWidget(
-          onSubmitted: (text) => _sendAndChange(),
+          onSubmitted: (text) => _sendAndChange(messageBloc),
           controller: controller,
-          onTap: () => _sendAndChange(),
-          editState: context.read<MessageBloc>().state.editState,
+          onTap: () => _sendAndChange(messageBloc),
+          editState: messageBloc.state.editState,
           editText: controller.text,
           cancelEdit: () {
-            context
-                .read<MessageBloc>()
+            messageBloc
                 .add(UpdateMessageEvent(isEditing: EditState.isNotEditing));
             controller.clear();
           },
@@ -53,39 +53,40 @@ class UserChatLayoutState extends State<UserChatLayout> {
     );
   }
 
-  _sendAndChange() {
-    if (context.read<MessageBloc>().state.editState == EditState.isNotEditing &&
+  _sendAndChange(MessageBloc messageBloc) {
+    if (messageBloc.state.editState == EditState.isNotEditing &&
         controller.text.isNotEmpty) {
-      context.read<MessageBloc>().add(
-            CreateMessageEvent(
-              message: MessageDto(
-                localChatId: widget.localChatId,
-                localSendId: 1,
-                content: controller.text,
-                createdDate: DateTime.now().toIso8601String(),
-                updatedDate: DateTime.now().toIso8601String(),
-              ),
-            ),
-          );
+      messageBloc.add(
+        CreateMessageEvent(
+          message: MessageDto(
+            localChatId: widget.localChatId,
+            localSendId: 1,
+            content: controller.text,
+            createdDate: DateTime.now().toIso8601String(),
+            updatedDate: DateTime.now().toIso8601String(),
+          ),
+        ),
+      );
       FocusScope.of(context).unfocus();
       controller.clear();
     }
     // print('IS EDIT F:${context.read<MessageBloc>().isEditing}');
-    if (context.read<MessageBloc>().state.editState ==
-            EditState.isPreparation &&
+    if (messageBloc.state.editState == EditState.isPreparation &&
         controller.text.isNotEmpty) {
       print("EDITING");
-
-      context.read<MessageBloc>().add(
-            UpdateMessageEvent(
-                message: MessageDto(
-                    localChatId: widget.localChatId,
-                    localSendId: 1,
-                    content: controller.text,
-                    createdDate: DateTime.now().toIso8601String(),
-                    updatedDate: DateTime.now().toIso8601String()),
-                isEditing: EditState.isEditing),
-          );
+      var messageId = messageBloc.state.messageId;
+      var messages = messageBloc.state.messages;
+      messageBloc.add(
+        UpdateMessageEvent(
+            message: MessageDto(
+                localChatId: widget.localChatId,
+                localSendId: 1,
+                content: controller.text,
+                messageId: messages?[messageId!-1].messageId,
+                createdDate: messages?[messageId!-1].createdDate,
+                updatedDate: DateTime.now().toIso8601String()),
+            isEditing: EditState.isEditing),
+      );
       controller.clear();
     } else {
       return null;

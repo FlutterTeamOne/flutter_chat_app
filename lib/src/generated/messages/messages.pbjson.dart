@@ -16,12 +16,12 @@ const MessageStateEnum$json = const {
     const {'1': 'isReadMessage', '2': 1},
     const {'1': 'isCreateMessage', '2': 2},
     const {'1': 'isUpdateMessage', '2': 3},
-    const {'1': 'isDelteMesage', '2': 4},
+    const {'1': 'isDeleteMesage', '2': 4},
   ],
 };
 
 /// Descriptor for `MessageStateEnum`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List messageStateEnumDescriptor = $convert.base64Decode('ChBNZXNzYWdlU3RhdGVFbnVtEg4KCmNvbm5lY3RpbmcQABIRCg1pc1JlYWRNZXNzYWdlEAESEwoPaXNDcmVhdGVNZXNzYWdlEAISEwoPaXNVcGRhdGVNZXNzYWdlEAMSEQoNaXNEZWx0ZU1lc2FnZRAE');
+final $typed_data.Uint8List messageStateEnumDescriptor = $convert.base64Decode('ChBNZXNzYWdlU3RhdGVFbnVtEg4KCmNvbm5lY3RpbmcQABIRCg1pc1JlYWRNZXNzYWdlEAESEwoPaXNDcmVhdGVNZXNzYWdlEAISEwoPaXNVcGRhdGVNZXNzYWdlEAMSEgoOaXNEZWxldGVNZXNhZ2UQBA==');
 @$core.Deprecated('Use emptyDescriptor instead')
 const Empty$json = const {
   '1': 'Empty',
@@ -133,12 +133,13 @@ const UpdateMessageResponse$json = const {
   '1': 'UpdateMessageResponse',
   '2': const [
     const {'1': 'idMessageMain', '3': 1, '4': 1, '5': 5, '10': 'idMessageMain'},
-    const {'1': 'dateUpdate', '3': 2, '4': 1, '5': 9, '10': 'dateUpdate'},
+    const {'1': 'content', '3': 2, '4': 1, '5': 9, '10': 'content'},
+    const {'1': 'dateUpdate', '3': 3, '4': 1, '5': 9, '10': 'dateUpdate'},
   ],
 };
 
 /// Descriptor for `UpdateMessageResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List updateMessageResponseDescriptor = $convert.base64Decode('ChVVcGRhdGVNZXNzYWdlUmVzcG9uc2USJAoNaWRNZXNzYWdlTWFpbhgBIAEoBVINaWRNZXNzYWdlTWFpbhIeCgpkYXRlVXBkYXRlGAIgASgJUgpkYXRlVXBkYXRl');
+final $typed_data.Uint8List updateMessageResponseDescriptor = $convert.base64Decode('ChVVcGRhdGVNZXNzYWdlUmVzcG9uc2USJAoNaWRNZXNzYWdlTWFpbhgBIAEoBVINaWRNZXNzYWdlTWFpbhIYCgdjb250ZW50GAIgASgJUgdjb250ZW50Eh4KCmRhdGVVcGRhdGUYAyABKAlSCmRhdGVVcGRhdGU=');
 @$core.Deprecated('Use deleteMessageRequestDescriptor instead')
 const DeleteMessageRequest$json = const {
   '1': 'DeleteMessageRequest',

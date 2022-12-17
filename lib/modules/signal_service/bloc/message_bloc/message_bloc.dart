@@ -6,7 +6,6 @@ import 'package:grpc/service_api.dart';
 
 import '../../../../src/libraries/library_all.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:stream_transform/stream_transform.dart';
 import '../../service_locator/locator.dart';
 part 'message_event.dart';
 part 'message_state.dart';
@@ -38,11 +37,11 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     ///
     _subscription = GrpcMessagesClient(grpcClient.channel)
         .streamMessage(messageController.stream)
-        .listen((value) {
+        .listen((value) async {
       if (value.messageState == MessageStateEnum.isReadMessage) {
         var messages = <MessageDto>[];
         var msg = value.readMessage.message;
-        _messagesServices.addNewMessageFromBase(message: msg);
+        await _messagesServices.addNewMessageFromBase(message: msg);
         messages.add(MessageDto(
             localChatId: msg.chatId,
             localSendId: msg.senderId,
@@ -53,8 +52,28 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
         add(ReadMessageEvent(messages: messages));
       } else if (value.messageState == MessageStateEnum.isUpdateMessage) {
-      } else if (value.messageState == MessageStateEnum.isDelteMesage) {
-      } else if (value.messageState == MessageStateEnum.isCreateMessage) {}
+        var updMsg = value.updateMessage;
+
+        await _messagesServices.updateWrittenToServer(
+            localMessageId: state.messageId!,
+            messagesId: updMsg.idMessageMain,
+            updatedDate: updMsg.dateUpdate);
+        print('id Message Main: ${updMsg.idMessageMain}');
+        print('date update: ${updMsg.idMessageMain}');
+      } else if (value.messageState == MessageStateEnum.isDeleteMesage) {
+      } else if (value.messageState == MessageStateEnum.isCreateMessage) {
+        var msg = value.createMessage.message;
+        var newMsg = MessageDto(
+            localMessageId: msg.localMessgaeId,
+            messageId: msg.messageId,
+            localChatId: msg.chatId,
+            localSendId: msg.senderId,
+            content: msg.content,
+            createdDate: msg.dateCreate,
+            updatedDate: msg.dateUpdate);
+        await _messagesServices.updateMessage(
+            message: newMsg, localMessageId: msg.localMessgaeId);
+      }
     });
     DBHelper.instanse.updateListenController.stream.listen((event) async {
       if (event == true) {
@@ -65,65 +84,13 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         // state.copyWith(messages: messages);
       }
     });
-    // on<MessageStreamEvent>(_onMessageStreamEvent,
-    //     transformer: (events, mapper) => events
-    //         .debounce(const Duration(milliseconds: 100))
-    //         .asyncExpand(mapper));
+
     on<ReadMessageEvent>(_onReadMessageEvent);
     on<CreateMessageEvent>(_onCreateMessageEvent);
     on<UpdateMessageEvent>(_onUpdateMessageEvent);
-    // on<DeleteMessageEvent>(_onDeleteMessageEvent);
+    on<DeleteMessageEvent>(_onDeleteMessageEvent);
     // on<DeleteHistoryMessageEvent>(_onDeleteHistoryMessageEvent);
   }
-  // FutureOr<void> _onMessageStreamEvent(
-  //     MessageStreamEvent event, Emitter<MessageState> emit) async {
-  //   // var lastMSG = LastMessage(
-  //   //     mainIdMessage: 0, mainIdUser: await _mainUserServices.getUserID());
-  //   var lst = await _messagesServices.getAllMessagesNotNull();
-  //   ///
-  //   ///
-  //   ///
-  //   // if (lst.isNotEmpty) {
-  //   //   lastMSG.mainIdMessage = lst.last.messageId!;
-  //   // }
-  //   var stub = GrpcMessagesClient(grpcClient.channel);
-  //   // var syncList = stub.synchronization(lastMSG);
-  //   // Stream<ConnectRequest> enter(int id) async* {
-  //   //   yield ConnectRequest(id: id);
-  //   // }
-  //   // stub.connectings(enter(1));
-  //   // stub.asBroadcastStream(
-  //   //   onListen: (subscription) {
-  //   //     print('sub: $subscription');
-  //   //   },
-  //   // );
-  //   // await emit.forEach(stub, onData: (data) {
-  //   //   print('EMIT DATA:$data');
-  //   //   return MessageState(messages: [
-  //   //     MessageDto(
-  //   //         localChatId: data.chatIdMain,
-  //   //         localSendId: data.senderMainId,
-  //   //         content: data.content,
-  //   //         createdDate: data.date,
-  //   //         updatedDate: data.date)
-  //   //   ]);
-  //   // });
-  //   // var list = <MessageFromBase>[];
-  //   // await for (var mes in syncList) {
-  //   //   print('MES CHAT ID ${mes.chatIdMain}');
-  //   //   print('MES CONTENT: ${mes.content}');
-  //   //   print('MES MAIN ID MSG: ${mes.mainIdMessage}');
-  //   //   print('MES SENDER ID: ${mes.senderMainId}');
-  //   //   print('MES DATE CREATE: ${mes.date}');
-  //   //   list.add(mes);
-  //   //   connect.add(mes);
-  //   // }
-  //   // if (list[0].chatIdMain != 0) {
-  //   //   await _messagesServices.addNewMessageFromBase(messages: list);
-  //   // }
-  //   // streamMessageFromBase.sink.add(list);
-  //   add(ReadMessageEvent());
-  // }
 
   FutureOr<void> _onReadMessageEvent(
       ReadMessageEvent event, Emitter<MessageState> emit) async {
@@ -172,11 +139,12 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       chatId: message.localChatId,
       senderId: 1,
       content: message.content,
-      date: message.createdDate,
+      date: message.createdDate!,
     );
     var stub = GrpcMessagesClient(grpcClient.channel);
     var request = CreateMessageRequest(
         message: Message(
+            localMessgaeId: message.localMessageId,
             messageId: message.messageId,
             chatId: message.localChatId,
             content: message.content,
@@ -233,6 +201,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     // // );
   }
 
+  ///
   ///Обновление сообщения
   ///
   FutureOr<void> _onUpdateMessageEvent(
@@ -247,11 +216,17 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
           message: event.message!, localMessageId: state.messageId!);
       emit(state.copyWith(editState: EditState.isNotEditing));
 
-      // try {
-      //отправляем обновленное сообщение на сервер
-//         var messageUpdateRequest = UpdateMessageRequest(
-//             idMessageMain: state.messageId, content: event.message!.content);
-//         //получаем от сервера ответ
+      try {
+        // отправляем обновленное сообщение на сервер
+        var messageUpdateRequest = UpdateMessageRequest(
+            idMessageMain: event.message?.messageId,
+            content: event.message!.content);
+        messageController.add(
+          DynamicRequest(
+              updateMessage: messageUpdateRequest,
+              messageState: MessageStateEnum.isUpdateMessage),
+        );
+        //получаем от сервера ответ
 //         var messageUpdateResponse =
 //             await stub.updateMessage(messageUpdateRequest);
 // //записываем в локальную бд полученные данные от сервера
@@ -263,46 +238,45 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 //           print('id Message Main: ${messageUpdateResponse.idMessageMain}');
 //           print('date update: ${messageUpdateResponse.dateUpdate}');
 //         }
-//       } catch (e) {}
-//     }
-//     if (event.isEditing == EditState.isNotEditing) {
-//       emit(state.copyWith(editState: EditState.isNotEditing));
-//     }
+      } catch (e) {}
     }
-
-    ///Удаление сообщения по ид
-    FutureOr<void> _onDeleteMessageEvent(
-        DeleteMessageEvent event, Emitter<MessageState> emit) async {
-      await _messagesServices.deleteMessage(id: event.messageId);
-      add(ReadMessageEvent());
-      print('message ID: ${event.messageId}');
-      // emit(state.copyWith(
-      //     deleteState: DeleteState.isDeleted, editState: EditState.isNotEditing));
-      // var messageDelete = DeleteMessageRequest(idMessageMain: event.messageId);
-      // try {
-      //   var response = await stub.deleteMessage(messageDelete);
-      //   await _messagesServices.deleteWrittenToServer(
-      //       localMessageId: response.idMessageMain,
-      //       deletedDate: response.dateDelete);
-      //   print('DEL DATE: ${response.dateDelete}');
-      //   print('DEL ID: ${response.idMessageMain}');
-
-      //   // await _messagesServices.updateWrittenToServer(localMessageId: localMessageId, updatedDate: updatedDate)
-      // } catch (e) {}
+    if (event.isEditing == EditState.isNotEditing) {
+      emit(state.copyWith(editState: EditState.isNotEditing));
     }
+  }
 
-    ///Очистка истории в определенном чате
-    FutureOr<void> _onDeleteHistoryMessageEvent(
-        DeleteHistoryMessageEvent event, Emitter<MessageState> emit) async {
-      await _messagesServices.deleteAllMessagesInChat(chatID: event.chatID);
-      print('CHAT ID: ${event.chatID}');
-      add(ReadMessageEvent());
-    }
+  ///Удаление сообщения по ид
+  FutureOr<void> _onDeleteMessageEvent(
+      DeleteMessageEvent event, Emitter<MessageState> emit) async {
+    await _messagesServices.deleteMessage(id: event.messageId);
+    add(ReadMessageEvent());
+    print('message ID: ${event.messageId}');
+    emit(state.copyWith(
+        deleteState: DeleteState.isDeleted, editState: EditState.isNotEditing));
+    // var messageDelete = DeleteMessageRequest(idMessageMain: event.messageId);
+    // try {
+    //   var response = await stub.deleteMessage(messageDelete);
+    //   await _messagesServices.deleteWrittenToServer(
+    //       localMessageId: response.idMessageMain,
+    //       deletedDate: response.dateDelete);
+    //   print('DEL DATE: ${response.dateDelete}');
+    //   print('DEL ID: ${response.idMessageMain}');
 
-    @override
-    Future<void> close() {
-      _subscription.cancel();
-      return super.close();
-    }
+    //   // await _messagesServices.updateWrittenToServer(localMessageId: localMessageId, updatedDate: updatedDate)
+    // } catch (e) {}
+  }
+
+  ///Очистка истории в определенном чате
+  FutureOr<void> _onDeleteHistoryMessageEvent(
+      DeleteHistoryMessageEvent event, Emitter<MessageState> emit) async {
+    await _messagesServices.deleteAllMessagesInChat(chatID: event.chatID);
+    print('CHAT ID: ${event.chatID}');
+    add(ReadMessageEvent());
+  }
+
+  @override
+  Future<void> close() {
+    _subscription.cancel();
+    return super.close();
   }
 }

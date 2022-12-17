@@ -29,7 +29,7 @@ class ChatWidgetState extends State<ChatWidget> {
         floatingHeader: true,
         groupBy: (message) => message.localMessageId!,
         groupHeaderBuilder: (MessageDto message) =>
-            TimeCardWidget(date: message.createdDate),
+            TimeCardWidget(date: message.createdDate!),
         groupComparator: (value1, value2) => value2,
         itemBuilder: (context, MessageDto message) {
           if (message.localSendId != 1) {

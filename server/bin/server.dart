@@ -195,7 +195,7 @@ class GrpcMessage extends GrpcMessagesServiceBase {
             newMessage['updated_date'] as String;
         print('REQ message UPDATE: ${req.createMessage.message}, ');
         _controllers.forEach((controller, _) async {
-          print('for Each');
+          print('for Each Create');
           var message = DynamicResponse();
           if (controller != clientController) {
             message = DynamicResponse(
@@ -205,6 +205,7 @@ class GrpcMessage extends GrpcMessagesServiceBase {
             print(message.messageState);
             controller.sink.add(message);
           } else {
+            print('CREATE MSG: ${req.createMessage.message}');
             message = DynamicResponse(
                 createMessage:
                     CreateMessageResponse(message: req.createMessage.message),
@@ -224,6 +225,35 @@ class GrpcMessage extends GrpcMessagesServiceBase {
           // }
         });
       }
+      if (req.messageState == MessageStateEnum.isUpdateMessage) {
+        _controllers.forEach((controller, _) async {
+          print('for Each Update');
+          var timeUpdate = DateTime.now().toIso8601String();
+          await messagesService.updateMessage(
+              newValues:
+                  "content = '${req.updateMessage.content}', updated_date = '$timeUpdate'",
+              condition: "message_id = ${req.updateMessage.idMessageMain}");
+          var updateMessage = DynamicResponse();
+          if (controller != clientController) {
+            updateMessage = DynamicResponse(
+              updateMessage: UpdateMessageResponse(
+                  dateUpdate: timeUpdate,
+                  content: req.updateMessage.content,
+                  idMessageMain: req.updateMessage.idMessageMain),
+              messageState: MessageStateEnum.isUpdateMessage,
+            );
+            controller.add(updateMessage);
+          } else {
+            updateMessage = DynamicResponse(
+                updateMessage: UpdateMessageResponse(
+                    dateUpdate: timeUpdate,
+                    idMessageMain: req.updateMessage.idMessageMain),
+                messageState: MessageStateEnum.isUpdateMessage);
+            controller.add(updateMessage);
+          }
+        });
+      }
+      if (req.messageState == MessageStateEnum.isDeleteMesage) {}
     }).onError((dynamic e) {
       print(e);
 
