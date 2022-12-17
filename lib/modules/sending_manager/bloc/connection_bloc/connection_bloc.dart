@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
@@ -12,9 +13,18 @@ class ConnectionBloc extends Bloc<ConnectionEvent, ConnectionStatusState> {
   final _connectivity = Connectivity();
   // ConnectivityResult _connectionStatus = ConnectivityResult.none;
   ConnectionBloc() : super(ConnectionInitial()) {
-    on<ConnectionEvent>((event, emit) => event is ActiveConnectionEvent
-        ? emit(const ActiveConnectionState(message: 'connection Active'))
-        : emit(const InActiveConnectionState(message: 'connection Inactive')));
+    on<ConnectionEvent>((event, emit) {
+      if (event is ActiveConnectionEvent) {
+        emit(const ActiveConnectionState(message: 'connection Active'));
+        log('INTERNET connection Active ✅');
+      } else {
+        emit(
+          const InActiveConnectionState(
+              message:
+                  'Please check your internet connection connection Inactive'),
+        );
+      }
+    });
 
     connectStream = _connectivity.onConnectivityChanged.listen(
         (ConnectivityResult result) => result == ConnectivityResult.wifi ||

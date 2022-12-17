@@ -1,5 +1,6 @@
 import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
-
+import 'package:flutter/cupertino.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import '../../src/libraries/library_all.dart';
 import '../widgets/library/library_widgets.dart';
 import 'package:flutter/material.dart';
@@ -21,24 +22,16 @@ class _MainLayoutState extends State<MainLayout> {
   @override
   Widget build(BuildContext context) {
     final currentWidth = MediaQuery.of(context).size.width;
+    var isConnected = false;
     return Scaffold(
       body: BlocListener<ConnectionBloc, ConnectionStatusState>(
         listener: (context, state) {
-          print("Internet State: $state");
           if (state is InActiveConnectionState) {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    content: Text(state.message),
-                    actions: [
-                      ElevatedButton.icon(
-                          onPressed: () => Navigator.of(context).pop(),
-                          icon: const Icon(Icons.close),
-                          label: const Text('OK'))
-                    ],
-                  );
-                });
+            showDialogBox(
+              context,
+              state.message,
+              isConnected,
+            );
           }
         },
         child: BlocListener<GrpcConnectionBloc, GrpcConnectionState>(
@@ -83,4 +76,29 @@ class _MainLayoutState extends State<MainLayout> {
       ),
     );
   }
+}
+
+showDialogBox(BuildContext context, String message, isConnected) {
+  return showCupertinoDialog<dynamic>(
+    context: context,
+    builder: (BuildContext context) => CupertinoAlertDialog(
+      title: const Text('No Connection'),
+      content: Text(message),
+      actions: [
+        TextButton(
+          style: ButtonStyle(
+            fixedSize: MaterialStateProperty.all(const Size.fromHeight(30)),
+          ),
+          onPressed: () async {
+            Navigator.pop(context, 'Cancel');
+            isConnected = await InternetConnectionChecker().hasConnection;
+            if (!isConnected) {
+              showDialogBox(context, message, isConnected);
+            }
+          },
+          child: Text('Ok'.toUpperCase()),
+        ),
+      ],
+    ),
+  );
 }
