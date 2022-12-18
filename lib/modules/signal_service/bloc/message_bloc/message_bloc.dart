@@ -130,15 +130,13 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     }
   }
 
-  
-
   FutureOr<void> _onCreateMessageEvent(
       CreateMessageEvent event, Emitter<MessageState> emit) async {
     var message = event.message;
     // var model = message.writeToJsonMap();
     var chats = LocalChatServices();
     print('MESSAGE: $message');
-   
+
     // DBHelper.instanse
     //     .onAdd(tableName: 'messages', model: messageMapToDB(model));
     message.localMessageId = await _messagesServices.addNewMessage(

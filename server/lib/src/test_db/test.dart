@@ -7,7 +7,7 @@ Future<void> main() async {
   ///
 
   //открыть базу
-  var db = await DbServerServices.instanse.openDatabase();
+  var db = await DbServerServices.instanse.database;
   //Обращаемся к методам работы с таблицей чатов через:
   var chatsHelper = ChatsServices();
 
@@ -32,11 +32,6 @@ Future<void> main() async {
   //     condition: "message_id = ${request.idMessageMain}");
   // print("src: $src");
   // print(await messagesService.getMessageById(id: 4));
-
-  // var a = await usersService.getAllUsers();
-  // for (var b in a) {
-  //   print(b);
-  // }
 
   ///
   ///Вывод таблицы сообщений

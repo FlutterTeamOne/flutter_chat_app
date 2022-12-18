@@ -3,6 +3,7 @@
 // import 'package:server/src/generated/messages.pbgrpc.dart';
 // import 'package:server/src/generated/users.pb.dart';
 
+import 'package:server/src/library/library_server.dart';
 
 // class Client {
 //   ClientChannel? channel;
@@ -149,3 +150,38 @@
 //   // print('update User: ${updateUser.writeToJsonMap()}');
 //   // print(await client.updateUser(updateUser));
 // }
+
+var con = false;
+void main() async {
+  var client = Client();
+  // //Создание сообщения
+  // // var message = CreateMessageRequest();
+  // // message.chatIdMain = 1;
+  // // message.senderMainId = 1;
+  // // message.content = "Hello";
+  // ///
+  // ///Если присылает один и тот же mainMessageId
+  // ///поменяй message.date или message.content
+  // ///
+  // // print("Обратный ответ:");
+  // // print(await client.SendMessage(message));
+
+  // //Обновление сообщения
+  // // var messageUpdate = UpdateMessageRequest();
+  // // messageUpdate.content = "HELL";
+  // // messageUpdate.idMessageMain = 4;
+  // var updateUser = UpdateUserRequest();
+  // updateUser.name = 'bob';
+  // updateUser.email = 'test@test.test';
+  // updateUser.password = 'new pas';
+  // updateUser.profilePicUrl = 'new image url';
+
+  // print("Обратный ответ:");
+  // print('update User: ${updateUser.writeToJsonMap()}');
+  // print(await client.updateUser(updateUser));
+
+  var messageEmpty = Empty();
+  print("Обратный ответ:");
+
+  print(await client.getUsers(messageEmpty));
+}
