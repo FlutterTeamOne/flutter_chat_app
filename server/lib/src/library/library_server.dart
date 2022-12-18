@@ -28,3 +28,8 @@ export 'package:server/src/generated/users.pb.dart';
 export 'package:server/src/generated/users.pbenum.dart';
 export 'package:server/src/generated/users.pbgrpc.dart';
 export 'package:server/src/generated/users.pbjson.dart';
+//grpcsynh
+export 'package:server/src/generated/grpcsynh.pb.dart';
+export 'package:server/src/generated/grpcsynh.pbenum.dart';
+export 'package:server/src/generated/grpcsynh.pbgrpc.dart';
+export 'package:server/src/generated/grpcsynh.pbjson.dart';

@@ -1,4 +1,4 @@
-// import 'package:grpc/grpc.dart';
+import 'package:grpc/grpc.dart';
 // import 'package:server/src/generated/messages.pb.dart';
 // import 'package:server/src/generated/messages.pbgrpc.dart';
 // import 'package:server/src/generated/users.pb.dart';
@@ -55,13 +55,32 @@ class Client {
 //     // executionInProgress = result.toLowerCase() != 'y';
 //   }
 
-//   Future<UpdateMessageResponse> UpdateMessage(
-//       UpdateMessageRequest message) async {
-//     channel = ClientChannel('localhost',
-//         port: 5000,
-//         options:
-//             const ChannelOptions(credentials: ChannelCredentials.insecure()));
+  Future<DataDBRequest> GetUsersSynh(SynhMainUser mes) async {
+    var channel = ClientChannel('localhost',
+        port: 6000,
+        options:
+            const ChannelOptions(credentials: ChannelCredentials.insecure()));
 
+    var mock = GrpcSynchronizationClient(channel!,
+        options: CallOptions(timeout: Duration(seconds: 30)));
+
+    var response = DataDBRequest();
+    try {
+      response = await mock.getUsersSynh(mes);
+    } catch (e) {
+      print(e);
+    } finally {
+      await channel!.shutdown();
+    }
+    return response;
+  }
+
+  // Future<UpdateMessageResponse> UpdateMessage(
+  //     UpdateMessageRequest message) async {
+  //   channel = ClientChannel('localhost',
+  //       port: 6000,
+  //       options:
+  //           const ChannelOptions(credentials: ChannelCredentials.insecure()));
 //     stub =  GrpcMessagesClient(channel!,
 //         options: CallOptions(timeout: Duration(seconds: 30)));
 //     var response = UpdateMessageResponse();
@@ -184,4 +203,9 @@ void main() async {
   // print("Обратный ответ:");
 
   // print(await client.getUsers(messageEmpty));
+
+  var message = SynhMainUser(id: 1);
+  print("Обратный ответ:");
+
+  print(await client.GetUsersSynh(message));
 }
