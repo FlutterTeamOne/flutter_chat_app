@@ -19,13 +19,25 @@ class ScrollDownButton extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(100),
         onTap: onTap,
-        child: CircleAvatar(
-          backgroundColor: Colors.white.withOpacity(0.6),
-          radius: buttonSize,
-          child: Icon(
-            Icons.keyboard_arrow_down_rounded,
-            size: iconSize,
-            color: Colors.black.withOpacity(0.8),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(100),
+            border: Border.all(
+              color:
+                  Theme.of(context).floatingActionButtonTheme.foregroundColor!,
+              strokeAlign: StrokeAlign.center,
+            ),
+          ),
+          child: CircleAvatar(
+            radius: buttonSize,
+            backgroundColor:
+                Theme.of(context).floatingActionButtonTheme.backgroundColor,
+            child: Icon(
+              Icons.keyboard_arrow_down_rounded,
+              size: iconSize,
+              color:
+                  Theme.of(context).floatingActionButtonTheme.foregroundColor,
+            ),
           ),
         ),
       ),

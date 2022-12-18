@@ -47,7 +47,10 @@ class ChatWidgetState extends State<ChatWidget> {
         valueListenable: _btSize,
         builder: (context, value, child) => ScrollDownButton(
           onTap: () {
-            scrollController.jumpTo(scrollController.position.minScrollExtent);
+            scrollController.animateTo(
+                curve: Curves.decelerate,
+                duration: const Duration(milliseconds: 800),
+                scrollController.position.minScrollExtent);
           },
           buttonSize: _btSize.value,
           iconSize: _icSize,
@@ -84,7 +87,7 @@ class ChatWidgetState extends State<ChatWidget> {
 
   @override
   void dispose() {
-    scrollController.dispose();
+    scrollController.removeListener;
     super.dispose();
   }
 }
