@@ -234,14 +234,16 @@ class GrpcUsers extends GrpcUsersServiceBase {
         email: request.email,
         registrationDate: request.dateCreated,
         profilePicUrl: request.profilePicUrl,
-        password: request.password);
+        password: request.password,
+        updatedDate: request.dateCreated
+    );
     var createUserResponse = CreateUserResponse();
-    if (src['main_users_id'] != 0) {
-      createUserResponse.dateCreated = request.dateCreated;
-      createUserResponse.email = request.email;
-      createUserResponse.name = request.name;
-      createUserResponse.profilePicUrl = request.profilePicUrl;
-      createUserResponse.id = src['main_users_id'];
+    if (src[0]['user_id'] != 0) {
+      createUserResponse.id = src[0]['user_id'] as int;
+      createUserResponse.name = src[0]['name'] as String;
+      createUserResponse.email = src[0]['email'] as String;
+      createUserResponse.profilePicUrl = src[0]['profile_pic_url'] as String;
+      createUserResponse.dateCreated = src[0]['created_date'] as String;
     }
     return createUserResponse;
   }
@@ -312,7 +314,7 @@ Future<void> main() async {
     CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
   );
 
-  await server.serve(port: 50000);
+  await server.serve(port: 5000);
   await DbServerServices.instanse.openDatabase();
   print('✅ Server listening on port ${server.port}...');
 }

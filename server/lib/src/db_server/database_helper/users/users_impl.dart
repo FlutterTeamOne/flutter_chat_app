@@ -9,31 +9,35 @@ class UsersServices implements IUsersServices {
       required String email,
       required String registrationDate,
       required String profilePicUrl,
-      required String password}) async {
+      required String password,
+      required String updatedDate}) async {
     Database db = await DbServerServices.instanse.database;
 
     await db.execute('''
-      INSERT INTO users (name, email) VALUES (
-        $name,
-        $email,
-        $registrationDate,
-        $profilePicUrl,
-        $password
+      INSERT INTO users (name, email, created_date, profile_pic_url, password, updated_date) VALUES (
+        '$name',
+        '$email',
+        '$registrationDate',
+        '$profilePicUrl',
+        '$password',
+        '$updatedDate'
       );
       ''');
 
     return await db.rawQuery('''
-      SELECT main_users_id FROM users 
+      SELECT * FROM users 
       WHERE (
-        (name = $name) 
+        (name = '$name') 
         AND 
-        (email = $email)
+        (email = '$email')
         AND
-        (registration_date = $registrationDate)
+        (created_date = '$registrationDate')
         AND
-        (profile_pic_url = $profilePicUrl)
+        (profile_pic_url = '$profilePicUrl')
         AND
-        (password = $password)
+        (password = '$password')
+        AND
+        (updated_date = '$updatedDate')
         );
     ''');
   }
@@ -43,7 +47,7 @@ class UsersServices implements IUsersServices {
     Database db = await DbServerServices.instanse.database;
 
     return await db
-        .rawDelete('''SELETE FROM users WHERE (main_users_id = id)''');
+        .rawDelete('''SELECT FROM users WHERE (main_users_id = id)''');
   }
 
   @override

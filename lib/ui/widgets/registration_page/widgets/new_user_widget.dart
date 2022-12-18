@@ -29,11 +29,11 @@ class NewUserWidget extends StatelessWidget {
   static final String newUserCreateDate = DateTime.now().toIso8601String();
 
   final NewUserModel newUser = NewUserModel(
-    name: '1',
+    name: newUserNameText.text,
     // newUserNameText.text,
-    email: '2',
+    email: newUserEmailText.text,
     // newUserEmailText.text,
-    password: '3',
+    password: newUserPasswordText.text,
     // newUserPasswordText.text,
     registrationDate: newUserCreateDate,
     profilePicLink: newUserPictureUrl,
@@ -64,6 +64,7 @@ class NewUserWidget extends StatelessWidget {
                       height: 20,
                     ),
                     buildCreateNewUserButton(context),
+
                   ],
                 ),
               ],
@@ -95,6 +96,7 @@ class NewUserWidget extends StatelessWidget {
                   }
                   return null;
                 },
+                obscureText: true,
               )),
         ],
       ),
@@ -159,26 +161,33 @@ class NewUserWidget extends StatelessWidget {
     final NewUserBloc newUserBloc = context.read<NewUserBloc>();
     return Padding(
       padding: const EdgeInsets.only(left: 100.0),
-      child: ElevatedButton(
-            style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ))),
-            onPressed: () {
-              // if (_nameKey.currentState!.validate() &&
-              //     _emailKey.currentState!.validate() &&
-              //     _passwordKey.currentState!.validate()) {
-              //   ScaffoldMessenger.of(context).showSnackBar(
-              //     const SnackBar(content: Text('Creating new user')),
-              //   );
-              // }
-              newUserBloc.add(SetNewUserEvent(user: newUser, password: newUserPasswordText.text));
-              print(
-                  '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , $newUserPictureUrl');
-              // disposeText();
-            },
-            child: const Text('Create new user')),
+      child: Row(
+        children: [
+          ElevatedButton(
+                style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ))),
+                onPressed: () {
+                  // if (_nameKey.currentState!.validate() &&
+                  //     _emailKey.currentState!.validate() &&
+                  //     _passwordKey.currentState!.validate()) {
+                  //   ScaffoldMessenger.of(context).showSnackBar(
+                  //     const SnackBar(content: Text('Creating new user')),
+                  //   );
+                  // }
+                  newUserBloc.add(SetNewUserEvent(user: newUser, password: newUserPasswordText.text));
+                  print(
+                      '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , $newUserPictureUrl');
+                  // disposeText();
+                },
+                child: const Text('Create new user')),
+          IconButton(onPressed: () {
+            Navigator.of(context).pushNamed('/');
+          }, icon: Icon(Icons.close_rounded)),
+        ],
+      ),
       );
 
   }

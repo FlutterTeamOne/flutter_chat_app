@@ -73,10 +73,10 @@ class MyApp extends StatelessWidget {
       theme: theme,
       title: 'Flutter chat app',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/authentication page',
+      initialRoute: '/',
       routes: {
-        '/': (context) => const MainLayout(), //AuthPage(),
-        '/authentication page': (context) => const RegistrationPage(),
+        '/': (context) => const AuthPage(),
+        '/registration page': (context) => const RegistrationPage(),
         '/mainLayout': (context) => const MainLayout(),
         '/Settings page': (context) => const SettingsPage(),
       },
