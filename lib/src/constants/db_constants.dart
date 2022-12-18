@@ -19,7 +19,7 @@ class DatabaseConst {
   static const usersColumnProfilePicLink = 'profile_pic_link';
   static const usersColumnCreatedDate = 'created_date';
   static const usersColumnUpdatedDate = 'updated_date';
-  static const usersColumnsDeletedDate = 'deleted_date';
+  static const usersColumnDeletedDate = 'deleted_date';
 
   //Messages
   static const messagesColumnLocalMessagesId = 'local_messages_id';

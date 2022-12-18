@@ -74,4 +74,10 @@ Future<void> main() async {
   // for (var mes in messages) {
   //   print(mes);
   // }
+
+  var lastUser = await db.rawQuery('''
+              SELECT MAX(user_id) as user_id
+              FROM users
+              ''');
+  print(lastUser[0]['user_id']);
 }

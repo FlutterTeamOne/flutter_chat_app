@@ -3,6 +3,7 @@ import 'package:chat_app/modules/client/grpc_client.dart';
 import 'package:chat_app/modules/signal_service/service_locator/locator.dart';
 import 'package:chat_app/src/generated/users/users.pbgrpc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../domain/data/library/library_data.dart';
 import '../../../sending_manager/library/library_sending_manager.dart';
@@ -21,12 +22,39 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     _mainUserServices = MainUserServices();
     on<ReadUsersEvent>(_onReadUsersEvent);
     on<CreateUserEvent>(_onCreateUserEvent);
+    on<ChangeUserEvent>(_onChangeUserEvent);
   }
 
   FutureOr<void> _onReadUsersEvent(
       ReadUsersEvent event, Emitter<UserState> emit) async {
     //Получаем всех юзеров из локальной базы
-    var users = await _usersServices.getAllUsers();
+    var users = <UserDto>[];
+    //проверяем состояние загруженного пользователя
+    if (state.userDbthis) {
+      var id = await _usersServices.getLastUserId();
+      print("lastID $id");
+      //подключаемся к серверу
+      var stub = GrpcUsersClient(GrpcClient().channel);
+      //отправляем запрос на сервер и получаем всех юзеров
+      var usersServ = await stub.getAllUsers(EmptyUser(lastId: id));
+      print("UsersServ $usersServ");
+      for (var user in usersServ.users) {
+        //парсим всех юзеров и записываем их в локальное дб
+        await _usersServices.createUserStart(
+            userId: user.userId,
+            name: user.name,
+            email: user.email,
+            createdDate: user.dateCreate,
+            updatedDate: user.dateUpdate,
+            deletedDate: user.dateDelete,
+            profilePicUrl: user.profilePicUrl);
+      }
+//получаем всех начальных юзеров
+      users = await _usersServices.getAllUsersStart();
+    } else {
+      users = await _usersServices.getAllUsers();
+    }
+
     print('USERS: $users');
     //Добавляем всех юзеров в state
     emit(state.copyWith(users: users));
@@ -48,12 +76,19 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       userId: user.userId!,
       name: user.name,
       email: user.email,
-      registrationDate: user.registrationDate,
+      createdDate: user.createdDate,
+      updatedDate: user.updatedDate,
       profilePicUrl: user.profilePicLink,
     );
 //Добавляем в main_user table main_id, date_sync and key
 
     // var stub = await GrpcUsersClient(Locator.getIt<GrpcClient>().channel)
     //     .createUser(user.mainUsersId);
+  }
+
+  FutureOr<void> _onChangeUserEvent(
+      ChangeUserEvent event, Emitter<UserState> emit) {
+    print('GET USER PREF: ${UserPref.getUserPref} ');
+    UserPref.setUserPref = event.userDb;
   }
 }

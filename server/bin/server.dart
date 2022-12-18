@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:grpc/grpc.dart';
+import 'package:server/src/generated/users.pb.dart';
 
 import 'package:server/src/library/library_server.dart';
 
@@ -478,6 +479,29 @@ class GrpcUsers extends GrpcUsersServiceBase {
       updateUserResponse.isUpdated = true;
     }
     return updateUserResponse;
+  }
+
+  @override
+  Future<Users> getAllUsers(ServiceCall call, EmptyUser request) async {
+    var usersList = <User>[];
+    var users;
+    if (request.lastId == 0) {
+      users = await usersServices.getAllUsers();
+    } else {
+      users = await usersServices.getAllUsersMoreId(id: request.lastId);
+    }
+    for (int i = 0; i < users.length; i++) {
+      var userForList = User();
+      userForList.userId = users[i]['user_id'] as int;
+      userForList.name = users[i]['name'] as String;
+      userForList.email = users[i]['email'] as String;
+      userForList.profilePicUrl = users[i]['profile_pic_url'] as String;
+      userForList.dateCreate = users[i]['created_date'] as String;
+      userForList.dateUpdate = users[i]['updated_date'] as String;
+      userForList.dateDelete = users[i]['deleted_date'] ?? '';
+      usersList.add(userForList);
+    }
+    return Users(users: usersList);
   }
 }
 

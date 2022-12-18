@@ -1,10 +1,9 @@
 part of '../authorization_page.dart';
 
 class UserCard extends StatefulWidget {
-  const UserCard({super.key, required this.text, required this.image});
+  const UserCard({super.key, required this.user});
 
-  final String text;
-  final String image;
+  final UserDto user;
 
   @override
   State<UserCard> createState() => _UserCardState();
@@ -13,20 +12,27 @@ class UserCard extends StatefulWidget {
 class _UserCardState extends State<UserCard> {
   @override
   Widget build(BuildContext context) {
+    var userBloc = context.read<UserBloc>();
     return Column(
       children: [
         InkWell(
           hoverColor: Colors.transparent,
           focusColor: Colors.transparent,
-          onTap: (() {}),
+          onTap: () async {
+            userBloc.add(ChangeUserEvent(user: widget.user, userDb: false));
+            UserPath.user = widget.user;
+            await DBHelper.instanse.initDB();
+            userBloc.add(ReadUsersEvent());
+            Navigator.of(context).pushNamed(MainLayout.routeName);
+          },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            child: Image.network(widget.image,
+            child: Image.network(widget.user.profilePicLink,
                 fit: BoxFit.cover, width: 150, height: 150),
           ),
         ),
         Text(
-          widget.text,
+          widget.user.email,
           style: const TextStyle(fontSize: 50),
         ),
         // const SizedBox(height: 10),

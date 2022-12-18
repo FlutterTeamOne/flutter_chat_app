@@ -29,8 +29,9 @@ class DBHelperStart {
     var dbFactory = databaseFactoryFfi;
     // var dbPath = await dbFactory.getDatabasesPath();
     var dbPath = await getTemporaryDirectory();
-    print('PATH: ${dbPath.path}');
+    print('PATH_start: ${dbPath.path}');
     String path = join(dbPath.path, DatabaseConst.dbFileNameStart);
+    print('PATH_absolute: ${path}');
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(
           version: DatabaseConst.dbVersion,
@@ -50,7 +51,7 @@ CREATE TABLE ${DatabaseConst.userTable} (
   ${DatabaseConst.usersColumnProfilePicLink} ${DatabaseConst.char50} ${DatabaseConst.notNull},
   ${DatabaseConst.usersColumnCreatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
   ${DatabaseConst.usersColumnUpdatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
-  ${DatabaseConst.usersColumnsDeletedDate} ${DatabaseConst.char26}
+  ${DatabaseConst.usersColumnDeletedDate} ${DatabaseConst.char26}
   )
 ''');
     });

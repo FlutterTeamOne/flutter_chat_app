@@ -47,12 +47,11 @@ class UsersServices implements IUsersServices {
   }
 
   @override
-  Future getAllUsers() async {
+  Future<List<Map<String, Object?>>> getAllUsers() async {
     Database db = await DbServerServices.instanse.database;
 
     //тут json
-    var users = await db.rawQuery(
-        '''SELECT user_id, name, email, profile_pic_url FROM users''');
+    var users = await db.rawQuery('''SELECT * FROM users''');
 
     return users;
     // List<User> userList = [];
@@ -67,6 +66,15 @@ class UsersServices implements IUsersServices {
     // }
 
     // return Users(users: userList);
+  }
+
+  @override
+  Future<List<Map<String, Object?>>> getAllUsersMoreId(
+      {required int id}) async {
+    Database db = await DbServerServices.instanse.database;
+    var users =
+        await db.rawQuery('''SELECT * FROM users WHERE user_id > $id''');
+    return users;
   }
 
   @override

@@ -20,7 +20,18 @@ class _ProfileLayout extends StatelessWidget {
                 // Аватарка
                 _UserPic(userPic: state.users![0].profilePicLink),
                 // Кнопка изменение аву
-                const _ChangeUserPic()
+                const _ChangeUserPic(),
+
+                IconButton(
+                  onPressed: () async {
+                    context.read<UserBloc>().add(ChangeUserEvent(userDb: true));
+                    context.read<UserBloc>().add(ReadUsersEvent());
+                    //закрыть базу
+                    await DBHelper.instanse.close();
+                    Navigator.of(context).pop();
+                  },
+                  icon: Icon(Icons.arrow_back),
+                ),
               ],
             ),
             // Остальное
@@ -29,7 +40,7 @@ class _ProfileLayout extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   Text(
+                  Text(
                     'Username',
                     style: Theme.of(context).textTheme.headline6,
                   ),

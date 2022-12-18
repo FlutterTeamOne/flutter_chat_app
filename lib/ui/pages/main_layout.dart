@@ -8,7 +8,7 @@ import 'package:sidebarx/sidebarx.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
-  static const routeName = '/';
+  static const routeName = '/mainLayout';
 
   @override
   State<MainLayout> createState() => _MainLayoutState();
