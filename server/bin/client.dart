@@ -5,7 +5,7 @@
 
 import 'package:server/src/library/library_server.dart';
 
-// class Client {
+class Client {
 //   ClientChannel? channel;
 //   //Класс заглушка, определяет все функции которые есть на сервере
 //   GrpcMessagesClient? stub;
@@ -149,7 +149,7 @@ import 'package:server/src/library/library_server.dart';
 //   // print("Обратный ответ:");
 //   // print('update User: ${updateUser.writeToJsonMap()}');
 //   // print(await client.updateUser(updateUser));
-// }
+}
 
 var con = false;
 void main() async {
@@ -180,8 +180,8 @@ void main() async {
   // print('update User: ${updateUser.writeToJsonMap()}');
   // print(await client.updateUser(updateUser));
 
-  var messageEmpty = Empty();
-  print("Обратный ответ:");
+  // var messageEmpty = Empty();
+  // print("Обратный ответ:");
 
-  print(await client.getUsers(messageEmpty));
+  // print(await client.getUsers(messageEmpty));
 }

@@ -29,38 +29,9 @@ const Empty$json = const {
 
 /// Descriptor for `Empty`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List emptyDescriptor = $convert.base64Decode('CgVFbXB0eQ==');
-<<<<<<< HEAD
 @$core.Deprecated('Use dynamicRequestDescriptor instead')
 const DynamicRequest$json = const {
   '1': 'DynamicRequest',
-=======
-@$core.Deprecated('Use userDescriptor instead')
-const User$json = const {
-  '1': 'User',
-  '2': const [
-    const {'1': 'id', '3': 1, '4': 1, '5': 5, '10': 'id'},
-    const {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
-    const {'1': 'email', '3': 3, '4': 1, '5': 9, '10': 'email'},
-    const {'1': 'picture', '3': 4, '4': 1, '5': 9, '10': 'picture'},
-  ],
-};
-
-/// Descriptor for `User`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List userDescriptor = $convert.base64Decode('CgRVc2VyEg4KAmlkGAEgASgFUgJpZBISCgRuYW1lGAIgASgJUgRuYW1lEhQKBWVtYWlsGAMgASgJUgVlbWFpbBIYCgdwaWN0dXJlGAQgASgJUgdwaWN0dXJl');
-@$core.Deprecated('Use usersDescriptor instead')
-const Users$json = const {
-  '1': 'Users',
-  '2': const [
-    const {'1': 'users', '3': 1, '4': 3, '5': 11, '6': '.User', '10': 'users'},
-  ],
-};
-
-/// Descriptor for `Users`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List usersDescriptor = $convert.base64Decode('CgVVc2VycxIbCgV1c2VycxgBIAMoCzIFLlVzZXJSBXVzZXJz');
-@$core.Deprecated('Use connectRequestDescriptor instead')
-const ConnectRequest$json = const {
-  '1': 'ConnectRequest',
->>>>>>> main
   '2': const [
     const {'1': 'createMessage', '3': 1, '4': 1, '5': 11, '6': '.CreateMessageRequest', '10': 'createMessage'},
     const {'1': 'updateMessage', '3': 2, '4': 1, '5': 11, '6': '.UpdateMessageRequest', '10': 'updateMessage'},
