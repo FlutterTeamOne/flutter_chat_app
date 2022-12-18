@@ -1,7 +1,7 @@
 syntax ="proto3";
 
 service GrpcSynchronization{
-    rpc getUsersSynh (SynhMainUser) returns (DataDBRequest) {};
+    rpc getUsersSynh (SynhMainUser) returns (DataDBResponse) {};
     // rpc getChats (MainUser) returns (GetChatsResponse) {};
     // rpc getAllMessage (MainUser) returns (GetMessageRequest) {};
    // rpc synchronization (MainUser) returns () {};
@@ -10,8 +10,8 @@ service GrpcSynchronization{
 
 message SynhMainUser{
     int32 id = 1;
-    string key = 2;
-    string dateSyns = 3;
+    int32 chatId = 2;
+    int32 messageId = 3;
 }
 
 message SynhUser{
@@ -44,37 +44,8 @@ message SynhMessage{
     int32 is_read = 9;
 }
 
-message DataDBRequest{
+message DataDBResponse{
     repeated SynhUser users = 1; 
     repeated SynhChat chats = 2;
     repeated SynhMessage messages = 3;
 }
-
-
-
-// message GetChatsRequest{
-//     int32 friend1_id = 1;
-//     int32 friend2_id = 2;
-//     string created_date = 3;
-//     string deleted_date = 4;
-//     string updated_date = 5;
-
-// }
-
-// message GetChatsResponse{
-//     repeated int32 chat_id = 1;
-// }
-
-// message GetMessageRequest{
-//     int32 chat_id = 1;
-//     int32 sender_id = 2;
-//     string content = 3;
-//     string created_date = 4;
-//     string deleted_date = 5;
-//     string updated_date = 6;
-
-// }
-
-// message GetMessageResponse{
-//     repeated int32 message_id = 1;
-// }

@@ -116,6 +116,23 @@ class DbServerServices {
         'deleted_date': '',
         'updated_date': '2022-12-02T21:36:32.653712'
       });
+
+      await txn.insert('messages', {
+        'chat_id': 1,
+        'sender_id': 1,
+        'content': 'Hello1',
+        'created_date': DateTime.now().toIso8601String(),
+        'updated_date': DateTime.now().toIso8601String(),
+        'deleted_date': '',
+      });
+      await txn.insert('messages', {
+        'chat_id': 1,
+        'sender_id': 2,
+        'content': 'Hello2',
+        'created_date': DateTime.now().toIso8601String(),
+        'updated_date': DateTime.now().toIso8601String(),
+        'deleted_date': '',
+      });
     });
   }
 }

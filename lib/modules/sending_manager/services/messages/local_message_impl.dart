@@ -25,13 +25,15 @@ class LocalMessagesServices implements ILocalMessagesServices {
         DatabaseConst.messagesColumnUpdatedDate: date
       },
     );
-  var message =  await db.rawQuery('''SELECT ${DatabaseConst.messagesColumnLocalMessagesId} 
+    var message = await db.rawQuery(
+        '''SELECT ${DatabaseConst.messagesColumnLocalMessagesId} 
             FROM ${DatabaseConst.messageTable}
             WHERE ((${DatabaseConst.messagesColumnChatId} = ?) AND
                   (${DatabaseConst.messagesColumnSenderId} = ?) AND
                   (${DatabaseConst.messagesColumnContent} = ?) AND
-                  (${DatabaseConst.messagesColumnCreatedDate} = ?))''',[chatId,senderId,content,date]);
-   
+                  (${DatabaseConst.messagesColumnCreatedDate} = ?))''',
+        [chatId, senderId, content, date]);
+
     return message[0][DatabaseConst.messagesColumnLocalMessagesId] as int;
   }
 
@@ -191,8 +193,19 @@ class LocalMessagesServices implements ILocalMessagesServices {
   Future<int> deleteAllMessagesInChat({required int chatID}) async {
     var db = await DBHelper.instanse.database;
     return await db.rawDelete('''
-DELETE FROM messages
-WHERE  local_chats_id = $chatID
-''');
+        DELETE FROM messages
+        WHERE  local_chats_id = $chatID
+        ''');
+  }
+
+  @override
+  Future<int> getMaxMessageId() async {
+    var db = await DBHelper.instanse.database;
+    var messageId = await db.rawQuery('''
+                SELECT MAX(${DatabaseConst.messagesColumnMessageId})
+                as ${DatabaseConst.messagesColumnMessageId}
+                FROM ${DatabaseConst.messageTable}
+                ''');
+    return (messageId[0][DatabaseConst.messagesColumnMessageId] ?? 0) as int;
   }
 }

@@ -55,7 +55,7 @@ class Client {
 //     // executionInProgress = result.toLowerCase() != 'y';
 //   }
 
-  Future<DataDBRequest> GetUsersSynh(SynhMainUser mes) async {
+  Future<DataDBResponse> GetUsersSynh(SynhMainUser mes) async {
     var channel = ClientChannel('localhost',
         port: 6000,
         options:
@@ -64,7 +64,7 @@ class Client {
     var mock = GrpcSynchronizationClient(channel!,
         options: CallOptions(timeout: Duration(seconds: 30)));
 
-    var response = DataDBRequest();
+    var response = DataDBResponse();
     try {
       response = await mock.getUsersSynh(mes);
     } catch (e) {

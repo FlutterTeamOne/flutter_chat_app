@@ -8,9 +8,12 @@ class LocalChatServices implements ILocalChatsServices {
 
   @override
   Future<dynamic> createChat(
-      {required String createDate, required int userId}) async {
+      {required int chatId,
+      required String createDate,
+      required int userId}) async {
     return await DBHelper.instanse
         .onAdd(tableName: DatabaseConst.chatsTable, model: {
+      DatabaseConst.chatsColumnChatId: chatId,
       DatabaseConst.chatsColumnUserId: userId,
       DatabaseConst.chatsColumnCreatedDate: createDate,
       DatabaseConst.chatsColumnUpdatedDate: createDate
@@ -58,5 +61,15 @@ class LocalChatServices implements ILocalChatsServices {
   Future<int> updateChat({required int chatId}) {
     // TODO: изменение в БД информации о чате
     throw UnimplementedError();
+  }
+
+  @override
+  Future<int> getMaxId() async {
+    var db = await DBHelper.instanse.database;
+    var chat =
+        await db.rawQuery('''SELECT MAX(${DatabaseConst.chatsColumnChatId}) 
+                as ${DatabaseConst.chatsColumnChatId} 
+                FROM ${DatabaseConst.chatsTable}''');
+    return (chat[0][DatabaseConst.chatsColumnChatId] ?? 0) as int;
   }
 }

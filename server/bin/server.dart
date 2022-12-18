@@ -507,13 +507,30 @@ class GrpcUsers extends GrpcUsersServiceBase {
 
 class GrpcSynh extends GrpcSynchronizationServiceBase {
   @override
-  Future<DataDBRequest> getUsersSynh(
+  Future<DataDBResponse> getUsersSynh(
       ServiceCall call, SynhMainUser request) async {
-    var chats = await ChatsServices().getChatsByUserId(userID: request.id);
-    var users = await UsersServices().getAllUsersByIDfriend(id: request.id);
-    var messages =
-        await MessagesServices().getMessageByUserId(idUser: request.id);
+    var chats;
+    var users;
+    var messages;
+    if (request.chatId == 0) {
+      chats = await ChatsServices().getChatsByUserId(userId: request.id);
+      users = await UsersServices().getAllUsersByIDfriend(userId: request.id);
+    } else {
+      chats = await ChatsServices().getChatsByUserIdMoreChatId(
+          userId: request.id, chatId: request.chatId);
+      users = await UsersServices().getAllUsersByIDfriendMoreChatId(
+          id: request.id, chatId: request.chatId);
+    }
+    if (request.messageId == 0) {
+      messages =
+          await MessagesServices().getMessageByUserId(userId: request.id);
+    } else {
+      messages = await MessagesServices().getMessageByUserIdMoreMessageId(
+          userId: request.id, messageId: request.messageId);
+    }
+
     print('USERS: $users');
+    print('CHATS: $chats');
     print('MESSAGES: $messages');
     List<SynhUser> userList = [];
     List<SynhChat> chatList = [];
@@ -557,7 +574,7 @@ class GrpcSynh extends GrpcSynchronizationServiceBase {
       messageList.add(messageForList);
     }
 
-    var dbRequest = DataDBRequest(
+    var dbRequest = DataDBResponse(
       users: userList,
       chats: chatList,
       messages: messageList,
@@ -579,7 +596,7 @@ Future<void> main() async {
     CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
   );
 
-  await server.serve(port: 6000);
+  await server.serve(port: 50000);
   await DbServerServices.instanse.openDatabase();
   print('✅ Server listening on port ${server.port}...');
 }

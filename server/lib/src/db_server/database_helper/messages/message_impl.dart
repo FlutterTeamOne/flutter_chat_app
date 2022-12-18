@@ -102,12 +102,12 @@ class MessagesServices implements IMessagesServices {
   //   return messages;
   // }
 
-  getMessageByUserId({required int idUser}) async {
+  getMessageByUserId({required int userId}) async {
     Database db = await DbServerServices.instanse.database;
 
     var idChatsFriends = await db.rawQuery(''' SELECT chat_id 
           FROM chats 
-          WHERE (friend1_id = $idUser) OR (friend2_id = $idUser)''');
+          WHERE (friend1_id = $userId) OR (friend2_id = $userId)''');
     List<int> idChats = [];
 
     for (var idF in idChatsFriends) {
@@ -119,19 +119,22 @@ class MessagesServices implements IMessagesServices {
     return messages;
   }
 
-  getMessageByUserId({required int idUser}) async {
+  getMessageByUserIdMoreMessageId(
+      {required int userId, required int messageId}) async {
     Database db = await DbServerServices.instanse.database;
 
     var idChatsFriends = await db.rawQuery(''' SELECT chat_id 
           FROM chats 
-          WHERE (friend1_id = $idUser) OR (friend2_id = $idUser)''');
+          WHERE (friend1_id = $userId) OR (friend2_id = $userId)''');
     List<int> idChats = [];
+
     for (var idF in idChatsFriends) {
       idChats.add(idF['chat_id'] as int);
     }
     var messages = await db.rawQuery('''SELECT *
           FROM messages
-          WHERE chat_id IN (${idChats.join(",")})''');
+          WHERE (chat_id IN (${idChats.join(",")})) AND 
+          (message_id > $messageId)''');
     return messages;
   }
 }

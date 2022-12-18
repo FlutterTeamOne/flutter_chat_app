@@ -35,6 +35,7 @@ abstract class ILocalUsersServices {
   Future<int> getMainIdUserByLocalId({required int localId});
   Future<UserDto> getUserByLocalId({required int localId});
   Future<List<UserDto>> getAllUsersStart();
+   Future<int> getMaxUserId();
 }
 
 final localUsersServices = ILocalUsersServices();

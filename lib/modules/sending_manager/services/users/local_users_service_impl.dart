@@ -134,4 +134,13 @@ class LocalUsersServices implements ILocalUsersServices {
     print(lastUser);
     return lastUser[0]['user_id'] ?? 0;
   }
+  @override
+  Future<int> getMaxUserId() async {
+    var db = await DBHelper.instanse.database;
+    var chat =
+        await db.rawQuery('''SELECT MAX(${DatabaseConst.usersColumnUserId}) 
+                as ${DatabaseConst.usersColumnUserId} 
+                FROM ${DatabaseConst.userTable}''');
+    return (chat[0][DatabaseConst.usersColumnUserId] ?? 0) as int;
+  }
 }

@@ -67,19 +67,46 @@ Future<void> main() async {
   ///Проверка запроса с синхронизацией
   ///
   var mainIdUser = 1;
-  var users = await usersService.getAllUsersByIDfriend(id: mainIdUser);
-  for (var user in users) {
-    print(user);
-  }
+  var users;
+  var chats;
+  var messages;
 
-  var chats = await chatsServices.getChatsByUserId(userID: mainIdUser);
+  // users = await usersService.getAllUsersByIDfriend(userId: mainIdUser);
+  // print("Users");
+  // for (var user in users) {
+  //   print(user);
+  // }
+
+  print("Chats");
+  chats = await chatsServices.getChatsByUserId(userId: mainIdUser);
   for (var chat in chats) {
     print(chat);
   }
 
-  //await messagesService.addNewMessage(chatId: 1, senderId: 2, content: '222');
-  var messages = await messagesService.getMessageByUserId(idUser: mainIdUser);
-  for (var message in messages) {
-    print(message);
-  }
+  // print("Messages");
+  // //await messagesService.addNewMessage(chatId: 1, senderId: 2, content: '222');
+  // messages = await messagesService.getMessageByUserId(userId: mainIdUser);
+  // for (var message in messages) {
+  //   print(message);
+  // }
+
+  // print("Users");
+  // users = await usersService.getAllUsersByIDfriendMoreChatId(
+  //     id: mainIdUser, chatId: 1);
+  // for (var user in users) {
+  //   print(user);
+  // }
+
+  // print("Chats");
+  // chats = await chatsServices.getChatsByUserIdMoreChatId(
+  //     userId: mainIdUser, chatId: 1);
+  // for (var chat in chats) {
+  //   print(chat);
+  // }
+  // print("Messages");
+  // messages = await messagesService.getMessageByUserIdMoreMessageId(
+  //     userId: mainIdUser, messageId: 100);
+  // for (var message in messages) {
+  //   print(message);
+  // }
 }
