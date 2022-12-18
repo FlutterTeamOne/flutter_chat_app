@@ -31,17 +31,17 @@ class MessagesServices implements IMessagesServices {
     var idAndDate = await db.rawQuery('''
       SELECT message_id, created_date, updated_date FROM messages
       WHERE (
-        (chat_id = $chatId) 
+        (chat_id = ?) 
         AND 
-        (sender_id = $senderId)
+        (sender_id = ?)
         AND
-        (content = '$content')
+        (content = ?)
         AND
-        (created_date = '$date')
+        (created_date = ?)
         AND
-        (updated_date = '$date')       
+        (updated_date = ?)       
         )
-    ''');
+    ''', [chatId, senderId, content, date, date]);
     return idAndDate[0];
   }
 

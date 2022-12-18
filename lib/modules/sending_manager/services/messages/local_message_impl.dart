@@ -25,13 +25,13 @@ class LocalMessagesServices implements ILocalMessagesServices {
         DatabaseConst.messagesColumnUpdatedDate: date
       },
     );
-    var message = await db.rawQuery('''
-            SELECT ${DatabaseConst.messagesColumnLocalMessagesId} 
+  var message =  await db.rawQuery('''SELECT ${DatabaseConst.messagesColumnLocalMessagesId} 
             FROM ${DatabaseConst.messageTable}
-            WHERE ((${DatabaseConst.messagesColumnChatId} = $chatId) AND
-                  (${DatabaseConst.messagesColumnSenderId} = $senderId) AND
-                  (${DatabaseConst.messagesColumnContent} = '$content') AND
-                  (${DatabaseConst.messagesColumnCreatedDate} = '$date'))''');
+            WHERE ((${DatabaseConst.messagesColumnChatId} = ?) AND
+                  (${DatabaseConst.messagesColumnSenderId} = ?) AND
+                  (${DatabaseConst.messagesColumnContent} = ?) AND
+                  (${DatabaseConst.messagesColumnCreatedDate} = ?))''',[chatId,senderId,content,date]);
+   
     return message[0][DatabaseConst.messagesColumnLocalMessagesId] as int;
   }
 
@@ -156,7 +156,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
           DatabaseConst.messagesColumnCreatedDate: message.createdDate,
           DatabaseConst.messagesColumnIsRead: message.isRead,
           DatabaseConst.messagesColumnContent: message.content,
-          DatabaseConst.messagesColumnMessageId:message.messageId
+          DatabaseConst.messagesColumnMessageId: message.messageId
         },
         id: localMessageId);
   }
