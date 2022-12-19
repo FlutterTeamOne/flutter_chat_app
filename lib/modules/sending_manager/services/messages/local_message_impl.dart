@@ -162,7 +162,15 @@ class LocalMessagesServices implements ILocalMessagesServices {
         },
         id: localMessageId);
   }
-
+updateMessageFromBase(
+      {required int messageId,
+      required String content,
+      required String updateDate}) async {
+    var db = await DBHelper.instanse.database;
+    await db.rawUpdate('''UPDATE ${DatabaseConst.messageTable}
+    SET ${DatabaseConst.messagesColumnMessageId}=?,${DatabaseConst.messagesColumnUpdatedDate}=?,${DatabaseConst.messagesColumnContent}=?
+    WHERE ${DatabaseConst.messagesColumnMessageId} = $messageId''',[messageId,updateDate,content]);
+  }
   updateWrittenToServer(
       {required int localMessageId,
       required int messagesId,

@@ -61,7 +61,7 @@ class Client {
         options:
             const ChannelOptions(credentials: ChannelCredentials.insecure()));
 
-    var mock = GrpcSynchronizationClient(channel!,
+    var mock = GrpcSynchronizationClient(channel,
         options: CallOptions(timeout: Duration(seconds: 30)));
 
     var response = DataDBResponse();
@@ -70,7 +70,7 @@ class Client {
     } catch (e) {
       print(e);
     } finally {
-      await channel!.shutdown();
+      await channel.shutdown();
     }
     return response;
   }
