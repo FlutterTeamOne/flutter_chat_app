@@ -333,6 +333,7 @@ class GrpcMessage extends GrpcMessagesServiceBase {
     } else {
       updateMessage = DynamicResponse(
           updateMessage: UpdateMessageResponse(
+            content: req.updateMessage.content,
               dateUpdate: timeUpdate,
               idMessageMain: req.updateMessage.idMessageMain),
           messageState: MessageStateEnum.isUpdateMessage);

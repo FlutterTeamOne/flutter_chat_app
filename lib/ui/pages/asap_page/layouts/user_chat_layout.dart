@@ -75,15 +75,15 @@ class UserChatLayoutState extends State<UserChatLayout> {
         controller.text.isNotEmpty) {
       print("EDITING");
       var messageId = messageBloc.state.messageId;
-      var messages = messageBloc.state.messages;
+      var message = messageBloc.state.messages?.where((element) => element.localMessageId== messageId).toList();
       messageBloc.add(
         UpdateMessageEvent(
             message: MessageDto(
                 chatId: widget.localChatId,
                 senderId: await MainUserServices().getUserID(),
                 content: controller.text,
-                messageId: messages?[messageId! - 1].messageId,
-                createdDate: messages?[messageId! - 1].createdDate,
+                messageId: messageId,
+                createdDate: message?[0].createdDate,
                 updatedDate: DateTime.now().toIso8601String()),
             isEditing: EditState.isEditing),
       );

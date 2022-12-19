@@ -58,7 +58,8 @@ class LocalUsersServices implements ILocalUsersServices {
   Future<int> deleteUser({required int id}) async {
     var db = await DBHelper.instanse.database;
     return await db.rawDelete(
-        'DELETE FROM ${DatabaseConst.userTable} WHERE ${DatabaseConst.usersColumnUserId}=$id');
+        'DELETE FROM ${DatabaseConst.userTable} WHERE ${DatabaseConst.usersColumnUserId}=?',
+        [id]);
   }
 
   @override
@@ -134,6 +135,7 @@ class LocalUsersServices implements ILocalUsersServices {
     print(lastUser);
     return lastUser[0]['user_id'] ?? 0;
   }
+
   @override
   Future<int> getMaxUserId() async {
     var db = await DBHelper.instanse.database;
