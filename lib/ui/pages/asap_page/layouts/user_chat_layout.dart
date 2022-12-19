@@ -59,8 +59,8 @@ class UserChatLayoutState extends State<UserChatLayout> {
       messageBloc.add(
         CreateMessageEvent(
           message: MessageDto(
-            localChatId: widget.localChatId,
-            localSendId: 1,
+            chatId: widget.localChatId,
+            senderId: 1,
             content: controller.text,
             createdDate: DateTime.now().toIso8601String(),
             updatedDate: DateTime.now().toIso8601String(),
@@ -79,11 +79,11 @@ class UserChatLayoutState extends State<UserChatLayout> {
       messageBloc.add(
         UpdateMessageEvent(
             message: MessageDto(
-                localChatId: widget.localChatId,
-                localSendId: 1,
+                chatId: widget.localChatId,
+                senderId: 1,
                 content: controller.text,
-                messageId: messages?[messageId!-1].messageId,
-                createdDate: messages?[messageId!-1].createdDate,
+                messageId: messages?[messageId! - 1].messageId,
+                createdDate: messages?[messageId! - 1].createdDate,
                 updatedDate: DateTime.now().toIso8601String()),
             isEditing: EditState.isEditing),
       );

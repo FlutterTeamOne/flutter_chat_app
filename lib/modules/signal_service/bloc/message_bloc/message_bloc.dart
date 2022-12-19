@@ -44,8 +44,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         var msg = value.readMessage.message;
         await _messagesServices.addNewMessageFromBase(message: msg);
         messages.add(MessageDto(
-            localChatId: msg.chatId,
-            localSendId: msg.senderId,
+            chatId: msg.chatId,
+            senderId: msg.senderId,
             messageId: msg.messageId,
             content: msg.content,
             createdDate: msg.dateCreate,
@@ -69,8 +69,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         var newMsg = MessageDto(
             localMessageId: msg.localMessgaeId,
             messageId: msg.messageId,
-            localChatId: msg.chatId,
-            localSendId: msg.senderId,
+            chatId: msg.chatId,
+            senderId: msg.senderId,
             content: msg.content,
             createdDate: msg.dateCreate,
             updatedDate: msg.dateUpdate);
@@ -140,8 +140,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     // DBHelper.instanse
     //     .onAdd(tableName: 'messages', model: messageMapToDB(model));
     message.localMessageId = await _messagesServices.addNewMessage(
-      chatId: message.localChatId,
-      senderId: 1,
+      chatId: message.chatId,
+      senderId: await _mainUserServices.getUserID(),
       content: message.content,
       date: message.createdDate!,
     );
@@ -150,9 +150,9 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         message: Message(
             localMessgaeId: message.localMessageId,
             messageId: message.messageId,
-            chatId: message.localChatId,
+            chatId: message.chatId,
             content: message.content,
-            senderId: message.localSendId));
+            senderId: message.senderId));
     //reqStream.add(request);
     messageController.add(DynamicRequest(
         createMessage: request,

@@ -153,8 +153,8 @@ class LocalMessagesServices implements ILocalMessagesServices {
         column: DatabaseConst.messagesColumnLocalMessagesId,
         model: {
           DatabaseConst.messagesColumnLocalMessagesId: localMessageId,
-          DatabaseConst.messagesColumnChatId: message.localChatId,
-          DatabaseConst.messagesColumnSenderId: message.localSendId,
+          DatabaseConst.messagesColumnChatId: message.chatId,
+          DatabaseConst.messagesColumnSenderId: message.senderId,
           DatabaseConst.messagesColumnCreatedDate: message.createdDate,
           DatabaseConst.messagesColumnIsRead: message.isRead,
           DatabaseConst.messagesColumnContent: message.content,

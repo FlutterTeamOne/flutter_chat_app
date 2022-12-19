@@ -32,7 +32,7 @@ class ChatWidgetState extends State<ChatWidget> {
             TimeCardWidget(date: message.createdDate!),
         groupComparator: (value1, value2) => value2,
         itemBuilder: (context, MessageDto message) {
-          if (message.localSendId != 1) {
+          if (message.senderId != 1) {
             // print(message.isSentByMe);
             // print(message.message);
             return OtherMessageCardWidget(
