@@ -1,7 +1,7 @@
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:server/src/library/library_server.dart';
 
-class MessagesServices implements IMessagesServices {
+class MessagesDBServices implements IMessagesDBServices {
   @override
   Future<Map<String, Object?>> addNewMessage({
     required int chatId,

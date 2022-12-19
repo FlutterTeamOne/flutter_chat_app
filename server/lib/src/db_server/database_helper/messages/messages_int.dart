@@ -1,7 +1,7 @@
 import '../../../library/library_server.dart';
 
-abstract class IMessagesServices {
-  factory IMessagesServices() => MessagesServices();
+abstract class IMessagesDBServices {
+  factory IMessagesDBServices() => MessagesDBServices();
 
   addNewMessage({
     required int chatId,
@@ -24,4 +24,4 @@ abstract class IMessagesServices {
   // getRecentMessages({required LastMessage message});
 }
 
-final messagesServices = IMessagesServices();
+final messagesServices = IMessagesDBServices();

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:equatable/equatable.dart';
-import 'package:grpc/service_api.dart';
 
 import '../../../../src/libraries/library_all.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
