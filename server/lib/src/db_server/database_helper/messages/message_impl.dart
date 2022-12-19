@@ -29,19 +29,19 @@ class MessagesServices implements IMessagesServices {
     //   ''');
 
     var idAndDate = await db.rawQuery('''
-      SELECT message_id, created_date FROM messages
+      SELECT message_id, created_date, updated_date FROM messages
       WHERE (
-        (chat_id = $chatId) 
+        (chat_id = ?) 
         AND 
-        (sender_id = $senderId)
+        (sender_id = ?)
         AND
-        (content = '$content')
+        (content = ?)
         AND
-        (created_date = '$date')
+        (created_date = ?)
         AND
-        (updated_date = '$date')       
+        (updated_date = ?)       
         )
-    ''');
+    ''', [chatId, senderId, content, date, date]);
     return idAndDate[0];
   }
 
@@ -91,14 +91,50 @@ class MessagesServices implements IMessagesServices {
         as int;
   }
 
-  @override
-  getRecentMessages({required LastMessage message}) async {
+  // @override
+  // getRecentMessages({required LastMessage message}) async {
+  //   Database db = await DbServerServices.instanse.database;
+  //   var messages = await db.rawQuery('''SELECT *
+  //     FROM messages, chats
+  //     WHERE (message_id > ${message.mainIdMessage} AND
+  //       (chats.friend1_id = ${message.mainIdUser} OR
+  //       chats.friend2_id = ${message.mainIdUser}))''');
+  //   return messages;
+  // }
+
+  getMessageByUserId({required int userId}) async {
     Database db = await DbServerServices.instanse.database;
+
+    var idChatsFriends = await db.rawQuery(''' SELECT chat_id 
+          FROM chats 
+          WHERE (friend1_id = $userId) OR (friend2_id = $userId)''');
+    List<int> idChats = [];
+
+    for (var idF in idChatsFriends) {
+      idChats.add(idF['chat_id'] as int);
+    }
     var messages = await db.rawQuery('''SELECT *
-      FROM messages, chats
-      WHERE (message_id > ${message.mainIdMessage} AND
-        (chats.friend1_id = ${message.mainIdUser} OR 
-        chats.friend2_id = ${message.mainIdUser}))''');
+          FROM messages
+          WHERE chat_id IN (${idChats.join(",")})''');
+    return messages;
+  }
+
+  getMessageByUserIdMoreMessageId(
+      {required int userId, required int messageId}) async {
+    Database db = await DbServerServices.instanse.database;
+
+    var idChatsFriends = await db.rawQuery(''' SELECT chat_id 
+          FROM chats 
+          WHERE (friend1_id = $userId) OR (friend2_id = $userId)''');
+    List<int> idChats = [];
+
+    for (var idF in idChatsFriends) {
+      idChats.add(idF['chat_id'] as int);
+    }
+    var messages = await db.rawQuery('''SELECT *
+          FROM messages
+          WHERE (chat_id IN (${idChats.join(",")})) AND 
+          (message_id > $messageId)''');
     return messages;
   }
 }

@@ -1,4 +1,5 @@
-﻿import '../../../src/libraries/library_all.dart';
+﻿
+import '../../../src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,8 +20,7 @@ class AsapPage extends StatelessWidget {
       },
       builder: (context, chatState) {
         return BlocConsumer<MessageBloc, MessageState>(
-          listener: (context, messageState) {
-          },
+          listener: (context, messageState) {},
           builder: (context, messageState) {
             return Row(
               children: [

@@ -21,7 +21,7 @@ abstract class IMessagesServices {
 
   getAllMessages();
 
-  getRecentMessages({required LastMessage message});
+  // getRecentMessages({required LastMessage message});
 }
 
 final messagesServices = IMessagesServices();

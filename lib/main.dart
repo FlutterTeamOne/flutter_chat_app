@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
+import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';
 import 'package:chat_app/ui/pages/authentication_page/authentication_page.dart';
+import 'modules/storage_manager/db_helper/db_helper_start.dart';
 import 'ui/pages/library/library_pages.dart';
 import 'src/libraries/library_all.dart';
 import 'modules/signal_service/service_locator/locator.dart';
@@ -16,7 +18,13 @@ Future<void> main() async {
     setWindowMinSize(const Size(960, 480));
   }
   Locator.setUp();
-  await DBHelper.instanse.initDB();
+
+  await UserPref.init();
+  await UserPref.restore();
+  print("UserPref: ${UserPref.getUserDbPref}");
+  UserPref.getUserDbPref
+      ? await DBHelperStart.instanse.initDB()
+      : await DBHelper.instanse.initDB();
   runApp(MyApp());
 }
 
@@ -40,7 +48,8 @@ class MyApp extends StatelessWidget {
           // lazy: false,
         ),
         BlocProvider<UserBloc>(
-          create: (context) => UserBloc()..add(ReadUsersEvent()),
+          create: (context) =>
+              UserBloc()..add(ReadUsersEvent(userDb: UserPref.getUserDbPref)),
         ),
         BlocProvider<ChatBloc>(
           create: (context) =>
@@ -70,11 +79,12 @@ class MyApp extends StatelessWidget {
       theme: theme,
       title: 'Flutter chat app',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      initialRoute:
+          !UserPref.getUserDbPref ? MainLayout.routeName : AuthPage.routeName,
       routes: {
-        '/': (context) => const MainLayout(), //AuthPage(),
+        AuthPage.routeName: (context) => const AuthPage(),
         '/authentication page': (context) => const AuthenticationPage(),
-        '/mainLayout': (context) => const MainLayout(),
+        MainLayout.routeName: (context) => const MainLayout(),
         '/Settings page': (context) => const SettingsPage(),
       },
     );

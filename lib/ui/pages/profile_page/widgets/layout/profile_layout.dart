@@ -9,6 +9,13 @@ class _ProfileLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
+        var userMain;
+        for (var user in state.users!) {
+          if (user.userId == UserPref.getUserId) {
+            userMain = user;
+            break;
+          }
+        }
         return ListView(
           children: [
             // Фон и аватарка
@@ -16,11 +23,22 @@ class _ProfileLayout extends StatelessWidget {
               children: [
                 const SizedBox(height: 205),
                 // Фон
-                _AppBluredImage(image: state.users![0].profilePicLink),
+                _AppBluredImage(image: userMain.profilePicLink),
                 // Аватарка
-                _UserPic(userPic: state.users![0].profilePicLink),
+                _UserPic(userPic: userMain.profilePicLink),
                 // Кнопка изменение аву
-                const _ChangeUserPic()
+                const _ChangeUserPic(),
+
+                IconButton(
+                  onPressed: () async {
+                    context.read<UserBloc>().add(ChangeUserEvent(userDb: true));
+                    context.read<UserBloc>().add(ReadUsersEvent());
+                    //закрыть базу
+                    await DBHelper.instanse.close();
+                    Navigator.of(context).pop();
+                  },
+                  icon: Icon(Icons.arrow_back),
+                ),
               ],
             ),
             // Остальное
@@ -29,13 +47,13 @@ class _ProfileLayout extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   Text(
+                  Text(
                     'Username',
                     style: Theme.of(context).textTheme.headline6,
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    state.users?[0].name ?? 'unknow',
+                    userMain.name ?? 'unknow',
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
                   const SizedBox(height: 10),
@@ -45,7 +63,7 @@ class _ProfileLayout extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    state.users?[0].email ?? '???',
+                    userMain.email ?? '???',
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ],
