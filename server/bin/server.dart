@@ -346,7 +346,7 @@ class GrpcMessage extends GrpcMessagesServiceBase {
       required DynamicRequest req}) async {
     var dateDelete = DateTime.now().toIso8601String();
     await messagesService.updateMessage(
-        newValues: 'deleted_date = $dateDelete',
+        newValues: "deleted_date = '$dateDelete'",
         condition: 'message_id=${req.deleteMessage.idMessageMain}');
     if (controller != clientController) {
       var delMsg = DynamicResponse(

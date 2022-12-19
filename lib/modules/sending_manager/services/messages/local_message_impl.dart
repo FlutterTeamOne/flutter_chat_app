@@ -82,12 +82,18 @@ class LocalMessagesServices implements ILocalMessagesServices {
     // // return
   }
 
+Future<int> deleteMessageFromBase({required int id,required String dateDelete}) async {
+    var db = await DBHelper.instanse.database;
+
+    return await db
+        .rawDelete('''DELETE FROM messages WHERE ${DatabaseConst.messagesColumnMessageId}=?''',[id,]);
+  }
   @override
   Future<int> deleteMessage({required int id}) async {
     var db = await DBHelper.instanse.database;
 
     return await db
-        .rawDelete('''DELETE FROM messages WHERE (local_messages_id = $id)''');
+        .rawDelete('''DELETE FROM messages WHERE (${DatabaseConst.messagesColumnMessageId} = $id)''');
   }
 
   @override

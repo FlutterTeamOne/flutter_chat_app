@@ -66,8 +66,12 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         print('sort message:$messages');
         add(ReadMessageEvent(messages: messages));
       } else if (value.messageState == MessageStateEnum.isDeleteMesage) {
-        var del = value.deleteMessage;
-        await _messagesServices.deleteMessage(id: del.idMessageMain);
+      var del = value.deleteMessage;
+        
+        await _messagesServices.deleteMessageFromBase(id: del.idMessageMain,dateDelete:del.dateDelete);
+         var messages = await _messagesServices.getAllMessages();
+        print('sort message:$messages');
+        add(ReadMessageEvent(messages: messages));
       } else if (value.messageState == MessageStateEnum.isCreateMessage) {
         var msg = value.createMessage.message;
         var newMsg = MessageDto(
