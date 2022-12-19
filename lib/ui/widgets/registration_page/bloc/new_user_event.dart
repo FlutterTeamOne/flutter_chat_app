@@ -4,9 +4,9 @@ abstract class NewUserEvent {}
 
 class SetNewUserEvent extends NewUserEvent {
   final NewUserModel user;
-  final String password;
+
   SetNewUserEvent({
-    required this.password,
+
     required this.user
   });
 }

@@ -157,73 +157,72 @@ class NewUserWidget extends StatelessWidget {
   }
 
   Padding buildCreateNewUserButton(BuildContext context) {
-    final NewUserBloc newUserBloc = context.read<NewUserBloc>();
+    final String _newUserName = context.read<NewUserBloc>().state.newUser.name;
     return Padding(
-      padding: const EdgeInsets.only(left: 100.0),
-      child: Row(
-        children: [
-          ElevatedButton(
-              style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ))),
-              onPressed: () {
-                // if (_nameKey.currentState!.validate() &&
-                //     _emailKey.currentState!.validate() &&
-                //     _passwordKey.currentState!.validate()) {
-                //   ScaffoldMessenger.of(context).showSnackBar(
-                //     const SnackBar(content: Text('Creating new user')),
-                //   );
-                // }
-                newUserBloc.add(SetNewUserEvent(
-                    user: newUser, password: newUserPasswordText.text));
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Dialog(
-
-                            shape:
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                        child: SizedBox(
-                          height: 80,
-                          width: 50,
-                          child: Column(
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text('User created'),
-                              ),
-
-                              ElevatedButton(
-                                  style: ButtonStyle(
-                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(20.0),
-                                          ))),
-                                  onPressed: () {
-                                Navigator.of(context).pushNamed('/');
-                              }, child: const Icon(Icons.check))
-                            ],
+        padding: const EdgeInsets.only(left: 100.0),
+        child: Row(
+          children: [
+            ElevatedButton(
+                style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ))),
+                onPressed: () {
+                  // if (_nameKey.currentState!.validate() &&
+                  //     _emailKey.currentState!.validate() &&
+                  //     _passwordKey.currentState!.validate()) {
+                  //   ScaffoldMessenger.of(context).showSnackBar(
+                  //     const SnackBar(content: Text('Creating new user')),
+                  //   );
+                  // }
+                  context.read<NewUserBloc>().add(SetNewUserEvent(
+                      user: newUser));
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Dialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
                           ),
-                        ),
-                      );
-                    });
-                print(
-                    '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , $newUserPictureUrl');
-                // disposeText();
-              },
-              child: const Text('Create new user')),
-          IconButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed('/');
-              },
-              icon: const Icon(Icons.close_rounded)),
-        ],
-      ),
-    );
+                          child: SizedBox(
+                            height: 80,
+                            width: 50,
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text('User $_newUserName created'),
+                                ),
+                                ElevatedButton(
+                                    style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ))),
+                                    onPressed: () {
+                                      Navigator.of(context).pushNamed('/');
+                                    },
+                                    child: const Icon(Icons.check))
+                              ],
+                            ),
+                          ),
+                        );
+                      });
+                  // print(
+                  //     '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , $newUserPictureUrl');
+                  // disposeText();
+                },
+                child: const Text('Create new user')),
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/');
+                },
+                icon: const Icon(Icons.close_rounded)),
+          ],
+        ),
+      );
   }
 
   void disposeText() {
