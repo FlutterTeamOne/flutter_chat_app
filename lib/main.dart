@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
+import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';
 import 'package:chat_app/ui/pages/authentication_page/authentication_page.dart';
 import 'modules/storage_manager/db_helper/db_helper_start.dart';
@@ -20,8 +21,8 @@ Future<void> main() async {
 
   await UserPref.init();
   await UserPref.restore();
-  print("UserPref: ${UserPref.getUserPref}");
-  UserPref.getUserPref
+  print("UserPref: ${UserPref.getUserDbPref}");
+  UserPref.getUserDbPref
       ? await DBHelperStart.instanse.initDB()
       : await DBHelper.instanse.initDB();
   runApp(MyApp());
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<UserBloc>(
           create: (context) =>
-              UserBloc()..add(ReadUsersEvent(userDb: UserPref.getUserPref)),
+              UserBloc()..add(ReadUsersEvent(userDb: UserPref.getUserDbPref)),
         ),
         BlocProvider<ChatBloc>(
           create: (context) =>
@@ -79,7 +80,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter chat app',
       debugShowCheckedModeBanner: false,
       initialRoute:
-          !UserPref.getUserPref ? MainLayout.routeName : AuthPage.routeName,
+          !UserPref.getUserDbPref ? MainLayout.routeName : AuthPage.routeName,
       routes: {
         AuthPage.routeName: (context) => const AuthPage(),
         '/authentication page': (context) => const AuthenticationPage(),

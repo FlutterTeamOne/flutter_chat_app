@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:chat_app/modules/client/grpc_client.dart';
 import 'package:chat_app/modules/signal_service/service_locator/locator.dart';
+import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_user_lib.dart';
 import 'package:equatable/equatable.dart';
@@ -133,7 +134,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   FutureOr<void> _onChangeUserEvent(
       ChangeUserEvent event, Emitter<UserState> emit) {
-    print('GET USER PREF: ${UserPref.getUserPref} ');
-    UserPref.setUserPref = event.userDb;
+    print('GET USER PREF: ${UserPref.getUserDbPref} ');
+    UserPref.setUserDbPref = event.userDb;
   }
 }

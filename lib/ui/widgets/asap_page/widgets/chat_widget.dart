@@ -1,4 +1,6 @@
-﻿import '../../../../src/libraries/library_all.dart';
+﻿import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
+
+import '../../../../src/libraries/library_all.dart';
 import '../../library/library_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
@@ -32,7 +34,7 @@ class ChatWidgetState extends State<ChatWidget> {
             TimeCardWidget(date: message.createdDate!),
         groupComparator: (value1, value2) => value2,
         itemBuilder: (context, MessageDto message) {
-          if (message.senderId != 1) {
+          if (!checkSender(message.senderId)) {
             // print(message.isSentByMe);
             // print(message.message);
             return OtherMessageCardWidget(
@@ -49,4 +51,6 @@ class ChatWidgetState extends State<ChatWidget> {
       ),
     );
   }
+
+  bool checkSender(int id) => id == UserPref.getUserId ? true : false;
 }
