@@ -38,7 +38,7 @@ class ChatWidgetState extends State<ChatWidget> {
             // print(message.isSentByMe);
             // print(message.message);
             return OtherMessageCardWidget(
-              message: message.content,
+              message: message,
             );
           } else {
             return MyMessageCardWidget(
