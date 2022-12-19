@@ -49,7 +49,7 @@ class _AppCardWidgetState extends State<AppCardWidget> {
         text: 'Delete',
         onTap: () {
           context.read<MessageBloc>().add(
-                DeleteMessageEvent(messageId: widget.message.localMessageId!),
+                DeleteMessageEvent(messageId: widget.message.messageId!),
               );
           popupmenuController.hideMenu();
         },

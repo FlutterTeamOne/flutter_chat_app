@@ -62,6 +62,10 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
             updateDate: updMsg.dateUpdate);
         print('id Message Main: ${updMsg.idMessageMain}');
         print('date update: ${updMsg.idMessageMain}');
+           var messages = await _messagesServices.getAllMessages();
+        // messages.sort((a, b) => a.localMessageId!.compareTo(b.localMessageId!));
+        print('sort message:$messages');
+        add(ReadMessageEvent(messages: messages));
          var messages = await _messagesServices.getAllMessages();
         print('sort message:$messages');
         add(ReadMessageEvent(messages: messages));
