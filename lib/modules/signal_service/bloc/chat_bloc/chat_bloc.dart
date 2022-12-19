@@ -43,7 +43,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     _chatServices = LocalChatServices();
     var chat = event.chat;
     var chats = await _chatServices.createChat(
-        createDate: DateTime.now().toIso8601String(), userId: chat.userIdChat);
+        chatId: chat.chatId,
+        createDate: chat.createdDate,
+        userId: chat.userIdChat);
     emit(state.copyWith(chats: chats));
   }
 

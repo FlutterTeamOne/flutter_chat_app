@@ -9,6 +9,10 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'messages.pbenum.dart';
+
+export 'messages.pbenum.dart';
+
 class Empty extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Empty', createEmptyInstance: create)
     ..hasRequiredFields = false
@@ -38,206 +42,512 @@ class Empty extends $pb.GeneratedMessage {
   static Empty? _defaultInstance;
 }
 
-class User extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'User', createEmptyInstance: create)
-    ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id', $pb.PbFieldType.O3)
-    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
-    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'email')
-    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'picture')
+class DynamicRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'DynamicRequest', createEmptyInstance: create)
+    ..aOM<CreateMessageRequest>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'createMessage', protoName: 'createMessage', subBuilder: CreateMessageRequest.create)
+    ..aOM<UpdateMessageRequest>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'updateMessage', protoName: 'updateMessage', subBuilder: UpdateMessageRequest.create)
+    ..aOM<DeleteMessageRequest>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'deleteMessage', protoName: 'deleteMessage', subBuilder: DeleteMessageRequest.create)
+    ..aOM<ReadMessageRequest>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'readMessage', protoName: 'readMessage', subBuilder: ReadMessageRequest.create)
+    ..e<MessageStateEnum>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'messageState', $pb.PbFieldType.OE, protoName: 'messageState', defaultOrMaker: MessageStateEnum.connecting, valueOf: MessageStateEnum.valueOf, enumValues: MessageStateEnum.values)
     ..hasRequiredFields = false
   ;
 
-  User._() : super();
-  factory User({
-    $core.int? id,
-    $core.String? name,
-    $core.String? email,
-    $core.String? picture,
+  DynamicRequest._() : super();
+  factory DynamicRequest({
+    CreateMessageRequest? createMessage,
+    UpdateMessageRequest? updateMessage,
+    DeleteMessageRequest? deleteMessage,
+    ReadMessageRequest? readMessage,
+    MessageStateEnum? messageState,
   }) {
     final _result = create();
-    if (id != null) {
-      _result.id = id;
+    if (createMessage != null) {
+      _result.createMessage = createMessage;
     }
-    if (name != null) {
-      _result.name = name;
+    if (updateMessage != null) {
+      _result.updateMessage = updateMessage;
     }
-    if (email != null) {
-      _result.email = email;
+    if (deleteMessage != null) {
+      _result.deleteMessage = deleteMessage;
     }
-    if (picture != null) {
-      _result.picture = picture;
+    if (readMessage != null) {
+      _result.readMessage = readMessage;
+    }
+    if (messageState != null) {
+      _result.messageState = messageState;
     }
     return _result;
   }
-  factory User.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory User.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory DynamicRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory DynamicRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  User clone() => User()..mergeFromMessage(this);
+  DynamicRequest clone() => DynamicRequest()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  User copyWith(void Function(User) updates) => super.copyWith((message) => updates(message as User)) as User; // ignore: deprecated_member_use
+  DynamicRequest copyWith(void Function(DynamicRequest) updates) => super.copyWith((message) => updates(message as DynamicRequest)) as DynamicRequest; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static User create() => User._();
-  User createEmptyInstance() => create();
-  static $pb.PbList<User> createRepeated() => $pb.PbList<User>();
+  static DynamicRequest create() => DynamicRequest._();
+  DynamicRequest createEmptyInstance() => create();
+  static $pb.PbList<DynamicRequest> createRepeated() => $pb.PbList<DynamicRequest>();
   @$core.pragma('dart2js:noInline')
-  static User getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<User>(create);
-  static User? _defaultInstance;
+  static DynamicRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DynamicRequest>(create);
+  static DynamicRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.int get id => $_getIZ(0);
+  CreateMessageRequest get createMessage => $_getN(0);
   @$pb.TagNumber(1)
-  set id($core.int v) { $_setSignedInt32(0, v); }
+  set createMessage(CreateMessageRequest v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasId() => $_has(0);
+  $core.bool hasCreateMessage() => $_has(0);
   @$pb.TagNumber(1)
-  void clearId() => clearField(1);
+  void clearCreateMessage() => clearField(1);
+  @$pb.TagNumber(1)
+  CreateMessageRequest ensureCreateMessage() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.String get name => $_getSZ(1);
+  UpdateMessageRequest get updateMessage => $_getN(1);
   @$pb.TagNumber(2)
-  set name($core.String v) { $_setString(1, v); }
+  set updateMessage(UpdateMessageRequest v) { setField(2, v); }
   @$pb.TagNumber(2)
-  $core.bool hasName() => $_has(1);
+  $core.bool hasUpdateMessage() => $_has(1);
   @$pb.TagNumber(2)
-  void clearName() => clearField(2);
+  void clearUpdateMessage() => clearField(2);
+  @$pb.TagNumber(2)
+  UpdateMessageRequest ensureUpdateMessage() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $core.String get email => $_getSZ(2);
+  DeleteMessageRequest get deleteMessage => $_getN(2);
   @$pb.TagNumber(3)
-  set email($core.String v) { $_setString(2, v); }
+  set deleteMessage(DeleteMessageRequest v) { setField(3, v); }
   @$pb.TagNumber(3)
-  $core.bool hasEmail() => $_has(2);
+  $core.bool hasDeleteMessage() => $_has(2);
   @$pb.TagNumber(3)
-  void clearEmail() => clearField(3);
+  void clearDeleteMessage() => clearField(3);
+  @$pb.TagNumber(3)
+  DeleteMessageRequest ensureDeleteMessage() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  $core.String get picture => $_getSZ(3);
+  ReadMessageRequest get readMessage => $_getN(3);
   @$pb.TagNumber(4)
-  set picture($core.String v) { $_setString(3, v); }
+  set readMessage(ReadMessageRequest v) { setField(4, v); }
   @$pb.TagNumber(4)
-  $core.bool hasPicture() => $_has(3);
+  $core.bool hasReadMessage() => $_has(3);
   @$pb.TagNumber(4)
-  void clearPicture() => clearField(4);
+  void clearReadMessage() => clearField(4);
+  @$pb.TagNumber(4)
+  ReadMessageRequest ensureReadMessage() => $_ensure(3);
+
+  @$pb.TagNumber(5)
+  MessageStateEnum get messageState => $_getN(4);
+  @$pb.TagNumber(5)
+  set messageState(MessageStateEnum v) { setField(5, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasMessageState() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearMessageState() => clearField(5);
 }
 
-class Users extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Users', createEmptyInstance: create)
-    ..pc<User>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'users', $pb.PbFieldType.PM, subBuilder: User.create)
+class DynamicResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'DynamicResponse', createEmptyInstance: create)
+    ..aOM<CreateMessageResponse>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'createMessage', protoName: 'createMessage', subBuilder: CreateMessageResponse.create)
+    ..aOM<UpdateMessageResponse>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'updateMessage', protoName: 'updateMessage', subBuilder: UpdateMessageResponse.create)
+    ..aOM<DeleteMessageResponse>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'deleteMessage', protoName: 'deleteMessage', subBuilder: DeleteMessageResponse.create)
+    ..aOM<ReadMessageResponse>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'readMessage', protoName: 'readMessage', subBuilder: ReadMessageResponse.create)
+    ..e<MessageStateEnum>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'messageState', $pb.PbFieldType.OE, protoName: 'messageState', defaultOrMaker: MessageStateEnum.connecting, valueOf: MessageStateEnum.valueOf, enumValues: MessageStateEnum.values)
     ..hasRequiredFields = false
   ;
 
-  Users._() : super();
-  factory Users({
-    $core.Iterable<User>? users,
+  DynamicResponse._() : super();
+  factory DynamicResponse({
+    CreateMessageResponse? createMessage,
+    UpdateMessageResponse? updateMessage,
+    DeleteMessageResponse? deleteMessage,
+    ReadMessageResponse? readMessage,
+    MessageStateEnum? messageState,
   }) {
     final _result = create();
-    if (users != null) {
-      _result.users.addAll(users);
+    if (createMessage != null) {
+      _result.createMessage = createMessage;
+    }
+    if (updateMessage != null) {
+      _result.updateMessage = updateMessage;
+    }
+    if (deleteMessage != null) {
+      _result.deleteMessage = deleteMessage;
+    }
+    if (readMessage != null) {
+      _result.readMessage = readMessage;
+    }
+    if (messageState != null) {
+      _result.messageState = messageState;
     }
     return _result;
   }
-  factory Users.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory Users.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory DynamicResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory DynamicResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  Users clone() => Users()..mergeFromMessage(this);
+  DynamicResponse clone() => DynamicResponse()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  Users copyWith(void Function(Users) updates) => super.copyWith((message) => updates(message as Users)) as Users; // ignore: deprecated_member_use
+  DynamicResponse copyWith(void Function(DynamicResponse) updates) => super.copyWith((message) => updates(message as DynamicResponse)) as DynamicResponse; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static Users create() => Users._();
-  Users createEmptyInstance() => create();
-  static $pb.PbList<Users> createRepeated() => $pb.PbList<Users>();
+  static DynamicResponse create() => DynamicResponse._();
+  DynamicResponse createEmptyInstance() => create();
+  static $pb.PbList<DynamicResponse> createRepeated() => $pb.PbList<DynamicResponse>();
   @$core.pragma('dart2js:noInline')
-  static Users getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Users>(create);
-  static Users? _defaultInstance;
+  static DynamicResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DynamicResponse>(create);
+  static DynamicResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<User> get users => $_getList(0);
+  CreateMessageResponse get createMessage => $_getN(0);
+  @$pb.TagNumber(1)
+  set createMessage(CreateMessageResponse v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasCreateMessage() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearCreateMessage() => clearField(1);
+  @$pb.TagNumber(1)
+  CreateMessageResponse ensureCreateMessage() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  UpdateMessageResponse get updateMessage => $_getN(1);
+  @$pb.TagNumber(2)
+  set updateMessage(UpdateMessageResponse v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasUpdateMessage() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearUpdateMessage() => clearField(2);
+  @$pb.TagNumber(2)
+  UpdateMessageResponse ensureUpdateMessage() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  DeleteMessageResponse get deleteMessage => $_getN(2);
+  @$pb.TagNumber(3)
+  set deleteMessage(DeleteMessageResponse v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasDeleteMessage() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearDeleteMessage() => clearField(3);
+  @$pb.TagNumber(3)
+  DeleteMessageResponse ensureDeleteMessage() => $_ensure(2);
+
+  @$pb.TagNumber(4)
+  ReadMessageResponse get readMessage => $_getN(3);
+  @$pb.TagNumber(4)
+  set readMessage(ReadMessageResponse v) { setField(4, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasReadMessage() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearReadMessage() => clearField(4);
+  @$pb.TagNumber(4)
+  ReadMessageResponse ensureReadMessage() => $_ensure(3);
+
+  @$pb.TagNumber(5)
+  MessageStateEnum get messageState => $_getN(4);
+  @$pb.TagNumber(5)
+  set messageState(MessageStateEnum v) { setField(5, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasMessageState() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearMessageState() => clearField(5);
 }
 
-class ConnectRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'ConnectRequest', createEmptyInstance: create)
-    ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id', $pb.PbFieldType.O3)
+class Message extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Message', createEmptyInstance: create)
+    ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'messageId', $pb.PbFieldType.O3, protoName: 'messageId')
+    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'chatId', $pb.PbFieldType.O3, protoName: 'chatId')
+    ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'senderId', $pb.PbFieldType.O3, protoName: 'senderId')
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'content')
+    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dateCreate', protoName: 'dateCreate')
+    ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dateUpdate', protoName: 'dateUpdate')
+    ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dateDelete', protoName: 'dateDelete')
+    ..a<$core.int>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isRead', $pb.PbFieldType.O3, protoName: 'isRead')
+    ..a<$core.int>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'localMessgaeId', $pb.PbFieldType.O3, protoName: 'localMessgaeId')
     ..hasRequiredFields = false
   ;
 
-  ConnectRequest._() : super();
-  factory ConnectRequest({
-    $core.int? id,
+  Message._() : super();
+  factory Message({
+    $core.int? messageId,
+    $core.int? chatId,
+    $core.int? senderId,
+    $core.String? content,
+    $core.String? dateCreate,
+    $core.String? dateUpdate,
+    $core.String? dateDelete,
+    $core.int? isRead,
+    $core.int? localMessgaeId,
   }) {
     final _result = create();
-    if (id != null) {
-      _result.id = id;
+    if (messageId != null) {
+      _result.messageId = messageId;
+    }
+    if (chatId != null) {
+      _result.chatId = chatId;
+    }
+    if (senderId != null) {
+      _result.senderId = senderId;
+    }
+    if (content != null) {
+      _result.content = content;
+    }
+    if (dateCreate != null) {
+      _result.dateCreate = dateCreate;
+    }
+    if (dateUpdate != null) {
+      _result.dateUpdate = dateUpdate;
+    }
+    if (dateDelete != null) {
+      _result.dateDelete = dateDelete;
+    }
+    if (isRead != null) {
+      _result.isRead = isRead;
+    }
+    if (localMessgaeId != null) {
+      _result.localMessgaeId = localMessgaeId;
     }
     return _result;
   }
-  factory ConnectRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory ConnectRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory Message.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Message.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  ConnectRequest clone() => ConnectRequest()..mergeFromMessage(this);
+  Message clone() => Message()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  ConnectRequest copyWith(void Function(ConnectRequest) updates) => super.copyWith((message) => updates(message as ConnectRequest)) as ConnectRequest; // ignore: deprecated_member_use
+  Message copyWith(void Function(Message) updates) => super.copyWith((message) => updates(message as Message)) as Message; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static ConnectRequest create() => ConnectRequest._();
-  ConnectRequest createEmptyInstance() => create();
-  static $pb.PbList<ConnectRequest> createRepeated() => $pb.PbList<ConnectRequest>();
+  static Message create() => Message._();
+  Message createEmptyInstance() => create();
+  static $pb.PbList<Message> createRepeated() => $pb.PbList<Message>();
   @$core.pragma('dart2js:noInline')
-  static ConnectRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ConnectRequest>(create);
-  static ConnectRequest? _defaultInstance;
+  static Message getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Message>(create);
+  static Message? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.int get id => $_getIZ(0);
+  $core.int get messageId => $_getIZ(0);
   @$pb.TagNumber(1)
-  set id($core.int v) { $_setSignedInt32(0, v); }
+  set messageId($core.int v) { $_setSignedInt32(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasId() => $_has(0);
+  $core.bool hasMessageId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearId() => clearField(1);
+  void clearMessageId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get chatId => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set chatId($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasChatId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearChatId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get senderId => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set senderId($core.int v) { $_setSignedInt32(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasSenderId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearSenderId() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get content => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set content($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasContent() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearContent() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.String get dateCreate => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set dateCreate($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasDateCreate() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearDateCreate() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.String get dateUpdate => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set dateUpdate($core.String v) { $_setString(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasDateUpdate() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearDateUpdate() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.String get dateDelete => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set dateDelete($core.String v) { $_setString(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasDateDelete() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearDateDelete() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.int get isRead => $_getIZ(7);
+  @$pb.TagNumber(8)
+  set isRead($core.int v) { $_setSignedInt32(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasIsRead() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearIsRead() => clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.int get localMessgaeId => $_getIZ(8);
+  @$pb.TagNumber(9)
+  set localMessgaeId($core.int v) { $_setSignedInt32(8, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasLocalMessgaeId() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearLocalMessgaeId() => clearField(9);
+}
+
+class ReadMessageRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'ReadMessageRequest', createEmptyInstance: create)
+    ..aOM<Message>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'message', subBuilder: Message.create)
+    ..hasRequiredFields = false
+  ;
+
+  ReadMessageRequest._() : super();
+  factory ReadMessageRequest({
+    Message? message,
+  }) {
+    final _result = create();
+    if (message != null) {
+      _result.message = message;
+    }
+    return _result;
+  }
+  factory ReadMessageRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ReadMessageRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ReadMessageRequest clone() => ReadMessageRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ReadMessageRequest copyWith(void Function(ReadMessageRequest) updates) => super.copyWith((message) => updates(message as ReadMessageRequest)) as ReadMessageRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static ReadMessageRequest create() => ReadMessageRequest._();
+  ReadMessageRequest createEmptyInstance() => create();
+  static $pb.PbList<ReadMessageRequest> createRepeated() => $pb.PbList<ReadMessageRequest>();
+  @$core.pragma('dart2js:noInline')
+  static ReadMessageRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ReadMessageRequest>(create);
+  static ReadMessageRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  Message get message => $_getN(0);
+  @$pb.TagNumber(1)
+  set message(Message v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasMessage() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMessage() => clearField(1);
+  @$pb.TagNumber(1)
+  Message ensureMessage() => $_ensure(0);
+}
+
+class ReadMessageResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'ReadMessageResponse', createEmptyInstance: create)
+    ..aOM<Message>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'message', subBuilder: Message.create)
+    ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isWritten', protoName: 'isWritten')
+    ..hasRequiredFields = false
+  ;
+
+  ReadMessageResponse._() : super();
+  factory ReadMessageResponse({
+    Message? message,
+    $core.bool? isWritten,
+  }) {
+    final _result = create();
+    if (message != null) {
+      _result.message = message;
+    }
+    if (isWritten != null) {
+      _result.isWritten = isWritten;
+    }
+    return _result;
+  }
+  factory ReadMessageResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ReadMessageResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ReadMessageResponse clone() => ReadMessageResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ReadMessageResponse copyWith(void Function(ReadMessageResponse) updates) => super.copyWith((message) => updates(message as ReadMessageResponse)) as ReadMessageResponse; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static ReadMessageResponse create() => ReadMessageResponse._();
+  ReadMessageResponse createEmptyInstance() => create();
+  static $pb.PbList<ReadMessageResponse> createRepeated() => $pb.PbList<ReadMessageResponse>();
+  @$core.pragma('dart2js:noInline')
+  static ReadMessageResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ReadMessageResponse>(create);
+  static ReadMessageResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  Message get message => $_getN(0);
+  @$pb.TagNumber(1)
+  set message(Message v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasMessage() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMessage() => clearField(1);
+  @$pb.TagNumber(1)
+  Message ensureMessage() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.bool get isWritten => $_getBF(1);
+  @$pb.TagNumber(2)
+  set isWritten($core.bool v) { $_setBool(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasIsWritten() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearIsWritten() => clearField(2);
 }
 
 class CreateMessageRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CreateMessageRequest', createEmptyInstance: create)
-    ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'chatIdMain', $pb.PbFieldType.O3, protoName: 'chatIdMain')
-    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'senderMainId', $pb.PbFieldType.O3, protoName: 'senderMainId')
-    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'content')
+    ..aOM<Message>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'message', subBuilder: Message.create)
     ..hasRequiredFields = false
   ;
 
   CreateMessageRequest._() : super();
   factory CreateMessageRequest({
-    $core.int? chatIdMain,
-    $core.int? senderMainId,
-    $core.String? content,
+    Message? message,
   }) {
     final _result = create();
-    if (chatIdMain != null) {
-      _result.chatIdMain = chatIdMain;
-    }
-    if (senderMainId != null) {
-      _result.senderMainId = senderMainId;
-    }
-    if (content != null) {
-      _result.content = content;
+    if (message != null) {
+      _result.message = message;
     }
     return _result;
   }
@@ -263,56 +573,35 @@ class CreateMessageRequest extends $pb.GeneratedMessage {
   static CreateMessageRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.int get chatIdMain => $_getIZ(0);
+  Message get message => $_getN(0);
   @$pb.TagNumber(1)
-  set chatIdMain($core.int v) { $_setSignedInt32(0, v); }
+  set message(Message v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasChatIdMain() => $_has(0);
+  $core.bool hasMessage() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChatIdMain() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.int get senderMainId => $_getIZ(1);
-  @$pb.TagNumber(2)
-  set senderMainId($core.int v) { $_setSignedInt32(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasSenderMainId() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearSenderMainId() => clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.String get content => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set content($core.String v) { $_setString(2, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasContent() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearContent() => clearField(3);
+  void clearMessage() => clearField(1);
+  @$pb.TagNumber(1)
+  Message ensureMessage() => $_ensure(0);
 }
 
 class CreateMessageResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CreateMessageResponse', createEmptyInstance: create)
-    ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mainMessagesId', $pb.PbFieldType.O3, protoName: 'mainMessagesId')
-    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dateCreate', protoName: 'dateCreate')
-    ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isWritten', protoName: 'isWritten')
+    ..aOM<Message>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'message', subBuilder: Message.create)
+    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isWriten', $pb.PbFieldType.O3, protoName: 'isWriten')
     ..hasRequiredFields = false
   ;
 
   CreateMessageResponse._() : super();
   factory CreateMessageResponse({
-    $core.int? mainMessagesId,
-    $core.String? dateCreate,
-    $core.bool? isWritten,
+    Message? message,
+    $core.int? isWriten,
   }) {
     final _result = create();
-    if (mainMessagesId != null) {
-      _result.mainMessagesId = mainMessagesId;
+    if (message != null) {
+      _result.message = message;
     }
-    if (dateCreate != null) {
-      _result.dateCreate = dateCreate;
-    }
-    if (isWritten != null) {
-      _result.isWritten = isWritten;
+    if (isWriten != null) {
+      _result.isWriten = isWriten;
     }
     return _result;
   }
@@ -338,31 +627,24 @@ class CreateMessageResponse extends $pb.GeneratedMessage {
   static CreateMessageResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.int get mainMessagesId => $_getIZ(0);
+  Message get message => $_getN(0);
   @$pb.TagNumber(1)
-  set mainMessagesId($core.int v) { $_setSignedInt32(0, v); }
+  set message(Message v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasMainMessagesId() => $_has(0);
+  $core.bool hasMessage() => $_has(0);
   @$pb.TagNumber(1)
-  void clearMainMessagesId() => clearField(1);
+  void clearMessage() => clearField(1);
+  @$pb.TagNumber(1)
+  Message ensureMessage() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.String get dateCreate => $_getSZ(1);
+  $core.int get isWriten => $_getIZ(1);
   @$pb.TagNumber(2)
-  set dateCreate($core.String v) { $_setString(1, v); }
+  set isWriten($core.int v) { $_setSignedInt32(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasDateCreate() => $_has(1);
+  $core.bool hasIsWriten() => $_has(1);
   @$pb.TagNumber(2)
-  void clearDateCreate() => clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.bool get isWritten => $_getBF(2);
-  @$pb.TagNumber(3)
-  set isWritten($core.bool v) { $_setBool(2, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasIsWritten() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearIsWritten() => clearField(3);
+  void clearIsWriten() => clearField(2);
 }
 
 class UpdateMessageRequest extends $pb.GeneratedMessage {
@@ -429,18 +711,23 @@ class UpdateMessageRequest extends $pb.GeneratedMessage {
 class UpdateMessageResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'UpdateMessageResponse', createEmptyInstance: create)
     ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'idMessageMain', $pb.PbFieldType.O3, protoName: 'idMessageMain')
-    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dateUpdate', protoName: 'dateUpdate')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'content')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dateUpdate', protoName: 'dateUpdate')
     ..hasRequiredFields = false
   ;
 
   UpdateMessageResponse._() : super();
   factory UpdateMessageResponse({
     $core.int? idMessageMain,
+    $core.String? content,
     $core.String? dateUpdate,
   }) {
     final _result = create();
     if (idMessageMain != null) {
       _result.idMessageMain = idMessageMain;
+    }
+    if (content != null) {
+      _result.content = content;
     }
     if (dateUpdate != null) {
       _result.dateUpdate = dateUpdate;
@@ -478,13 +765,22 @@ class UpdateMessageResponse extends $pb.GeneratedMessage {
   void clearIdMessageMain() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get dateUpdate => $_getSZ(1);
+  $core.String get content => $_getSZ(1);
   @$pb.TagNumber(2)
-  set dateUpdate($core.String v) { $_setString(1, v); }
+  set content($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasDateUpdate() => $_has(1);
+  $core.bool hasContent() => $_has(1);
   @$pb.TagNumber(2)
-  void clearDateUpdate() => clearField(2);
+  void clearContent() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get dateUpdate => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set dateUpdate($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasDateUpdate() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearDateUpdate() => clearField(3);
 }
 
 class DeleteMessageRequest extends $pb.GeneratedMessage {
@@ -593,230 +889,5 @@ class DeleteMessageResponse extends $pb.GeneratedMessage {
   $core.bool hasDateDelete() => $_has(1);
   @$pb.TagNumber(2)
   void clearDateDelete() => clearField(2);
-}
-
-class MessageBase extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'MessageBase', createEmptyInstance: create)
-    ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'ok')
-    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mainMessagesId', $pb.PbFieldType.O3, protoName: 'mainMessagesId')
-    ..hasRequiredFields = false
-  ;
-
-  MessageBase._() : super();
-  factory MessageBase({
-    $core.bool? ok,
-    $core.int? mainMessagesId,
-  }) {
-    final _result = create();
-    if (ok != null) {
-      _result.ok = ok;
-    }
-    if (mainMessagesId != null) {
-      _result.mainMessagesId = mainMessagesId;
-    }
-    return _result;
-  }
-  factory MessageBase.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory MessageBase.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  MessageBase clone() => MessageBase()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  MessageBase copyWith(void Function(MessageBase) updates) => super.copyWith((message) => updates(message as MessageBase)) as MessageBase; // ignore: deprecated_member_use
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static MessageBase create() => MessageBase._();
-  MessageBase createEmptyInstance() => create();
-  static $pb.PbList<MessageBase> createRepeated() => $pb.PbList<MessageBase>();
-  @$core.pragma('dart2js:noInline')
-  static MessageBase getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MessageBase>(create);
-  static MessageBase? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.bool get ok => $_getBF(0);
-  @$pb.TagNumber(1)
-  set ok($core.bool v) { $_setBool(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasOk() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearOk() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.int get mainMessagesId => $_getIZ(1);
-  @$pb.TagNumber(2)
-  set mainMessagesId($core.int v) { $_setSignedInt32(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasMainMessagesId() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearMainMessagesId() => clearField(2);
-}
-
-class LastMessage extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LastMessage', createEmptyInstance: create)
-    ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mainIdMessage', $pb.PbFieldType.O3, protoName: 'mainIdMessage')
-    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mainIdUser', $pb.PbFieldType.O3, protoName: 'mainIdUser')
-    ..hasRequiredFields = false
-  ;
-
-  LastMessage._() : super();
-  factory LastMessage({
-    $core.int? mainIdMessage,
-    $core.int? mainIdUser,
-  }) {
-    final _result = create();
-    if (mainIdMessage != null) {
-      _result.mainIdMessage = mainIdMessage;
-    }
-    if (mainIdUser != null) {
-      _result.mainIdUser = mainIdUser;
-    }
-    return _result;
-  }
-  factory LastMessage.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory LastMessage.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  LastMessage clone() => LastMessage()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  LastMessage copyWith(void Function(LastMessage) updates) => super.copyWith((message) => updates(message as LastMessage)) as LastMessage; // ignore: deprecated_member_use
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static LastMessage create() => LastMessage._();
-  LastMessage createEmptyInstance() => create();
-  static $pb.PbList<LastMessage> createRepeated() => $pb.PbList<LastMessage>();
-  @$core.pragma('dart2js:noInline')
-  static LastMessage getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LastMessage>(create);
-  static LastMessage? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.int get mainIdMessage => $_getIZ(0);
-  @$pb.TagNumber(1)
-  set mainIdMessage($core.int v) { $_setSignedInt32(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasMainIdMessage() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearMainIdMessage() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.int get mainIdUser => $_getIZ(1);
-  @$pb.TagNumber(2)
-  set mainIdUser($core.int v) { $_setSignedInt32(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasMainIdUser() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearMainIdUser() => clearField(2);
-}
-
-class MessageFromBase extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'MessageFromBase', createEmptyInstance: create)
-    ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'chatIdMain', $pb.PbFieldType.O3, protoName: 'chatIdMain')
-    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'senderMainId', $pb.PbFieldType.O3, protoName: 'senderMainId')
-    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'content')
-    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'date')
-    ..a<$core.int>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mainIdMessage', $pb.PbFieldType.O3, protoName: 'mainIdMessage')
-    ..hasRequiredFields = false
-  ;
-
-  MessageFromBase._() : super();
-  factory MessageFromBase({
-    $core.int? chatIdMain,
-    $core.int? senderMainId,
-    $core.String? content,
-    $core.String? date,
-    $core.int? mainIdMessage,
-  }) {
-    final _result = create();
-    if (chatIdMain != null) {
-      _result.chatIdMain = chatIdMain;
-    }
-    if (senderMainId != null) {
-      _result.senderMainId = senderMainId;
-    }
-    if (content != null) {
-      _result.content = content;
-    }
-    if (date != null) {
-      _result.date = date;
-    }
-    if (mainIdMessage != null) {
-      _result.mainIdMessage = mainIdMessage;
-    }
-    return _result;
-  }
-  factory MessageFromBase.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory MessageFromBase.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  MessageFromBase clone() => MessageFromBase()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  MessageFromBase copyWith(void Function(MessageFromBase) updates) => super.copyWith((message) => updates(message as MessageFromBase)) as MessageFromBase; // ignore: deprecated_member_use
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static MessageFromBase create() => MessageFromBase._();
-  MessageFromBase createEmptyInstance() => create();
-  static $pb.PbList<MessageFromBase> createRepeated() => $pb.PbList<MessageFromBase>();
-  @$core.pragma('dart2js:noInline')
-  static MessageFromBase getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MessageFromBase>(create);
-  static MessageFromBase? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.int get chatIdMain => $_getIZ(0);
-  @$pb.TagNumber(1)
-  set chatIdMain($core.int v) { $_setSignedInt32(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasChatIdMain() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearChatIdMain() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.int get senderMainId => $_getIZ(1);
-  @$pb.TagNumber(2)
-  set senderMainId($core.int v) { $_setSignedInt32(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasSenderMainId() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearSenderMainId() => clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.String get content => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set content($core.String v) { $_setString(2, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasContent() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearContent() => clearField(3);
-
-  @$pb.TagNumber(4)
-  $core.String get date => $_getSZ(3);
-  @$pb.TagNumber(4)
-  set date($core.String v) { $_setString(3, v); }
-  @$pb.TagNumber(4)
-  $core.bool hasDate() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearDate() => clearField(4);
-
-  @$pb.TagNumber(5)
-  $core.int get mainIdMessage => $_getIZ(4);
-  @$pb.TagNumber(5)
-  set mainIdMessage($core.int v) { $_setSignedInt32(4, v); }
-  @$pb.TagNumber(5)
-  $core.bool hasMainIdMessage() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearMainIdMessage() => clearField(5);
 }
 

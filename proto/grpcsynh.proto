@@ -1,0 +1,51 @@
+syntax ="proto3";
+
+service GrpcSynchronization{
+    rpc getUsersSynh (SynhMainUser) returns (DataDBResponse) {};
+    // rpc getChats (MainUser) returns (GetChatsResponse) {};
+    // rpc getAllMessage (MainUser) returns (GetMessageRequest) {};
+   // rpc synchronization (MainUser) returns () {};
+
+}
+
+message SynhMainUser{
+    int32 id = 1;
+    int32 chatId = 2;
+    int32 messageId = 3;
+}
+
+message SynhUser{
+    string name = 1;
+    int32 user_id = 2;
+    string email = 3;
+    string created_date = 4;
+    string picture = 5;
+    string deleted_date = 6;
+    string update_date = 7;
+}
+
+message SynhChat{
+    int32 chat_id = 1;
+    int32 user_id = 2;
+    string created_date = 3;
+    string deleted_date = 4;
+    string update_date = 5;
+}
+
+message SynhMessage{
+    int32 local_message_id = 1;
+    int32 sender_id = 2;
+    int32 chat_id = 3;
+    string created_date = 4;
+    int32 message_id = 5;
+    string content = 6;
+    string updated_date = 7;
+    string deleted_date = 8;
+    int32 is_read = 9;
+}
+
+message DataDBResponse{
+    repeated SynhUser users = 1; 
+    repeated SynhChat chats = 2;
+    repeated SynhMessage messages = 3;
+}

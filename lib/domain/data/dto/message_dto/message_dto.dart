@@ -6,31 +6,31 @@ import '../model_dto.dart';
 
 class MessageDto extends ModelDto {
   late int? localMessageId;
-  final int localChatId;
-  final int localSendId;
+  final int chatId;
+  final int senderId;
   final int? messageId;
   final String content;
-  final String createdDate;
-  final String updatedDate;
+  final String? createdDate;
+  final String? updatedDate;
   final String? deletedDate;
   final int isRead;
 
   MessageDto({
     this.localMessageId,
-    required this.localChatId,
-    required this.localSendId,
+    required this.chatId,
+    required this.senderId,
     this.messageId,
     required this.content,
-    required this.createdDate,
-    required this.updatedDate,
+    this.createdDate,
+    this.updatedDate,
     this.deletedDate,
     this.isRead = 0,
   });
 
   MessageDto copyWith(
       {int? localMessageId,
-      int? localChatId,
-      int? localSendId,
+      int? chatId,
+      int? senderId,
       int? messageId,
       String? createdDate,
       String? content,
@@ -39,8 +39,8 @@ class MessageDto extends ModelDto {
       int? isRead}) {
     return MessageDto(
         localMessageId: localMessageId ?? this.localMessageId,
-        localChatId: localChatId ?? this.localChatId,
-        localSendId: localSendId ?? this.localSendId,
+        chatId: chatId ?? this.chatId,
+        senderId: senderId ?? this.senderId,
         messageId: messageId ?? this.messageId,
         createdDate: createdDate ?? this.createdDate,
         content: content ?? this.content,
@@ -52,8 +52,8 @@ class MessageDto extends ModelDto {
   Map<String, dynamic> toMap() {
     return {
       DatabaseConst.messagesColumnLocalMessagesId: localMessageId,
-      DatabaseConst.messagesColumnChatId: localChatId,
-      DatabaseConst.messagesColumnSenderId: localSendId,
+      DatabaseConst.messagesColumnChatId: chatId,
+      DatabaseConst.messagesColumnSenderId: senderId,
       DatabaseConst.messagesColumnCreatedDate: createdDate,
       DatabaseConst.messagesColumnContent: content,
       DatabaseConst.messagesColumnMessageId: messageId,
@@ -66,8 +66,8 @@ class MessageDto extends ModelDto {
   factory MessageDto.fromMap(Map<String, dynamic> map) {
     return MessageDto(
         localMessageId: map[DatabaseConst.messagesColumnLocalMessagesId] as int,
-        localChatId: map[DatabaseConst.messagesColumnChatId] as int,
-        localSendId: map[DatabaseConst.messagesColumnSenderId] as int,
+        chatId: map[DatabaseConst.messagesColumnChatId] as int,
+        senderId: map[DatabaseConst.messagesColumnSenderId] as int,
         createdDate: map[DatabaseConst.messagesColumnCreatedDate] as String,
         content: map[DatabaseConst.messagesColumnContent] as String,
         messageId: map[DatabaseConst.messagesColumnMessageId],
@@ -87,8 +87,8 @@ class MessageDto extends ModelDto {
 
     return other is MessageDto &&
         other.localMessageId == localMessageId &&
-        other.localChatId == localChatId &&
-        other.localSendId == localSendId &&
+        other.chatId == chatId &&
+        other.senderId == senderId &&
         other.messageId == messageId &&
         other.createdDate == createdDate &&
         other.updatedDate == updatedDate &&
@@ -100,8 +100,8 @@ class MessageDto extends ModelDto {
   @override
   int get hashCode {
     return localMessageId.hashCode ^
-        localChatId.hashCode ^
-        localSendId.hashCode ^
+        chatId.hashCode ^
+        senderId.hashCode ^
         messageId.hashCode ^
         createdDate.hashCode ^
         updatedDate.hashCode ^
@@ -112,6 +112,6 @@ class MessageDto extends ModelDto {
 
   @override
   String toString() {
-    return 'MessageDto(localMessageId: $localMessageId, localChatId: $localChatId, localSendId: $localSendId, messageId: $messageId, content: $content, createdDate: $createdDate, updatedDate: $updatedDate, deletedDate: $deletedDate, isRead: $isRead)';
+    return 'MessageDto(localMessageId: $localMessageId, chatId: $chatId, senderId: $senderId, messageId: $messageId, content: $content, createdDate: $createdDate, updatedDate: $updatedDate, deletedDate: $deletedDate, isRead: $isRead)';
   }
 }

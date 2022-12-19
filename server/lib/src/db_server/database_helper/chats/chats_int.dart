@@ -11,11 +11,12 @@ abstract class IChatsServices {
 
   deleteChat({required int id});
 
-  getChatsByUserId({required int userID});
+  getChatsByUserId({required int userId});
 
   getChatByTwoIds({required int friend1_id, required int friend2_id});
 
   getAllChats();
+  getChatsByUserIdMoreChatId({required int userId, required int chatId});
 }
 
 final chatsServices = IChatsServices();
