@@ -28,10 +28,7 @@ class _UserCardState extends State<UserCard> {
           },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            child: widget.user.profilePicLink.endsWith('.png')
-                ? Image.asset(widget.user.profilePicLink,
-                    fit: BoxFit.cover, width: 150, height: 150)
-                : Image.network(widget.user.profilePicLink,
+            child: Image.network(widget.user.profilePicLink,
                     fit: BoxFit.cover, width: 150, height: 150),
           ),
         ),

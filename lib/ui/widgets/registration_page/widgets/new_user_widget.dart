@@ -18,9 +18,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
   static const double textFieldWidth = 200;
   static const double textPadding = 15;
 
-  static const String newUserPictureUrl =
-     'assets/images/user_images/defaultUserAvatar.png';
-      // """https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg?w=2000""";
+  static const String newUserPictureUrl = """https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg?w=2000""";
   static String newUserCreateDate = DateTime.now().toIso8601String();
   late TextEditingController newUserNameText;
   late TextEditingController newUserEmailText;
