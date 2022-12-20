@@ -8,10 +8,8 @@ class UserChatLayout extends StatefulWidget {
   const UserChatLayout({
     Key? key,
     required this.chatId,
-    required this.localChatId,
   }) : super(key: key);
   final int chatId;
-  final int localChatId;
 
   @override
   State<UserChatLayout> createState() => UserChatLayoutState();
@@ -59,7 +57,7 @@ class UserChatLayoutState extends State<UserChatLayout> {
       messageBloc.add(
         CreateMessageEvent(
           message: MessageDto(
-            chatId: widget.localChatId,
+            chatId: widget.chatId,
             senderId: await MainUserServices().getUserID(),
             content: controller.text,
             createdDate: DateTime.now().toIso8601String(),
@@ -75,11 +73,13 @@ class UserChatLayoutState extends State<UserChatLayout> {
         controller.text.isNotEmpty) {
       print("EDITING");
       var messageId = messageBloc.state.messageId;
-      var message = messageBloc.state.messages?.where((element) => element.localMessageId== messageId).toList();
+      var message = messageBloc.state.messages
+          ?.where((element) => element.localMessageId == messageId)
+          .toList();
       messageBloc.add(
         UpdateMessageEvent(
             message: MessageDto(
-                chatId: widget.localChatId,
+                chatId: widget.chatId,
                 senderId: await MainUserServices().getUserID(),
                 content: controller.text,
                 messageId: messageId,

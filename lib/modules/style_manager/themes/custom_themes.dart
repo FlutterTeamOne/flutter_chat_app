@@ -74,7 +74,7 @@ class CustomTheme {
         selectionHandleColor: Colors.black26,
       ));
 
-  static final ThemeData darkThemeOrange = ThemeData(
+  static final ThemeData darkThemeBlueGray = ThemeData(
     brightness: Brightness.dark,
     primarySwatch: Colors.blueGrey,
     primaryColor: Colors.blueGrey,
@@ -92,7 +92,7 @@ class CustomTheme {
     ),
   );
 
-  static final ThemeData lightThemeOrange = ThemeData(
+  static final ThemeData lightThemeBlueGray = ThemeData(
     brightness: Brightness.light,
     primarySwatch: Colors.blueGrey,
     primaryColor: Colors.blueGrey,
@@ -102,17 +102,20 @@ class CustomTheme {
       cursorColor: Colors.white70,
       selectionColor: Colors.white70,
       selectionHandleColor: Colors.white70,
+    ),
     //стиль для scroll down button
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: Colors.white,
       foregroundColor: Colors.black54,
     ),
   );
+
   final themes = [
     CustomTheme.lightThemeDeepPurple,
     CustomTheme.darkThemeDeepPurple,
     CustomTheme.lightThemeLightBlue,
     CustomTheme.darkThemeLightBlue,
-    CustomTheme.lightThemeOrange,
-    CustomTheme.darkThemeOrange,
+    CustomTheme.lightThemeBlueGray,
+    CustomTheme.darkThemeBlueGray,
   ];
+}

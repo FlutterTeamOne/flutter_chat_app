@@ -85,7 +85,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute:
           !UserPref.getUserDbPref ? MainLayout.routeName : AuthPage.routeName,
-      routes: {       
+      routes: {
         '/registration page': (context) => const RegistrationPage(),
         AuthPage.routeName: (context) => const AuthPage(),
         MainLayout.routeName: (context) => const MainLayout(),

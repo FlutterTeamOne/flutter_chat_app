@@ -7,7 +7,6 @@ class ChangeThemeState {
   final ThemeData? theme;
   final int? index;
   final iconColor = [
-
     Colors.white.withOpacity(0.2),
     Colors.white.withOpacity(0.2),
     Colors.white.withOpacity(0.2),
@@ -18,7 +17,7 @@ class ChangeThemeState {
   final cardColor = <Color>[
     CustomTheme.darkThemeDeepPurple.primaryColor,
     CustomTheme.darkThemeLightBlue.primaryColor,
-    CustomTheme.darkThemeOrange.primaryColor,
+    CustomTheme.darkThemeBlueGray.primaryColor,
   ];
   final selectIcon = <IconData>[
     Icons.light_mode_outlined,
@@ -37,4 +36,3 @@ class ChangeThemeState {
     }
   }
 }
-
