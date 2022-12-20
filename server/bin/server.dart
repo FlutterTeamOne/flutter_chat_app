@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:grpc/grpc.dart';
+import 'package:server/src/db_server/services/message_service.dart';
 import 'package:server/src/generated/users.pb.dart';
 
 import 'package:server/src/library/library_server.dart';
@@ -9,7 +10,7 @@ import 'package:server/src/library/library_server.dart';
 ///Заполняем все методы как и в Protoc файле
 ///
 class GrpcMessage extends GrpcMessagesServiceBase {
-  var messagesService = MessagesServices();
+  var messagesService = MessagesDBServices();
   var chatsService = ChatsServices();
   var usersService = UsersServices();
   // var _controller = <int, StreamController<MessageFromBase>>{};
@@ -195,22 +196,25 @@ class GrpcMessage extends GrpcMessagesServiceBase {
         req.createMessage.message.dateUpdate =
             newMessage['updated_date'] as String;
         print('REQ message UPDATE: ${req.createMessage.message}, ');
-        _controllers.forEach((controller, _) async => await _onCreateMessage(
-            controller: controller,
-            clientController: clientController,
-            req: req));
+        _controllers.forEach((controller, _) async =>
+            await MessageService.onCreateMessage(
+                controller: controller,
+                clientController: clientController,
+                req: req));
       }
       if (req.messageState == MessageStateEnum.isUpdateMessage) {
-        _controllers.forEach((controller, _) async => await _onUpdateMessage(
-            controller: controller,
-            clientController: clientController,
-            req: req));
+        _controllers.forEach((controller, _) async =>
+            await MessageService.onUpdateMessage(
+                controller: controller,
+                clientController: clientController,
+                req: req));
       }
       if (req.messageState == MessageStateEnum.isDeleteMesage) {
-        _controllers.forEach((controller, _) async => _onDeleteMessage(
-            controller: controller,
-            clientController: clientController,
-            req: req));
+        _controllers.forEach((controller, _) async =>
+            MessageService.onDeleteMessage(
+                controller: controller,
+                clientController: clientController,
+                req: req));
       }
     }).onError((dynamic e) {
       print(e);
@@ -277,88 +281,7 @@ class GrpcMessage extends GrpcMessagesServiceBase {
     // }
   }
 
-  _onCreateMessage(
-      {required StreamController<DynamicResponse> controller,
-      required StreamController<DynamicResponse> clientController,
-      required DynamicRequest req}) async {
-    print('for Each Create');
-    var message = DynamicResponse();
-    if (controller != clientController) {
-      message = DynamicResponse(
-          readMessage: ReadMessageResponse(message: req.createMessage.message),
-          messageState: MessageStateEnum.isReadMessage);
-      print(message.messageState);
-      controller.sink.add(message);
-    } else {
-      print('CREATE MSG: ${req.createMessage.message}');
-      message = DynamicResponse(
-          createMessage:
-              CreateMessageResponse(message: req.createMessage.message),
-          messageState: MessageStateEnum.isCreateMessage);
-      print(message.messageState);
-      controller.sink.add(message);
-    }
-
-    ///ТУТ
-    // } else {
-    //   controller.sink.add(
-    //     Dynamic(
-    //         updateMessage: UpdateMessageRequest(
-    //             idMessageMain: req.readMessageRequest.message.messageId),
-    //         messageState: MessageStateEnum.isUpdateMessage),
-    //   );
-    // }
-  }
-
-  _onUpdateMessage(
-      {required StreamController<DynamicResponse> controller,
-      required StreamController<DynamicResponse> clientController,
-      required DynamicRequest req}) async {
-    print('for Each Update');
-    var timeUpdate = DateTime.now().toIso8601String();
-    await messagesService.updateMessage(
-        newValues:
-            "content = '${req.updateMessage.content}', updated_date = '$timeUpdate'",
-        condition: "message_id = ${req.updateMessage.idMessageMain}");
-    var updateMessage = DynamicResponse();
-    if (controller != clientController) {
-      updateMessage = DynamicResponse(
-        updateMessage: UpdateMessageResponse(
-            dateUpdate: timeUpdate,
-            content: req.updateMessage.content,
-            idMessageMain: req.updateMessage.idMessageMain),
-        messageState: MessageStateEnum.isUpdateMessage,
-      );
-      controller.add(updateMessage);
-    } else {
-      updateMessage = DynamicResponse(
-          updateMessage: UpdateMessageResponse(
-            content: req.updateMessage.content,
-              dateUpdate: timeUpdate,
-              idMessageMain: req.updateMessage.idMessageMain),
-          messageState: MessageStateEnum.isUpdateMessage);
-      controller.add(updateMessage);
-    }
-  }
-
-  _onDeleteMessage(
-      {required StreamController<DynamicResponse> controller,
-      required StreamController<DynamicResponse> clientController,
-      required DynamicRequest req}) async {
-    var dateDelete = DateTime.now().toIso8601String();
-    await messagesService.updateMessage(
-        newValues: "deleted_date = '$dateDelete'",
-        condition: 'message_id=${req.deleteMessage.idMessageMain}');
-    if (controller != clientController) {
-      var delMsg = DynamicResponse(
-          deleteMessage: DeleteMessageResponse(
-            idMessageMain: req.deleteMessage.idMessageMain,
-            dateDelete: dateDelete,
-          ),
-          messageState: MessageStateEnum.isDeleteMesage);
-      controller.add(delMsg);
-    } else {}
-  }
+  
 }
 
 class GrpcChats extends GrpcChatsServiceBase {
@@ -524,9 +447,9 @@ class GrpcSynh extends GrpcSynchronizationServiceBase {
     }
     if (request.messageId == 0) {
       messages =
-          await MessagesServices().getMessageByUserId(userId: request.id);
+          await MessagesDBServices().getMessageByUserId(userId: request.id);
     } else {
-      messages = await MessagesServices().getMessageByUserIdMoreMessageId(
+      messages = await MessagesDBServices().getMessageByUserIdMoreMessageId(
           userId: request.id, messageId: request.messageId);
     }
 

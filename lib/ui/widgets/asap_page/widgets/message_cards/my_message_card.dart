@@ -52,8 +52,13 @@ class MyMessageCardWidget extends StatelessWidget {
                           textController: textController,
                           message: message,
                         ),
-                  const Text(
-                    'Not Delivered',
+                  InkWell(
+                    onTap: () => context
+                        .read<MessageBloc>()
+                        .add(CreateMessageEvent(message: message)),
+                    child: const Text(
+                      'Not Delivered',
+                    ),
                     // style: AppTextStyle.s14AbelGrey
                     //     .copyWith(color: AppColor.colorF44336),
                   )
