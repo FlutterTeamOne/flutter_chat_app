@@ -9,20 +9,21 @@ import 'new_user_state.dart';
 class NewUserBloc extends Bloc<NewUserEvent, NewUserState> {
   NewUserBloc()
       : super(NewUserState(
-      newUser: UserDto(
-          name: '',
-          email: "",
-          updatedDate: "",
-          registrationDate: "",
-          profilePicLink: ''))) {
+            newUser: UserDto(
+                name: '',
+                email: "",
+                updatedDate: "",
+                registrationDate: "",
+                profilePicLink: ''))) {
     on<SetNewUserEvent>(_setNewUserEvent);
   }
 
   void _setNewUserEvent(
       SetNewUserEvent event, Emitter<NewUserState> emit) async {
     // await DBHelper.instanse.initDB(user: event.user);
+    print('event user ${event.user.name}');
     UserDto newCreatedUser = await GrpcClient().createUser(user: event.user);
     print('response: $newCreatedUser');
-    emit(NewUserState(newUser: newCreatedUser));
+    emit(state.copyWith(newUser: newCreatedUser));
   }
 }

@@ -57,8 +57,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => ChangeThemeBloc(),
         ),
-        // BlocProvider(create: (context) => NewUserBloc()
-        // ),
+        BlocProvider(create: (context) => NewUserBloc()),
       ],
       child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
         builder: (context, state) {
@@ -68,6 +67,7 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+
   //
   MaterialApp buildMaterialApp(ThemeData theme) {
     return MaterialApp(

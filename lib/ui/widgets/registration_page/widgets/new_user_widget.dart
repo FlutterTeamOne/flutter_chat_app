@@ -5,14 +5,18 @@ import 'package:chat_app/ui/widgets/registration_page/models/new_user_model.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class NewUserWidget extends StatelessWidget {
-  NewUserWidget({Key? key}) : super(key: key);
+import '../bloc/new_user_state.dart';
+
+class NewUserWidget extends StatefulWidget {
+  const NewUserWidget({Key? key}) : super(key: key);
+
+  @override
+  State<NewUserWidget> createState() => _NewUserWidgetState();
+}
+
+class _NewUserWidgetState extends State<NewUserWidget> {
   static const double textFieldWidth = 200;
   static const double textPadding = 15;
-  static final newUserNameText = TextEditingController();
-  static final newUserEmailText = TextEditingController();
-  static final newUserPasswordText = TextEditingController();
-  static final newUserPictureUrlText = TextEditingController();
 
   static const String newUserPictureUrl =
       """https://media.istockphoto.com/id/1300845620/ru/%D0%B2%D0
@@ -26,22 +30,36 @@ class NewUserWidget extends StatelessWidget {
       0%B0%D1%86%D0%B8%D1%8F-%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80
       %D0%B0.jpg?s=612x612&w=0&k=20&c=Po5TTi0yw6lM7qz6yay5vUbUBy3
       kAEWrpQmDaUMWnek=""";
-  static final String newUserCreateDate = DateTime.now().toIso8601String();
-
-  final NewUserModel newUser = NewUserModel(
-    name: newUserNameText.text,
-    // newUserNameText.text,
-    email: newUserEmailText.text,
-    // newUserEmailText.text,
-    password: newUserPasswordText.text,
-    // newUserPasswordText.text,
-    registrationDate: newUserCreateDate,
-    profilePicLink: newUserPictureUrl,
-  );
+  static String newUserCreateDate = DateTime.now().toIso8601String();
+  late TextEditingController newUserNameText;
+  late TextEditingController newUserEmailText;
+  late TextEditingController newUserPasswordText;
+  late TextEditingController newUserPictureUrlText;
+  final GlobalKey<FormState> _formKey = GlobalKey();
 
   final _nameKey = GlobalKey<FormState>();
+
   final _emailKey = GlobalKey<FormState>();
+
   final _passwordKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    newUserNameText = TextEditingController();
+    newUserEmailText = TextEditingController();
+    newUserPasswordText = TextEditingController();
+    newUserPictureUrlText = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    newUserNameText.dispose();
+    newUserEmailText.dispose();
+    newUserPasswordText.dispose();
+    newUserPictureUrlText.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,16 +73,20 @@ class NewUserWidget extends StatelessWidget {
             ),
             Row(
               children: [
-                Column(
-                  children: [
-                    buildNameRow(),
-                    buildEmailRow(),
-                    buildPasswordRow(),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    buildCreateNewUserButton(context),
-                  ],
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      buildNameRow(),
+                      buildEmailRow(),
+                      buildPasswordRow(),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      buildCreateNewUserButton(context, newUserNameText,
+                          newUserEmailText, newUserPasswordText),
+                    ],
+                  ),
                 ),
               ],
             )
@@ -85,18 +107,20 @@ class NewUserWidget extends StatelessWidget {
             child: Text('Password'),
           ),
           SizedBox(
-              width: textFieldWidth,
-              child: TextFormField(
-                key: _passwordKey,
-                controller: newUserPasswordText,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Enter password';
-                  }
-                  return null;
-                },
-                obscureText: true,
-              )),
+            width: textFieldWidth,
+            child: TextFormField(
+              key: _passwordKey,
+              controller: newUserPasswordText,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Enter password';
+                }
+                return null;
+              },
+              obscureText: true,
+              onSaved: (value) {},
+            ),
+          ),
         ],
       ),
     );
@@ -156,80 +180,88 @@ class NewUserWidget extends StatelessWidget {
     );
   }
 
-  Padding buildCreateNewUserButton(BuildContext context) {
-    final String _newUserName = context.read<NewUserBloc>().state.newUser.name;
+  Padding buildCreateNewUserButton(BuildContext context, newUserNameText,
+      newUserEmailText, newUserPasswordText) {
+    late String newUserName;
     return Padding(
-        padding: const EdgeInsets.only(left: 100.0),
-        child: Row(
-          children: [
-            ElevatedButton(
-                style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ))),
-                onPressed: () {
-                  // if (_nameKey.currentState!.validate() &&
-                  //     _emailKey.currentState!.validate() &&
-                  //     _passwordKey.currentState!.validate()) {
-                  //   ScaffoldMessenger.of(context).showSnackBar(
-                  //     const SnackBar(content: Text('Creating new user')),
-                  //   );
-                  // }
-                  context.read<NewUserBloc>().add(SetNewUserEvent(
-                      user: newUser));
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Dialog(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          child: SizedBox(
-                            height: 80,
-                            width: 50,
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text('User $_newUserName created'),
+      padding: const EdgeInsets.only(left: 100.0),
+      child: Row(
+        children: [
+          BlocConsumer<NewUserBloc, NewUserState>(
+            listener: (context, state) {},
+            builder: (context, state) {
+              return ElevatedButton(
+                  style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ))),
+                  onPressed: () {
+                    // if (_nameKey.currentState!.validate() &&
+                    //     _emailKey.currentState!.validate() &&
+                    //     _passwordKey.currentState!.validate()) {
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //     const SnackBar(content: Text('Creating new user')),
+                    //   );
+                    // }
+                    late NewUserModel newUser = NewUserModel(
+                        name: newUserNameText.text,
+                        email: newUserEmailText.text,
+                        password: newUserPasswordText.text,
+                        registrationDate: newUserCreateDate,
+                        profilePicLink: newUserPictureUrl);
+                    context
+                        .read<NewUserBloc>()
+                        .add(SetNewUserEvent(user: newUser));
+                    showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              newUserName = context.watch<NewUserBloc>().state.newUser.name;
+                              return Dialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
                                 ),
-                                ElevatedButton(
-                                    style: ButtonStyle(
-                                        shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ))),
-                                    onPressed: () {
-                                      Navigator.of(context).pushNamed('/');
-                                    },
-                                    child: const Icon(Icons.check))
-                              ],
-                            ),
-                          ),
-                        );
-                      });
-                  // print(
-                  //     '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , $newUserPictureUrl');
-                  // disposeText();
-                },
-                child: const Text('Create new user')),
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/');
-                },
-                icon: const Icon(Icons.close_rounded)),
-          ],
-        ),
-      );
-  }
-
-  void disposeText() {
-    newUserNameText.dispose();
-    newUserEmailText.dispose();
-    newUserPasswordText.dispose();
-    newUserPictureUrlText.dispose();
-    // super.disposeText();
+                                child: SizedBox(
+                                  height: 80,
+                                  width: 50,
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child:
+                                            Text('User $newUserName created'),
+                                      ),
+                                      ElevatedButton(
+                                          style: ButtonStyle(
+                                              shape: MaterialStateProperty.all<
+                                                      RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                          ))),
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pushNamed('/');
+                                          },
+                                          child: const Icon(Icons.check))
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
+                    // print(
+                    //     '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , ');
+                  },
+                  child: const Text('Create new user'));
+            },
+          ),
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed('/');
+              },
+              icon: const Icon(Icons.close_rounded)),
+        ],
+      ),
+    );
   }
 }

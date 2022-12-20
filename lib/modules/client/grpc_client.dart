@@ -22,9 +22,9 @@ class GrpcClient {
     stub = GrpcUsersClient(channel,
         options: CallOptions(timeout: Duration(seconds: 30)));
     var request = CreateUserRequest()
-      ..name = user.name
-      ..email = user.email
-      ..profilePicUrl = user.profilePicLink!
+      ..name = user.name!
+      ..email = user.email!
+      ..profilePicUrl = user.profilePicLink
       ..password = user.password!
       ..dateCreated = user.registrationDate;
     var response = await stub.createUser(request);
