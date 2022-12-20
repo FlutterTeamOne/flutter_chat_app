@@ -38,8 +38,7 @@ class PageControllerWidget extends StatelessWidget {
             return const VideosPage();
           case 9:
             return const SettingsPage();
-          case 10:
-            return const RegistrationPage();
+
           default:
             return const Text(
               'not found ',

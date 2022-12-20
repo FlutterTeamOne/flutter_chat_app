@@ -120,10 +120,7 @@ class SideMenuWidget extends StatelessWidget {
                   icon: Icons.settings,
                   label: 'Settings',
                 ),
-                SidebarXItem(
-                  icon: Icons.add_outlined,
-                  label: 'Add new user',
-                ),
+
               ],
       ),
     );
