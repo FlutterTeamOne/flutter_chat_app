@@ -55,21 +55,21 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         var updMsg = value.updateMessage;
 
         await _messagesServices.updateMessageFromBase(
-           content: updMsg.content,
+            content: updMsg.content,
             messageId: updMsg.idMessageMain,
-          
             updateDate: updMsg.dateUpdate);
         print('id Message Main: ${updMsg.idMessageMain}');
         print('date update: ${updMsg.idMessageMain}');
-        
-         var messages = await _messagesServices.getAllMessages();
+
+        var messages = await _messagesServices.getAllMessages();
         print('sort message:$messages');
         add(ReadMessageEvent(messages: messages));
       } else if (value.messageState == MessageStateEnum.isDeleteMesage) {
         var del = value.deleteMessage;
-        
-        await _messagesServices.deleteMessageFromBase(id: del.idMessageMain,dateDelete:del.dateDelete);
-         var messages = await _messagesServices.getAllMessages();
+
+        await _messagesServices.deleteMessageFromBase(
+            id: del.idMessageMain, dateDelete: del.dateDelete);
+        var messages = await _messagesServices.getAllMessages();
         print('sort message:$messages');
         add(ReadMessageEvent(messages: messages));
       } else if (value.messageState == MessageStateEnum.isCreateMessage) {
@@ -89,7 +89,6 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     DBHelper.instanse.updateListenController.stream.listen((event) async {
       if (event == true) {
         var messages = await _messagesServices.getAllMessages();
-        // messages.sort((a, b) => a.localMessageId!.compareTo(b.localMessageId!));
         print('sort message:$messages');
         add(ReadMessageEvent(messages: messages));
         // state.copyWith(messages: messages);
@@ -105,28 +104,6 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
   FutureOr<void> _onReadMessageEvent(
       ReadMessageEvent event, Emitter<MessageState> emit) async {
-    // var stub = GrpcMessagesClient(grpcClient.channel);
-    // var dyn = Stream<Dynamic>.value(
-    //   Dynamic(
-    //     messageState: MessageStateEnum.connecting,
-    //     createMessage: CreateMessageRequest(message: Message(senderId:1))
-    //   ),
-    // );
-    // var resp = stub.streamMessage(dyn);
-    // resp.listen((mes) async {
-    //   print(mes.readMessageRequest.message);
-    //   var e = mes.readMessageRequest.message;
-    //   event.messages?.add(MessageDto(
-    //       content: e.content,
-    //       localChatId: e.chatId,
-    //       localMessageId: e.messageId,
-    //       localSendId: e.senderId,
-    //       createdDate: e.dateCreate,
-    //       updatedDate: e.dateUpdate));
-    //   emit(state.copyWith(messages: event.messages));
-    //   messageController.add(mes);
-    // });
-
     if (event.messages == null || event.messages?.length == 1) {
       var messages = await _messagesServices.getAllMessages();
       print("MESSAGES:$messages");
@@ -147,24 +124,27 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
     // DBHelper.instanse
     //     .onAdd(tableName: 'messages', model: messageMapToDB(model));
-    message.localMessageId = await _messagesServices.addNewMessage(
-      chatId: message.chatId,
-      senderId: await _mainUserServices.getUserID(),
-      content: message.content,
-      date: message.createdDate!,
-    );
-    var stub = GrpcMessagesClient(grpcClient.channel);
-    var request = CreateMessageRequest(
-        message: Message(
-            localMessgaeId: message.localMessageId,
-            messageId: message.messageId,
-            chatId: message.chatId,
-            content: message.content,
-            senderId: message.senderId));
-    //reqStream.add(request);
-    messageController.add(DynamicRequest(
-        createMessage: request,
-        messageState: MessageStateEnum.isCreateMessage));
+    if (message.localMessageId==null) {
+      message.localMessageId = await _messagesServices.addNewMessage(
+        chatId: message.chatId,
+        senderId: await _mainUserServices.getUserID(),
+        content: message.content,
+        date: message.createdDate!,
+      );
+    }
+    if (message.messageId == null) {
+      var request = CreateMessageRequest(
+          message: Message(
+              localMessgaeId: message.localMessageId,
+              messageId: message.messageId,
+              chatId: message.chatId,
+              content: message.content,
+              senderId: message.senderId));
+      //reqStream.add(request);
+      messageController.add(DynamicRequest(
+          createMessage: request,
+          messageState: MessageStateEnum.isCreateMessage));
+    }
     // var messageToServer = CreateMessageRequest(
     //     chatIdMain:
     //         await chats.getMainIdChatByMessage(localId: message.localChatId),
