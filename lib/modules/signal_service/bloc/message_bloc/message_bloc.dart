@@ -58,19 +58,23 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
             content: updMsg.content,
             messageId: updMsg.idMessageMain,
             updateDate: updMsg.dateUpdate);
+
         print('id Message Main: ${updMsg.idMessageMain}');
         print('date update: ${updMsg.idMessageMain}');
 
         var messages = await _messagesServices.getAllMessages();
         print('sort message:$messages');
+
         add(ReadMessageEvent(messages: messages));
+
       } else if (value.messageState == MessageStateEnum.isDeleteMesage) {
         var del = value.deleteMessage;
+        
+        await _messagesServices.deleteMessageFromBase(id: del.idMessageMain,dateDelete:del.dateDelete);
+         var messages = await _messagesServices.getAllMessages();
 
-        await _messagesServices.deleteMessageFromBase(
-            id: del.idMessageMain, dateDelete: del.dateDelete);
-        var messages = await _messagesServices.getAllMessages();
         print('sort message:$messages');
+
         add(ReadMessageEvent(messages: messages));
       } else if (value.messageState == MessageStateEnum.isCreateMessage) {
         var msg = value.createMessage.message;
@@ -106,11 +110,14 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       ReadMessageEvent event, Emitter<MessageState> emit) async {
     if (event.messages == null || event.messages?.length == 1) {
       var messages = await _messagesServices.getAllMessages();
+      
       print("MESSAGES:$messages");
 
       emit(state.copyWith(messages: messages));
     } else {
+      
       print('EVENT MSG: ${event.messages}');
+      
       emit(state.copyWith(messages: event.messages));
     }
   }
