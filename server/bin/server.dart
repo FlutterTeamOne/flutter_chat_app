@@ -290,6 +290,7 @@ class GrpcChats extends GrpcChatsServiceBase {
       ServiceCall call, CreateChatRequest request) async {
     var src = await ChatsServices().createChat(
         friend1_id: request.friend1Id, friend2_id: request.friend1Id);
+        //запрос к restApi на создание чата
     var createChatResponse = CreateChatResponse();
     if (src[0]['chat_id'] != 0) {
       createChatResponse.id = src[0]['chat_id'];

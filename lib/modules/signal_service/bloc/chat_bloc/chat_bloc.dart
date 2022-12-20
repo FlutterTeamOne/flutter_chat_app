@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:chat_app/modules/client/rest_client.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../domain/data/library/library_data.dart';
@@ -30,6 +31,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     if (event.chats == null) {
       _chatServices = LocalChatServices();
       var chats = await _chatServices.getAllChats();
+      //
+      var restChats = await RestClient().getChats();
       print('IF CHATS NULL - ADD CHATS FROM LOCAL DB: $chats');
       emit(state.copyWith(chats: chats));
     } else {
@@ -46,6 +49,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         chatId: chat.chatId,
         createDate: chat.createdDate,
         userId: chat.userIdChat);
+    //TODO:запрос к restApi на создание чата
+    await RestClient().createChatRest(chat);
     emit(state.copyWith(chats: chats));
   }
 
