@@ -2,6 +2,7 @@ class DatabaseConst {
   //название и версия бд
   static const dbFileName = 'sfera.db';
   static const dbVersion = 1;
+  static const dbFileNameStart = 'startDb.db';
 
   //название таблиц
   static const messageTable = 'messages';
@@ -18,7 +19,7 @@ class DatabaseConst {
   static const usersColumnProfilePicLink = 'profile_pic_link';
   static const usersColumnCreatedDate = 'created_date';
   static const usersColumnUpdatedDate = 'updated_date';
-  static const usersColumnsDeletedDate = 'deleted_date';
+  static const usersColumnDeletedDate = 'deleted_date';
 
   //Messages
   static const messagesColumnLocalMessagesId = 'local_messages_id';

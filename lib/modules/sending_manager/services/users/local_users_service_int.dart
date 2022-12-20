@@ -7,7 +7,19 @@ abstract class ILocalUsersServices {
     required int userId,
     required String name,
     required String email,
-    required String registrationDate,
+    required String createdDate,
+    required String updatedDate,
+    required String deletedDate,
+    required String profilePicUrl,
+  });
+
+  Future<int> createUserStart({
+    required int userId,
+    required String name,
+    required String email,
+    required String createdDate,
+    required String updatedDate,
+    String? deletedDate,
     required String profilePicUrl,
   });
 
@@ -22,6 +34,8 @@ abstract class ILocalUsersServices {
   Future<List<UserDto>> getAllUsers();
   Future<int> getMainIdUserByLocalId({required int localId});
   Future<UserDto> getUserByLocalId({required int localId});
+  Future<List<UserDto>> getAllUsersStart();
+   Future<int> getMaxUserId();
 }
 
 final localUsersServices = ILocalUsersServices();

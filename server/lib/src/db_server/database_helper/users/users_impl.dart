@@ -51,12 +51,11 @@ class UsersServices implements IUsersServices {
   }
 
   @override
-  Future getAllUsers() async {
+  Future<List<Map<String, Object?>>> getAllUsers() async {
     Database db = await DbServerServices.instanse.database;
 
     //тут json
-    var users = await db.rawQuery(
-        '''SELECT user_id, name, email, profile_pic_url FROM users''');
+    var users = await db.rawQuery('''SELECT * FROM users''');
 
     return users;
     // List<User> userList = [];
@@ -71,6 +70,15 @@ class UsersServices implements IUsersServices {
     // }
 
     // return Users(users: userList);
+  }
+
+  @override
+  Future<List<Map<String, Object?>>> getAllUsersMoreId(
+      {required int id}) async {
+    Database db = await DbServerServices.instanse.database;
+    var users =
+        await db.rawQuery('''SELECT * FROM users WHERE user_id > $id''');
+    return users;
   }
 
   @override
@@ -124,5 +132,46 @@ class UsersServices implements IUsersServices {
         FROM users 
         WHERE user_id = $id''');
     return hash[0]['hash_connect'] as int;
+  }
+
+  getAllUsersByIDfriend({required int userId}) async {
+    Database db = await DbServerServices.instanse.database;
+
+    var idChatsFriends = await db.rawQuery(''' SELECT friend1_id, friend2_id
+          FROM chats 
+          WHERE (friend1_id = $userId) OR (friend2_id = $userId)''');
+    List<int> idFriends = [];
+
+    for (var idF in idChatsFriends) {
+      var idFriend = (idF['friend1_id'] == userId
+          ? idF['friend2_id']
+          : idF['friend1_id']) as int;
+      idFriends.add(idFriend);
+    }
+    var users = await db.rawQuery('''SELECT *
+          FROM users
+          WHERE user_id IN (${idFriends.join(",")})''');
+    return users;
+  }
+
+  getAllUsersByIDfriendMoreChatId(
+      {required int id, required int chatId}) async {
+    Database db = await DbServerServices.instanse.database;
+
+    var idChatsFriends = await db.rawQuery(''' SELECT friend1_id, friend2_id
+          FROM chats 
+          WHERE ((friend1_id = $id) OR (friend2_id = $id)) AND (chat_id > $chatId)''');
+    List<int> idFriends = [];
+
+    for (var idF in idChatsFriends) {
+      var idFriend = (idF['friend1_id'] == id
+          ? idF['friend2_id']
+          : idF['friend1_id']) as int;
+      idFriends.add(idFriend);
+    }
+    var users = await db.rawQuery('''SELECT *
+          FROM users
+          WHERE user_id IN (${idFriends.join(",")})''');
+    return users;
   }
 }
