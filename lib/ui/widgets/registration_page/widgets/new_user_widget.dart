@@ -1,4 +1,5 @@
 import 'package:chat_app/domain/data/dto/user_dto/user_dto.dart';
+import 'package:chat_app/modules/signal_service/bloc/user_bloc/user_bloc.dart';
 import 'package:chat_app/ui/widgets/registration_page/bloc/new_user_bloc.dart';
 import 'package:chat_app/ui/widgets/registration_page/bloc/new_user_event.dart';
 import 'package:chat_app/ui/widgets/registration_page/models/new_user_model.dart';
@@ -229,6 +230,8 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                                                 BorderRadius.circular(20.0),
                                           ))),
                                           onPressed: () {
+
+                                            context.read<UserBloc>().add(ReadUsersEvent());
                                             Navigator.of(context)
                                                 .pushNamed('/');
                                           },

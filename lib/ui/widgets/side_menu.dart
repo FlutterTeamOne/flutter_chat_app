@@ -75,9 +75,7 @@ class SideMenuWidget extends StatelessWidget {
                 SidebarXItem(
                   icon: Icons.settings_outlined,
                 ),
-                SidebarXItem(
-                  icon: Icons.add_outlined,
-                ),
+
               ]
             : const [
                 SidebarXItem(

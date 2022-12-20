@@ -27,7 +27,6 @@ class _AuthPageState extends State<AuthPage> {
               children: [
                 SizedBox(height: 100,),
                 Center(
-
                     child: SizedBox(
                       height: 300,
                       child: ListView.builder(
@@ -40,7 +39,16 @@ class _AuthPageState extends State<AuthPage> {
 
                     ),
                   ),
-                ElevatedButton(onPressed: () {
+                ElevatedButton(
+                    style: ButtonStyle(
+                        shape: MaterialStateProperty.all<
+                            RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.circular(20.0),
+                            ))),
+                    onPressed: () {
+
                   Navigator.of(context).pushNamed('/registration page');
                 }, child: Text('Create new user')),
               ],
