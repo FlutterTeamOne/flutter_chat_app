@@ -66,12 +66,47 @@ Future<void> main() async {
   ///
   ///Проверка запроса с синхронизацией
   ///
-  var main_messages_id = 70;
   var mainIdUser = 1;
-  var messages = await messagesService.getRecentMessages(
-      message:
-          LastMessage(mainIdMessage: main_messages_id, mainIdUser: mainIdUser));
-  for (var mes in messages) {
-    print(mes);
+  var users;
+  var chats;
+  var messages;
+
+  // users = await usersService.getAllUsersByIDfriend(userId: mainIdUser);
+  // print("Users");
+  // for (var user in users) {
+  //   print(user);
+  // }
+
+  print("Chats");
+  chats = await chatsServices.getChatsByUserId(userId: mainIdUser);
+  for (var chat in chats) {
+    print(chat);
   }
+
+  // print("Messages");
+  // //await messagesService.addNewMessage(chatId: 1, senderId: 2, content: '222');
+  // messages = await messagesService.getMessageByUserId(userId: mainIdUser);
+  // for (var message in messages) {
+  //   print(message);
+  // }
+
+  // print("Users");
+  // users = await usersService.getAllUsersByIDfriendMoreChatId(
+  //     id: mainIdUser, chatId: 1);
+  // for (var user in users) {
+  //   print(user);
+  // }
+
+  // print("Chats");
+  // chats = await chatsServices.getChatsByUserIdMoreChatId(
+  //     userId: mainIdUser, chatId: 1);
+  // for (var chat in chats) {
+  //   print(chat);
+  // }
+  // print("Messages");
+  // messages = await messagesService.getMessageByUserIdMoreMessageId(
+  //     userId: mainIdUser, messageId: 100);
+  // for (var message in messages) {
+  //   print(message);
+  // }
 }

@@ -8,9 +8,12 @@ class LocalChatServices implements ILocalChatsServices {
 
   @override
   Future<dynamic> createChat(
-      {required String createDate, required int userId}) async {
+      {required int chatId,
+      required String createDate,
+      required int userId}) async {
     return await DBHelper.instanse
         .onAdd(tableName: DatabaseConst.chatsTable, model: {
+      DatabaseConst.chatsColumnChatId: chatId,
       DatabaseConst.chatsColumnUserId: userId,
       DatabaseConst.chatsColumnCreatedDate: createDate,
       DatabaseConst.chatsColumnUpdatedDate: createDate
@@ -21,7 +24,8 @@ class LocalChatServices implements ILocalChatsServices {
   Future<int> deleteChat({required int id}) async {
     var db = await DBHelper.instanse.database;
     return await db.rawDelete(
-        'DELETE FROM ${DatabaseConst.chatsTable} WHERE ${DatabaseConst.chatsColumnUserId}=$id');
+        'DELETE FROM ${DatabaseConst.chatsTable} WHERE ${DatabaseConst.chatsColumnUserId}=?',
+        [id]);
   }
 
   @override
@@ -40,8 +44,8 @@ class LocalChatServices implements ILocalChatsServices {
     var chat = await db.rawQuery('''
               SELECT *
               FROM ${DatabaseConst.chatsTable}
-              WHERE ${DatabaseConst.chatsColumnChatId} = $id
-              ''');
+              WHERE ${DatabaseConst.chatsColumnChatId}=?
+              ''', [id]);
     return chat[0];
   }
 
@@ -49,7 +53,10 @@ class LocalChatServices implements ILocalChatsServices {
   Future<int> getMainIdChatByMessage({required int localId}) async {
     var db = await DBHelper.instanse.database;
     var chat = await db.rawQuery(
-        'SELECT ${DatabaseConst.chatsColumnChatId} FROM ${DatabaseConst.chatsTable} WHERE ${DatabaseConst.chatsColumnChatId} = $localId');
+        '''SELECT ${DatabaseConst.chatsColumnChatId} 
+        FROM ${DatabaseConst.chatsTable} 
+        WHERE ${DatabaseConst.chatsColumnChatId}=?''',
+        [localId]);
 
     return chat[0][DatabaseConst.chatsColumnChatId] as int;
   }
@@ -58,5 +65,15 @@ class LocalChatServices implements ILocalChatsServices {
   Future<int> updateChat({required int chatId}) {
     // TODO: изменение в БД информации о чате
     throw UnimplementedError();
+  }
+
+  @override
+  Future<int> getMaxId() async {
+    var db = await DBHelper.instanse.database;
+    var chat =
+        await db.rawQuery('''SELECT MAX(${DatabaseConst.chatsColumnChatId}) 
+                as ${DatabaseConst.chatsColumnChatId} 
+                FROM ${DatabaseConst.chatsTable}''');
+    return (chat[0][DatabaseConst.chatsColumnChatId] ?? 0) as int;
   }
 }

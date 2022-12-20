@@ -2,47 +2,74 @@
 syntax = "proto3";
 //import "google/protobuf/timestamp.proto";
 service  GrpcMessages{
-    rpc connecting (Empty) returns (Empty) {}
-    rpc connectings (stream ConnectRequest) returns (stream MessageFromBase) {}
-    rpc createMessage (CreateMessageRequest) returns (CreateMessageResponse) {}
-    rpc updateMessage (UpdateMessageRequest) returns (UpdateMessageResponse) {}
-    rpc deleteMessage (DeleteMessageRequest) returns (DeleteMessageResponse) {}
-    rpc synchronization (LastMessage) returns (stream MessageFromBase) {}
-    rpc getAllUsers (Empty) returns (Users) {}
+    // rpc connecting (Empty) returns (Empty) {}
+    // rpc connectings (stream ConnectRequest) returns (stream MessageFromBase) {}
+    rpc streamMessage(stream DynamicRequest) returns (stream DynamicResponse){}
+    // rpc createMessage (CreateMessageRequest) returns (CreateMessageResponse) {}
+    // rpc updateMessage (UpdateMessageRequest) returns (UpdateMessageResponse) {}
+    // rpc deleteMessage (DeleteMessageRequest) returns (DeleteMessageResponse) {}
+    // rpc synchronization (LastMessage) returns (stream MessageFromBase) {}
 }
-
 message Empty {}
-
-message User {
-    int32 id = 1;
-    string name = 2;
-    string email = 3;
-    string picture = 4; 
+enum MessageStateEnum {
+    connecting = 0;
+    isReadMessage=1;
+    isCreateMessage = 2;
+    isUpdateMessage = 3;
+    isDeleteMesage = 4;
 }
 
-message Users {
-    repeated User users = 1; 
+message DynamicRequest{
+    CreateMessageRequest createMessage = 1;
+    UpdateMessageRequest updateMessage = 2;
+    DeleteMessageRequest deleteMessage = 3;
+    ReadMessageRequest readMessage = 4;
+    MessageStateEnum messageState = 5;
 }
 
-message ConnectRequest {
-    int32 id = 1;
+message DynamicResponse{
+    CreateMessageResponse createMessage = 1;
+    UpdateMessageResponse updateMessage = 2;
+    DeleteMessageResponse deleteMessage = 3;
+    ReadMessageResponse readMessage = 4;
+    MessageStateEnum messageState = 5;
 }
+
+message Message{
+    int32 messageId = 1;
+    int32 chatId = 2;
+    int32 senderId = 3;
+    string content = 4;
+    string dateCreate = 5;
+    string dateUpdate = 6;
+    string dateDelete = 7;
+    int32 isRead = 8;
+    int32 localMessgaeId = 9;
+}
+// message ConnectRequest {
+//     int32 id = 1;
+// }
 
 // message ConnectResponse {
 //     int32 id = 1;
 //     int32 hashConnect = 2;
 // }
+message ReadMessageRequest{
+    Message message = 1;
+}
+
+message ReadMessageResponse{
+    Message message = 1;
+    bool isWritten = 2;
+}
 
 message CreateMessageRequest {
-    int32 chatIdMain = 1;
-    int32 senderMainId = 2;
-    string content = 3;
+    Message message = 1;
 }
 
 message CreateMessageResponse {
-    int32 mainMessagesId = 1;
-    string dateCreate = 2; //26 symbols
-    bool isWritten = 3; 
+    Message message = 1;
+    int32 isWriten = 2;
 }
 
 message UpdateMessageRequest {
@@ -52,7 +79,8 @@ message UpdateMessageRequest {
 
 message UpdateMessageResponse {
     int32 idMessageMain = 1;
-    string dateUpdate = 2;
+    string content = 2;
+    string dateUpdate = 3;
 }
 
 message DeleteMessageRequest {
@@ -64,20 +92,20 @@ message DeleteMessageResponse {
     string dateDelete = 2;
 }
 
-message MessageBase {
-    bool ok = 1;
-    int32 mainMessagesId = 2;
-}
+// message MessageBase {
+//     bool ok = 1;
+//     int32 mainMessagesId = 2;
+// }
 
-message LastMessage {
-    int32 mainIdMessage = 1;
-    int32 mainIdUser = 2;
-}
+// message LastMessage {
+//     int32 mainIdMessage = 1;
+//     int32 mainIdUser = 2;
+// }
 
-message MessageFromBase {
-    int32 chatIdMain = 1;
-    int32 senderMainId = 2;
-    string content = 3;
-    string date = 4;
-    int32 mainIdMessage = 5;
-}
+// message MessageFromBase {
+//     int32 chatIdMain = 1;
+//     int32 senderMainId = 2;
+//     string content = 3;
+//     string date = 4;
+//     int32 mainIdMessage = 5;
+// }

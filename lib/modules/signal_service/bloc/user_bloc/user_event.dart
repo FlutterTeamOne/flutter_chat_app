@@ -17,9 +17,18 @@ class CreateUserEvent extends UserEvent {
 
 class ReadUsersEvent extends UserEvent {
   final List<UserDto>? users;
-  final int? localId;
+  final bool userDb;
 
-  ReadUsersEvent({this.localId, this.users});
+  ReadUsersEvent({this.users, this.userDb = true});
   @override
-  List<Object?> get props => [users, localId];
+  List<Object?> get props => [users, userDb];
+}
+
+class ChangeUserEvent extends UserEvent {
+  final UserDto? user;
+  final bool userDb;
+
+  ChangeUserEvent({this.user, this.userDb = true});
+  @override
+  List<Object?> get props => [user, userDb];
 }

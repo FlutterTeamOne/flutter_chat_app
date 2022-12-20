@@ -74,26 +74,26 @@ class Client {
   //   // executionInProgress = result.toLowerCase() != 'y';
   // }
 
-  Future<Users> getUsers(Empty message) async {
-    channel = ClientChannel('localhost',
-        port: 5000,
-        options:
-            const ChannelOptions(credentials: ChannelCredentials.insecure()));
+  // Future<Users> getUsers(Empty message) async {
+  //   channel = ClientChannel('localhost',
+  //       port: 5000,
+  //       options:
+  //           const ChannelOptions(credentials: ChannelCredentials.insecure()));
 
-    stub = GrpcMessagesClient(channel!, options: CallOptions());
+  //   stub = GrpcMessagesClient(channel!, options: CallOptions());
 
-    var response = Users();
-    try {
-      print('message: $message');
-      response = await stub!.getAllUsers(message);
-      print('RESP: $response');
-    } catch (e) {
-      print(e);
-    } finally {
-      await channel!.shutdown();
-    }
-    return response;
-  }
+  //   var response = Users();
+  //   try {
+  //     print('message: $message');
+  //     response = await stub!.getAllUsers(message);
+  //     print('RESP: $response');
+  //   } catch (e) {
+  //     print(e);
+  //   } finally {
+  //     await channel!.shutdown();
+  //   }
+  //   return response;
+  // }
 
 // // await channel!.shutdown();
 //   Future<UpdateUserResponse> updateUser(UpdateUserRequest user) async {
@@ -120,5 +120,5 @@ void main() async {
   var client = Client();
   var messageEmpty = Empty();
   print("Обратный ответ:");
-  print(await client.getUsers(messageEmpty));
+  // print(await client.getUsers(messageEmpty));
 }

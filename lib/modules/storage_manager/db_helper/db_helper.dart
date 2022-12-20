@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:chat_app/domain/data/dto/user_dto/user_dto.dart';
+import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 
 import '../../../src/constants/db_constants.dart';
 import 'package:path/path.dart';
@@ -31,16 +32,20 @@ class DBHelper {
     // var dbPath = await dbFactory.getDatabasesPath();
     var dbPath = await getTemporaryDirectory();
     print('PATH: ${dbPath.path}');
-    String path = join(dbPath.path, DatabaseConst.dbFileName);
+    var user = UserPath.getUser;
+    print('USER DB:  $user');
+    String path = join(dbPath.path,
+        user.name + user.userId.toString() + DatabaseConst.dbFileName);
+    print('PATH_ABSOLUTE: $path');
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(
           version: DatabaseConst.dbVersion,
-          onCreate: _onCreate,
+          onCreate: (db, version) => _onCreate(db, version, user: user),
         ));
   }
 
   ///Функция создания начальной таблицы БД
-  Future _onCreate(Database db, int version) async {
+  Future _onCreate(Database db, int version, {required UserDto user}) async {
     await db.transaction((txn) async {
       //Таблица User
       await txn.execute('''
@@ -51,7 +56,7 @@ CREATE TABLE ${DatabaseConst.userTable} (
   ${DatabaseConst.usersColumnProfilePicLink} ${DatabaseConst.char50} ${DatabaseConst.notNull},
   ${DatabaseConst.usersColumnCreatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
   ${DatabaseConst.usersColumnUpdatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
-  ${DatabaseConst.usersColumnsDeletedDate} ${DatabaseConst.char26}
+  ${DatabaseConst.usersColumnDeletedDate} ${DatabaseConst.char26}
   )
 ''');
 //Таблица User_main
@@ -117,46 +122,45 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
       await txn.insert(
         DatabaseConst.userTable,
         {
-          'name': 'test1',
-          'email': 't1@t1.t1',
-          DatabaseConst.usersColumnProfilePicLink:
-              'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
-          DatabaseConst.usersColumnCreatedDate:
-              DateTime.now().toIso8601String(),
-          DatabaseConst.usersColumnUserId: 1,
-          DatabaseConst.usersColumnUpdatedDate:
-              DateTime.now().toIso8601String(),
+          DatabaseConst.usersColumnUserId: user.userId,
+          DatabaseConst.usersColumnName: user.name,
+          DatabaseConst.usersColumnEmail: user.email,
+          DatabaseConst.usersColumnProfilePicLink: user.profilePicLink,
+          DatabaseConst.usersColumnCreatedDate: user.createdDate,
+          DatabaseConst.usersColumnUpdatedDate: user.updatedDate,
+          DatabaseConst.usersColumnDeletedDate: user.deletedDate
         },
       );
-      await txn.insert(
-        DatabaseConst.userTable,
-        {
-          'name': 'test2',
-          'email': 't2@t2.t2',
-          DatabaseConst.usersColumnProfilePicLink:
-              'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
-          DatabaseConst.usersColumnCreatedDate:
-              DateTime.now().toIso8601String(),
-          DatabaseConst.usersColumnUserId: 2,
-          DatabaseConst.usersColumnUpdatedDate:
-              DateTime.now().toIso8601String(),
-        },
-      );
-      await txn.insert(
-        DatabaseConst.chatsTable,
-        {
-          DatabaseConst.chatsColumnUserId: 2,
-          DatabaseConst.chatsColumnCreatedDate:
-              DateTime.now().toIso8601String(),
-          DatabaseConst.chatsColumnUpdatedDate:
-              DateTime.now().toIso8601String(),
-        },
-      );
+
       await txn.insert(DatabaseConst.mainUserTable, {
         DatabaseConst.mainUserColumnKey: '',
-        DatabaseConst.mainUserColumnUserId: 1,
-        DatabaseConst.mainUserColumnDataSync: DateTime.now().toIso8601String(),
+        DatabaseConst.mainUserColumnUserId: user.userId,
+        DatabaseConst.mainUserColumnDataSync: '',
       });
+      // await txn.insert(
+      //   DatabaseConst.userTable,
+      //   {
+      //     'name': 'test2',
+      //     'email': 't2@t2.t2',
+      //     DatabaseConst.usersColumnProfilePicLink:
+      //         'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg',
+      //     DatabaseConst.usersColumnCreatedDate:
+      //         DateTime.now().toIso8601String(),
+      //     DatabaseConst.usersColumnUserId: 2,
+      //     DatabaseConst.usersColumnUpdatedDate:
+      //         DateTime.now().toIso8601String(),
+      //   },
+      // );
+      // await txn.insert(
+      //   DatabaseConst.chatsTable,
+      //   {
+      //     DatabaseConst.chatsColumnUserId: 2,
+      //     DatabaseConst.chatsColumnCreatedDate:
+      //         DateTime.now().toIso8601String(),
+      //     DatabaseConst.chatsColumnUpdatedDate:
+      //         DateTime.now().toIso8601String(),
+      //   },
+      // );
     });
 
     _updateListen();
@@ -219,4 +223,9 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
 //     ''');
 //   _updateListen();
 // }
+  Future close() async {
+    var db = await instanse.database;
+    _database = null;
+    await db.close();
+  }
 }

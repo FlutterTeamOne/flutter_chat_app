@@ -1,3 +1,5 @@
+import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
+
 import '../../../../src/constants/db_constants.dart';
 import '../../../../domain/data/library/library_data.dart';
 import '../../library/library_sending_manager.dart';
@@ -11,7 +13,9 @@ class LocalUsersServices implements ILocalUsersServices {
     required int userId,
     required String name,
     required String email,
-    required String registrationDate,
+    required String createdDate,
+    required String updatedDate,
+    String? deletedDate,
     required String profilePicUrl,
   }) async {
     var db = await DBHelper.instanse.database;
@@ -20,7 +24,32 @@ class LocalUsersServices implements ILocalUsersServices {
       DatabaseConst.usersColumnUserId: userId,
       DatabaseConst.usersColumnName: name,
       DatabaseConst.usersColumnEmail: email,
-      DatabaseConst.usersColumnCreatedDate: registrationDate,
+      DatabaseConst.usersColumnCreatedDate: createdDate,
+      DatabaseConst.usersColumnUpdatedDate: updatedDate,
+      DatabaseConst.usersColumnDeletedDate: deletedDate ?? '',
+      DatabaseConst.usersColumnProfilePicLink: profilePicUrl,
+    });
+  }
+
+  @override
+  Future<int> createUserStart({
+    required int userId,
+    required String name,
+    required String email,
+    required String createdDate,
+    required String updatedDate,
+    String? deletedDate,
+    required String profilePicUrl,
+  }) async {
+    var db = await DBHelperStart.instanse.database;
+
+    return await db.insert(DatabaseConst.userTable, {
+      DatabaseConst.usersColumnUserId: userId,
+      DatabaseConst.usersColumnName: name,
+      DatabaseConst.usersColumnEmail: email,
+      DatabaseConst.usersColumnCreatedDate: createdDate,
+      DatabaseConst.usersColumnUpdatedDate: updatedDate,
+      DatabaseConst.usersColumnDeletedDate: deletedDate ?? '',
       DatabaseConst.usersColumnProfilePicLink: profilePicUrl,
     });
   }
@@ -29,12 +58,23 @@ class LocalUsersServices implements ILocalUsersServices {
   Future<int> deleteUser({required int id}) async {
     var db = await DBHelper.instanse.database;
     return await db.rawDelete(
-        'DELETE FROM ${DatabaseConst.userTable} WHERE ${DatabaseConst.usersColumnUserId}=$id');
+        'DELETE FROM ${DatabaseConst.userTable} WHERE ${DatabaseConst.usersColumnUserId}=?',
+        [id]);
   }
 
   @override
   Future<List<UserDto>> getAllUsers() async {
     var db = await DBHelper.instanse.database;
+    var users = await db.rawQuery('''
+              SELECT *
+              FROM ${DatabaseConst.userTable}
+              ''');
+    return users.map((item) => UserDto.fromMap(item)).toList();
+  }
+
+  @override
+  Future<List<UserDto>> getAllUsersStart() async {
+    var db = await DBHelperStart.instanse.database;
     var users = await db.rawQuery('''
               SELECT *
               FROM ${DatabaseConst.userTable}
@@ -84,5 +124,25 @@ class LocalUsersServices implements ILocalUsersServices {
     var db = await DBHelper.instanse.database;
     return await db.rawUpdate(
         'UPDATE ${DatabaseConst.userTable} SET $newValues WHERE $condition');
+  }
+
+  Future getLastUserId() async {
+    var db = await DBHelperStart.instanse.database;
+    var lastUser = await db.rawQuery('''
+              SELECT MAX(user_id) as user_id
+              FROM users
+              ''');
+    print(lastUser);
+    return lastUser[0]['user_id'] ?? 0;
+  }
+
+  @override
+  Future<int> getMaxUserId() async {
+    var db = await DBHelper.instanse.database;
+    var chat =
+        await db.rawQuery('''SELECT MAX(${DatabaseConst.usersColumnUserId}) 
+                as ${DatabaseConst.usersColumnUserId} 
+                FROM ${DatabaseConst.userTable}''');
+    return (chat[0][DatabaseConst.usersColumnUserId] ?? 0) as int;
   }
 }
