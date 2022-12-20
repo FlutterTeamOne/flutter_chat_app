@@ -793,21 +793,16 @@ class UpdateUserResponse extends $pb.GeneratedMessage {
 class DeleteUserRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'DeleteUserRequest', createEmptyInstance: create)
     ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id', $pb.PbFieldType.O3)
-    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dateDeleted', protoName: 'dateDeleted')
     ..hasRequiredFields = false
   ;
 
   DeleteUserRequest._() : super();
   factory DeleteUserRequest({
     $core.int? id,
-    $core.String? dateDeleted,
   }) {
     final _result = create();
     if (id != null) {
       _result.id = id;
-    }
-    if (dateDeleted != null) {
-      _result.dateDeleted = dateDeleted;
     }
     return _result;
   }
@@ -840,15 +835,6 @@ class DeleteUserRequest extends $pb.GeneratedMessage {
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
   void clearId() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.String get dateDeleted => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set dateDeleted($core.String v) { $_setString(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasDateDeleted() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearDateDeleted() => clearField(2);
 }
 
 class DeleteUserResponse extends $pb.GeneratedMessage {

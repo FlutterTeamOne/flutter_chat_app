@@ -65,11 +65,11 @@ Future<void> main() async {
 
   ///
   ///Проверка запроса с синхронизацией
-  ///
-  var mainIdUser = 1;
-  var users;
-  var chats;
-  var messages;
+  // ///
+  // var mainIdUser = 1;
+  // var users;
+  // var chats;
+  // var messages;
 
   // users = await usersService.getAllUsersByIDfriend(userId: mainIdUser);
   // print("Users");
@@ -77,11 +77,11 @@ Future<void> main() async {
   //   print(user);
   // }
 
-  print("Chats");
-  chats = await chatsServices.getChatsByUserId(userId: mainIdUser);
-  for (var chat in chats) {
-    print(chat);
-  }
+  // print("Chats");
+  // chats = await chatsServices.getChatsByUserId(userId: mainIdUser);
+  // for (var chat in chats) {
+  //   print(chat);
+  // }
 
   // print("Messages");
   // //await messagesService.addNewMessage(chatId: 1, senderId: 2, content: '222');
@@ -109,4 +109,10 @@ Future<void> main() async {
   // for (var message in messages) {
   //   print(message);
   // }
+
+  var dateDeleted = DateTime.now().toIso8601String();
+  var src = await UsersServices().updateUser(
+      newValues: 'deleted_date = "$dateDeleted"', condition: 'user_id = 1');
+  print("src= ${src}");
+  print(await UsersServices().getAllUsers());
 }

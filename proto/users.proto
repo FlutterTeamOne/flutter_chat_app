@@ -69,7 +69,6 @@ message UpdateUserResponse{
 }
 message DeleteUserRequest{
     int32 id = 1;
-    string dateDeleted=2;
 }
 message DeleteUserResponse{
     bool isDeleted=1;

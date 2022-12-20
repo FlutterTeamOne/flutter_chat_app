@@ -39,11 +39,11 @@ class UsersServices implements IUsersServices {
   }
 
   @override
-  deleteUser({required int id}) async {
+  deleteUser({required int newValues, required String condition}) async {
     Database db = await DbServerServices.instanse.database;
 
     return await db
-        .rawDelete('''SELETE FROM users WHERE (main_users_id = id)''');
+        .rawUpdate('''UPDATE FROM users WHERE (main_users_id = id)''');
   }
 
   @override

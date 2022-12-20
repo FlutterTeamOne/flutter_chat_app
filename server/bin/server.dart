@@ -333,7 +333,7 @@ class GrpcMessage extends GrpcMessagesServiceBase {
     } else {
       updateMessage = DynamicResponse(
           updateMessage: UpdateMessageResponse(
-            content: req.updateMessage.content,
+              content: req.updateMessage.content,
               dateUpdate: timeUpdate,
               idMessageMain: req.updateMessage.idMessageMain),
           messageState: MessageStateEnum.isUpdateMessage);
@@ -436,7 +436,7 @@ class GrpcUsers extends GrpcUsersServiceBase {
     var deleteUserResponse = DeleteUserResponse();
     var dateDeleted = DateTime.now().toIso8601String();
     var src = await UsersServices().updateUser(
-        newValues: 'deleted_date = $dateDeleted',
+        newValues: 'deleted_date = "$dateDeleted"',
         condition: 'user_id = ${request.id}');
     if (src != 0) {
       deleteUserResponse.isDeleted = true;
