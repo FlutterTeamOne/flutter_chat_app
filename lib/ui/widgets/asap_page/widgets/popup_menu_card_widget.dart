@@ -54,6 +54,8 @@ class _PopupMenuCardWidgetState extends State<PopupMenuCardWidget> {
         },
       ),
     ];
+    var time = DateTime.parse(widget.message?.createdDate ?? '');
+    String? realTime = '${time.hour}:${time.minute}';
     return CustomPopupMenu(
       controller: popupmenuController,
       showArrow: false,
@@ -70,6 +72,7 @@ class _PopupMenuCardWidgetState extends State<PopupMenuCardWidget> {
         textStyle: const TextStyle(
           color: Colors.white,
         ),
+        time: realTime,
       ),
     );
   }
