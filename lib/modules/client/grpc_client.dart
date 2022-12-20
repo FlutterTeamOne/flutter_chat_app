@@ -33,7 +33,7 @@ class GrpcClient {
         userId: response.id,
         name: response.name,
         email: response.email,
-        registrationDate: response.dateCreated,
+        createdDate: response.dateCreated,
         profilePicLink: response.profilePicUrl,
         updatedDate: response.dateCreated);
   }

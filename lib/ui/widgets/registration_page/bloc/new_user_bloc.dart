@@ -13,7 +13,7 @@ class NewUserBloc extends Bloc<NewUserEvent, NewUserState> {
                 name: '',
                 email: "",
                 updatedDate: "",
-                registrationDate: "",
+                createdDate: "",
                 profilePicLink: ''))) {
     on<SetNewUserEvent>(_setNewUserEvent);
   }

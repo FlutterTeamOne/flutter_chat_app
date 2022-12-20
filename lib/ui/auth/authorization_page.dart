@@ -23,20 +23,28 @@ class _AuthPageState extends State<AuthPage> {
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : Center(
+            : Column(
+              children: [
+                SizedBox(height: 100,),
+                Center(
 
-                child: SizedBox(
-                  height: 300,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: usersState.users!.length,
-                    itemBuilder: ((context, index) =>
-                        UserCard(user: usersState.users![index])),
+                    child: SizedBox(
+                      height: 300,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: usersState.users!.length,
+                        itemBuilder: ((context, index) =>
+                            UserCard(user: usersState.users![index])),
+                      ),
+
+                    ),
                   ),
-
-                ),
-              );
+                ElevatedButton(onPressed: () {
+                  Navigator.of(context).pushNamed('/registration page');
+                }, child: Text('Create new user')),
+              ],
+            );
       }),
     );
   }
