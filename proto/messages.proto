@@ -11,6 +11,7 @@ service  GrpcMessages{
     // rpc synchronization (LastMessage) returns (stream MessageFromBase) {}
 }
 message Empty {}
+
 enum MessageStateEnum {
     connecting = 0;
     isReadMessage=1;
