@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 
 class CustomTheme {
   static final ThemeData lightThemeDeepPurple = ThemeData(
-
       brightness: Brightness.light,
       primarySwatch: Colors.deepPurple,
       primaryColor: Colors.deepPurple,
       errorColor: Colors.redAccent.shade200,
       backgroundColor: Colors.white70,
       indicatorColor: Colors.white,
+      //стиль для scroll down button
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black54,
+      ),
       // hintColor: Colors.white70,
       textSelectionTheme: const TextSelectionThemeData(
         cursorColor: Colors.black26,
@@ -22,6 +26,11 @@ class CustomTheme {
     primaryColor: Colors.deepPurple,
     errorColor: Colors.redAccent.shade200,
     indicatorColor: Colors.white,
+    //стиль для scroll down button
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: Colors.grey.shade800,
+      foregroundColor: Colors.white70,
+    ),
     // backgroundColor: Colors.blueGrey,
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.white70,
@@ -35,6 +44,11 @@ class CustomTheme {
     primarySwatch: Colors.indigo,
     primaryColor: Colors.indigo,
     errorColor: Colors.redAccent.shade200,
+    //стиль для scroll down button
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: Colors.grey.shade800,
+      foregroundColor: Colors.white70,
+    ),
     // backgroundColor: Colors.black45,
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.white70,
@@ -48,6 +62,11 @@ class CustomTheme {
       primarySwatch: Colors.indigo,
       primaryColor: Colors.indigo,
       errorColor: Colors.redAccent.shade200,
+      //стиль для scroll down button
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black54,
+      ),
       // backgroundColor: Colors.white70,
       textSelectionTheme: const TextSelectionThemeData(
         cursorColor: Colors.black26,
@@ -55,12 +74,16 @@ class CustomTheme {
         selectionHandleColor: Colors.black26,
       ));
 
-
   static final ThemeData darkThemeOrange = ThemeData(
     brightness: Brightness.dark,
     primarySwatch: Colors.blueGrey,
     primaryColor: Colors.blueGrey,
     errorColor: Colors.redAccent.shade200,
+    //стиль для scroll down button
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: Colors.grey.shade800,
+      foregroundColor: Colors.white70,
+    ),
     // backgroundColor: Colors.black45,
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.white70,
@@ -79,6 +102,10 @@ class CustomTheme {
       cursorColor: Colors.white70,
       selectionColor: Colors.white70,
       selectionHandleColor: Colors.white70,
+    //стиль для scroll down button
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: Colors.white,
+      foregroundColor: Colors.black54,
     ),
   );
   final themes = [
@@ -89,4 +116,3 @@ class CustomTheme {
     CustomTheme.lightThemeOrange,
     CustomTheme.darkThemeOrange,
   ];
-}
