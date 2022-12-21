@@ -1,5 +1,6 @@
 ﻿import 'package:chat_app/ui/widgets/asap_page/widgets/search_field.dart';
 
+import '../../../../modules/storage_manager/db_helper/user_path.dart';
 import '../../../widgets/library/library_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,7 +56,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                 ? 0
                                 : widget.messageModel.length - 1;
                             return UserCardWidget(
-                              sender: 'You',
+                              sender: checkSender,
                               selected: false,
                               onTap: () {
                                 chatBloc.add(GetChatIdEvent(friendId));
@@ -98,4 +99,6 @@ class _ChatListLayoutState extends State<ChatListLayout> {
           ],
         ));
   }
+
+  bool checkSender(int id) => id == UserPref.getUserId ? true : false;
 }
