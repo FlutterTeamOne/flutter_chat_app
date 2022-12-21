@@ -228,4 +228,13 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
     _database = null;
     await db.close();
   }
+  Future deleteDB() async{
+    var db = await instanse.database;
+    var databaseFactory = databaseFactoryFfi;
+    var dbPath = await getTemporaryDirectory();
+    var user = UserPath.getUser;
+    String path = join(dbPath.path,
+        user.name + user.userId.toString() + DatabaseConst.dbFileName);
+    await databaseFactory.deleteDatabase(path);
+  }
 }

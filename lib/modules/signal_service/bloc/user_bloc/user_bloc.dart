@@ -68,15 +68,26 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             profilePicUrl: user.profilePicUrl);
       }
       for (var user in usersResponse.usersUpdated) {
+        if (user.dateDelete != '' || user.dateDelete != null) {
+          const String deletedUserAvatar = """https://www.iconsdb.com/icons/preview/red/cancel-xxl.png""";
+          await _usersServices.updateUserStart(
+              newValues: '''name = "${user.name}",
+                          email = "${user.email}",
+                          created_date = "${user.dateCreate}",
+                          updated_date = "${user.dateUpdate}",
+                          deleted_date = "${user.dateDelete}",
+                          profile_pic_link = "$deletedUserAvatar"''',
+              condition: 'user_id = ${user.userId}');
+        } else
         //парсим всех юзеров и записываем их в локальное дб
-        await _usersServices.updateUserStart(
+        {await _usersServices.updateUserStart(
             newValues: '''name = "${user.name}",
                           email = "${user.email}",
                           created_date = "${user.dateCreate}",
                           updated_date = "${user.dateUpdate}",
                           deleted_date = "${user.dateDelete}",
                           profile_pic_link = "${user.profilePicUrl}"''',
-            condition: 'user_id = ${user.userId}');
+            condition: 'user_id = ${user.userId}');}
       }
 //получаем всех начальных юзеров
       users = await _usersServices.getAllUsersStart();

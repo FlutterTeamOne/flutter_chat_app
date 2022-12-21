@@ -117,6 +117,7 @@ class _ProfileLayout extends StatelessWidget {
                                             // context.read<ChatBloc>().close();
                                             //закрыть базу
                                             await DBHelper.instanse.close();
+                                            await DBHelper.instanse.deleteDB();
                                             // context
                                             //     .read<UserBloc>()
                                             //     .add(ReadUsersEvent());
