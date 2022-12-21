@@ -111,10 +111,15 @@ class _ProfileLayout extends StatelessWidget {
                                             borderRadius:
                                                 BorderRadius.circular(20.0),
                                           ))),
-                                          onPressed: () {
-                                            context
-                                                .read<UserBloc>()
-                                                .add(ReadUsersEvent());
+                                          onPressed: () async {
+                                            context.read<UserBloc>().add(ChangeUserEvent(userDb: true));
+                                            context.read<UserBloc>().add(ReadUsersEvent());
+                                            // context.read<ChatBloc>().close();
+                                            //закрыть базу
+                                            await DBHelper.instanse.close();
+                                            // context
+                                            //     .read<UserBloc>()
+                                            //     .add(ReadUsersEvent());
                                             Navigator.of(context)
                                                 .pushNamed('/');
                                           },
