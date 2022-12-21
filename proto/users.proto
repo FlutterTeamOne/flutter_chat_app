@@ -39,12 +39,11 @@ message GetUserResponse {
     string dateDeleted = 3;
 }
 message CreateUserRequest {
-    int32 id = 1;
-    string name = 2;
-    string email = 3;
-    string profilePicUrl = 4;
-    string password = 5;
-    string dateCreated = 6;
+    string name = 1;
+    string email = 2;
+    string profilePicUrl = 3;
+    string password = 4;
+    string dateCreated = 5;
 }
 
 message CreateUserResponse {

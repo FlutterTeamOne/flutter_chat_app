@@ -33,6 +33,7 @@ class _ProfileLayout extends StatelessWidget {
                   onPressed: () async {
                     context.read<UserBloc>().add(ChangeUserEvent(userDb: true));
                     context.read<UserBloc>().add(ReadUsersEvent());
+                    // context.read<ChatBloc>().close();
                     //закрыть базу
                     await DBHelper.instanse.close();
                     Navigator.of(context).pop();

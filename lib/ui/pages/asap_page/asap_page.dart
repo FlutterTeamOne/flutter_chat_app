@@ -1,5 +1,4 @@
-﻿
-import '../../../src/libraries/library_all.dart';
+﻿import '../../../src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,14 +13,17 @@ class AsapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ChatBloc, ChatState>(
-      listener: (context, chatState) {
-        // TODO: implement listener
-      },
-      builder: (context, chatState) {
-        return BlocConsumer<MessageBloc, MessageState>(
+    // return BlocConsumer<ChatBloc, ChatState>(
+    //   listener: (context, chatState) {
+    // TODO: implement listener
+    // },
+    // builder: (context, chatState) {
+    return BlocProvider.value(
+        value: BlocProvider.of<ChatBloc>(context),
+        child: BlocConsumer<MessageBloc, MessageState>(
           listener: (context, messageState) {},
           builder: (context, messageState) {
+            var chatState = context.watch<ChatBloc>().state;
             return Row(
               children: [
                 // Список чатов
@@ -38,12 +40,10 @@ class AsapPage extends StatelessWidget {
                 // Чат
                 Expanded(
                     flex: 3,
-                    child: chatState.chatId == null
+                    child: chatState.chatId == null || chatState.chatId == -1
                         ? const DefaultUserChatLayout()
                         : messageState.messages != null
-                            ? UserChatLayout(
-                                chatId: chatState.chatId!,
-                                localChatId: chatState.localChatId!)
+                            ? UserChatLayout(chatId: chatState.chatId!)
                             : Center(
                                 child: CircularProgressIndicator(),
                               )),
@@ -68,8 +68,6 @@ class AsapPage extends StatelessWidget {
               ],
             );
           },
-        );
-      },
-    );
+        ));
   }
 }

@@ -8,7 +8,8 @@ abstract class IUsersServices {
       required String email,
       required String registrationDate,
       required String profilePicUrl,
-      required String password});
+      required String password,
+      required String updatedDate});
 
   getUserByField({required String field, required Object fieldValue});
 
