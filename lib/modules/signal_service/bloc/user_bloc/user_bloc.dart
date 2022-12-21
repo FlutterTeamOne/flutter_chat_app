@@ -162,7 +162,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   FutureOr<void> _onDeleleUserEvent(
       DeleteUserEvent event, Emitter<UserState> emit) async {
-    var result = await GrpcClient().deleteUser(userId: event.userId!);
+    var result;
+    try {
+      result = await GrpcClient().deleteUser(userId: event.userId!);
+    } catch (e) {
+      print(e);
+    }
     print('event: ${event.userId}');
     print(result.isDeleted);
     emit(state.copyWith(isDeleted: result.isDeleted));

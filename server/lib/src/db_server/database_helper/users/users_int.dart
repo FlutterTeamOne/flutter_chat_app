@@ -6,7 +6,7 @@ abstract class IUsersServices {
   createUser(
       {required String name,
       required String email,
-      required String registrationDate,
+      required String createdDate,
       required String profilePicUrl,
       required String password,
       required String updatedDate});

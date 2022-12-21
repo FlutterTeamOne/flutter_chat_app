@@ -7,7 +7,7 @@ class UsersServices implements IUsersServices {
   createUser(
       {required String name,
       required String email,
-      required String registrationDate,
+      required String createdDate,
       required String profilePicUrl,
       required String password,
       required String updatedDate}) async {
@@ -17,7 +17,7 @@ class UsersServices implements IUsersServices {
       INSERT INTO users (name, email, created_date, profile_pic_url, password, updated_date) VALUES (
         '$name',
         '$email',
-        '$registrationDate',
+        '$createdDate',
         '$profilePicUrl',
         '$password',
         '$updatedDate'
@@ -31,7 +31,7 @@ class UsersServices implements IUsersServices {
         AND 
         (email = '$email')
         AND
-        (created_date = '$registrationDate')
+        (created_date = '$createdDate')
         AND
         (profile_pic_url = '$profilePicUrl')
         AND

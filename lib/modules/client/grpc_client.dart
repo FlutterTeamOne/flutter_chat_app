@@ -38,7 +38,12 @@ class GrpcClient {
       ..profilePicUrl = user.profilePicLink
       ..password = user.password!
       ..dateCreated = user.registrationDate;
-    var response = await stub.createUser(request);
+    var response = CreateUserResponse();
+    try {
+      response = await stub.createUser(request);
+    } catch (e) {
+      print(e);
+    }
     print(response);
     return UserDto(
         userId: response.id,
