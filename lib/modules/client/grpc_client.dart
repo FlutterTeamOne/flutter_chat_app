@@ -26,6 +26,8 @@ class GrpcClient {
     var response = await stub.deleteUser(request);
     print('User delete: $response');
     return response;
+  }
+
   Future createUser({required NewUserModel user}) async {
     late GrpcUsersClient stub;
     stub = GrpcUsersClient(channel,
