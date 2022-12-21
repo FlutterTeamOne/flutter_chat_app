@@ -80,7 +80,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       for (var chat in response.chats) {
         print('USER BLOC CHAT: $chat');
         await _chatServices.createChat(
-            chatId: chat.chatId,
             createDate: chat.createdDate,
             userId: chat.userId);
       }

@@ -70,7 +70,7 @@ CREATE TABLE ${DatabaseConst.mainUserTable}(
 //Таблица Chats
       await txn.execute('''
 CREATE TABLE ${DatabaseConst.chatsTable}(
- ${DatabaseConst.chatsColumnChatId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey},
+ ${DatabaseConst.chatsColumnChatId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
  ${DatabaseConst.chatsColumnUserId} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique},
  ${DatabaseConst.chatsColumnCreatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
  ${DatabaseConst.chatsColumnUpdatedDate} ${DatabaseConst.char26},
@@ -185,7 +185,7 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
       {required String tableName, required Map<String, dynamic> model}) async {
     var db = await instanse.database;
     await db.transaction((txn) async {
-      await txn.insert(tableName, model);
+  await txn.insert(tableName, model);
     });
     _updateListen();
   }
