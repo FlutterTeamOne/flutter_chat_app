@@ -9,7 +9,7 @@ class _ProfileLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
-        var userMain;
+       late UserDto userMain;
         for (var user in state.users!) {
           if (user.userId == UserPref.getUserId) {
             userMain = user;
@@ -81,6 +81,48 @@ class _ProfileLayout extends StatelessWidget {
                             .read<UserBloc>()
                             .add(DeleteUserEvent(userId: userMain.userId));
                         print(userMain.userId);
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              final userIsDeleted =
+                                  context.watch<UserBloc>().state.isDeleted;
+                              return Dialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                child: SizedBox(
+                                  height: 80,
+                                  width: 50,
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: userIsDeleted == false
+                                              ? Text(
+                                                  'User ${userMain.name} is not deleted')
+                                              : Text(
+                                                  'User ${userMain.name} is deleted')),
+                                      ElevatedButton(
+                                          style: ButtonStyle(
+                                              shape: MaterialStateProperty.all<
+                                                      RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                          ))),
+                                          onPressed: () {
+                                            context
+                                                .read<UserBloc>()
+                                                .add(ReadUsersEvent());
+                                            Navigator.of(context)
+                                                .pushNamed('/');
+                                          },
+                                          child: const Icon(Icons.check))
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
                       },
                       child: Text('Delete user')),
                 ],
