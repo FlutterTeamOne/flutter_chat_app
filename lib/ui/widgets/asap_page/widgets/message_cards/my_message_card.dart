@@ -1,6 +1,4 @@
 ﻿import 'package:chat_app/src/libraries/library_all.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../library/library_widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +24,7 @@ class MyMessageCardWidget extends StatelessWidget {
           maxWidth: currentWidth > 1150 ? 750 : 350,
         ),
         child: isSuccess != null
-            ? AppCardWidget(
+            ? PopupMenuCardWidget(
                 message: message,
                 textController: textController,
                 marginIndex: 15)
@@ -37,7 +35,7 @@ class MyMessageCardWidget extends StatelessWidget {
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            AppCardWidget(
+                            PopupMenuCardWidget(
                                 marginIndex: 5,
                                 textController: textController,
                                 message: message),
@@ -47,7 +45,7 @@ class MyMessageCardWidget extends StatelessWidget {
                             )
                           ],
                         )
-                      : AppCardWidget(
+                      : PopupMenuCardWidget(
                           marginIndex: 10,
                           textController: textController,
                           message: message,
