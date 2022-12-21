@@ -32,3 +32,11 @@ class ChangeUserEvent extends UserEvent {
   @override
   List<Object?> get props => [user, userDb];
 }
+
+class DeleteUserEvent extends UserEvent {
+  final int? userId;
+  // final String? deleteUserTime;
+  DeleteUserEvent({required this.userId});
+  @override
+  List<Object?> get props => [userId];
+}

@@ -66,6 +66,23 @@ class _ProfileLayout extends StatelessWidget {
                     userMain.email ?? '???',
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                      style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ))),
+                      onPressed: () {
+                        context
+                            .read<UserBloc>()
+                            .add(DeleteUserEvent(userId: userMain.userId));
+                        print(userMain.userId);
+                      },
+                      child: Text('Delete user')),
                 ],
               ),
             ),

@@ -30,6 +30,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<ReadUsersEvent>(_onReadUsersEvent);
     on<CreateUserEvent>(_onCreateUserEvent);
     on<ChangeUserEvent>(_onChangeUserEvent);
+    on<DeleteUserEvent>(_onDeleleUserEvent);
   }
 
   FutureOr<void> _onReadUsersEvent(
@@ -136,5 +137,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       ChangeUserEvent event, Emitter<UserState> emit) {
     print('GET USER PREF: ${UserPref.getUserDbPref} ');
     UserPref.setUserDbPref = event.userDb;
+  }
+
+  FutureOr<void> _onDeleleUserEvent(
+      DeleteUserEvent event, Emitter<UserState> emit) async {
+    var result = await GrpcClient().deleteUser(userId: event.userId!);
+    print('event: ${event.userId}');
+    print(result.isDeleted);
+    emit(state.copyWith(isDeleted: result.isDeleted));
   }
 }
