@@ -185,7 +185,7 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
       {required String tableName, required Map<String, dynamic> model}) async {
     var db = await instanse.database;
     await db.transaction((txn) async {
-      await txn.insert(tableName, model);
+  await txn.insert(tableName, model);
     });
     _updateListen();
   }

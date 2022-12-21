@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:chat_app/modules/client/rest_client.dart';
+import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../domain/data/library/library_data.dart';
@@ -32,9 +33,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       _chatServices = LocalChatServices();
       var chats = await _chatServices.getAllChats();
       //
-      var restChats = await RestClient().getChats();
-      print('IF CHATS NULL - ADD CHATS FROM LOCAL DB: $chats');
-      emit(state.copyWith(chats: chats));
+      var restChats = await RestClient().getChats(userId: UserPref.getUserId);
+      print('IF CHATS is NULL - ADD CHAT FROM LOCAL DB: $restChats');
+      print('IF CHATS is NULL - ADD CHAT FROM LOCAL DB: $chats');
+      chats != restChats
+          ? emit(state.copyWith(chats: restChats))
+          : emit(state.copyWith(chats: chats));
     } else {
       emit(state.copyWith(chats: event.chats));
       print('ADD CHAT FROM EVENT: ${event.chats}');
@@ -46,9 +50,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     _chatServices = LocalChatServices();
     var chat = event.chat;
     var chats = await _chatServices.createChat(
-        chatId: chat.chatId,
-        createDate: chat.createdDate,
-        userId: chat.userIdChat);
+        createDate: chat.createdDate, userId: chat.userIdChat);
     //TODO:запрос к restApi на создание чата
     await RestClient().createChatRest(chat);
     emit(state.copyWith(chats: chats));
@@ -64,7 +66,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     //TODO: func delete chat
     await _chatServices.deleteChat(id: event.chatId);
     //запрос на удаление к рест серверу
-    await RestClient().deleteChatRest(id:event.chatId);
+    await RestClient().deleteChatRest(id: event.chatId);
     print('CHAT ID: ${event.chatId}');
   }
 

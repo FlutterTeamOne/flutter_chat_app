@@ -6,11 +6,11 @@ class RestClient {
 
   final _dio = Dio();
 
-  Future<List<ChatDto>> getChats() async {
+  Future<List<ChatDto>> getChats({required int userId}) async {
     var chatUrl = '$_url/chats/';
     var chats = <ChatDto>[];
     try {
-      var resp = await _dio.get(chatUrl);
+      var resp = await _dio.get('$chatUrl$userId');
       if (resp.statusCode == 200) {
         var respChats = resp.data.map((el) => ChatDto.fromMap(el)).toList();
         chats.add(respChats);

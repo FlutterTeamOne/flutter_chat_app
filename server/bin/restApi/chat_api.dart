@@ -18,7 +18,12 @@ class ChatApi {
     //запрос к чатам
     router.get('/',
         (Request request) => Response.ok(json.encode(data), headers: _headers));
-
+    router.get('/<user_id>', (Request request, String userId) {
+      final id = int.parse(userId);
+      var chats = data.where((el) => el['user_id'] == id);
+      print('get chats: $chats');
+      return Response.ok(json.encode(chats), headers: _headers);
+    });
     //запрос на добавление в чата в список чатов
     router.post('/', (Request request) async {
       final body = await request.readAsString();
