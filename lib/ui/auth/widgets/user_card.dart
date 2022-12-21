@@ -20,14 +20,23 @@ class _UserCardState extends State<UserCard> {
           hoverColor: Colors.transparent,
           focusColor: Colors.transparent,
           onTap: () async {
-            userBloc.add(ChangeUserEvent(user: widget.user, userDb: false));
-            UserPref.setUserId = widget.user.userId!;
-            UserPath.user = widget.user;
-            await DBHelper.instanse.initDB();
-            userBloc.add(ReadUsersEvent());
-            context.read<ChatBloc>().add(ReadChatEvent());
-            context.read<ChatBloc>().add(GetChatIdEvent(-1));
+            // userBloc.add(ChangeUserEvent(user: widget.user, userDb: false));
+            // UserPref.setUserId = widget.user.userId!;
+            // UserPath.user = widget.user;
+            // await DBHelper.instanse.initDB();
+            // userBloc.add(ReadUsersEvent());
+            // context.read<ChatBloc>().add(ReadChatEvent());
+            // context.read<ChatBloc>().add(GetChatIdEvent(-1));
+            if (widget.user.deletedDate == '' || widget.user.deletedDate == null) {
+              userBloc.add(ChangeUserEvent(user: widget.user, userDb: false));
+              UserPref.setUserId = widget.user.userId!;
+              UserPath.user = widget.user;
+              await DBHelper.instanse.initDB();
+              userBloc.add(ReadUsersEvent());
+              context.read<ChatBloc>().add(ReadChatEvent());
+              context.read<ChatBloc>().add(GetChatIdEvent(-1));
             Navigator.of(context).pushNamed(MainLayout.routeName);
+            }
           },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(15),
