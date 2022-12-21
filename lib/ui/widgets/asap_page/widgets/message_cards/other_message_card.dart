@@ -14,7 +14,9 @@ class OtherMessageCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentWidth = MediaQuery.of(context).size.width;
     var time = DateTime.parse(message.createdDate ?? '');
-    String? realTime = '${time.hour}:${time.minute}';
+    var correctMinute =
+        time.minute.toString().length == 1 ? '0${time.minute}' : time.minute;
+    String? realTime = '${time.hour}:$correctMinute';
     return Align(
       alignment: Alignment.centerLeft,
       child: ConstrainedBox(
@@ -24,13 +26,14 @@ class OtherMessageCardWidget extends StatelessWidget {
         child: AppCardWidget(
           text: message.content,
           marginIndex: 5,
+          time: realTime,
+          edited: message.createdDate == message.updatedDate ? '' : 'edited ',
           textStyle: TextStyle(
             color: Theme.of(context)
                 .textSelectionTheme
                 .selectionHandleColor
                 ?.withOpacity(0.8),
           ),
-          time: realTime,
         ),
       ),
     );
