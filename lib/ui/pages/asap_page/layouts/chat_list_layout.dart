@@ -24,6 +24,8 @@ class _ChatListLayoutState extends State<ChatListLayout> {
 
   @override
   Widget build(BuildContext context) {
+    final chatBloc = context.read<ChatBloc>();
+    final userBloc = context.read<UserBloc>();
     return Drawer(
         shape: Border(
             right: BorderSide(width: 1, color: Theme.of(context).dividerColor)),
@@ -56,20 +58,11 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                               sender: 'You',
                               selected: false,
                               onTap: () {
-                                context
-                                    .read<ChatBloc>()
-                                    .add(GetChatIdEvent(friendId));
+                                chatBloc.add(GetChatIdEvent(friendId));
                               },
-                              name: context
-                                  .read<UserBloc>()
-                                  .state
-                                  .users![friendId]
-                                  .name,
-                              image: context
-                                  .read<UserBloc>()
-                                  .state
-                                  .users![friendId]
-                                  .profilePicLink,
+                              name: userBloc.state.users![friendId].name,
+                              image: userBloc
+                                  .state.users![friendId].profilePicLink,
                               message: widget.messageModel.isNotEmpty
                                   ? widget.messageModel[lastMessageId].content
                                   : '',
