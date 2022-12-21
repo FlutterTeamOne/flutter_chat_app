@@ -1,75 +1,93 @@
 syntax = 'proto3';
 
 service GrpcUsers {
-    rpc getAllUsers(EmptyUser) returns (Users);
-    rpc getUser (GetUserRequest) returns (GetUserResponse);
-    rpc createUser (CreateUserRequest) returns (CreateUserResponse);
-    rpc updateUser (UpdateUserRequest) returns (UpdateUserResponse);
-    rpc deleteUser (DeleteUserRequest) returns (DeleteUserResponse);
+    rpc UsersSync(UsersRequest) returns (UsersResponse);
+    // rpc getUser (GetUserRequest) returns (GetUserResponse);
+    // rpc createUser (CreateUserRequest) returns (CreateUserResponse);
+    // rpc updateUser (UpdateUserRequest) returns (UpdateUserResponse);
+    // rpc deleteUser (DeleteUserRequest) returns (DeleteUserResponse);
 }
 
-message EmptyUser{
-    int32 lastId = 1;
+message UserRequest{
+    int32 userId = 1;
+    string updatedDate = 2;
 }
 
-message User{
+message UsersRequest {
+    repeated UserRequest users = 1;
+}
+
+message NewUserResponse{
     int32 userId = 1;
     string name= 2;
     string email = 3;
     string profilePicUrl = 4;
     string dateCreate = 5;
     string dateUpdate = 6;
-    string dateDelete = 8;
+    string dateDelete = 7;
 }
 
-message Users{ 
-    repeated User users = 1;
-}
-
-message GetUserRequest {
-    int32 id = 1;
-    string name = 2;
+message UpdatedUserResponse {
+    int32 userId = 1;
+    string name= 2;
     string email = 3;
-    string dateCreation = 4;
+    string profilePicUrl = 4;
+    string dateCreate = 5;
+    string dateUpdate = 6;
+    string dateDelete = 7;
+}
+
+message UsersResponse{ 
+    repeated NewUserResponse usersNew = 1;
+    repeated UpdatedUserResponse usersUpdated = 2;
+}
+
+// message GetUserRequest {
+//     int32 id = 1;
+//     string name = 2;
+//     string email = 3;
+//     string dateCreation = 4;
    
-}
-message GetUserResponse {
-    int32 id = 1;
-    string dateUpdated = 2;
-    string dateDeleted = 3;
-}
-message CreateUserRequest {
-    string name = 1;
-    string email = 2;
-    string profilePicUrl = 3;
-    string password = 4;
-    string dateCreated = 5;
-}
+// }
+// message GetUserResponse {
+//     int32 id = 1;
+//     string dateUpdated = 2;
+//     string dateDeleted = 3;
+// }
+// message CreateUserRequest {
+//     int32 id = 1;
+//     string name = 2;
+//     string email = 3;
+//     string profilePicUrl = 4;
+//     string password = 5;
+//     string dateCreated = 6;
+// }
 
-message CreateUserResponse {
-    int32 id = 1;
-    string name = 2;
-    string email = 3;
-    string profilePicUrl = 4;
-    string password = 5;
-    string dateCreated = 6;
-}
+// message CreateUserResponse {
+//     int32 id = 1;
+//     string name = 2;
+//     string email = 3;
+//     string profilePicUrl = 4;
+//     string password = 5;
+//     string dateCreated = 6;
+// }
 
-message UpdateUserRequest{
-    int32 id = 1;
-    string name = 2;
-    string email = 3;
-    string profilePicUrl = 4;
-    string password = 5;
-}
-message UpdateUserResponse{
-    string dateUpdated = 1;
-    bool isUpdated = 2;
-}
-message DeleteUserRequest{
-    int32 id = 1;
-}
-message DeleteUserResponse{
-    bool isDeleted=1;
+// message UpdateUserRequest{
+//     int32 id = 1;
+//     string name = 2;
+//     string email = 3;
+//     string profilePicUrl = 4;
+//     string password = 5;
+// }
+// message UpdateUserResponse{
+//     string dateUpdated = 1;
+//     bool isUpdated = 2;
+// }
+// message DeleteUserRequest{
+//     int32 id = 1;
+//     string dateDeleted=2;
+// }
+// message DeleteUserResponse{
+//     bool isDeleted=1;
     
-}
+// }

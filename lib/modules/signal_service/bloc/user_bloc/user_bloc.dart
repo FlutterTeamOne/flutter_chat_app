@@ -39,14 +39,24 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     var users = <UserDto>[];
     //проверяем состояние загруженного пользователя
     if (state.userDbthis) {
-      var id = await _usersServices.getLastUserId();
-      print("lastID $id");
+      List<Map<String, Object?>> usersForUpdate =
+          await _usersServices.getAllUserIdAndUpdated();
+      List<UserRequest> usersRequest = [];
+      if (usersForUpdate.isNotEmpty) {
+        print("lastID ${usersForUpdate.last['user_id']}");
+        for (var user in usersForUpdate) {
+          usersRequest.add(UserRequest(
+              userId: user['user_id'] as int,
+              updatedDate: user['updated_date'] as String));
+        }
+      }
       //подключаемся к серверу
       var stub = GrpcUsersClient(GrpcClient().channel);
       //отправляем запрос на сервер и получаем всех юзеров
-      var usersServ = await stub.getAllUsers(EmptyUser(lastId: id));
-      print("UsersServ $usersServ");
-      for (var user in usersServ.users) {
+      var usersResponse =
+          await stub.usersSync(UsersRequest(users: usersRequest));
+      print("UsersServ $usersResponse");
+      for (var user in usersResponse.usersNew) {
         //парсим всех юзеров и записываем их в локальное дб
         await _usersServices.createUserStart(
             userId: user.userId,
@@ -56,6 +66,17 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             updatedDate: user.dateUpdate,
             deletedDate: user.dateDelete,
             profilePicUrl: user.profilePicUrl);
+      }
+      for (var user in usersResponse.usersUpdated) {
+        //парсим всех юзеров и записываем их в локальное дб
+        await _usersServices.updateUserStart(
+            newValues: '''name = "${user.name}",
+                          email = "${user.email}",
+                          created_date = "${user.dateCreate}",
+                          updated_date = "${user.dateUpdate}",
+                          deleted_date = "${user.dateDelete}",
+                          profile_pic_link = "${user.profilePicUrl}"''',
+            condition: 'user_id = ${user.userId}');
       }
 //получаем всех начальных юзеров
       users = await _usersServices.getAllUsersStart();

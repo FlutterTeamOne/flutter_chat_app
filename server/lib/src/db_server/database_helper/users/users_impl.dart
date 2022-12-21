@@ -174,4 +174,20 @@ class UsersServices implements IUsersServices {
           WHERE user_id IN (${idFriends.join(",")})''');
     return users;
   }
+
+  @override
+  getUpdatedUsers({required List<UserRequest> users}) async {
+    List<Map<String, Object?>> usersUpdated = [];
+    Database db = await DbServerServices.instanse.database;
+    for (var user in users) {
+      var userUpdated = await db.rawQuery('''SELECT *
+          FROM users
+          WHERE (user_id = ${user.userId} AND 
+                updated_date NOT LIKE "${user.updatedDate}")''');
+      if (userUpdated.length > 0) {
+        usersUpdated.add(userUpdated[0]);
+      }
+    }
+    return usersUpdated;
+  }
 }

@@ -410,101 +410,117 @@ class GrpcChats extends GrpcChatsServiceBase {
 }
 
 class GrpcUsers extends GrpcUsersServiceBase {
-  @override
-  Future<CreateUserResponse> createUser(
-      ServiceCall call, CreateUserRequest request) async {
-    var src = await UsersServices().createUser(
-        name: request.name,
-        email: request.email,
-        registrationDate: request.dateCreated,
-        profilePicUrl: request.profilePicUrl,
-        password: request.password,
-        updatedDate: request.dateCreated
-    );
-    var createUserResponse = CreateUserResponse();
-    if (src[0]['user_id'] != 0) {
-      createUserResponse.id = src[0]['user_id'] as int;
-      createUserResponse.name = src[0]['name'] as String;
-      createUserResponse.email = src[0]['email'] as String;
-      createUserResponse.profilePicUrl = src[0]['profile_pic_url'] as String;
-      createUserResponse.dateCreated = src[0]['created_date'] as String;
-    }
-    return createUserResponse;
-  }
+  // @override
+  // Future<CreateUserResponse> createUser(
+  //     ServiceCall call, CreateUserRequest request) async {
+  //   var src = await UsersServices().createUser(
+  //       name: request.name,
+  //       email: request.email,
+  //       registrationDate: request.dateCreated,
+  //       profilePicUrl: request.profilePicUrl,
+  //       password: request.password);
+  //   var createUserResponse = CreateUserResponse();
+  //   if (src['main_users_id'] != 0) {
+  //     createUserResponse.dateCreated = request.dateCreated;
+  //     createUserResponse.email = request.email;
+  //     createUserResponse.name = request.name;
+  //     createUserResponse.profilePicUrl = request.profilePicUrl;
+  //     createUserResponse.id = src['main_users_id'];
+  //   }
+  //   return createUserResponse;
+  // }
+
+  // @override
+  // Future<DeleteUserResponse> deleteUser(
+  //     ServiceCall call, DeleteUserRequest request) async {
+  //   var deleteUserResponse = DeleteUserResponse();
+  //   var dateDeleted = DateTime.now().toIso8601String();
+  //   var src = await UsersServices().updateUser(
+  //       newValues: 'deleted_date = $dateDeleted',
+  //       condition: 'user_id = ${request.id}');
+  //   if (src != 0) {
+  //     deleteUserResponse.isDeleted = true;
+  //   }
+  //   return deleteUserResponse;
+  // }
+
+  // @override
+  // Future<GetUserResponse> getUser(
+  //     ServiceCall call, GetUserRequest request) async {
+  //   var getUserResponse = GetUserResponse();
+  //   var src;
+  //   if (!request.id.isNaN) {
+  //     src = await UsersServices()
+  //         .getUserByField(field: 'user_id', fieldValue: request.id);
+  //   } else if (request.name.isNotEmpty) {
+  //     src = await UsersServices()
+  //         .getUserByField(field: 'name', fieldValue: request.name);
+  //   } else if (request.email.isNotEmpty) {
+  //     src = await UsersServices()
+  //         .getUserByField(field: 'email', fieldValue: request.email);
+  //   } else if (request.dateCreation.isNotEmpty) {
+  //     src = await UsersServices().getUserByField(
+  //         field: 'created_date', fieldValue: request.dateCreation);
+  //   } else {
+  //     // // return GrpcError.invalidArgument()
+  //   }
+  //   return getUserResponse;
+  // }
+
+  // @override
+  // Future<UpdateUserResponse> updateUser(
+  //     ServiceCall call, UpdateUserRequest request) async {
+  //   var updateUserResponse = UpdateUserResponse();
+  //   updateUserResponse.dateUpdated = DateTime.now().toIso8601String();
+  //   var src = await UsersServices().updateUser(
+  //       newValues:
+  //           'name = ${request.name}, email = ${request.email}, profile_pic_url = ${request.profilePicUrl}, password = ${request.password}, updated_date = ${updateUserResponse.dateUpdated}',
+  //       condition: 'user_id = ${request.id}');
+  //   if (src != 0) {
+  //     updateUserResponse.isUpdated = true;
+  //   }
+  //   return updateUserResponse;
+  // }
 
   @override
-  Future<DeleteUserResponse> deleteUser(
-      ServiceCall call, DeleteUserRequest request) async {
-    var deleteUserResponse = DeleteUserResponse();
-    var dateDeleted = DateTime.now().toIso8601String();
-    var src = await UsersServices().updateUser(
-        newValues: 'deleted_date = "$dateDeleted"',
-        condition: 'user_id = ${request.id}');
-    if (src != 0) {
-      deleteUserResponse.isDeleted = true;
+  Future<UsersResponse> usersSync(
+      ServiceCall call, UsersRequest request) async {
+    var newUsersList = <NewUserResponse>[];
+    var usersUpdatedList = <UpdatedUserResponse>[];
+    var lastId = 0;
+    if (request.users.length > 0) {
+      var usersUpdated =
+          await usersServices.getUpdatedUsers(users: request.users);
+      lastId = request.users.last.userId;
+      for (int i = 0; i < usersUpdated.length; i++) {
+        var userForList = UpdatedUserResponse();
+        userForList.userId = usersUpdated[i]['user_id'] as int;
+        userForList.name = usersUpdated[i]['name'] as String;
+        userForList.email = usersUpdated[i]['email'] as String;
+        userForList.profilePicUrl =
+            usersUpdated[i]['profile_pic_url'] as String;
+        userForList.dateCreate = usersUpdated[i]['created_date'] as String;
+        userForList.dateUpdate = usersUpdated[i]['updated_date'] as String;
+        userForList.dateDelete =
+            (usersUpdated[i]['deleted_date'] ?? '') as String;
+        usersUpdatedList.add(userForList);
+      }
     }
-    return deleteUserResponse;
-  }
+    var newUsers = await usersServices.getAllUsersMoreId(id: lastId);
 
-  @override
-  Future<GetUserResponse> getUser(
-      ServiceCall call, GetUserRequest request) async {
-    var getUserResponse = GetUserResponse();
-    var src;
-    if (!request.id.isNaN) {
-      src = await UsersServices()
-          .getUserByField(field: 'user_id', fieldValue: request.id);
-    } else if (request.name.isNotEmpty) {
-      src = await UsersServices()
-          .getUserByField(field: 'name', fieldValue: request.name);
-    } else if (request.email.isNotEmpty) {
-      src = await UsersServices()
-          .getUserByField(field: 'email', fieldValue: request.email);
-    } else if (request.dateCreation.isNotEmpty) {
-      src = await UsersServices().getUserByField(
-          field: 'created_date', fieldValue: request.dateCreation);
-    } else {
-      // // return GrpcError.invalidArgument()
+    for (int i = 0; i < newUsers.length; i++) {
+      var userForList = NewUserResponse();
+      userForList.userId = newUsers[i]['user_id'] as int;
+      userForList.name = newUsers[i]['name'] as String;
+      userForList.email = newUsers[i]['email'] as String;
+      userForList.profilePicUrl = newUsers[i]['profile_pic_url'] as String;
+      userForList.dateCreate = newUsers[i]['created_date'] as String;
+      userForList.dateUpdate = newUsers[i]['updated_date'] as String;
+      userForList.dateDelete = (newUsers[i]['deleted_date'] ?? '') as String;
+      newUsersList.add(userForList);
     }
-    return getUserResponse;
-  }
-
-  @override
-  Future<UpdateUserResponse> updateUser(
-      ServiceCall call, UpdateUserRequest request) async {
-    var updateUserResponse = UpdateUserResponse();
-    updateUserResponse.dateUpdated = DateTime.now().toIso8601String();
-    var src = await UsersServices().updateUser(
-        newValues:
-            'name = ${request.name}, email = ${request.email}, profile_pic_url = ${request.profilePicUrl}, password = ${request.password}, updated_date = ${updateUserResponse.dateUpdated}',
-        condition: 'user_id = ${request.id}');
-    if (src != 0) {
-      updateUserResponse.isUpdated = true;
-    }
-    return updateUserResponse;
-  }
-
-  @override
-  Future<Users> getAllUsers(ServiceCall call, EmptyUser request) async {
-    var usersList = <User>[];
-    var users;
-    if (request.lastId == 0) {
-      users = await usersServices.getAllUsers();
-    } else {
-      users = await usersServices.getAllUsersMoreId(id: request.lastId);
-    }
-    for (int i = 0; i < users.length; i++) {
-      var userForList = User();
-      userForList.userId = users[i]['user_id'] as int;
-      userForList.name = users[i]['name'] as String;
-      userForList.email = users[i]['email'] as String;
-      userForList.profilePicUrl = users[i]['profile_pic_url'] as String;
-      userForList.dateCreate = users[i]['created_date'] as String;
-      userForList.dateUpdate = users[i]['updated_date'] as String;
-      userForList.dateDelete = users[i]['deleted_date'] ?? '';
-      usersList.add(userForList);
-    }
-    return Users(users: usersList);
+    return UsersResponse(
+        usersNew: newUsersList, usersUpdated: usersUpdatedList);
   }
 }
 
@@ -599,7 +615,7 @@ Future<void> main() async {
     CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
   );
 
-  await server.serve(port: 5000);
+  await server.serve(port: 50000);
   await DbServerServices.instanse.openDatabase();
   print('✅ Server listening on port ${server.port}...');
 }

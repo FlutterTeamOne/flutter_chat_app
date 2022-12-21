@@ -65,7 +65,7 @@ Future<void> main() async {
 
   ///
   ///Проверка запроса с синхронизацией
-  // ///
+  ///
   // var mainIdUser = 1;
   // var users;
   // var chats;
@@ -110,9 +110,21 @@ Future<void> main() async {
   //   print(message);
   // }
 
-  var dateDeleted = DateTime.now().toIso8601String();
-  var src = await UsersServices().updateUser(
-      newValues: 'deleted_date = "$dateDeleted"', condition: 'user_id = 1');
-  print("src= ${src}");
-  print(await UsersServices().getAllUsers());
+  print(await usersService.getAllUsers());
+  await usersService.updateUser(
+      newValues:
+          'email = "test5", updated_date = "${DateTime.now().toIso8601String()}"',
+      condition: 'user_id = 1');
+  print(await usersService.getAllUsers());
+  // print(await usersService.getAllUsers());
+  // List<UserRequest> users = [];
+  // users.add(UserRequest(userId: 1, updatedDate: '2022-12-02T21:36:32.653712'));
+  // users.add(UserRequest(userId: 2, updatedDate: '2022-12-02T21:36:32.653712'));
+  // print(await usersService.getUpdatedUsers(users: users));
+  // List<UserRequest> usersUpdated = [];
+  // usersUpdated.add(
+  //     UserRequest(userId: 1, updatedDate: DateTime.now().toIso8601String()));
+  // usersUpdated
+  //     .add(UserRequest(userId: 2, updatedDate: '2022-12-02T21:36:32.653712'));
+  // print(await usersService.getUpdatedUsers(users: usersUpdated));
 }
