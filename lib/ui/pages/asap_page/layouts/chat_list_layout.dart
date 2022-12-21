@@ -65,10 +65,17 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                   .users![friendId]
                                   .name,
                               image: context
-                                  .read<UserBloc>()
-                                  .state
-                                  .users![friendId]
-                                  .profilePicLink,
+                                          .read<UserBloc>()
+                                          .state
+                                          .users![friendId]
+                                          .deletedDate ==
+                                      ''
+                                  ? context
+                                      .read<UserBloc>()
+                                      .state
+                                      .users![friendId]
+                                      .profilePicLink
+                                  : 'https://www.iconsdb.com/icons/preview/red/cancel-xxl.png',
                               message: widget.messageModel.isNotEmpty
                                   ? widget.messageModel[lastMessageId].content
                                   : '',

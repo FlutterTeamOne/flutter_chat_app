@@ -113,7 +113,7 @@ Future<void> main() async {
   print(await usersService.getAllUsers());
   await usersService.updateUser(
       newValues:
-          'email = "test5", updated_date = "${DateTime.now().toIso8601String()}"',
+          'deleted_date = "", updated_date = "${DateTime.now().toIso8601String()}"',
       condition: 'user_id = 1');
   print(await usersService.getAllUsers());
   // print(await usersService.getAllUsers());
