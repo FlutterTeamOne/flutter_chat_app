@@ -292,3 +292,4 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     return super.close();
   }
 }
+

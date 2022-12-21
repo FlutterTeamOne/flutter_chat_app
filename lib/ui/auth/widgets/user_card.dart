@@ -13,6 +13,7 @@ class _UserCardState extends State<UserCard> {
   @override
   Widget build(BuildContext context) {
     var userBloc = context.read<UserBloc>();
+
     return Column(
       children: [
         InkWell(
@@ -24,6 +25,8 @@ class _UserCardState extends State<UserCard> {
             UserPath.user = widget.user;
             await DBHelper.instanse.initDB();
             userBloc.add(ReadUsersEvent());
+            context.read<ChatBloc>().add(ReadChatEvent());
+            context.read<ChatBloc>().add(GetChatIdEvent(-1));
             Navigator.of(context).pushNamed(MainLayout.routeName);
           },
           child: ClipRRect(

@@ -50,7 +50,7 @@ Future<void> main(List<String> args) async {
 
 Stream<DynamicRequest> postStream(int id) async* {
   var stub = GrpcMessagesClient(ClientChannel('localhost',
-      port: 50000,
+      port: 5000,
       options: const ChannelOptions(
         credentials: ChannelCredentials.insecure(),
       )));
