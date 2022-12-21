@@ -14,15 +14,19 @@ void main(List<String> args) async {
       createdDate: DateTime.now().toIso8601String(),
       updatedDate: DateTime.now().toIso8601String());
 
-  // var getRes = await dio.get(url);
-  // print('GET RES: $getRes');
+  var getRes = await dio.get(url);
+  print('GET RES: $getRes');
 
   // var resp = await dio.post(url, data: chat.toJson());
   // print('DATA:${resp.data}');
 
   // var delResp = await dio.delete('${urlId}1', data: 1, );
   // print('del: $delResp');
-  
-  // var resp = await dio.put(url, data: chat.toJson());
+  // var data = {
+  //   "friend1_id": 1,
+  //   "friend2_id": 3,
+  //   "date": DateTime.now().toIso8601String()
+  // };
+  // var resp = await dio.put(url, data: data);
   // print('DATA:${resp.data}');
 }

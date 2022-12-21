@@ -6,11 +6,11 @@ class RestClient {
 
   final _dio = Dio();
 
-  Future<List<ChatDto>> getChats({required int userId}) async {
+  Future<List<ChatDto>> getChats() async {
     var chatUrl = '$_url/chats/';
     var chats = <ChatDto>[];
     try {
-      var resp = await _dio.get('$chatUrl$userId');
+      var resp = await _dio.get(chatUrl);
       if (resp.statusCode == 200) {
         var respChats = resp.data.map((el) => ChatDto.fromMap(el)).toList();
         chats.add(respChats);
@@ -21,12 +21,18 @@ class RestClient {
     return chats;
   }
 
-  Future<ChatDto> createChatRest(ChatDto chat) async {
+  Future<ChatDto> createChatRest({required creatorUserId,required user2Id}) async {
     var chatUrl = '$_url/chats/';
     var restChat;
+    var date = DateTime.now().toIso8601String();
     try {
+
       //возвращает один созданные элемент
-      var resp = await _dio.put(chatUrl, data: chat.toJson());
+      var resp = await _dio.put(chatUrl, data: {
+        "friend1_id":creatorUserId,
+        "friend2_id":user2Id,
+        "date":date
+      });
       if (resp.statusCode == 200) {
         restChat = resp;
       }
