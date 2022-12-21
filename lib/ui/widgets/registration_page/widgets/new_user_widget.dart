@@ -218,8 +218,9 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                                     children: [
                                       Padding(
                                         padding: EdgeInsets.all(8.0),
-                                        child:
-                                            Text('User $newUserName created'),
+                                        child: context.read<NewUserBloc>().state.newUser.name == newUserNameText.text
+                                            ? Text('User $newUserName created')
+                                            : Text('Error')
                                       ),
                                       ElevatedButton(
                                           style: ButtonStyle(
