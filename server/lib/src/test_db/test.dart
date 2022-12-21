@@ -113,8 +113,8 @@ Future<void> main() async {
   print(await usersService.getAllUsers());
   await usersService.updateUser(
       newValues:
-          'email = "test5", updated_date = "${DateTime.now().toIso8601String()}"',
-      condition: 'user_id = 1');
+          'profile_pic_url = "https://app-images.website.yandexcloud.net/174568/076dfa96dfd0dbadd5b0da03d2632f54.jpg", updated_date = "${DateTime.now().toIso8601String()}"',
+      condition: 'user_id = 2');
   print(await usersService.getAllUsers());
   // print(await usersService.getAllUsers());
   // List<UserRequest> users = [];

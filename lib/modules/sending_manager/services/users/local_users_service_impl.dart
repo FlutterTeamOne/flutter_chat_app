@@ -143,8 +143,17 @@ class LocalUsersServices implements ILocalUsersServices {
     return lastUser[0]['user_id'] ?? 0;
   }
 
-  Future<List<Map<String, Object?>>> getAllUserIdAndUpdated() async {
+  Future<List<Map<String, Object?>>> getAllUserIdAndUpdatedStarted() async {
     var db = await DBHelperStart.instanse.database;
+    var users = await db.rawQuery('''
+              SELECT user_id, updated_date
+              FROM users
+              ''');
+    return users;
+  }
+
+  Future<List<Map<String, Object?>>> getAllUserIdAndUpdated() async {
+    var db = await DBHelper.instanse.database;
     var users = await db.rawQuery('''
               SELECT user_id, updated_date
               FROM users

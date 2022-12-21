@@ -40,7 +40,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     //проверяем состояние загруженного пользователя
     if (state.userDbthis) {
       List<Map<String, Object?>> usersForUpdate =
-          await _usersServices.getAllUserIdAndUpdated();
+          await _usersServices.getAllUserIdAndUpdatedStarted();
       List<UserRequest> usersRequest = [];
       if (usersForUpdate.isNotEmpty) {
         print("lastID ${usersForUpdate.last['user_id']}");
@@ -51,10 +51,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         }
       }
       //подключаемся к серверу
-      var stub = GrpcUsersClient(GrpcClient().channel);
+      var stub = GrpcSynchronizationClient(GrpcClient().channel);
+      var usersResponse = UsersResponse();
       //отправляем запрос на сервер и получаем всех юзеров
-      var usersResponse =
-          await stub.usersSync(UsersRequest(users: usersRequest));
+      try {
+        usersResponse = await stub.sync(UsersRequest(users: usersRequest));
+      } catch (e) {
+        print(e);
+      }
       print("UsersServ $usersResponse");
       for (var user in usersResponse.usersNew) {
         //парсим всех юзеров и записываем их в локальное дб
@@ -62,32 +66,37 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             userId: user.userId,
             name: user.name,
             email: user.email,
-            createdDate: user.dateCreate,
-            updatedDate: user.dateUpdate,
-            deletedDate: user.dateDelete,
-            profilePicUrl: user.profilePicUrl);
+            createdDate: user.createdDate,
+            updatedDate: user.updateDate,
+            deletedDate: user.deletedDate,
+            profilePicUrl: user.picture);
       }
       for (var user in usersResponse.usersUpdated) {
-        if (user.dateDelete != '' || user.dateDelete != null) {
-          const String deletedUserAvatar = """https://www.iconsdb.com/icons/preview/red/cancel-xxl.png""";
+        print(
+            "deleted date is empty? ${user.deletedDate} ${user.deletedDate.isEmpty}");
+        if (user.deletedDate.isNotEmpty) {
+          const String deletedUserAvatar =
+              """https://www.iconsdb.com/icons/preview/red/cancel-xxl.png""";
           await _usersServices.updateUserStart(
               newValues: '''name = "${user.name}",
                           email = "${user.email}",
-                          created_date = "${user.dateCreate}",
-                          updated_date = "${user.dateUpdate}",
-                          deleted_date = "${user.dateDelete}",
+                          created_date = "${user.createdDate}",
+                          updated_date = "${user.updateDate}",
+                          deleted_date = "${user.deletedDate}",
                           profile_pic_link = "$deletedUserAvatar"''',
               condition: 'user_id = ${user.userId}');
         } else
         //парсим всех юзеров и записываем их в локальное дб
-        {await _usersServices.updateUserStart(
-            newValues: '''name = "${user.name}",
+        {
+          await _usersServices.updateUserStart(
+              newValues: '''name = "${user.name}",
                           email = "${user.email}",
-                          created_date = "${user.dateCreate}",
-                          updated_date = "${user.dateUpdate}",
-                          deleted_date = "${user.dateDelete}",
-                          profile_pic_link = "${user.profilePicUrl}"''',
-            condition: 'user_id = ${user.userId}');}
+                          created_date = "${user.createdDate}",
+                          updated_date = "${user.updateDate}",
+                          deleted_date = "${user.deletedDate}",
+                          profile_pic_link = "${user.picture}"''',
+              condition: 'user_id = ${user.userId}');
+        }
       }
 //получаем всех начальных юзеров
       users = await _usersServices.getAllUsersStart();
@@ -97,9 +106,30 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       var maxMessageId = await _messagesServices.getMaxMessageId();
       var maxUserId = await _usersServices.getMaxUserId();
       var stub = GrpcSynchronizationClient(GrpcClient().channel);
-      var response = await stub.getUsersSynh(SynhMainUser(
-          id: maxUserId, chatId: maxChatId, messageId: maxMessageId));
-      for (var user in response.users) {
+      //Юзера для обновления данных
+      var usersUp = await _usersServices.getAllUserIdAndUpdated();
+      var usersRequestA = <UserRequest>[];
+      if (usersUp.isNotEmpty) {
+        print("lastID ${usersUp.last['user_id']}");
+        for (var user in usersUp) {
+          usersRequestA.add(UserRequest(
+              userId: user['user_id'] as int,
+              updatedDate: user['updated_date'] as String));
+        }
+      }
+      //запрос на сервер
+      var response = DataDBResponse();
+      try {
+        response = await stub.getUsersSynh(SynhMainUser(
+            mainUserId: maxUserId,
+            chatId: maxChatId,
+            messageId: maxMessageId,
+            users: UsersRequest(users: usersRequestA)));
+      } catch (e) {
+        print(e);
+      }
+      //добавление новых юзеров для новых чатов
+      for (var user in response.newUsers) {
         await _usersServices.createUser(
             userId: user.userId,
             name: user.name,
@@ -116,6 +146,16 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             chatId: chat.chatId,
             createDate: chat.createdDate,
             userId: chat.userId);
+      }
+      for (var user in response.updatedUsers) {
+        await _usersServices.updateUser(
+            newValues: '''name = "${user.name}",
+                          email = "${user.email}",
+                          created_date = "${user.createdDate}",
+                          updated_date = "${user.updateDate}",
+                          deleted_date = "${user.deletedDate}",
+                          profile_pic_link = "${user.picture}"''',
+            condition: 'user_id = ${user.userId}');
       }
       for (var message in response.messages) {
         var msg = Message(

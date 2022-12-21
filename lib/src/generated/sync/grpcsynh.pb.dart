@@ -9,29 +9,185 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+class UserRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'UserRequest', createEmptyInstance: create)
+    ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userId', $pb.PbFieldType.O3, protoName: 'userId')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'updatedDate', protoName: 'updatedDate')
+    ..hasRequiredFields = false
+  ;
+
+  UserRequest._() : super();
+  factory UserRequest({
+    $core.int? userId,
+    $core.String? updatedDate,
+  }) {
+    final _result = create();
+    if (userId != null) {
+      _result.userId = userId;
+    }
+    if (updatedDate != null) {
+      _result.updatedDate = updatedDate;
+    }
+    return _result;
+  }
+  factory UserRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory UserRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  UserRequest clone() => UserRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  UserRequest copyWith(void Function(UserRequest) updates) => super.copyWith((message) => updates(message as UserRequest)) as UserRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static UserRequest create() => UserRequest._();
+  UserRequest createEmptyInstance() => create();
+  static $pb.PbList<UserRequest> createRepeated() => $pb.PbList<UserRequest>();
+  @$core.pragma('dart2js:noInline')
+  static UserRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UserRequest>(create);
+  static UserRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get userId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set userId($core.int v) { $_setSignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasUserId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUserId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get updatedDate => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set updatedDate($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasUpdatedDate() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearUpdatedDate() => clearField(2);
+}
+
+class UsersRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'UsersRequest', createEmptyInstance: create)
+    ..pc<UserRequest>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'users', $pb.PbFieldType.PM, subBuilder: UserRequest.create)
+    ..hasRequiredFields = false
+  ;
+
+  UsersRequest._() : super();
+  factory UsersRequest({
+    $core.Iterable<UserRequest>? users,
+  }) {
+    final _result = create();
+    if (users != null) {
+      _result.users.addAll(users);
+    }
+    return _result;
+  }
+  factory UsersRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory UsersRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  UsersRequest clone() => UsersRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  UsersRequest copyWith(void Function(UsersRequest) updates) => super.copyWith((message) => updates(message as UsersRequest)) as UsersRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static UsersRequest create() => UsersRequest._();
+  UsersRequest createEmptyInstance() => create();
+  static $pb.PbList<UsersRequest> createRepeated() => $pb.PbList<UsersRequest>();
+  @$core.pragma('dart2js:noInline')
+  static UsersRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UsersRequest>(create);
+  static UsersRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<UserRequest> get users => $_getList(0);
+}
+
+class UsersResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'UsersResponse', createEmptyInstance: create)
+    ..pc<SynhUser>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'usersNew', $pb.PbFieldType.PM, protoName: 'usersNew', subBuilder: SynhUser.create)
+    ..pc<SynhUser>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'usersUpdated', $pb.PbFieldType.PM, protoName: 'usersUpdated', subBuilder: SynhUser.create)
+    ..hasRequiredFields = false
+  ;
+
+  UsersResponse._() : super();
+  factory UsersResponse({
+    $core.Iterable<SynhUser>? usersNew,
+    $core.Iterable<SynhUser>? usersUpdated,
+  }) {
+    final _result = create();
+    if (usersNew != null) {
+      _result.usersNew.addAll(usersNew);
+    }
+    if (usersUpdated != null) {
+      _result.usersUpdated.addAll(usersUpdated);
+    }
+    return _result;
+  }
+  factory UsersResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory UsersResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  UsersResponse clone() => UsersResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  UsersResponse copyWith(void Function(UsersResponse) updates) => super.copyWith((message) => updates(message as UsersResponse)) as UsersResponse; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static UsersResponse create() => UsersResponse._();
+  UsersResponse createEmptyInstance() => create();
+  static $pb.PbList<UsersResponse> createRepeated() => $pb.PbList<UsersResponse>();
+  @$core.pragma('dart2js:noInline')
+  static UsersResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UsersResponse>(create);
+  static UsersResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<SynhUser> get usersNew => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $core.List<SynhUser> get usersUpdated => $_getList(1);
+}
+
 class SynhMainUser extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SynhMainUser', createEmptyInstance: create)
-    ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id', $pb.PbFieldType.O3)
+    ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mainUserId', $pb.PbFieldType.O3, protoName: 'mainUserId')
     ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'chatId', $pb.PbFieldType.O3, protoName: 'chatId')
     ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'messageId', $pb.PbFieldType.O3, protoName: 'messageId')
+    ..aOM<UsersRequest>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'users', subBuilder: UsersRequest.create)
     ..hasRequiredFields = false
   ;
 
   SynhMainUser._() : super();
   factory SynhMainUser({
-    $core.int? id,
+    $core.int? mainUserId,
     $core.int? chatId,
     $core.int? messageId,
+    UsersRequest? users,
   }) {
     final _result = create();
-    if (id != null) {
-      _result.id = id;
+    if (mainUserId != null) {
+      _result.mainUserId = mainUserId;
     }
     if (chatId != null) {
       _result.chatId = chatId;
     }
     if (messageId != null) {
       _result.messageId = messageId;
+    }
+    if (users != null) {
+      _result.users = users;
     }
     return _result;
   }
@@ -57,13 +213,13 @@ class SynhMainUser extends $pb.GeneratedMessage {
   static SynhMainUser? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.int get id => $_getIZ(0);
+  $core.int get mainUserId => $_getIZ(0);
   @$pb.TagNumber(1)
-  set id($core.int v) { $_setSignedInt32(0, v); }
+  set mainUserId($core.int v) { $_setSignedInt32(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasId() => $_has(0);
+  $core.bool hasMainUserId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearId() => clearField(1);
+  void clearMainUserId() => clearField(1);
 
   @$pb.TagNumber(2)
   $core.int get chatId => $_getIZ(1);
@@ -82,6 +238,17 @@ class SynhMainUser extends $pb.GeneratedMessage {
   $core.bool hasMessageId() => $_has(2);
   @$pb.TagNumber(3)
   void clearMessageId() => clearField(3);
+
+  @$pb.TagNumber(4)
+  UsersRequest get users => $_getN(3);
+  @$pb.TagNumber(4)
+  set users(UsersRequest v) { setField(4, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasUsers() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearUsers() => clearField(4);
+  @$pb.TagNumber(4)
+  UsersRequest ensureUsers() => $_ensure(3);
 }
 
 class SynhUser extends $pb.GeneratedMessage {
@@ -479,27 +646,32 @@ class SynhMessage extends $pb.GeneratedMessage {
 
 class DataDBResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'DataDBResponse', createEmptyInstance: create)
-    ..pc<SynhUser>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'users', $pb.PbFieldType.PM, subBuilder: SynhUser.create)
+    ..pc<SynhUser>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'newUsers', $pb.PbFieldType.PM, protoName: 'newUsers', subBuilder: SynhUser.create)
     ..pc<SynhChat>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'chats', $pb.PbFieldType.PM, subBuilder: SynhChat.create)
     ..pc<SynhMessage>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'messages', $pb.PbFieldType.PM, subBuilder: SynhMessage.create)
+    ..pc<SynhUser>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'updatedUsers', $pb.PbFieldType.PM, protoName: 'updatedUsers', subBuilder: SynhUser.create)
     ..hasRequiredFields = false
   ;
 
   DataDBResponse._() : super();
   factory DataDBResponse({
-    $core.Iterable<SynhUser>? users,
+    $core.Iterable<SynhUser>? newUsers,
     $core.Iterable<SynhChat>? chats,
     $core.Iterable<SynhMessage>? messages,
+    $core.Iterable<SynhUser>? updatedUsers,
   }) {
     final _result = create();
-    if (users != null) {
-      _result.users.addAll(users);
+    if (newUsers != null) {
+      _result.newUsers.addAll(newUsers);
     }
     if (chats != null) {
       _result.chats.addAll(chats);
     }
     if (messages != null) {
       _result.messages.addAll(messages);
+    }
+    if (updatedUsers != null) {
+      _result.updatedUsers.addAll(updatedUsers);
     }
     return _result;
   }
@@ -525,12 +697,15 @@ class DataDBResponse extends $pb.GeneratedMessage {
   static DataDBResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<SynhUser> get users => $_getList(0);
+  $core.List<SynhUser> get newUsers => $_getList(0);
 
   @$pb.TagNumber(2)
   $core.List<SynhChat> get chats => $_getList(1);
 
   @$pb.TagNumber(3)
   $core.List<SynhMessage> get messages => $_getList(2);
+
+  @$pb.TagNumber(4)
+  $core.List<SynhUser> get updatedUsers => $_getList(3);
 }
 
