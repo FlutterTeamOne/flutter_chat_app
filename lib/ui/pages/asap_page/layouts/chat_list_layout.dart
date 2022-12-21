@@ -56,7 +56,12 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                 ? 0
                                 : widget.messageModel.length - 1;
                             return UserCardWidget(
-                              sender: checkSender,
+                              sender: !checkSender(widget
+                                      .messageModel[lastMessageId].senderId)
+                                  ? userBloc.state.users![index].name
+                                  : 'You',
+                              // checkSender(widget.messageModel[lastMessageId].senderId),
+                              // ? userBloc.state.users[index].name:'You'),
                               selected: false,
                               onTap: () {
                                 chatBloc.add(GetChatIdEvent(friendId));
