@@ -1,45 +1,11 @@
 syntax = 'proto3';
 
 service GrpcUsers {
-    rpc UsersSync(UsersRequest) returns (UsersResponse);
+    
     rpc getUser (GetUserRequest) returns (GetUserResponse);
     rpc createUser (CreateUserRequest) returns (CreateUserResponse);
     rpc updateUser (UpdateUserRequest) returns (UpdateUserResponse);
     rpc deleteUser (DeleteUserRequest) returns (DeleteUserResponse);
-}
-
-message UserRequest{
-    int32 userId = 1;
-    string updatedDate = 2;
-}
-
-message UsersRequest {
-    repeated UserRequest users = 1;
-}
-
-message NewUserResponse{
-    int32 userId = 1;
-    string name= 2;
-    string email = 3;
-    string profilePicUrl = 4;
-    string dateCreate = 5;
-    string dateUpdate = 6;
-    string dateDelete = 7;
-}
-
-message UpdatedUserResponse {
-    int32 userId = 1;
-    string name= 2;
-    string email = 3;
-    string profilePicUrl = 4;
-    string dateCreate = 5;
-    string dateUpdate = 6;
-    string dateDelete = 7;
-}
-
-message UsersResponse{ 
-    repeated NewUserResponse usersNew = 1;
-    repeated UpdatedUserResponse usersUpdated = 2;
 }
 
 message GetUserRequest {
