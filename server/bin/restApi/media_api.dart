@@ -25,32 +25,54 @@ class MediaApi {
       _file.writeAsStringSync(json.encode(data));
       return Response.ok(body, headers: _headers);
     });
+    //Запрос на добавление изображения
+    router.put('/', (Request request) async {
+      final body = await request.readAsString();
+      var resp = jsonDecode(body);
+      data.add(resp);
+      _file.writeAsStringSync(json.encode(data));
+      return Response.ok(body, headers: _headers);
+    });
+    //
+    router.delete('/<id>', (Request request, String id) async {
+      var imageId = int.parse(id);
+      final body = await request.readAsString();
+     data.removeWhere((chat) => chat['id'] == imageId);
+      _file.writeAsStringSync(json.encode(data));
+      return Response.ok(body, headers: _headers);
+    });
     return router;
   }
 }
 
 class ImageModel {
+  final int id;
   final String url;
   ImageModel({
+    required this.id,
     required this.url,
   });
 
   ImageModel copyWith({
+    int? id,
     String? url,
   }) {
     return ImageModel(
+      id: id ?? this.id,
       url: url ?? this.url,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'url': url,
     };
   }
 
   factory ImageModel.fromMap(Map<String, dynamic> map) {
     return ImageModel(
+      id: map['id']?.toInt() ?? 0,
       url: map['url'] ?? '',
     );
   }
@@ -61,15 +83,15 @@ class ImageModel {
       ImageModel.fromMap(json.decode(source));
 
   @override
-  String toString() => 'ImageModel(url: $url)';
+  String toString() => 'ImageModel(id: $id, url: $url)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ImageModel && other.url == url;
+    return other is ImageModel && other.id == id && other.url == url;
   }
 
   @override
-  int get hashCode => url.hashCode;
+  int get hashCode => id.hashCode ^ url.hashCode;
 }
