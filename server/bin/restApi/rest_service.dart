@@ -9,6 +9,7 @@ class RestService {
     final router = Router();
     router.mount('/chats/', ChatApi().router);
     router.mount('/images/', MediaApi().router);
+    router.all('/<ignored|.*>', (Request request) => Response.notFound('null'));
     return router;
   }
 }

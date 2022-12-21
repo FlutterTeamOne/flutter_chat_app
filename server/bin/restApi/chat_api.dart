@@ -27,10 +27,20 @@ class ChatApi {
       _file.writeAsStringSync(json.encode(data));
       return Response.ok(body, headers: _headers);
     });
+    router.delete('/', (Request request) async {
+      final body = await request.readAsString();
+      print('body: $body');
+      var resp = jsonDecode(body);
+      data.remove(resp);
+      _file.writeAsStringSync(json.encode(data));
 
+      return Response.ok(body, headers: _headers);
+    });
     //запрос на удаление чата по ид
-    router.delete('/<id>', (Request request, int id) {
-      data.removeWhere((chat) => chat.chatId == id);
+    router.delete('/<id>', (Request request, String id) {
+      var chatId = int.tryParse(id);
+      data.removeWhere((chat) => chat['chat_id'] == chatId);
+      _file.writeAsStringSync(json.encode(data));
       return Response.ok('Удалено');
     });
     //запрос на редактирования чата по ид
@@ -38,7 +48,14 @@ class ChatApi {
       data[data.indexWhere((element) => element.id == id)];
       return Response.ok(data);
     });
-
+    //запрос на добавление чата в список чаты
+    router.put('/', (Request request) async {
+      final body = await request.readAsString();
+      var resp = jsonDecode(body);
+      data.add(resp);
+      _file.writeAsStringSync(json.encode(data));
+      return Response.ok(body, headers: _headers);
+    });
     //запрос на поиск чата по ид
     router.get('/<id>', (Request requst, int id) {
       final chat = data.firstWhere(

@@ -1,1 +1,49 @@
-[{"chat_id":1,"friend1_id":1,"friend2_id":2,"created_date":"","updated_date":"","deleted_date":null},{"chat_id":2,"friend1_id":1,"friend2_id":2,"created_date":"2022-12-20T20:51:20.306233","updated_date":"2022-12-20T20:51:20.310232","deleted_date":null},{"chat_id":2,"friend1_id":1,"friend2_id":2,"created_date":"2022-12-20T21:47:39.332697","updated_date":"2022-12-20T21:47:39.335697","deleted_date":null},{"chat_id":2,"friend1_id":1,"friend2_id":2,"created_date":"2022-12-20T22:05:25.912997","updated_date":"2022-12-20T22:05:25.915997","deleted_date":null}]
+[{
+        "chat_id": 2,
+        "friend1_id": 2,
+        "friend2_id": 3,
+        "created_date": "2022-12-20T22:55:07.460195",
+        "updated_date": "2022-12-20T22:55:07.464194",
+        "deleted_date": null
+    },
+    {
+        "chat_id": 2,
+        "friend1_id": 2,
+        "friend2_id": 3,
+        "created_date": "2022-12-20T22:55:36.127241",
+        "updated_date": "2022-12-20T22:55:36.131257",
+        "deleted_date": null
+    },
+    {
+        "chat_id": 2,
+        "friend1_id": 2,
+        "friend2_id": 3,
+        "created_date": "2022-12-20T22:56:48.118139",
+        "updated_date": "2022-12-20T22:56:48.121160",
+        "deleted_date": null
+    },
+    {
+        "chat_id": 2,
+        "friend1_id": 2,
+        "friend2_id": 3,
+        "created_date": "2022-12-20T22:57:16.665142",
+        "updated_date": "2022-12-20T22:57:16.669146",
+        "deleted_date": null
+    },
+    {
+        "chat_id": 2,
+        "friend1_id": 2,
+        "friend2_id": 3,
+        "created_date": "2022-12-20T22:58:53.891139",
+        "updated_date": "2022-12-20T22:58:53.894139",
+        "deleted_date": null
+    },
+    {
+        "chat_id": 2,
+        "friend1_id": 2,
+        "friend2_id": 3,
+        "created_date": "2022-12-21T10:36:40.890231",
+        "updated_date": "2022-12-21T10:36:40.893231",
+        "deleted_date": null
+    }
+]

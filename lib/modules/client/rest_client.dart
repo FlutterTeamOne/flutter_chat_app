@@ -26,7 +26,7 @@ class RestClient {
     var restChat;
     try {
       //возвращает один созданные элемент
-      var resp = await _dio.post(chatUrl, data: chat.toJson());
+      var resp = await _dio.put(chatUrl, data: chat.toJson());
       if (resp.statusCode == 200) {
         restChat = resp;
       }
@@ -34,5 +34,13 @@ class RestClient {
       print(e);
     }
     return restChat;
+  }
+
+  Future deleteChatRest({required int id}) async {
+    var chatUrl = '$_url/chats';
+    try {
+      var resp = await _dio.delete('$chatUrl/$id');
+      print('DEL RESP:$resp');
+    } catch (e) {}
   }
 }

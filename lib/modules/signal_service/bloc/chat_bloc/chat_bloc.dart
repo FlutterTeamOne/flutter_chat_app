@@ -63,6 +63,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       DeleteChatEvent event, Emitter<ChatState> emit) async {
     //TODO: func delete chat
     await _chatServices.deleteChat(id: event.chatId);
+    //запрос на удаление к рест серверу
+    await RestClient().deleteChatRest(id:event.chatId);
     print('CHAT ID: ${event.chatId}');
   }
 
