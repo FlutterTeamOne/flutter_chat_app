@@ -48,7 +48,7 @@ class AppCardWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(
                 left: 6,
-                bottom: 5,
+                bottom: 3,
                 top: 5,
               ),
               child: SelectableText(
