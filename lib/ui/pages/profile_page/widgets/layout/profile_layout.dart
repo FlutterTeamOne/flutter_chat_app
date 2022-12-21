@@ -9,7 +9,7 @@ class _ProfileLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
-       late UserDto userMain;
+        late UserDto userMain;
         for (var user in state.users!) {
           if (user.userId == UserPref.getUserId) {
             userMain = user;
@@ -112,11 +112,14 @@ class _ProfileLayout extends StatelessWidget {
                                                 BorderRadius.circular(20.0),
                                           ))),
                                           onPressed: () async {
-                                            context.read<UserBloc>().add(ChangeUserEvent(userDb: true));
-                                            context.read<UserBloc>().add(ReadUsersEvent());
+                                            context.read<UserBloc>().add(
+                                                ChangeUserEvent(userDb: true));
+                                            context
+                                                .read<UserBloc>()
+                                                .add(ReadUsersEvent());
                                             // context.read<ChatBloc>().close();
                                             //закрыть базу
-                                            await DBHelper.instanse.close();
+                                            // await DBHelper.instanse.close();
                                             await DBHelper.instanse.deleteDB();
                                             // context
                                             //     .read<UserBloc>()
