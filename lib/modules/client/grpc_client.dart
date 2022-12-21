@@ -24,6 +24,11 @@ class GrpcClient {
         options: CallOptions(timeout: Duration(seconds: 30)));
     var request = DeleteUserRequest()..id = userId;
     var response = await stub.deleteUser(request);
+    try {
+      response = await stub.deleteUser(request);
+    } catch (e) {
+      print(e);
+    }
     print('User delete: $response');
     return response;
   }

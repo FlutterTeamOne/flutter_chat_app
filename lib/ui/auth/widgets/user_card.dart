@@ -40,7 +40,7 @@ class _UserCardState extends State<UserCard> {
         ),
         Text(
           widget.user.email,
-          style: const TextStyle(fontSize: 50),
+          style: Theme.of(context).textTheme.headline6,
         ),
         // const SizedBox(height: 10),
       ],
