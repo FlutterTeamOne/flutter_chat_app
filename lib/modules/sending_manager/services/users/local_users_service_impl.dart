@@ -126,6 +126,13 @@ class LocalUsersServices implements ILocalUsersServices {
         'UPDATE ${DatabaseConst.userTable} SET $newValues WHERE $condition');
   }
 
+  Future<int> updateUserStart(
+      {required String newValues, required String condition}) async {
+    var db = await DBHelperStart.instanse.database;
+    return await db.rawUpdate(
+        'UPDATE ${DatabaseConst.userTable} SET $newValues WHERE $condition');
+  }
+
   Future getLastUserId() async {
     var db = await DBHelperStart.instanse.database;
     var lastUser = await db.rawQuery('''
@@ -134,6 +141,15 @@ class LocalUsersServices implements ILocalUsersServices {
               ''');
     print(lastUser);
     return lastUser[0]['user_id'] ?? 0;
+  }
+
+  Future<List<Map<String, Object?>>> getAllUserIdAndUpdated() async {
+    var db = await DBHelperStart.instanse.database;
+    var users = await db.rawQuery('''
+              SELECT user_id, updated_date
+              FROM users
+              ''');
+    return users;
   }
 
   @override
