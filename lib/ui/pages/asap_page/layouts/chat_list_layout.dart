@@ -53,6 +53,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                 ? 0
                                 : widget.messageModel.length - 1;
                             return UserCardWidget(
+                              sender: 'You',
                               selected: false,
                               onTap: () {
                                 context
