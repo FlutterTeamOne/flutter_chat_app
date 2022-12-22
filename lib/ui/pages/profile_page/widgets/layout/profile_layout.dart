@@ -53,9 +53,89 @@ class _ProfileLayout extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline6,
                   ),
                   const SizedBox(height: 2),
-                  Text(
-                    userMain.name ?? 'unknow',
-                    style: Theme.of(context).textTheme.bodyText2,
+                  Row(
+                    children: [
+                      Text(
+                        userMain.name ?? 'unknow',
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            // Пример решения
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  TextEditingController newNameController =
+                                      TextEditingController();
+                                  return SizedBox(
+                                    height: 100,
+                                    width: 200,
+                                    child: Dialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Text('Insert image link'),
+                                          TextField(
+                                            controller: newNameController =
+                                                TextEditingController(),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: ElevatedButton(
+                                                style: ButtonStyle(
+                                                    shape: MaterialStateProperty
+                                                        .all<RoundedRectangleBorder>(
+                                                            RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20.0),
+                                                ))),
+                                                onPressed: () {
+                                                  String updatedDate =
+                                                      DateTime.now()
+                                                          .toIso8601String();
+                                                  late String newName =
+                                                      newNameController.text;
+                                                  UserDto user = context
+                                                      .read<UserBloc>()
+                                                      .state
+                                                      .users![0];
+                                                  var updatedUser = UserDto(
+                                                      userId: user.userId,
+                                                      name: newName,
+                                                      email: user.email,
+                                                      createdDate:
+                                                          user.createdDate,
+                                                      profilePicLink:
+                                                          user.profilePicLink,
+                                                      updatedDate: updatedDate);
+                                                  context.read<UserBloc>().add(
+                                                      UpdateUserEvent(
+                                                          user: updatedUser,
+                                                          userDb: true));
+
+                                                  context.read<UserBloc>().add(
+                                                      ChangeUserEvent(
+                                                          userDb: true));
+                                                  context
+                                                      .read<UserBloc>()
+                                                      .add(ReadUsersEvent());
+                                                  print(newName);
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Icon(Icons.check)),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                });
+                          },
+                          icon: Icon(Icons.read_more))
+                    ],
                   ),
                   const SizedBox(height: 10),
                   Text(
