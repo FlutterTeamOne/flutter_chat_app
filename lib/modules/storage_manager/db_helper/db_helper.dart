@@ -199,7 +199,7 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
       {required String tableName, required Map<String, dynamic> model}) async {
     var db = await instanse.database;
     await db.transaction((txn) async {
-  await txn.insert(tableName, model);
+      await txn.insert(tableName, model);
     });
     _updateListen();
   }
@@ -229,7 +229,8 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
     _updateListen();
   }
 
-  Future updateChatUpdatedDate({required int id, required String updatedDate}) async {
+  Future updateChatUpdatedDate(
+      {required int id, required String updatedDate}) async {
     var db = await instanse.database;
     await db.transaction((txn) async {
       await txn.execute('''
@@ -238,12 +239,10 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
         WHERE (chat_id = $id)
       ''');
 
-      return await txn.execute(
-        '''SELECT * FROM chats
+      return await txn.execute('''SELECT * FROM chats
           WHERE 
           (chat_id = $id)
-        '''
-      );
+        ''');
     });
   }
 

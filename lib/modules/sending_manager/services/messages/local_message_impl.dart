@@ -1,3 +1,4 @@
+import 'package:chat_app/domain/data/dto/attach_dto/attach_dto.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 
 import '../../../../src/constants/db_constants.dart';
@@ -82,20 +83,26 @@ class LocalMessagesServices implements ILocalMessagesServices {
     // // return
   }
 
-
   @override
   Future<int> deleteMessage({required int id}) async {
     var db = await DBHelper.instanse.database;
 
-    return await db
-        .rawDelete('''DELETE FROM ${DatabaseConst.messageTable}  WHERE ${DatabaseConst.messagesColumnMessageId}=?''',[id]);
+    return await db.rawDelete(
+        '''DELETE FROM ${DatabaseConst.messageTable}  WHERE ${DatabaseConst.messagesColumnMessageId}=?''',
+        [id]);
   }
-Future<int> deleteMessageFromBase({required int id,required String dateDelete}) async {
+
+  Future<int> deleteMessageFromBase(
+      {required int id, required String dateDelete}) async {
     var db = await DBHelper.instanse.database;
 
-    return await db
-        .rawDelete('''DELETE FROM ${DatabaseConst.messageTable}  WHERE ${DatabaseConst.messagesColumnMessageId}=?''',[id,]);
+    return await db.rawDelete(
+        '''DELETE FROM ${DatabaseConst.messageTable}  WHERE ${DatabaseConst.messagesColumnMessageId}=?''',
+        [
+          id,
+        ]);
   }
+
   @override
   Future<List<MessageDto>> getAllMessages() async {
     var db = await DBHelper.instanse.database;
@@ -106,8 +113,8 @@ Future<int> deleteMessageFromBase({required int id,required String dateDelete}) 
 
   Future<List<MessageDto>> getAllMessagesNotNull() async {
     var db = await DBHelper.instanse.database;
-    var message = await db
-        .rawQuery('SELECT * FROM ${DatabaseConst.messageTable} WHERE ${DatabaseConst.messagesColumnMessageId} IS NOT NULL');
+    var message = await db.rawQuery(
+        'SELECT * FROM ${DatabaseConst.messageTable} WHERE ${DatabaseConst.messagesColumnMessageId} IS NOT NULL');
 
     return message.map((item) => MessageDto.fromMap(item)).toList();
   }
@@ -115,8 +122,8 @@ Future<int> deleteMessageFromBase({required int id,required String dateDelete}) 
   @override
   Future<Map<String, Object?>> getMessageById({required int id}) async {
     var db = await DBHelper.instanse.database;
-    var message = await db
-        .rawQuery('SELECT * FROM ${DatabaseConst.messageTable}  where ${DatabaseConst.messagesColumnLocalMessagesId} = $id');
+    var message = await db.rawQuery(
+        'SELECT * FROM ${DatabaseConst.messageTable}  where ${DatabaseConst.messagesColumnLocalMessagesId} = $id');
     return message[0];
   }
 
@@ -124,8 +131,9 @@ Future<int> deleteMessageFromBase({required int id,required String dateDelete}) 
   Future<List<Map<String, Object?>>> getMessagesByChatId(
       {required int chatID}) async {
     var db = await DBHelper.instanse.database;
-    var messages  = await db
-        .rawQuery('SELECT * FROM ${DatabaseConst.messageTable}  WHERE ${DatabaseConst.messagesColumnChatId}=?',[chatID]);
+    var messages = await db.rawQuery(
+        'SELECT * FROM ${DatabaseConst.messageTable}  WHERE ${DatabaseConst.messagesColumnChatId}=?',
+        [chatID]);
     return messages;
   }
 
@@ -133,15 +141,15 @@ Future<int> deleteMessageFromBase({required int id,required String dateDelete}) 
   Future<List<Map<String, Object?>>> getMessagesBySenderId(
       {required int senderID}) async {
     var db = await DBHelper.instanse.database;
-    var messages  = await db
-        .rawQuery('SELECT * FROM ${DatabaseConst.messageTable}  WHERE ${DatabaseConst.messagesColumnSenderId}=?',[senderID]);
+    var messages = await db.rawQuery(
+        'SELECT * FROM ${DatabaseConst.messageTable}  WHERE ${DatabaseConst.messagesColumnSenderId}=?',
+        [senderID]);
     return messages;
   }
 
   @override
   Future updateMessage(
       {required MessageDto message, required int localMessageId}) async {
-    
     await DBHelper.instanse.onUpdate(
         tableName: 'messages',
         column: DatabaseConst.messagesColumnLocalMessagesId,
@@ -164,7 +172,8 @@ Future<int> deleteMessageFromBase({required int id,required String dateDelete}) 
     var db = await DBHelper.instanse.database;
     await db.rawUpdate('''UPDATE ${DatabaseConst.messageTable}
     SET ${DatabaseConst.messagesColumnMessageId}=?,${DatabaseConst.messagesColumnUpdatedDate}=?,${DatabaseConst.messagesColumnContent}=?
-    WHERE ${DatabaseConst.messagesColumnMessageId} = $messageId''',[messageId,updateDate,content]);
+    WHERE ${DatabaseConst.messagesColumnMessageId} = $messageId''',
+        [messageId, updateDate, content]);
   }
 
   updateWrittenToServer(
@@ -173,24 +182,20 @@ Future<int> deleteMessageFromBase({required int id,required String dateDelete}) 
       required String updatedDate}) async {
     var db = await DBHelper.instanse.database;
 
-    await db.rawUpdate(
-      ''' UPDATE ${DatabaseConst.messageTable}
+    await db.rawUpdate(''' UPDATE ${DatabaseConst.messageTable}
           SET ${DatabaseConst.messagesColumnMessageId}=?, ${DatabaseConst.messagesColumnUpdatedDate}=?
           WHERE ${DatabaseConst.messagesColumnLocalMessagesId} = $localMessageId
-                ''',[messagesId,updatedDate]
-    );
+                ''', [messagesId, updatedDate]);
   }
 
   deleteWrittenToServer(
       {required int localMessageId, required String deletedDate}) async {
     var db = await DBHelper.instanse.database;
 
-    await db.rawUpdate(
-      ''' UPDATE ${DatabaseConst.messageTable}
+    await db.rawUpdate(''' UPDATE ${DatabaseConst.messageTable}
           SET ${DatabaseConst.messagesColumnDeletedDate}=?
           WHERE ${DatabaseConst.messagesColumnLocalMessagesId} = $localMessageId
-                ''',[deletedDate]
-    );
+                ''', [deletedDate]);
   }
 
   @override
@@ -211,5 +216,10 @@ Future<int> deleteMessageFromBase({required int id,required String dateDelete}) 
                 FROM ${DatabaseConst.messageTable}
                 ''');
     return (messageId[0][DatabaseConst.messagesColumnMessageId] ?? 0) as int;
+  }
+
+  Future addAttach(AttachModel model) async {
+    return await DBHelper.instanse
+        .onAdd(tableName: DatabaseConst.attachmentsTable, model: model.toMap());
   }
 }

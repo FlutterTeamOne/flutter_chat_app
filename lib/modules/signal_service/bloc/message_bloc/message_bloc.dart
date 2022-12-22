@@ -126,14 +126,10 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       CreateMessageEvent event, Emitter<MessageState> emit) async {
     var message = event.message;
     var mediaPath = event.mediaPath;
-    // var model = message.writeToJsonMap();
-    // var chats = LocalChatServices();
+    
     print('MESSAGE: $message');
-
-    // DBHelper.instanse
-    //     .onAdd(tableName: 'messages', model: messageMapToDB(model));
-    if (mediaPath == null) {
-      if(message!=null){
+     //отправка текстового сообщения
+    if (mediaPath == null && message != null) {
       if (message.localMessageId == null) {
         message.localMessageId = await _messagesServices.addNewMessage(
           chatId: message.chatId,
@@ -153,16 +149,19 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         messageController.add(DynamicRequest(
             createMessage: request,
             messageState: MessageStateEnum.isCreateMessage));
-      }}
-    } else {
+      }
+    } 
+    //отправка сообщения с медиа
+    else {
       //запрос в рест на добавление медиа
-    var resp=  await RestClient().sendImageRest(path: mediaPath );
-    
+      var resp = await RestClient().sendImageRest(path: mediaPath!);
+
       //получаем обратно attach id
       //записываем всю информацию об сообщении в локальное хранилище
+      await _messagesServices.addAttach(resp);
+      //записать в локальное хранилище новое сообщение
       //и отправляем через grpc второму клиенту
     }
-    
   }
 
   ///
@@ -243,4 +242,3 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     return super.close();
   }
 }
-
