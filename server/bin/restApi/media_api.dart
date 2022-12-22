@@ -4,42 +4,49 @@ import 'dart:io';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-class MediaApi {
-  static const String _images = 'server/bin/restApi/images.json';
-  static const _headers = {'Content-Type': 'application/json'};
-  final _file = File(_images);
+import 'image/image_sender.dart';
 
-  final List data = json.decode(File(_images).readAsStringSync());
+class MediaApi {
+  static const _headers = {'Content-Type': 'application/json'};
+  // final _file = File(_images);
+  final _sender = ImageSender();
 
   Router get router {
     final router = Router();
     //Запрос на получение списка изображений
-    router.get('/',
-        (Request request) => Response.ok(json.encode(data), headers: _headers));
-
+    router.get('/', (Request request) async {
+      var req = await request.readAsString();
+      var id = jsonDecode(req);
+      var data = await _sender.getImage(id: id);
+      return Response.ok(json.encode(data), headers: _headers);
+    });
+    router.get('/<id>', (Request request, String id) async {
+      var imageId = int.parse(id);
+      var data = await _sender.getImage(id: imageId);
+      return Response.ok(json.encode(data), headers: _headers);
+    });
     //Запрос на добавление изображения
     router.post('/', (Request request) async {
       final body = await request.readAsString();
-      var resp = jsonDecode(body);
-      data.add(resp);
-      _file.writeAsStringSync(json.encode(data));
-      return Response.ok(body, headers: _headers);
+      var bodyDecode = jsonDecode(body);
+      var resp =
+          await _sender.uploadImage(bodyDecode['path']);
+
+      return Response.ok(resp, headers: _headers);
     });
     //Запрос на добавление изображения
     router.put('/', (Request request) async {
       final body = await request.readAsString();
       var resp = jsonDecode(body);
-      data.add(resp);
-      _file.writeAsStringSync(json.encode(data));
+
       return Response.ok(body, headers: _headers);
     });
     //
-    router.delete('/<id>', (Request request, String id) async {
+    router.delete('/', (Request request) async {
+      var id = await request.readAsString();
       var imageId = int.parse(id);
-      final body = await request.readAsString();
-     data.removeWhere((chat) => chat['id'] == imageId);
-      _file.writeAsStringSync(json.encode(data));
-      return Response.ok(body, headers: _headers);
+      var resp = await _sender.deleteImage(id: imageId);
+      return Response.ok(resp, headers: _headers);
     });
     return router;
   }

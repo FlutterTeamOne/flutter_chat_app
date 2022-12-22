@@ -7,6 +7,7 @@ abstract class IMessagesDBServices {
     required int chatId,
     required int senderId,
     required String content,
+    required int attachmentId
   });
 
   getMessageById({required int id});

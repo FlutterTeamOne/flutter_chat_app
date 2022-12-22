@@ -37,7 +37,7 @@ class _ProfileLayout extends StatelessWidget {
                     await DBHelper.instanse.close();
                     Navigator.of(context).pop();
                   },
-                  icon: Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back),
                 ),
               ],
             ),

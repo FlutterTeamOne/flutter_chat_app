@@ -1,82 +1,91 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:server/src/library/library_server.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-final chats = <Chats>[];
 
 class ChatApi {
-  static const String _chats = 'server/bin/restApi/chat.json';
+  // static const String _chats = 'server/bin/restApi/chat.json';
   static const _headers = {'Content-Type': 'application/json'};
-  final _file = File(_chats);
-
-  final List data = json.decode(File(_chats).readAsStringSync());
+  // final _file = File(_chats);
+  static final _chatService = ChatsServices();
+  // final List data = json.decode(File(_chats).readAsStringSync());
   Router get router {
     final router = Router();
 
     //запрос к чатам
-    router.get('/',
-        (Request request) => Response.ok(json.encode(data), headers: _headers));
-    router.get('/<user_id>', (Request request, String userId) {
+    router.get('/', (Request request) async {
+      var chats = await _chatService.getAllChats();
+      return Response.ok(json.encode(chats), headers: _headers);
+    });
+    router.get('/<user_id>', (Request request, String userId) async {
       final id = int.parse(userId);
-      var chats = data.where((el) => el['user_id'] == id);
-      print('get chats: $chats');
+      var chats = await  _chatService.getChatsByUserId(userId: id);
+      print('got chats: $chats');
+      return Response.ok(json.encode(chats), headers: _headers);
+    });
+    router.get('/<chat_id>', (Request request, String chatId) async {
+      final id = int.parse(chatId);
+      var chats = await  _chatService.getChatById(id: id);
+      print('got chats: $chats');
       return Response.ok(json.encode(chats), headers: _headers);
     });
     //запрос на добавление в чата в список чатов
     router.post('/', (Request request) async {
       final body = await request.readAsString();
       var resp = jsonDecode(body);
-      data.add(resp);
-      _file.writeAsStringSync(json.encode(data));
+
+      await _chatService.createChat(
+          friend1Id: resp['friend1_id'],
+          friend2Id: resp['friend2_id'],
+          date: resp['date']);
       return Response.ok(body, headers: _headers);
     });
     router.delete('/', (Request request) async {
       final body = await request.readAsString();
-      print('body: $body');
-      var resp = jsonDecode(body);
-      data.remove(resp);
-      _file.writeAsStringSync(json.encode(data));
+      var id = int.parse(body);
+      await _chatService.deleteChat(id: id);
 
-      return Response.ok(body, headers: _headers);
+      return Response.ok('Чат удален', headers: _headers);
     });
     //запрос на удаление чата по ид
-    router.delete('/<id>', (Request request, String id) {
+    router.delete('/<id>', (Request request, String id) async {
       var chatId = int.tryParse(id);
-      data.removeWhere((chat) => chat['chat_id'] == chatId);
-      _file.writeAsStringSync(json.encode(data));
-      return Response.ok('Удалено');
+      if (chatId != null) {
+        await ChatsServices().deleteChat(id: chatId);
+      }
+      return Response.ok('Удалено', headers: _headers);
     });
     //запрос на редактирования чата по ид
-    router.post('/<id>', (Request request, int id) {
-      data[data.indexWhere((element) => element.id == id)];
-      return Response.ok(data);
-    });
+    // router.post('/<id>', (Request request, int id) {
+    //   data[data.indexWhere((element) => element.id == id)];
+    //   return Response.ok(data);
+    // });
     //запрос на добавление чата в список чаты
     router.put('/', (Request request) async {
       final body = await request.readAsString();
       var resp = jsonDecode(body);
-      data.add(resp);
-      _file.writeAsStringSync(json.encode(data));
+
+      await _chatService.createChat(friend1Id: resp['friend1_id'], friend2Id: resp['friend2_id'], date: resp['date']);
       return Response.ok(body, headers: _headers);
     });
     //запрос на поиск чата по ид
-    router.get('/<id>', (Request requst, int id) {
-      final chat = data.firstWhere(
-        (chat) => chat.chatId == id,
-      );
-      return chat.chatId.isNaN
+    router.get('/<id>', (Request requst, String id) async {
+      var chatId = int.parse(id);
+      var chat = await _chatService.getChatById(id: chatId);
+      return chat['chat_id'] != null
           ? Response.ok(json.encode(chat), headers: _headers)
           : Response.notFound('Чат не найден');
     });
     return router;
   }
 
-  Future<File> writeCounter(int counter) async {
-    // Write the file
-    return _file.writeAsString('$counter');
-  }
+  // Future<File> writeCounter(int counter) async {
+  //   // Write the file
+  //   return _file.writeAsString('$counter');
+  // }
 }
 
 class Chats {
