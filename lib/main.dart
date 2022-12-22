@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<ChatBloc>(
           create: (context) =>
               ChatBloc(userBloc: UserBloc())
-              // ..add(ReadChatEvent()),
+              ..add(ReadChatEvent()),
         ),
         BlocProvider<MessageBloc>(
           create: (context) => MessageBloc(

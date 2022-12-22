@@ -6,11 +6,11 @@ abstract class MessageEvent extends Equatable {
 }
 
 class CreateMessageEvent extends MessageEvent {
-  final MessageDto message;
+  final MessageDto? message;
   final String? mediaPath;
 
   CreateMessageEvent( {
-    required this.message,
+     this.message,
     this.mediaPath,
   });
 
