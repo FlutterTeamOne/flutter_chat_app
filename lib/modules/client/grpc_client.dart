@@ -58,23 +58,4 @@ class GrpcClient {
         profilePicLink: response.profilePicUrl,
         updatedDate: response.dateCreated);
   }
-
-  updateUser({required UserDto updatedUser}) async {
-    late GrpcUsersClient stub;
-    stub = GrpcUsersClient(channel,
-        options: CallOptions(timeout: Duration(seconds: 30)));
-    var request = UpdateUserRequest()
-      ..id = updatedUser.userId!
-      ..email = updatedUser.email
-      ..name = updatedUser.name
-      ..profilePicUrl = updatedUser.profilePicLink;
-    var response = UpdateUserResponse();
-    try {
-      response = await stub.updateUser(request);
-    } catch (e) {
-      print(e);
-    }
-    print(response);
-    return response;
-  }
 }

@@ -439,8 +439,8 @@ class GrpcUsers extends GrpcUsersServiceBase {
     var dateDeleted = DateTime.now().toIso8601String();
     var src = await UsersServices().updateUser(
         newValues:
-            "deleted_date = '$dateDeleted', updated_date = '$dateDeleted'",
-        condition: "user_id = '${request.id}'");
+            'deleted_date = "$dateDeleted", updated_date = "$dateDeleted"',
+        condition: 'user_id = ${request.id}');
     if (src != 0) {
       deleteUserResponse.isDeleted = true;
     }
@@ -477,8 +477,8 @@ class GrpcUsers extends GrpcUsersServiceBase {
     updateUserResponse.dateUpdated = DateTime.now().toIso8601String();
     var src = await UsersServices().updateUser(
         newValues:
-            "name = '${request.name}', email = '${request.email}', profile_pic_url = '${request.profilePicUrl}', password = '${request.password}', updated_date = '${updateUserResponse.dateUpdated}'",
-        condition: "user_id = '${request.id}'");
+            'name = ${request.name}, email = ${request.email}, profile_pic_url = ${request.profilePicUrl}, password = ${request.password}, updated_date = ${updateUserResponse.dateUpdated}',
+        condition: 'user_id = ${request.id}');
     if (src != 0) {
       updateUserResponse.isUpdated = true;
     }
