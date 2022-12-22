@@ -1,8 +1,5 @@
-import 'package:path/path.dart';
 
-import '../../library/library_server.dart';
 import 'package:sqflite_common/sqlite_api.dart';
-import "dart:io" as io;
 
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -69,13 +66,22 @@ class DbServerServices {
           sender_id        integer NOT NULL,
           content          char(50) NOT NULL,
           created_date     char(26) NOT NULL,
-          updated_date      char(26) NOT NULL,
-          deleted_date      char(26),
+          updated_date     char(26) NOT NULL,
+          deleted_date     char(26), 
+          attachment_id integer,      
           CONSTRAINT MESSAGES_FK_79 FOREIGN KEY ( chat_id ) REFERENCES chats ( chat_id ),
-          CONSTRAINT MESSAGES_FK_80 FOREIGN KEY ( sender_id ) REFERENCES users ( main_users_id ),
+          CONSTRAINT MESSAGES_FK_80 FOREIGN KEY ( sender_id ) REFERENCES users ( user_id ),
+          CONSTRAINT MESSAGES_FK_81 FOREIGN KEY ( attachment_id_fk ) REFERENCES attachments ( attachment_id ),
           CHECK (LENGTH(created_date) >= 26)
           )
         ''');
+      await txn.execute('''
+          CREATE TABLE attachments 
+          (
+          attachment_id     integer PRIMARY KEY AUTOINCREMENT,
+          attachment_meta   char(4096) NOT NULL
+          )
+      ''');
 
       await txn.execute('''
           CREATE INDEX FRIENDS_CHAT_FK_2 ON chats

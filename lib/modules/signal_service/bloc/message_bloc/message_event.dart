@@ -6,14 +6,16 @@ abstract class MessageEvent extends Equatable {
 }
 
 class CreateMessageEvent extends MessageEvent {
-  final MessageDto message;
+  final MessageDto? message;
+  final String? mediaPath;
 
-  CreateMessageEvent({
-    required this.message,
+  CreateMessageEvent( {
+     this.message,
+    this.mediaPath,
   });
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [message,mediaPath];
 }
 
 class ReadMessageEvent extends MessageEvent {

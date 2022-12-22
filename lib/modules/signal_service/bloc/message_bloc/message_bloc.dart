@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:chat_app/modules/client/rest_client.dart';
 import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:equatable/equatable.dart';
-import 'package:grpc/service_api.dart';
 
 import '../../../../src/libraries/library_all.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,11 +59,13 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
             content: updMsg.content,
             messageId: updMsg.idMessageMain,
             updateDate: updMsg.dateUpdate);
+
         print('id Message Main: ${updMsg.idMessageMain}');
         print('date update: ${updMsg.idMessageMain}');
 
         var messages = await _messagesServices.getAllMessages();
         print('sort message:$messages');
+
         add(ReadMessageEvent(messages: messages));
       } else if (value.messageState == MessageStateEnum.isDeleteMesage) {
         var del = value.deleteMessage;
@@ -71,7 +73,12 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         await _messagesServices.deleteMessageFromBase(
             id: del.idMessageMain, dateDelete: del.dateDelete);
         var messages = await _messagesServices.getAllMessages();
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/clien_server
         print('sort message:$messages');
+
         add(ReadMessageEvent(messages: messages));
       } else if (value.messageState == MessageStateEnum.isCreateMessage) {
         var msg = value.createMessage.message;
@@ -90,7 +97,6 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     DBHelper.instanse.updateListenController.stream.listen((event) async {
       if (event == true) {
         var messages = await _messagesServices.getAllMessages();
-        // messages.sort((a, b) => a.localMessageId!.compareTo(b.localMessageId!));
         print('sort message:$messages');
         add(ReadMessageEvent(messages: messages));
         // state.copyWith(messages: messages);
@@ -106,35 +112,15 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
   FutureOr<void> _onReadMessageEvent(
       ReadMessageEvent event, Emitter<MessageState> emit) async {
-    // var stub = GrpcMessagesClient(grpcClient.channel);
-    // var dyn = Stream<Dynamic>.value(
-    //   Dynamic(
-    //     messageState: MessageStateEnum.connecting,
-    //     createMessage: CreateMessageRequest(message: Message(senderId:1))
-    //   ),
-    // );
-    // var resp = stub.streamMessage(dyn);
-    // resp.listen((mes) async {
-    //   print(mes.readMessageRequest.message);
-    //   var e = mes.readMessageRequest.message;
-    //   event.messages?.add(MessageDto(
-    //       content: e.content,
-    //       localChatId: e.chatId,
-    //       localMessageId: e.messageId,
-    //       localSendId: e.senderId,
-    //       createdDate: e.dateCreate,
-    //       updatedDate: e.dateUpdate));
-    //   emit(state.copyWith(messages: event.messages));
-    //   messageController.add(mes);
-    // });
-
     if (event.messages == null || event.messages?.length == 1) {
       var messages = await _messagesServices.getAllMessages();
+
       print("MESSAGES:$messages");
 
       emit(state.copyWith(messages: messages));
     } else {
       print('EVENT MSG: ${event.messages}');
+
       emit(state.copyWith(messages: event.messages));
     }
   }
@@ -142,76 +128,42 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   FutureOr<void> _onCreateMessageEvent(
       CreateMessageEvent event, Emitter<MessageState> emit) async {
     var message = event.message;
+    var mediaPath = event.mediaPath;
     // var model = message.writeToJsonMap();
-    var chats = LocalChatServices();
+    // var chats = LocalChatServices();
     print('MESSAGE: $message');
 
     // DBHelper.instanse
     //     .onAdd(tableName: 'messages', model: messageMapToDB(model));
-    message.localMessageId = await _messagesServices.addNewMessage(
-      chatId: message.chatId,
-      senderId: await _mainUserServices.getUserID(),
-      content: message.content,
-      date: message.createdDate!,
-    );
-    var stub = GrpcMessagesClient(grpcClient.channel);
-    var request = CreateMessageRequest(
-        message: Message(
-            localMessgaeId: message.localMessageId,
-            messageId: message.messageId,
-            chatId: message.chatId,
-            content: message.content,
-            senderId: message.senderId));
-    //reqStream.add(request);
-    messageController.add(DynamicRequest(
-        createMessage: request,
-        messageState: MessageStateEnum.isCreateMessage));
-    // var messageToServer = CreateMessageRequest(
-    //     chatIdMain:
-    //         await chats.getMainIdChatByMessage(localId: message.localChatId),
-    //     content: message.content,
-    //     senderMainId:
-    //         await localUsersServices.getMainIdUserByLocalId(localId: 1));
-
-    // messageToServer.chatIdMain =
-    //     await chats.getMainIdChatByMessage(localId: message.localChatId);
-    // messageToServer.content = message.content;
-    // messageToServer.senderMainId = await localUsersServices
-    //     .getMainIdUserByLocalId(localId: 1); ////поменять запрос на mainUserTabl
-    // print('message to server \n $messageToServer');
-
-    // var messageResponse = await GrpcMessagesClient(grpcClient.channel)
-    //     .createMessage(messageToServer);
-    // messageResponse.mainMessagesId;
-    // print("messageOK:/n $messageResponse");
-    // grpcConnection.add(const GrpcConnectionStarted());
-    // await for (var grpcState in grpcConnection.stream) {
-    // print('get grpc State');
-    // // print('grpc message state2:${grpcState.connectState}');
-    // // if (grpcState.connectState == GrpcConnectState.ready) {
-    // // print('grpc message state3:${grpcState.connectState}');
-    // try {
-    //   print("messageOK:/n $messageResponse");
-    //   if (messageResponse.mainMessagesId != 0) {
-    //     await _messagesServices.updateWrittenToServer(
-    //         localMessageId: message.localMessageId!,
-    //         messagesId: messageResponse.mainMessagesId,
-    //         updatedDate: messageResponse.dateCreate);
-
-    //     emit(
-    //         state.copyWith(messages: await _messagesServices.getAllMessages()));
-    //   }
-    // } catch (e) {
-    //   print(e);
-    // }
-    // Stream<ConnectRequest> enter(int id) async* {
-    //   yield ConnectRequest(id: id);
-    // }
-
-    // stub.connectings(enter(1));
-    // // }
-    // // }
-    // // );
+    if (mediaPath == null) {
+      if (message.localMessageId == null) {
+        message.localMessageId = await _messagesServices.addNewMessage(
+          chatId: message.chatId,
+          senderId: await _mainUserServices.getUserID(),
+          content: message.content,
+          date: message.createdDate!,
+        );
+      }
+      if (message.messageId == null) {
+        var request = CreateMessageRequest(
+            message: Message(
+                localMessgaeId: message.localMessageId,
+                messageId: message.messageId,
+                chatId: message.chatId,
+                content: message.content,
+                senderId: message.senderId));
+        messageController.add(DynamicRequest(
+            createMessage: request,
+            messageState: MessageStateEnum.isCreateMessage));
+      }
+    } else {
+      //запрос в рест на добавление медиа
+    var resp=  await RestClient().sendImageRest(path: mediaPath );
+      //получаем обратно attach id
+      //записываем всю информацию об сообщении в локальное хранилище
+      //и отправляем через grpc второму клиенту
+    }
+    
   }
 
   ///

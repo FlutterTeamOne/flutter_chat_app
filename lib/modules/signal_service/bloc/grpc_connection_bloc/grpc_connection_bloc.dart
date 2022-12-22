@@ -1,10 +1,8 @@
 import 'dart:async';
 
-import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grpc/grpc.dart';
 
 part 'grpc_connection_event.dart';
 part 'grpc_connection_state.dart';

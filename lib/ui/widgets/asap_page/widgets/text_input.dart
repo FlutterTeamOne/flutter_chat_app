@@ -1,6 +1,8 @@
 ﻿import 'package:chat_app/modules/signal_service/library/library_signal_service.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/app_circle_button.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TextInputWidget extends StatefulWidget {
   const TextInputWidget({
@@ -43,12 +45,21 @@ class TextInputWidgetState extends State<TextInputWidget> {
             children: [
               const SizedBox(width: 10),
               AppCircleButtonWidget(
-                  onTap: () {}, icon: Icons.emoji_emotions_outlined),
+                  onTap: () async {
+                    var result = await FilePicker.platform.pickFiles();
+                    if (result == null) {
+                      return;
+                    }
+                    var file = result.files.first;
+                    print('FILE: $file');
+                    _sendPath(file.path!);
+                  },
+                  icon: Icons.emoji_emotions_outlined),
               const SizedBox(width: 10),
               Expanded(
                 flex: 9,
                 child: Column(
-                  children: [ 
+                  children: [
                     if (widget.editState == EditState.isPreparation)
                       Card(
                         child: ListTile(
@@ -108,5 +119,9 @@ class TextInputWidgetState extends State<TextInputWidget> {
         ],
       ),
     );
+  }
+
+  _sendPath(String path) {
+    context.read<MessageBloc>().add(CreateMessageEvent(mediaPath: path));
   }
 }
