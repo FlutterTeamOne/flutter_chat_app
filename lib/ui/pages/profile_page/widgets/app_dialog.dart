@@ -10,7 +10,7 @@ class _AppDialog extends StatelessWidget {
     return Center(
       child: Container(
         width: 350,
-        height: 200,
+        height: 240,
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           //
@@ -36,9 +36,18 @@ class _AppDialog extends StatelessWidget {
               children: [
                 // Способы загрузки фотографии
                 _LoadMethod(onTap: () {}, text: 'Load image'),
-                _LoadMethod(onTap: () {}, text: 'Load other'),
+                _LoadMethod(onTap: () {
+                  showDialog(context: context, builder: (BuildContext context) {
+                    return Dialog(child: Column(children: [
+                      Text('Insert image link'),
+                      TextField(),
+                      ElevatedButton(onPressed: () {Navigator.pop(context);}, child: Icon(Icons.check))
+                    ],),);
+                  });
+                }, text: 'Load image from url'),
               ],
             ),
+            Center(child: ElevatedButton(onPressed: (){Navigator.pop(context);}, child: Icon(Icons.close_rounded)))
           ],
         ),
       ),
