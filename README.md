@@ -87,3 +87,4 @@ dart .\server\lib\src\test_db\test.dart
 3. Выбрать bash
 ![image bash terminal is opened](assets/images/for_readme/20221210145042.png)
 
+test
