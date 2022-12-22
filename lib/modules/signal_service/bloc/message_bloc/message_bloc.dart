@@ -73,10 +73,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         await _messagesServices.deleteMessageFromBase(
             id: del.idMessageMain, dateDelete: del.dateDelete);
         var messages = await _messagesServices.getAllMessages();
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/clien_server
         print('sort message:$messages');
 
         add(ReadMessageEvent(messages: messages));
@@ -136,6 +133,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     // DBHelper.instanse
     //     .onAdd(tableName: 'messages', model: messageMapToDB(model));
     if (mediaPath == null) {
+      if(message!=null){
       if (message.localMessageId == null) {
         message.localMessageId = await _messagesServices.addNewMessage(
           chatId: message.chatId,
@@ -155,7 +153,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         messageController.add(DynamicRequest(
             createMessage: request,
             messageState: MessageStateEnum.isCreateMessage));
-      }
+      }}
     } else {
       //запрос в рест на добавление медиа
     var resp=  await RestClient().sendImageRest(path: mediaPath );
