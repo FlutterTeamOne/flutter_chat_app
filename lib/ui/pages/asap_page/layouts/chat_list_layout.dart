@@ -1,5 +1,6 @@
 ﻿import 'package:chat_app/ui/widgets/asap_page/widgets/search_field.dart';
 
+import '../../../../modules/storage_manager/db_helper/user_path.dart';
 import '../../../widgets/library/library_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +25,8 @@ class _ChatListLayoutState extends State<ChatListLayout> {
 
   @override
   Widget build(BuildContext context) {
+    final chatBloc = context.read<ChatBloc>();
+    final userBloc = context.read<UserBloc>();
     return Drawer(
         shape: Border(
             right: BorderSide(width: 1, color: Theme.of(context).dividerColor)),
@@ -53,22 +56,19 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                 ? 0
                                 : widget.messageModel.length - 1;
                             return UserCardWidget(
+                              sender: !checkSender(widget
+                                      .messageModel[lastMessageId].senderId)
+                                  ? userBloc.state.users![index].name
+                                  : 'You',
+                              // checkSender(widget.messageModel[lastMessageId].senderId),
+                              // ? userBloc.state.users[index].name:'You'),
                               selected: false,
                               onTap: () {
-                                context
-                                    .read<ChatBloc>()
-                                    .add(GetChatIdEvent(friendId));
+                                chatBloc.add(GetChatIdEvent(friendId));
                               },
-                              name: context
-                                  .read<UserBloc>()
-                                  .state
-                                  .users![friendId]
-                                  .name,
-                              image: context
-                                  .read<UserBloc>()
-                                  .state
-                                  .users![friendId]
-                                  .profilePicLink,
+                              name: userBloc.state.users![friendId].name,
+                              image: userBloc
+                                  .state.users![friendId].profilePicLink,
                               message: widget.messageModel.isNotEmpty
                                   ? widget.messageModel[lastMessageId].content
                                   : '',
@@ -104,4 +104,6 @@ class _ChatListLayoutState extends State<ChatListLayout> {
           ],
         ));
   }
+
+  bool checkSender(int id) => id == UserPref.getUserId ? true : false;
 }
