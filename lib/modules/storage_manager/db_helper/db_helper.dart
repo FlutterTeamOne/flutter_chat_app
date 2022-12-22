@@ -50,7 +50,7 @@ class DBHelper {
       //Таблица User
       await txn.execute('''
 CREATE TABLE ${DatabaseConst.userTable} (
-  ${DatabaseConst.usersColumnUserId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey},
+  ${DatabaseConst.usersColumnUserId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
   ${DatabaseConst.usersColumnName} ${DatabaseConst.char50} ${DatabaseConst.notNull},
   ${DatabaseConst.usersColumnEmail} ${DatabaseConst.char50} ${DatabaseConst.notNull},
   ${DatabaseConst.usersColumnProfilePicLink} ${DatabaseConst.char50} ${DatabaseConst.notNull},
@@ -91,12 +91,26 @@ CREATE TABLE ${DatabaseConst.messageTable} (
  ${DatabaseConst.messagesColumnContent} ${DatabaseConst.char50} ${DatabaseConst.notNull},
  ${DatabaseConst.messagesColumnUpdatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
  ${DatabaseConst.messagesColumnDeletedDate} ${DatabaseConst.char26}, 
+ ${DatabaseConst.messagesColumnAttachmentId} ${DatabaseConst.integer},
+
  ${DatabaseConst.constraint} MESSAGES_FK_79 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnChatId} ) ${DatabaseConst.references} ${DatabaseConst.chatsTable} ( ${DatabaseConst.chatsColumnChatId} ),
+
  ${DatabaseConst.constraint} MESSAGES_FK_80 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnSenderId} ) ${DatabaseConst.references} ${DatabaseConst.userTable} ( ${DatabaseConst.usersColumnUserId} ),
- CHECK ((is_read = 0) OR (is_read = 1))
+
+ ${DatabaseConst.constraint} MESSAGES_FK_81 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnAttachmentId} ) ${DatabaseConst.references} ${DatabaseConst.attachmentsTable} ( ${DatabaseConst.attachmentsColumnAttachmentId} ),
+
+ CHECK ((is_read = 0) OR (is_read = 1)),
  CHECK (LENGTH(${DatabaseConst.messagesColumnCreatedDate}) = 26)
 )
 ''');
+// Attachments table
+      await txn.execute('''
+          CREATE TABLE ${DatabaseConst.attachmentsTable} 
+          (
+          ${DatabaseConst.attachmentsColumnAttachmentId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
+          ${DatabaseConst.attachmentsColumnAttachmentMeta} ${DatabaseConst.char4096} ${DatabaseConst.notNull}
+          )
+      ''');
 // CHECK ((sender_is_user = 0) OR (sender_is_user = 1))
 
       await txn.execute('''
@@ -213,6 +227,24 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
       await txn.update(tableName, model, where: '$column=?', whereArgs: [id]);
     });
     _updateListen();
+  }
+
+  Future updateChatUpdatedDate({required int id, required String updatedDate}) async {
+    var db = await instanse.database;
+    await db.transaction((txn) async {
+      await txn.execute('''
+      INSERT INTO chats (updated_date)
+        VALUES ('$updatedDate')
+        WHERE (chat_id = $id)
+      ''');
+
+      return await txn.execute(
+        '''SELECT * FROM chats
+          WHERE 
+          (chat_id = $id)
+        '''
+      );
+    });
   }
 
 // ///Функция создания временной таблицы

@@ -77,11 +77,11 @@ Future<void> main() async {
   //   print(user);
   // }
 
-  print("Chats");
-  chats = await chatsServices.getChatsByUserId(userId: mainIdUser);
-  for (var chat in chats) {
-    print(chat);
-  }
+  // print("Chats");
+  // chats = await chatsServices.getChatsByUserId(userId: mainIdUser);
+  // for (var chat in chats) {
+  //   print(chat);
+  // }
 
   // print("Messages");
   // //await messagesService.addNewMessage(chatId: 1, senderId: 2, content: '222');
