@@ -6,10 +6,10 @@ class ImageSender {
   final _key = '903c9fb8e9c7996408d27ba9699f84a6';
   final _dio = Dio();
   final _attach = AttachmentServices();
-  Future uploadImage(String path, String filename) async {
-    var image = await MultipartFile.fromFile(path, filename: filename);
+  Future uploadImage(String path) async {
+    var image = await MultipartFile.fromFile(path, );
     FormData data =
-        FormData.fromMap({'key': _key, 'image': image, 'name': filename});
+        FormData.fromMap({'key': _key, 'image': image});
 
     var body = await _dio.put(_imgbb, data: data,
         onSendProgress: (int sent, int total) {

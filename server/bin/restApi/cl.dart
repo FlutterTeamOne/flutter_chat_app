@@ -18,8 +18,8 @@ void main(List<String> args) async {
       createdDate: DateTime.now().toIso8601String(),
       updatedDate: DateTime.now().toIso8601String());
 
-  var getRes = await dio.get(url);
-  print('GET RES: $getRes');
+  // var getRes = await dio.get(url);
+  // print('GET RES: $getRes');
 
   // var resp = await dio.post(url, data: chat.toJson());
   // print('DATA:${resp.data}');
@@ -33,18 +33,21 @@ void main(List<String> args) async {
   // };
   // var resp = await dio.put(url, data: data);
   // print('DATA:${resp.data}');
-  var filePath = File('server/bin/restApi/image/ppc.png');
-  var image = await MultipartFile.fromFile(filePath.path, filename: 'piedpapers');
-  FormData data = FormData.fromMap({
-    'key': key,
-    'image':image,
-    'name': 'rsf'
-  });
-  var resp =
-      await dio.post(imgbb, data: data, onSendProgress: (int sent, int total) {
-    print('post: $sent and $total');
-  });
-  print('resp:$resp');
+  // var filePath = File('server/bin/restApi/image/ppc.png');
+  // var image = await MultipartFile.fromFile(filePath.path, filename: 'piedpapers');
+  // FormData data = FormData.fromMap({
+  //   'key': key,
+  //   'image':image,
+  //   'name': 'rsf'
+  // });
+  // var resp =
+  //     await dio.post(imgbb, data: data, onSendProgress: (int sent, int total) {
+  //   print('post: $sent and $total');
+  // });
+  // print('resp:$resp');
+
+  var resp = await dio.get(imgbb, queryParameters: {'key': key});
+  print(resp);
 }
 // {"data":
 // {"id":"xHXZzYV",

@@ -20,13 +20,17 @@ class MediaApi {
       var data = await _sender.getImage(id: id);
       return Response.ok(json.encode(data), headers: _headers);
     });
-
+    router.get('/<id>', (Request request, String id) async {
+      var imageId = int.parse(id);
+      var data = await _sender.getImage(id: imageId);
+      return Response.ok(json.encode(data), headers: _headers);
+    });
     //Запрос на добавление изображения
     router.post('/', (Request request) async {
       final body = await request.readAsString();
       var bodyDecode = jsonDecode(body);
       var resp =
-          await _sender.uploadImage(bodyDecode['path'], bodyDecode['filename']);
+          await _sender.uploadImage(bodyDecode['path']);
 
       return Response.ok(resp, headers: _headers);
     });
