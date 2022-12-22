@@ -10,6 +10,7 @@ class DatabaseConst {
   static const chatsTable = 'chats';
   static const mainUserTable = 'main_user';
   static const userLastTimeOnlineTable = 'user_last_time_online';
+  static const attachmentsTable = 'attachments';
 
   //название колонок таблиц
   //users
@@ -31,6 +32,7 @@ class DatabaseConst {
   static const messagesColumnContent = 'content';
   static const messagesColumnUpdatedDate = 'updated_date';
   static const messagesColumnDeletedDate = 'deleted_date';
+  static const messagesColumnAttachmentId = 'attachment_id';
 
   //chats
   static const chatsColumnChatId = 'chat_id';
@@ -38,6 +40,10 @@ class DatabaseConst {
   static const chatsColumnCreatedDate = 'created_date';
   static const chatsColumnUpdatedDate = 'update_date';
   static const chatsColumnDeletedDate = 'deleted_date';
+
+  //attachments
+  static const attachmentsColumnAttachmentId = 'attachment_id';
+  static const attachmentsColumnAttachmentMeta = 'attachment_meta';
 
   //main_user
   static const mainUserColumnUserId = 'user_id';
@@ -56,6 +62,7 @@ class DatabaseConst {
   static const notNull = 'NOT NULL';
   static const char50 = 'char(50)';
   static const char26 = 'char(26)';
+  static const char4096 = 'char(4096)';
   static const text = 'TEXT';
   static const constraint = 'CONSTRAINT';
   static const foreignKey = 'FOREIGN KEY';
