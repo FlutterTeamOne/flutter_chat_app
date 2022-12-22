@@ -68,8 +68,8 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                           .read<UserBloc>()
                                           .state
                                           .users![friendId]
-                                          .deletedDate ==
-                                      ''
+                                          .deletedDate!.isEmpty
+
                                   ? context
                                       .read<UserBloc>()
                                       .state

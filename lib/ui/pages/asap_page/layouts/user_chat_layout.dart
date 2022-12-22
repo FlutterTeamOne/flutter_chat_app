@@ -24,7 +24,10 @@ class UserChatLayoutState extends State<UserChatLayout> {
     return Column(
       children: [
         ChatAppBarWidget(
-          image: user.profilePicLink,
+          image: user.deletedDate!.isEmpty
+              ? user.profilePicLink
+              : 'https://www.iconsdb.com/icons/preview/red/cancel-xxl.png',
+          // user.profilePicLink,
           name: user.name,
         ),
         Expanded(
