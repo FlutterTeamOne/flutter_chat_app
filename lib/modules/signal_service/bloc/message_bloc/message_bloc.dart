@@ -157,6 +157,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     } else {
       //запрос в рест на добавление медиа
     var resp=  await RestClient().sendImageRest(path: mediaPath );
+    
       //получаем обратно attach id
       //записываем всю информацию об сообщении в локальное хранилище
       //и отправляем через grpc второму клиенту

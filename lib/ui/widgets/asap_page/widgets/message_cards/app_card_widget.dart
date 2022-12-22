@@ -1,8 +1,6 @@
-﻿import 'dart:developer';
-
+﻿
 import 'package:flutter/material.dart';
 
-import '../../../../../domain/data/dto/message_dto/message_dto.dart';
 
 class AppCardWidget extends StatelessWidget {
   const AppCardWidget({

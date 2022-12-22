@@ -8,13 +8,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "50.0.0"
-  alfred:
-    dependency: "direct main"
-    description:
-      name: alfred
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0+1"
   analyzer:
     dependency: transitive
     description:
@@ -387,20 +380,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
-  mime:
-    dependency: transitive
-    description:
-      name: mime
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.3"
-  mime_type:
-    dependency: transitive
-    description:
-      name: mime_type
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   nested:
     dependency: transitive
     description:
@@ -541,13 +520,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.1"
-  queue:
-    dependency: transitive
-    description:
-      name: queue
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.1.0+2"
   shared_preferences:
     dependency: "direct main"
     description:

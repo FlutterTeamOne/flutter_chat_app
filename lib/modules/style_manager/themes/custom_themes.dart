@@ -115,6 +115,5 @@ class CustomTheme {
     CustomTheme.lightThemeLightBlue,
     CustomTheme.darkThemeLightBlue,
     CustomTheme.lightThemeOrange,
-    CustomTheme.darkThemeOrange,
   ];
 }
