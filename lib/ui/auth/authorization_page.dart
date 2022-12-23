@@ -26,9 +26,11 @@ class _AuthPageState extends State<AuthPage> {
                 child: CircularProgressIndicator(),
               )
             : Column(
-              children: [
-                SizedBox(height: 100,),
-                Center(
+                children: [
+                  SizedBox(
+                    height: 100,
+                  ),
+                  Center(
                     child: SizedBox(
                       height: 300,
                       child: ListView.builder(
@@ -38,23 +40,21 @@ class _AuthPageState extends State<AuthPage> {
                         itemBuilder: ((context, index) =>
                             UserCard(user: usersState.users![index])),
                       ),
-
                     ),
                   ),
-                ElevatedButton(
-                    style: ButtonStyle(
-                        shape: MaterialStateProperty.all<
-                            RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.circular(20.0),
-                            ))),
-                    onPressed: () {
-
-                  Navigator.of(context).pushNamed('/registration page');
-                }, child: Text('Create new user')),
-              ],
-            );
+                  ElevatedButton(
+                      style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ))),
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('/registration_page');
+                      },
+                      child: Text('Create new user')),
+                ],
+              );
       }),
     );
   }

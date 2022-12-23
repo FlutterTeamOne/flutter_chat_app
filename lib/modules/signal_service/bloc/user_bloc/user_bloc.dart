@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../domain/data/library/library_data.dart';
 import '../../../../src/generated/grpc_lib/grpc_sync_lib.dart';
+import '../../../../src/libraries/library_all.dart';
 import '../../../sending_manager/library/library_sending_manager.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,11 +23,20 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   late MainUserServices _mainUserServices;
   late StreamSubscription _subscription;
   // final GrpcClient grpcClient;
+
   UserBloc() : super(const UserState()) {
     _usersServices = LocalUsersServices();
     _mainUserServices = MainUserServices();
     _messagesServices = LocalMessagesServices();
     _chatServices = LocalChatServices();
+    DBHelper.instanse.updateListenController.stream.listen((event) async {
+      if (event == true) {
+        var users = await _usersServices.getAllUsers();
+        print('sort message:$users');
+        add(ReadUsersEvent(users: users));
+        // state.copyWith(messages: messages);
+      }
+    });
     on<ReadUsersEvent>(_onReadUsersEvent);
     on<CreateUserEvent>(_onCreateUserEvent);
     on<ChangeUserEvent>(_onChangeUserEvent);
