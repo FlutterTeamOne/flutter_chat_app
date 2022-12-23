@@ -46,18 +46,20 @@ class UserChatLayoutState extends State<UserChatLayout> {
                 )
               : const Center(child: CircularProgressIndicator()),
         ),
-        TextInputWidget(
-          onSubmitted: (text) => _sendAndChange(messageBloc),
-          controller: controller,
-          onTap: () => _sendAndChange(messageBloc),
-          editState: messageBloc.state.editState,
-          editText: controller.text,
-          cancelEdit: () {
-            messageBloc
-                .add(UpdateMessageEvent(isEditing: EditState.isNotEditing));
-            controller.clear();
-          },
-        ),
+        user.deletedDate.isNotEmpty
+            ? Text('Пользователь удален')
+            : TextInputWidget(
+                onSubmitted: (text) => _sendAndChange(messageBloc),
+                controller: controller,
+                onTap: () => _sendAndChange(messageBloc),
+                editState: messageBloc.state.editState,
+                editText: controller.text,
+                cancelEdit: () {
+                  messageBloc.add(
+                      UpdateMessageEvent(isEditing: EditState.isNotEditing));
+                  controller.clear();
+                },
+              ),
       ],
     );
   }
