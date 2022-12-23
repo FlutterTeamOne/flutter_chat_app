@@ -47,6 +47,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                           separatorBuilder: (context, index) =>
                               const SizedBox(height: 25),
                           itemBuilder: (context, index) {
+                            //TODO: тут заменить на юзера, если будет 5 ид, а юзеры 1 2 5, то будет ошибка
                             var friendId =
                                 widget.chatModel[index].userIdChat - 1;
                             var lastMessageId = widget.messageModel.isEmpty
@@ -55,9 +56,8 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                             return UserCardWidget(
                               selected: false,
                               onTap: () {
-                                context
-                                    .read<ChatBloc>()
-                                    .add(GetChatIdEvent(friendId));
+                                context.read<ChatBloc>().add(GetChatIdEvent(
+                                    widget.chatModel[index].chatId));
                               },
                               name: context
                                   .read<UserBloc>()

@@ -31,12 +31,13 @@ class _ProfileLayout extends StatelessWidget {
 
                 IconButton(
                   onPressed: () async {
-                    context.read<UserBloc>().add(ChangeUserEvent(userDb: true));
-                    context.read<UserBloc>().add(ReadUsersEvent());
                     // context.read<ChatBloc>().close();
                     //закрыть базу
                     await DBHelper.instanse.close();
                     Navigator.of(context).pop();
+                    context.read<UserBloc>().add(ChangeUserEvent(userDb: true));
+                    context.read<UserBloc>().add(ReadUsersEvent());
+                    context.read<ChatBloc>().add(GetChatIdEvent(-1));
                   },
                   icon: Icon(Icons.arrow_back),
                 ),
@@ -103,31 +104,7 @@ class _ProfileLayout extends StatelessWidget {
                                                   'User ${userMain.name} is not deleted')
                                               : Text(
                                                   'User ${userMain.name} is deleted')),
-                                      ElevatedButton(
-                                          style: ButtonStyle(
-                                              shape: MaterialStateProperty.all<
-                                                      RoundedRectangleBorder>(
-                                                  RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
-                                          ))),
-                                          onPressed: () async {
-                                            context.read<UserBloc>().add(
-                                                ChangeUserEvent(userDb: true));
-                                            context
-                                                .read<UserBloc>()
-                                                .add(ReadUsersEvent());
-                                            // context.read<ChatBloc>().close();
-                                            //закрыть базу
-                                            // await DBHelper.instanse.close();
-                                            await DBHelper.instanse.deleteDB();
-                                            // context
-                                            //     .read<UserBloc>()
-                                            //     .add(ReadUsersEvent());
-                                            Navigator.of(context)
-                                                .pushNamed('/');
-                                          },
-                                          child: const Icon(Icons.check))
+                                      DeletedButtonWidget()
                                     ],
                                   ),
                                 ),
@@ -142,5 +119,31 @@ class _ProfileLayout extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+class DeletedButtonWidget extends StatelessWidget {
+  const DeletedButtonWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+        style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ))),
+        onPressed: () async {
+          //закрыть базу
+          await DBHelper.instanse.close();
+          await DBHelper.instanse.deleteDB();
+          Navigator.of(context).pushNamed('/');
+          context.read<UserBloc>().add(ChangeUserEvent(userDb: true));
+          context.read<UserBloc>().add(ReadUsersEvent());
+          context.read<ChatBloc>().add(GetChatIdEvent(-1));
+        },
+        child: const Icon(Icons.check));
   }
 }

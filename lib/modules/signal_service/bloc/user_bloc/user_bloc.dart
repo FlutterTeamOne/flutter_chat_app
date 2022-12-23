@@ -173,8 +173,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
       users = await _usersServices.getAllUsers();
     }
-
-    print('USERS: $users');
+    for (var userServ in users) {
+      print('USERS BLOCK: $userServ');
+    }
     //Добавляем всех юзеров в state
     emit(state.copyWith(users: users));
 
