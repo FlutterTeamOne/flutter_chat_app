@@ -69,12 +69,13 @@ class GrpcClient {
       ..name = updatedUser.name
       ..profilePicUrl = updatedUser.profilePicLink;
     var response = UpdateUserResponse();
+    print("Отправлен Юзер: $request");
     try {
       response = await stub.updateUser(request);
     } catch (e) {
       print(e);
     }
-    print(response);
+    print("Получен Респонc: $response");
     return response;
   }
 }

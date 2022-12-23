@@ -4,10 +4,10 @@ class _ProfileLayout extends StatelessWidget {
   const _ProfileLayout({
     Key? key,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserBloc, UserState>(
+    return BlocConsumer<UserBloc, UserState>(
+      listener: (context, state) {},
       builder: (context, state) {
         var userMain;
         for (var user in state.users!) {
@@ -132,6 +132,7 @@ class _ProfileLayout extends StatelessWidget {
                                                           .add(UpdateUserEvent(
                                                             user: updatedUser,
                                                           ));
+
                                                       context
                                                           .read<UserBloc>()
                                                           .add(

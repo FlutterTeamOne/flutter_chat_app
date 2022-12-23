@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:chat_app/modules/client/grpc_client.dart';
 import 'package:chat_app/modules/signal_service/service_locator/locator.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
+import 'package:chat_app/src/constants/db_constants.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_user_lib.dart';
 import 'package:equatable/equatable.dart';
@@ -248,11 +249,19 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   FutureOr<void> _onUpdateUserEvent(
       UpdateUserEvent event, Emitter<UserState> emit) async {
     UserDto? user = event.user;
+    var result = UpdateUserResponse();
     try {
-      var result = await GrpcClient().updateUser(updatedUser: user!);
+      result = await GrpcClient().updateUser(updatedUser: user!);
       print('RESULT: $result');
     } catch (e) {
       print(e);
     }
+    await _usersServices.updateUser(
+        newValues:
+            '${DatabaseConst.usersColumnUpdatedDate} = "${result.dateUpdated}"',
+        condition:
+            '${DatabaseConst.usersColumnUserId} = ${event.user!.userId}');
+    var users = await _usersServices.getAllUsers();
+    emit(state.copyWith(users: users));
   }
 }
