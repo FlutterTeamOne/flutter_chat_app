@@ -57,14 +57,12 @@ class MyApp extends StatelessWidget {
               UserBloc()..add(ReadUsersEvent(userDb: UserPref.getUserDbPref)),
         ),
         BlocProvider<ChatBloc>(
-          create: (context) =>
-              ChatBloc(userBloc: UserBloc())..add(ReadChatEvent()),
+          create: (context) => ChatBloc(userBloc: UserBloc()),
         ),
         BlocProvider<MessageBloc>(
           create: (context) => MessageBloc(
               grpcClient: grpcClient,
-              grpcConnection: context.read<GrpcConnectionBloc>())
-            ..add(ReadMessageEvent()),
+              grpcConnection: context.read<GrpcConnectionBloc>()),
         ),
         BlocProvider(
           create: (context) => ChangeThemeBloc(),

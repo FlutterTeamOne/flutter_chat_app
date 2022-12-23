@@ -25,7 +25,7 @@ class ProfilePage extends StatelessWidget {
         // TODO: implement listener
       },
       builder: (context, state) {
-        print('State USERS: ${state.users}');
+        // print('State USERS: ${state.users}');
         return state.users?[0].name != null
             ? const _ProfileLayout()
             : const Center(

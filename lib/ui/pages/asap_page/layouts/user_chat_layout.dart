@@ -19,7 +19,18 @@ class UserChatLayoutState extends State<UserChatLayout> {
   TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    var user = context.read<UserBloc>().state.users![widget.chatId];
+    var chat;
+    for (var c in context.read<ChatBloc>().state.chats!) {
+      if (c.chatId == widget.chatId) {
+        chat = c;
+      }
+    }
+    var user;
+    for (var u in context.read<UserBloc>().state.users!) {
+      if (u.userId == chat.userIdChat) {
+        user = u;
+      }
+    }
     var messageBloc = context.read<MessageBloc>();
     return Column(
       children: [
@@ -42,38 +53,40 @@ class UserChatLayoutState extends State<UserChatLayout> {
           onSubmitted: (text) => _sendAndChange(messageBloc),
           controller: controller,
           onTap: () => user.deletedDate!.isNotEmpty
-              ? showDialog(context: context, builder: (BuildContext context) {
-                return Dialog(
-                  shape:
-                      RoundedRectangleBorder(
-                        borderRadius:
-                        BorderRadius.circular(20.0),
+              ? showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
                       ),
-                  child: SizedBox(
-                  height: 80,
-                  width: 80,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('User ${user.name} is deleted'),
+                      child: SizedBox(
+                        height: 80,
+                        width: 80,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('User ${user.name} is deleted'),
+                            ),
+                            ElevatedButton(
+                                style: ButtonStyle(
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ))),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Icon(
+                                  Icons.close_rounded,
+                                ))
+                          ],
+                        ),
                       ),
-
-                      ElevatedButton(
-                          style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(20.0),
-                                  ))),
-                          onPressed: () {
-                        Navigator.pop(context);
-                      }, child: Icon(Icons.close_rounded,))
-                    ],
-                  ),
-                ),);
-          })
+                    );
+                  })
               : _sendAndChange(messageBloc),
           editState: messageBloc.state.editState,
           editText: controller.text,

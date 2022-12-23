@@ -1,5 +1,6 @@
 ﻿import 'package:chat_app/ui/widgets/asap_page/widgets/search_field.dart';
 
+import '../../../../modules/storage_manager/db_helper/user_path.dart';
 import '../../../widgets/library/library_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +25,8 @@ class _ChatListLayoutState extends State<ChatListLayout> {
 
   @override
   Widget build(BuildContext context) {
+    final chatBloc = context.read<ChatBloc>();
+    final userBloc = context.read<UserBloc>();
     return Drawer(
         shape: Border(
             right: BorderSide(width: 1, color: Theme.of(context).dividerColor)),
@@ -47,35 +50,34 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                           separatorBuilder: (context, index) =>
                               const SizedBox(height: 25),
                           itemBuilder: (context, index) {
-                            var friendId =
-                                widget.chatModel[index].userIdChat - 1;
+                            var friend;
+                            //TODO: тут заменить на юзера, если будет 5 ид, а юзеры 1 2 5, то будет ошибка
+                            for (var user
+                                in context.read<UserBloc>().state.users!) {
+                              if (user.userId ==
+                                  widget.chatModel[index].userIdChat) {
+                                friend = user;
+                                break;
+                              }
+                            }
                             var lastMessageId = widget.messageModel.isEmpty
                                 ? 0
                                 : widget.messageModel.length - 1;
                             return UserCardWidget(
+                              sender: !checkSender(widget
+                                      .messageModel[lastMessageId].senderId)
+                                  ? userBloc.state.users![index].name
+                                  : 'You',
+                              // checkSender(widget.messageModel[lastMessageId].senderId),
+                              // ? userBloc.state.users[index].name:'You'),
                               selected: false,
                               onTap: () {
-                                context
-                                    .read<ChatBloc>()
-                                    .add(GetChatIdEvent(friendId));
+                                context.read<ChatBloc>().add(GetChatIdEvent(
+                                    widget.chatModel[index].chatId));
                               },
-                              name: context
-                                  .read<UserBloc>()
-                                  .state
-                                  .users![friendId]
-                                  .name,
-                              image: context
-                                          .read<UserBloc>()
-                                          .state
-                                          .users![friendId]
-                                          .deletedDate!.isEmpty
+                              name: friend.name,
+                              image: friend.profilePicLink,
 
-                                  ? context
-                                      .read<UserBloc>()
-                                      .state
-                                      .users![friendId]
-                                      .profilePicLink
-                                  : 'https://www.iconsdb.com/icons/preview/red/cancel-xxl.png',
                               message: widget.messageModel.isNotEmpty
                                   ? widget.messageModel[lastMessageId].content
                                   : '',
@@ -111,4 +113,6 @@ class _ChatListLayoutState extends State<ChatListLayout> {
           ],
         ));
   }
+
+  bool checkSender(int id) => id == UserPref.getUserId ? true : false;
 }

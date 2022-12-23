@@ -9,48 +9,46 @@ class _ProfileLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
-        late UserDto userMain;
+        var userMain;
         for (var user in state.users!) {
           if (user.userId == UserPref.getUserId) {
             userMain = user;
             break;
           }
         }
-        return ListView(
-          children: [
-            // Фон и аватарка
-            Stack(
-              children: [
-                const SizedBox(height: 205),
-                // Фон
-                _AppBluredImage(image: userMain.profilePicLink),
-                // Аватарка
-                _UserPic(userPic: userMain.profilePicLink),
-                // Кнопка изменение аву
-                const _ChangeUserPic(),
-
-                IconButton(
-                  onPressed: () async {
-                    context.read<UserBloc>().add(ChangeUserEvent(userDb: true));
-                    context.read<UserBloc>().add(ReadUsersEvent());
-                    // context.read<ChatBloc>().close();
-                    //закрыть базу
-                    await DBHelper.instanse.close();
-                    Navigator.of(context).pop();
-                  },
-                  icon: Icon(Icons.arrow_back),
-                ),
-              ],
-            ),
-            // Остальное
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        return userMain == null
+            ? Center(
+                widthFactor: 100,
+                heightFactor: 100,
+                child: CircularProgressIndicator())
+            : ListView(
                 children: [
-                  Text(
-                    'Username',
-                    style: Theme.of(context).textTheme.headline6,
+                  // Фон и аватарка
+                  Stack(
+                    children: [
+                      const SizedBox(height: 205),
+                      // Фон
+                      _AppBluredImage(image: userMain.profilePicLink),
+                      // Аватарка
+                      _UserPic(userPic: userMain.profilePicLink),
+                      // Кнопка изменение аву
+                      const _ChangeUserPic(),
+                      IconButton(
+                        onPressed: () async {
+                          // context.read<ChatBloc>().close();
+                          //закрыть базу
+                          context
+                              .read<UserBloc>()
+                              .add(ChangeUserEvent(userDb: true));
+                          context.read<UserBloc>().add(ReadUsersEvent());
+                          context.read<ChatBloc>().add(GetChatIdEvent(-1));
+                          await DBHelper.instanse.close();
+                          Future.delayed(Duration(seconds: 1),
+                              () => Navigator.of(context).pushNamed('/'));
+                        },
+                        icon: Icon(Icons.arrow_back),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 2),
                   Row(
@@ -273,31 +271,7 @@ class _ProfileLayout extends StatelessWidget {
                                                   'User ${userMain.name} is not deleted')
                                               : Text(
                                                   'User ${userMain.name} is deleted')),
-                                      ElevatedButton(
-                                          style: ButtonStyle(
-                                              shape: MaterialStateProperty.all<
-                                                      RoundedRectangleBorder>(
-                                                  RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
-                                          ))),
-                                          onPressed: () async {
-                                            context.read<UserBloc>().add(
-                                                ChangeUserEvent(userDb: true));
-                                            context
-                                                .read<UserBloc>()
-                                                .add(ReadUsersEvent());
-                                            // context.read<ChatBloc>().close();
-                                            //закрыть базу
-                                            // await DBHelper.instanse.close();
-                                            await DBHelper.instanse.deleteDB();
-                                            // context
-                                            //     .read<UserBloc>()
-                                            //     .add(ReadUsersEvent());
-                                            Navigator.of(context)
-                                                .pushNamed('/');
-                                          },
-                                          child: const Icon(Icons.check))
+                                      DeleteDialogWidget()
                                     ],
                                   ),
                                 ),
@@ -306,11 +280,34 @@ class _ProfileLayout extends StatelessWidget {
                       },
                       child: Text('Delete user')),
                 ],
-              ),
-            ),
-          ],
-        );
+              );
       },
     );
+  }
+}
+
+class DeleteDialogWidget extends StatelessWidget {
+  const DeleteDialogWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+        style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ))),
+        onPressed: () async {
+          //закрыть базу
+          context.read<UserBloc>().add(ChangeUserEvent(userDb: true));
+          context.read<UserBloc>().add(ReadUsersEvent());
+          context.read<ChatBloc>().add(GetChatIdEvent(-1));
+          await DBHelper.instanse.deleteDB();
+          Future.delayed(
+              Duration(seconds: 1), () => Navigator.of(context).pushNamed('/'));
+        },
+        child: const Icon(Icons.check));
   }
 }

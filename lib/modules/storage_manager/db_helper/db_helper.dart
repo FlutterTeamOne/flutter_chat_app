@@ -30,12 +30,15 @@ class DBHelper {
     sqfliteFfiInit();
     var dbFactory = databaseFactoryFfi;
     // var dbPath = await dbFactory.getDatabasesPath();
-    var dbPath = await getTemporaryDirectory();
-    print('PATH: ${dbPath.path}');
+    // var dbPath = await getTemporaryDirectory();
+    var dbPath = '.dart_tool/sqflite_common_ffi/databases/';
+    // print('PATH: ${dbPath.path}');
     var user = UserPath.getUser;
     print('USER DB:  $user');
-    String path = join(dbPath.path,
-        user.name + user.userId.toString() + DatabaseConst.dbFileName);
+    // String path = join(dbPath.path,
+    //     user.name + user.userId.toString() + DatabaseConst.dbFileName);
+    String path = join(
+        dbPath, user.name + user.userId.toString() + DatabaseConst.dbFileName);
     print('PATH_ABSOLUTE: $path');
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(
@@ -228,13 +231,20 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
     _database = null;
     await db.close();
   }
-  Future deleteDB() async{
+
+  Future deleteDB() async {
     var db = await instanse.database;
     var databaseFactory = databaseFactoryFfi;
-    var dbPath = await getTemporaryDirectory();
+    // var dbPath = await getTemporaryDirectory();
+    var dbPath = '.dart_tool/sqflite_common_ffi/databases/';
     var user = UserPath.getUser;
-    String path = join(dbPath.path,
+    String path = join(
+        dbPath
+        // .path
+        ,
         user.name + user.userId.toString() + DatabaseConst.dbFileName);
+    _database = null;
+    await db.close();
     await databaseFactory.deleteDatabase(path);
   }
 }

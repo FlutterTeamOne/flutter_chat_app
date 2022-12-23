@@ -73,31 +73,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             profilePicUrl: user.picture);
       }
       for (var user in usersResponse.usersUpdated) {
-        print(
-            "deleted date is empty? ${user.deletedDate} ${user.deletedDate.isEmpty}");
-        if (user.deletedDate.isNotEmpty) {
-          const String deletedUserAvatar =
-              """https://www.iconsdb.com/icons/preview/red/cancel-xxl.png""";
-          await _usersServices.updateUserStart(
-              newValues: '''name = "${user.name}",
-                          email = "${user.email}",
-                          created_date = "${user.createdDate}",
-                          updated_date = "${user.updateDate}",
-                          deleted_date = "${user.deletedDate}",
-                          profile_pic_link = "$deletedUserAvatar"''',
-              condition: 'user_id = ${user.userId}');
-        } else
-        //парсим всех юзеров и записываем их в локальное дб
-        {
-          await _usersServices.updateUserStart(
-              newValues: '''name = "${user.name}",
+        await _usersServices.updateUserStart(
+            newValues: '''name = "${user.name}",
                           email = "${user.email}",
                           created_date = "${user.createdDate}",
                           updated_date = "${user.updateDate}",
                           deleted_date = "${user.deletedDate}",
                           profile_pic_link = "${user.picture}"''',
-              condition: 'user_id = ${user.userId}');
-        }
+            condition: 'user_id = ${user.userId}');
       }
 //получаем всех начальных юзеров
       users = await _usersServices.getAllUsersStart();
@@ -129,16 +112,34 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       } catch (e) {
         print(e);
       }
+      print("NEWUSERS: ${response.newUsers}");
       //добавление новых юзеров для новых чатов
       for (var user in response.newUsers) {
-        await _usersServices.createUser(
-            userId: user.userId,
-            name: user.name,
-            email: user.email,
-            createdDate: user.createdDate,
-            profilePicUrl: user.picture,
-            updatedDate: user.updateDate,
-            deletedDate: user.deletedDate);
+        print(
+            "deleted date is empty? ${user.deletedDate} ${user.deletedDate.isNotEmpty}");
+        if (user.deletedDate.isNotEmpty) {
+          const String deletedUserAvatar =
+              """https://www.iconsdb.com/icons/preview/red/cancel-xxl.png""";
+          await _usersServices.createUser(
+              name: user.name,
+              email: user.email,
+              createdDate: user.createdDate,
+              updatedDate: user.updateDate,
+              deletedDate: user.deletedDate,
+              profilePicUrl: deletedUserAvatar,
+              userId: user.userId);
+        } else
+        //парсим всех юзеров и записываем их в локальное дб
+        {
+          await _usersServices.createUser(
+              name: user.name,
+              email: user.email,
+              createdDate: user.createdDate,
+              updatedDate: user.updateDate,
+              deletedDate: user.deletedDate,
+              profilePicUrl: user.picture,
+              userId: user.userId);
+        }
       }
       print('RESPONSE_CHATS: ${response.chats}');
       for (var chat in response.chats) {
@@ -148,15 +149,33 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             createDate: chat.createdDate,
             userId: chat.userId);
       }
+      print('REPSONSE_UPDATEUSERS: ${response.updatedUsers}');
       for (var user in response.updatedUsers) {
-        await _usersServices.updateUser(
-            newValues: '''name = "${user.name}",
+        print(
+            "deleted date is empty? ${user.deletedDate} ${user.deletedDate.isEmpty}");
+        if (user.deletedDate.isNotEmpty) {
+          const String deletedUserAvatar =
+              """https://www.iconsdb.com/icons/preview/red/cancel-xxl.png""";
+          await _usersServices.updateUser(
+              newValues: '''name = "${user.name}",
+                          email = "${user.email}",
+                          created_date = "${user.createdDate}",
+                          updated_date = "${user.updateDate}",
+                          deleted_date = "${user.deletedDate}",
+                          profile_pic_link = "$deletedUserAvatar"''',
+              condition: 'user_id = ${user.userId}');
+        } else
+        //парсим всех юзеров и записываем их в локальное дб
+        {
+          await _usersServices.updateUser(
+              newValues: '''name = "${user.name}",
                           email = "${user.email}",
                           created_date = "${user.createdDate}",
                           updated_date = "${user.updateDate}",
                           deleted_date = "${user.deletedDate}",
                           profile_pic_link = "${user.picture}"''',
-            condition: 'user_id = ${user.userId}');
+              condition: 'user_id = ${user.userId}');
+        }
       }
       for (var message in response.messages) {
         var msg = Message(
@@ -174,8 +193,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
       users = await _usersServices.getAllUsers();
     }
-
-    print('USERS: $users');
+    for (var userServ in users) {
+      print('USERS BLOCK: $userServ');
+    }
     //Добавляем всех юзеров в state
     emit(state.copyWith(users: users));
 

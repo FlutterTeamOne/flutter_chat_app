@@ -8,6 +8,7 @@ class UserCardWidget extends StatelessWidget {
     required this.message,
     required this.onTap,
     required this.selected,
+    required this.sender,
   });
 
   final String? name;
@@ -15,7 +16,7 @@ class UserCardWidget extends StatelessWidget {
   final String? message;
   final Function()? onTap;
   final bool? selected;
-
+  final String sender;
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -36,7 +37,7 @@ class UserCardWidget extends StatelessWidget {
         // style: AppTextStyle.s17Abel,
       ),
       subtitle: Text(
-        message ?? '',
+        '$sender: $message',
         // style: AppTextStyle.s14AbelGrey,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
