@@ -229,7 +229,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   FutureOr<void> _onChangeUserEvent(
       ChangeUserEvent event, Emitter<UserState> emit) {
     print('GET USER PREF: ${UserPref.getUserDbPref} ');
-    UserPref.setUserDbPref = event.userDb;
+    UserPref.setUserDbPref = event.isStartDB;
   }
 
   FutureOr<void> _onDeleleUserEvent(
