@@ -243,6 +243,8 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
         // .path
         ,
         user.name + user.userId.toString() + DatabaseConst.dbFileName);
+    _database = null;
+    await db.close();
     await databaseFactory.deleteDatabase(path);
   }
 }

@@ -25,8 +25,8 @@ class _UserCardState extends State<UserCard> {
             UserPath.user = widget.user;
             var db = await DBHelper.instanse.initDB();
             print("db open? ${db.path},${db.isOpen}");
-
-            Navigator.of(context).pushNamed(MainLayout.routeName);
+            Future.delayed(Duration(seconds: 1),
+                () => Navigator.of(context).pushNamed(MainLayout.routeName));
           },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(15),
