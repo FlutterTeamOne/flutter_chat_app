@@ -57,6 +57,12 @@ class _PopupMenuCardWidgetState extends State<PopupMenuCardWidget> {
     var correctminute =
         time.minute.toString().length == 1 ? '0${time.minute}' : time.minute;
     String? realTime = '${time.hour}:$correctminute';
+
+    // print('Message: ${widget.message!.content}');
+    // print("MessageCreate: ${widget.message!.createdDate}");
+    // print("MessageUpdate: ${widget.message!.updatedDate}");
+    // print('==? ${widget.message!.createdDate == widget.message!.updatedDate}');
+
     var editedText = widget.message?.createdDate == widget.message?.updatedDate
         ? ''
         : 'edited ';

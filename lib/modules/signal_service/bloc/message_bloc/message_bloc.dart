@@ -39,7 +39,10 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     _subscription = GrpcMessagesClient(grpcClient.channel)
         .streamMessage(messageController.stream)
         .listen((value) async {
+      print("MESSAGE!!!!!!!!!!!!!!!");
+      print(value.messageState);
       if (value.messageState == MessageStateEnum.isReadMessage) {
+        print("READMESSAGE: ${value}");
         var messages = <MessageDto>[];
         var msg = value.readMessage.message;
         await _messagesServices.addNewMessageFromBase(message: msg);
@@ -63,7 +66,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         print('date update: ${updMsg.idMessageMain}');
 
         var messages = await _messagesServices.getAllMessages();
-        print('sort message:$messages');
+        print('IsUpdate message:$messages');
         add(ReadMessageEvent(messages: messages));
       } else if (value.messageState == MessageStateEnum.isDeleteMesage) {
         var del = value.deleteMessage;
@@ -71,9 +74,10 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         await _messagesServices.deleteMessageFromBase(
             id: del.idMessageMain, dateDelete: del.dateDelete);
         var messages = await _messagesServices.getAllMessages();
-        print('sort message:$messages');
+        print('IsDelete message:$messages');
         add(ReadMessageEvent(messages: messages));
       } else if (value.messageState == MessageStateEnum.isCreateMessage) {
+        print("IsCreate: ${value.createMessage.message}");
         var msg = value.createMessage.message;
         var newMsg = MessageDto(
             localMessageId: msg.localMessgaeId,
@@ -91,7 +95,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       if (event == true) {
         var messages = await _messagesServices.getAllMessages();
         // messages.sort((a, b) => a.localMessageId!.compareTo(b.localMessageId!));
-        print('sort message:$messages');
+        print('sortListen message:$messages');
         add(ReadMessageEvent(messages: messages));
         // state.copyWith(messages: messages);
       }
@@ -292,4 +296,3 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     return super.close();
   }
 }
-
