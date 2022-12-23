@@ -238,47 +238,51 @@ class _ProfileLayout extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                  ElevatedButton(
-                      style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                  Row(
+                    children: [
+                      ElevatedButton(
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ))),
-                      onPressed: () {
-                        context
-                            .read<UserBloc>()
-                            .add(DeleteUserEvent(userId: userMain.userId));
-                        print(userMain.userId);
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              final userIsDeleted =
-                                  context.watch<UserBloc>().state.isDeleted;
-                              return Dialog(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                                child: SizedBox(
-                                  height: 80,
-                                  width: 50,
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: userIsDeleted == false
-                                              ? Text(
-                                                  'User ${userMain.name} is not deleted')
-                                              : Text(
-                                                  'User ${userMain.name} is deleted')),
-                                      DeleteDialogWidget()
-                                    ],
-                                  ),
-                                ),
-                              );
-                            });
-                      },
-                      child: Text('Delete user')),
+                            borderRadius: BorderRadius.circular(20.0),
+                          ))),
+                          onPressed: () {
+                            context
+                                .read<UserBloc>()
+                                .add(DeleteUserEvent(userId: userMain.userId));
+                            print(userMain.userId);
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  final userIsDeleted =
+                                      context.watch<UserBloc>().state.isDeleted;
+                                  return Dialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    child: SizedBox(
+                                      height: 80,
+                                      width: 50,
+                                      child: Column(
+                                        children: [
+                                          Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: userIsDeleted == false
+                                                  ? Text(
+                                                      'User ${userMain.name} is not deleted')
+                                                  : Text(
+                                                      'User ${userMain.name} is deleted')),
+                                          DeleteDialogWidget()
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                });
+                          },
+                          child: Text('Delete user')),
+                    ],
+                  ),
                 ],
               );
       },
