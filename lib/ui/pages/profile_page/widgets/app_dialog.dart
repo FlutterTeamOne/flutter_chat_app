@@ -48,19 +48,26 @@ class _AppDialogState extends State<_AppDialog> {
                           builder: (BuildContext context) {
                             TextEditingController newUrlController =
                                 TextEditingController();
-                            return SizedBox(
-                              height: 100,
-                              width: 200,
-                              child: Dialog(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
+                            /// Insert image link
+                            return Dialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              child: SizedBox(
+                                height: 150,
+                                width: 300,
                                 child: Column(
                                   children: [
-                                    Text('Insert image link'),
-                                    TextField(
-                                      controller: newUrlController =
-                                          TextEditingController(),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text('Insert image link'),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: TextField(
+                                        controller: newUrlController =
+                                            TextEditingController(),
+                                      ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
