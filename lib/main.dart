@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
+import 'package:chat_app/src/generated/grpc_lib/grpc_user_lib.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';
 import 'package:chat_app/ui/pages/registration_page/registration_page.dart';
 import 'package:chat_app/ui/widgets/registration_page/bloc/new_user_bloc.dart';
@@ -70,7 +71,16 @@ class MyApp extends StatelessWidget {
       ],
       child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
         builder: (context, state) {
-          final ThemeData? theme = state.theme;
+          // final int? savedThemeIndex = UserPref.getThemeIndex as int?;
+          // final int? savedThemeIndex = UserPreferences().getTheme() as int?;
+          final ThemeData? theme =
+          // savedThemeIndex == null
+          //      ? CustomTheme().themes[savedThemeIndex!]
+          //      : state.theme;
+              state.theme;
+          // savedThemeIndex != null
+          //     ? state.theme
+          //     : CustomTheme().themes[savedThemeIndex!];
           return buildMaterialApp(theme!);
         },
       ),

@@ -18,6 +18,7 @@ class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
 
   void _setThemeEvent(
       SetThemeEvent event, Emitter<ChangeThemeState> emit) async {
+    await UserPreferences().setThemeEvent(event.index);
     // SavedTheme().initThemeIndex = event.index;
     // var i = await UserPreferences().getTheme();
     // print(i);

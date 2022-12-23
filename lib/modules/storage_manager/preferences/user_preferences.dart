@@ -41,7 +41,7 @@ class UserPreferences {
     sharedPreferences.setInt(THEME_KEY, value);
   }
 
-  getTheme() async {
+  Future<int?> getTheme() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.getInt(THEME_KEY);
   }
