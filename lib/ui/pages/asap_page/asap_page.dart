@@ -13,61 +13,64 @@ class AsapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return BlocConsumer<ChatBloc, ChatState>(
-    //   listener: (context, chatState) {
+    context.read<ChatBloc>().add(ReadChatEvent());
+    context.read<MessageBloc>().add(ReadMessageEvent());
+    print("ChatBloc: ${context.read<ChatBloc>().state.chats}");
+    print("MessageBloc: ${context.read<MessageBloc>().state.messages}");
     // TODO: implement listener
-    // },
-    // builder: (context, chatState) {
-    return BlocProvider.value(
-        value: BlocProvider.of<ChatBloc>(context),
-        child: BlocConsumer<MessageBloc, MessageState>(
-          listener: (context, messageState) {},
-          builder: (context, messageState) {
-            var chatState = context.watch<ChatBloc>().state;
-            return Row(
-              children: [
-                // Список чатов
-                Expanded(
-                    child: chatState.chats == null
-                        ? const Text('Sorry')
-                        : messageState.messages != null
-                            ? ChatListLayout(
-                                chatModel: chatState.chats!,
-                                messageModel: messageState.messages!)
-                            : Center(
-                                child: CircularProgressIndicator(),
-                              )),
-                // Чат
-                Expanded(
-                    flex: 3,
-                    child: chatState.chatId == null || chatState.chatId == -1
-                        ? const DefaultUserChatLayout()
-                        : messageState.messages != null
-                            ? UserChatLayout(chatId: chatState.chatId!)
-                            : Center(
-                                child: CircularProgressIndicator(),
-                              )),
-                // Профиль
-                // Expanded(
-                //   flex: 2,
-                //   child: Container(
-                //     height: MediaQuery.of(context).size.height,
-                //     width: MediaQuery.of(context).size.width,
-                //     decoration: BoxDecoration(
-                //       color: AppColor.colorFFFFFF,
-                //       border: Border.all(
-                //         color: AppColor.color9E9E9E.withOpacity(0.5),
-                //       ),
-                //     ),
-                //     child: Text(
-                //       'профиль',
-                //       style: AppTextStyle.s36Abel,
-                //     ),
-                //   ),
-                // ),
-              ],
-            );
-          },
-        ));
+    return BlocConsumer<ChatBloc, ChatState>(
+        listener: (context, chatState) {},
+        builder: (context, chatState) {
+          return BlocConsumer<MessageBloc, MessageState>(
+            listener: (context, messageState) {},
+            builder: (context, messageState) {
+              print("chatState: ${chatState.chats}");
+              print("messageState: ${messageState.messages}");
+              return Row(
+                children: [
+                  // Список чатов
+                  Expanded(
+                      child: chatState.chats == null
+                          ? const Text('Sorry')
+                          : messageState.messages != null
+                              ? ChatListLayout(
+                                  chatModel: chatState.chats!,
+                                  messageModel: messageState.messages!)
+                              : Center(
+                                  child: CircularProgressIndicator(),
+                                )),
+                  // Чат
+                  Expanded(
+                      flex: 3,
+                      child: chatState.chatId == null || chatState.chatId == -1
+                          ? const DefaultUserChatLayout()
+                          : messageState.messages != null
+                              ? UserChatLayout(chatId: chatState.chatId!)
+                              : Center(
+                                  child: CircularProgressIndicator(),
+                                )),
+                  // Профиль
+                  // Expanded(
+                  //   flex: 2,
+                  //   child: Container(
+                  //     height: MediaQuery.of(context).size.height,
+                  //     width: MediaQuery.of(context).size.width,
+                  //     decoration: BoxDecoration(
+                  //       color: AppColor.colorFFFFFF,
+                  //       border: Border.all(
+                  //         color: AppColor.color9E9E9E.withOpacity(0.5),
+                  //       ),
+                  //     ),
+                  //     child: Text(
+                  //       'профиль',
+                  //       style: AppTextStyle.s36Abel,
+                  //     ),
+                  //   ),
+                  // ),
+                ],
+              );
+            },
+          );
+        });
   }
 }

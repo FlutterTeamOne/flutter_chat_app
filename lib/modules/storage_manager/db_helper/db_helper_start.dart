@@ -28,9 +28,11 @@ class DBHelperStart {
     sqfliteFfiInit();
     var dbFactory = databaseFactoryFfi;
     // var dbPath = await dbFactory.getDatabasesPath();
-    var dbPath = await getTemporaryDirectory();
-    print('PATH_start: ${dbPath.path}');
-    String path = join(dbPath.path, DatabaseConst.dbFileNameStart);
+    //var dbPath = await getTemporaryDirectory();
+    var dbPath = '.dart_tool/sqflite_common_ffi/databases/';
+    // print('PATH_start: ${dbPath.path}');
+    // String path = join(dbPath.path, DatabaseConst.dbFileNameStart);
+    String path = join(dbPath, DatabaseConst.dbFileNameStart);
     print('PATH_absolute: ${path}');
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(

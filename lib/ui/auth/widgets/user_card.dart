@@ -23,11 +23,10 @@ class _UserCardState extends State<UserCard> {
             userBloc.add(ChangeUserEvent(user: widget.user, userDb: false));
             UserPref.setUserId = widget.user.userId!;
             UserPath.user = widget.user;
-            await DBHelper.instanse.initDB();
-            userBloc.add(ReadUsersEvent());
-            context.read<ChatBloc>().add(ReadChatEvent());
-            context.read<ChatBloc>().add(GetChatIdEvent(-1));
-            Navigator.of(context).pushNamed(MainLayout.routeName);
+            var db = await DBHelper.instanse.initDB();
+            print("db open? ${db.path},${db.isOpen}");
+            Future.delayed(Duration(seconds: 1),
+                () => Navigator.of(context).pushNamed(MainLayout.routeName));
           },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(15),
@@ -37,7 +36,7 @@ class _UserCardState extends State<UserCard> {
         ),
         Text(
           widget.user.email,
-          style: const TextStyle(fontSize: 50),
+          style: Theme.of(context).textTheme.headline6,
         ),
         // const SizedBox(height: 10),
       ],

@@ -61,7 +61,7 @@ class ChatDto extends ModelDto {
 
   @override
   String toString() {
-    return 'ChatDto(localChatId: $chatId, chatIdMain: $userIdChat, createdDate: $createdDate, updatedDate: $updatedDate, deletedDate: $deletedDate)';
+    return 'ChatDto(ChatId: $chatId, userId: $userIdChat, createdDate: $createdDate, updatedDate: $updatedDate, deletedDate: $deletedDate)';
   }
 
   @override

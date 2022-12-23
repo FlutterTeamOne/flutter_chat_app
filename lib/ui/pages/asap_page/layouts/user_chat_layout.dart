@@ -19,7 +19,18 @@ class UserChatLayoutState extends State<UserChatLayout> {
   TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    var user = context.read<UserBloc>().state.users![widget.chatId];
+    var chat;
+    for (var c in context.read<ChatBloc>().state.chats!) {
+      if (c.chatId == widget.chatId) {
+        chat = c;
+      }
+    }
+    var user;
+    for (var u in context.read<UserBloc>().state.users!) {
+      if (u.userId == chat.userIdChat) {
+        user = u;
+      }
+    }
     var messageBloc = context.read<MessageBloc>();
     return Column(
       children: [
@@ -35,18 +46,20 @@ class UserChatLayoutState extends State<UserChatLayout> {
                 )
               : const Center(child: CircularProgressIndicator()),
         ),
-        TextInputWidget(
-          onSubmitted: (text) => _sendAndChange(messageBloc),
-          controller: controller,
-          onTap: () => _sendAndChange(messageBloc),
-          editState: messageBloc.state.editState,
-          editText: controller.text,
-          cancelEdit: () {
-            messageBloc
-                .add(UpdateMessageEvent(isEditing: EditState.isNotEditing));
-            controller.clear();
-          },
-        ),
+        user.deletedDate.isNotEmpty
+            ? Text('Пользователь удален')
+            : TextInputWidget(
+                onSubmitted: (text) => _sendAndChange(messageBloc),
+                controller: controller,
+                onTap: () => _sendAndChange(messageBloc),
+                editState: messageBloc.state.editState,
+                editText: controller.text,
+                cancelEdit: () {
+                  messageBloc.add(
+                      UpdateMessageEvent(isEditing: EditState.isNotEditing));
+                  controller.clear();
+                },
+              ),
       ],
     );
   }
