@@ -1,4 +1,3 @@
-
 import 'package:sqflite_common/sqlite_api.dart';
 
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -71,7 +70,7 @@ class DbServerServices {
           attachment_id integer,      
           CONSTRAINT MESSAGES_FK_79 FOREIGN KEY ( chat_id ) REFERENCES chats ( chat_id ),
           CONSTRAINT MESSAGES_FK_80 FOREIGN KEY ( sender_id ) REFERENCES users ( user_id ),
-          CONSTRAINT MESSAGES_FK_81 FOREIGN KEY ( attachment_id_fk ) REFERENCES attachments ( attachment_id ),
+          CONSTRAINT MESSAGES_FK_81 FOREIGN KEY ( attachment_id ) REFERENCES attachments ( attachment_id ),
           CHECK (LENGTH(created_date) >= 26)
           )
         ''');
