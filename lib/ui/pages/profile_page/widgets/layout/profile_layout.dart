@@ -28,7 +28,6 @@ class _ProfileLayout extends StatelessWidget {
                 _UserPic(userPic: userMain.profilePicLink),
                 // Кнопка изменение аву
                 const _ChangeUserPic(),
-
                 IconButton(
                   onPressed: () async {
                     // context.read<ChatBloc>().close();

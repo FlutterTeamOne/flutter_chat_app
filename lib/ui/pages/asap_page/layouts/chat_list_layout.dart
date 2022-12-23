@@ -47,9 +47,16 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                           separatorBuilder: (context, index) =>
                               const SizedBox(height: 25),
                           itemBuilder: (context, index) {
+                            var friend;
                             //TODO: тут заменить на юзера, если будет 5 ид, а юзеры 1 2 5, то будет ошибка
-                            var friendId =
-                                widget.chatModel[index].userIdChat - 1;
+                            for (var user
+                                in context.read<UserBloc>().state.users!) {
+                              if (user.userId ==
+                                  widget.chatModel[index].userIdChat) {
+                                friend = user;
+                                break;
+                              }
+                            }
                             var lastMessageId = widget.messageModel.isEmpty
                                 ? 0
                                 : widget.messageModel.length - 1;
@@ -59,16 +66,8 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                 context.read<ChatBloc>().add(GetChatIdEvent(
                                     widget.chatModel[index].chatId));
                               },
-                              name: context
-                                  .read<UserBloc>()
-                                  .state
-                                  .users![friendId]
-                                  .name,
-                              image: context
-                                  .read<UserBloc>()
-                                  .state
-                                  .users![friendId]
-                                  .profilePicLink,
+                              name: friend.name,
+                              image: friend.profilePicLink,
                               message: widget.messageModel.isNotEmpty
                                   ? widget.messageModel[lastMessageId].content
                                   : '',
