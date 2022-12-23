@@ -14,10 +14,6 @@ import 'users.pb.dart' as $0;
 export 'users.pb.dart';
 
 class GrpcUsersClient extends $grpc.Client {
-  static final _$getAllUsers = $grpc.ClientMethod<$0.EmptyUser, $0.Users>(
-      '/GrpcUsers/getAllUsers',
-      ($0.EmptyUser value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.Users.fromBuffer(value));
   static final _$getUser =
       $grpc.ClientMethod<$0.GetUserRequest, $0.GetUserResponse>(
           '/GrpcUsers/getUser',
@@ -48,11 +44,6 @@ class GrpcUsersClient extends $grpc.Client {
       $core.Iterable<$grpc.ClientInterceptor>? interceptors})
       : super(channel, options: options, interceptors: interceptors);
 
-  $grpc.ResponseFuture<$0.Users> getAllUsers($0.EmptyUser request,
-      {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$getAllUsers, request, options: options);
-  }
-
   $grpc.ResponseFuture<$0.GetUserResponse> getUser($0.GetUserRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$getUser, request, options: options);
@@ -81,13 +72,6 @@ abstract class GrpcUsersServiceBase extends $grpc.Service {
   $core.String get $name => 'GrpcUsers';
 
   GrpcUsersServiceBase() {
-    $addMethod($grpc.ServiceMethod<$0.EmptyUser, $0.Users>(
-        'getAllUsers',
-        getAllUsers_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $0.EmptyUser.fromBuffer(value),
-        ($0.Users value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.GetUserRequest, $0.GetUserResponse>(
         'getUser',
         getUser_Pre,
@@ -118,11 +102,6 @@ abstract class GrpcUsersServiceBase extends $grpc.Service {
         ($0.DeleteUserResponse value) => value.writeToBuffer()));
   }
 
-  $async.Future<$0.Users> getAllUsers_Pre(
-      $grpc.ServiceCall call, $async.Future<$0.EmptyUser> request) async {
-    return getAllUsers(call, await request);
-  }
-
   $async.Future<$0.GetUserResponse> getUser_Pre(
       $grpc.ServiceCall call, $async.Future<$0.GetUserRequest> request) async {
     return getUser(call, await request);
@@ -143,8 +122,6 @@ abstract class GrpcUsersServiceBase extends $grpc.Service {
     return deleteUser(call, await request);
   }
 
-  $async.Future<$0.Users> getAllUsers(
-      $grpc.ServiceCall call, $0.EmptyUser request);
   $async.Future<$0.GetUserResponse> getUser(
       $grpc.ServiceCall call, $0.GetUserRequest request);
   $async.Future<$0.CreateUserResponse> createUser(

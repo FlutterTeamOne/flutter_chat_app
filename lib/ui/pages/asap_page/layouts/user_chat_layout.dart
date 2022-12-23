@@ -8,10 +8,8 @@ class UserChatLayout extends StatefulWidget {
   const UserChatLayout({
     Key? key,
     required this.chatId,
-    required this.localChatId,
   }) : super(key: key);
   final int chatId;
-  final int localChatId;
 
   @override
   State<UserChatLayout> createState() => UserChatLayoutState();
@@ -21,7 +19,18 @@ class UserChatLayoutState extends State<UserChatLayout> {
   TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    var user = context.read<UserBloc>().state.users![widget.chatId];
+    var chat;
+    for (var c in context.read<ChatBloc>().state.chats!) {
+      if (c.chatId == widget.chatId) {
+        chat = c;
+      }
+    }
+    var user;
+    for (var u in context.read<UserBloc>().state.users!) {
+      if (u.userId == chat.userIdChat) {
+        user = u;
+      }
+    }
     var messageBloc = context.read<MessageBloc>();
     return Column(
       children: [
@@ -37,18 +46,20 @@ class UserChatLayoutState extends State<UserChatLayout> {
                 )
               : const Center(child: CircularProgressIndicator()),
         ),
-        TextInputWidget(
-          onSubmitted: (text) => _sendAndChange(messageBloc),
-          controller: controller,
-          onTap: () => _sendAndChange(messageBloc),
-          editState: messageBloc.state.editState,
-          editText: controller.text,
-          cancelEdit: () {
-            messageBloc
-                .add(UpdateMessageEvent(isEditing: EditState.isNotEditing));
-            controller.clear();
-          },
-        ),
+        user.deletedDate.isNotEmpty
+            ? Text('Пользователь удален')
+            : TextInputWidget(
+                onSubmitted: (text) => _sendAndChange(messageBloc),
+                controller: controller,
+                onTap: () => _sendAndChange(messageBloc),
+                editState: messageBloc.state.editState,
+                editText: controller.text,
+                cancelEdit: () {
+                  messageBloc.add(
+                      UpdateMessageEvent(isEditing: EditState.isNotEditing));
+                  controller.clear();
+                },
+              ),
       ],
     );
   }
@@ -59,7 +70,7 @@ class UserChatLayoutState extends State<UserChatLayout> {
       messageBloc.add(
         CreateMessageEvent(
           message: MessageDto(
-            chatId: widget.localChatId,
+            chatId: widget.chatId,
             senderId: await MainUserServices().getUserID(),
             content: controller.text,
             createdDate: DateTime.now().toIso8601String(),
@@ -75,11 +86,13 @@ class UserChatLayoutState extends State<UserChatLayout> {
         controller.text.isNotEmpty) {
       print("EDITING");
       var messageId = messageBloc.state.messageId;
-      var message = messageBloc.state.messages?.where((element) => element.localMessageId== messageId).toList();
+      var message = messageBloc.state.messages
+          ?.where((element) => element.localMessageId == messageId)
+          .toList();
       messageBloc.add(
         UpdateMessageEvent(
             message: MessageDto(
-                chatId: widget.localChatId,
+                chatId: widget.chatId,
                 senderId: await MainUserServices().getUserID(),
                 content: controller.text,
                 messageId: messageId,

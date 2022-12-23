@@ -1,29 +1,11 @@
 syntax = 'proto3';
 
 service GrpcUsers {
-    rpc getAllUsers(EmptyUser) returns (Users);
+    
     rpc getUser (GetUserRequest) returns (GetUserResponse);
     rpc createUser (CreateUserRequest) returns (CreateUserResponse);
     rpc updateUser (UpdateUserRequest) returns (UpdateUserResponse);
     rpc deleteUser (DeleteUserRequest) returns (DeleteUserResponse);
-}
-
-message EmptyUser{
-    int32 lastId = 1;
-}
-
-message User{
-    int32 userId = 1;
-    string name= 2;
-    string email = 3;
-    string profilePicUrl = 4;
-    string dateCreate = 5;
-    string dateUpdate = 6;
-    string dateDelete = 8;
-}
-
-message Users{ 
-    repeated User users = 1;
 }
 
 message GetUserRequest {

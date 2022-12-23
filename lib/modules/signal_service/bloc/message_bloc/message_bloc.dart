@@ -73,7 +73,6 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         await _messagesServices.deleteMessageFromBase(
             id: del.idMessageMain, dateDelete: del.dateDelete);
         var messages = await _messagesServices.getAllMessages();
-
         print('sort message:$messages');
 
         add(ReadMessageEvent(messages: messages));

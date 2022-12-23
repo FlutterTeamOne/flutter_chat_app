@@ -1,4 +1,4 @@
-﻿import 'package:chat_app/ui/pages/authentication_page/authentication_page.dart';
+﻿import 'package:chat_app/ui/pages/registration_page/registration_page.dart';
 import 'package:sidebarx/sidebarx.dart';
 import 'package:flutter/material.dart';
 
@@ -38,8 +38,7 @@ class PageControllerWidget extends StatelessWidget {
             return const VideosPage();
           case 9:
             return const SettingsPage();
-          case 10:
-            return const AuthenticationPage();
+
           default:
             return const Text(
               'not found ',

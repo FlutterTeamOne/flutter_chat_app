@@ -76,7 +76,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   FutureOr<void> _onGetChatIdEvent(
       GetChatIdEvent event, Emitter<ChatState> emit) async {
-    emit(state.copyWith(chatId: event.chatId, localChatId: event.localChatId));
+    print('HEY');
+    emit(state.copyWith(chatId: event.chatId));
   }
 
   FutureOr<void> _onDeleteChatEvent(
@@ -91,5 +92,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   FutureOr<void> _onEditChatEvent(
       EditChatEvent event, Emitter<ChatState> emit) async {
     //TODO: func edit chat
+  }
+
+  @override
+  Future<void> close() {
+    // TODO: implement close
+    return super.close();
   }
 }

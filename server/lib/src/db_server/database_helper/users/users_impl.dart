@@ -7,43 +7,47 @@ class UsersServices implements IUsersServices {
   createUser(
       {required String name,
       required String email,
-      required String registrationDate,
+      required String createdDate,
       required String profilePicUrl,
-      required String password}) async {
+      required String password,
+      required String updatedDate}) async {
     Database db = await DbServerServices.instanse.database;
 
     await db.execute('''
-      INSERT INTO users (name, email) VALUES (
-        $name,
-        $email,
-        $registrationDate,
-        $profilePicUrl,
-        $password
+      INSERT INTO users (name, email, created_date, profile_pic_url, password, updated_date) VALUES (
+        '$name',
+        '$email',
+        '$createdDate',
+        '$profilePicUrl',
+        '$password',
+        '$updatedDate'
       );
       ''');
 
     return await db.rawQuery('''
-      SELECT main_users_id FROM users 
+      SELECT * FROM users 
       WHERE (
-        (name = $name) 
+        (name = '$name') 
         AND 
-        (email = $email)
+        (email = '$email')
         AND
-        (registration_date = $registrationDate)
+        (created_date = '$createdDate')
         AND
-        (profile_pic_url = $profilePicUrl)
+        (profile_pic_url = '$profilePicUrl')
         AND
-        (password = $password)
+        (password = '$password')
+        AND
+        (updated_date = '$updatedDate')
         );
     ''');
   }
 
   @override
-  deleteUser({required int id}) async {
+  deleteUser({required int newValues, required String condition}) async {
     Database db = await DbServerServices.instanse.database;
 
     return await db
-        .rawDelete('''SELETE FROM users WHERE (main_users_id = id)''');
+        .rawDelete('''SELECT FROM users WHERE (main_users_id = id)''');
   }
 
   @override
@@ -169,5 +173,21 @@ class UsersServices implements IUsersServices {
           FROM users
           WHERE user_id IN (${idFriends.join(",")})''');
     return users;
+  }
+
+  @override
+  getUpdatedUsers({required List<UserRequest> users}) async {
+    List<Map<String, Object?>> usersUpdated = [];
+    Database db = await DbServerServices.instanse.database;
+    for (var user in users) {
+      var userUpdated = await db.rawQuery('''SELECT *
+          FROM users
+          WHERE (user_id = ${user.userId} AND 
+                updated_date NOT LIKE "${user.updatedDate}")''');
+      if (userUpdated.length > 0) {
+        usersUpdated.add(userUpdated[0]);
+      }
+    }
+    return usersUpdated;
   }
 }

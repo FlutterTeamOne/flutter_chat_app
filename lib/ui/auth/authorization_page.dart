@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
@@ -20,21 +22,39 @@ class _AuthPageState extends State<AuthPage> {
     return Scaffold(
       body: BlocBuilder<UserBloc, UserState>(builder: (context, usersState) {
         return usersState.users == null
-            ? Center(
+            ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : Center(
-                child: SizedBox(
-                  height: 300,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: usersState.users!.length,
-                    itemBuilder: ((context, index) =>
-                        UserCard(user: usersState.users![index])),
+            : Column(
+              children: [
+                SizedBox(height: 100,),
+                Center(
+                    child: SizedBox(
+                      height: 300,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: usersState.users!.length,
+                        itemBuilder: ((context, index) =>
+                            UserCard(user: usersState.users![index])),
+                      ),
+
+                    ),
                   ),
-                ),
-              );
+                ElevatedButton(
+                    style: ButtonStyle(
+                        shape: MaterialStateProperty.all<
+                            RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.circular(20.0),
+                            ))),
+                    onPressed: () {
+
+                  Navigator.of(context).pushNamed('/registration page');
+                }, child: Text('Create new user')),
+              ],
+            );
       }),
     );
   }

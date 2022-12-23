@@ -25,10 +25,9 @@ class ReadChatEvent extends ChatEvent {
 
 class GetChatIdEvent extends ChatEvent {
   final int chatId;
-  final int localChatId;
-  GetChatIdEvent(this.chatId, this.localChatId);
+  GetChatIdEvent(this.chatId);
   @override
-  List<Object?> get props => [chatId, localChatId];
+  List<Object?> get props => [chatId];
 }
 
 class DeleteChatEvent extends ChatEvent {

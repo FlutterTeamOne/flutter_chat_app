@@ -30,6 +30,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<ReadUsersEvent>(_onReadUsersEvent);
     on<CreateUserEvent>(_onCreateUserEvent);
     on<ChangeUserEvent>(_onChangeUserEvent);
+    on<DeleteUserEvent>(_onDeleleUserEvent);
   }
 
   FutureOr<void> _onReadUsersEvent(
@@ -38,23 +39,47 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     var users = <UserDto>[];
     //проверяем состояние загруженного пользователя
     if (state.userDbthis) {
-      var id = await _usersServices.getLastUserId();
-      print("lastID $id");
+      List<Map<String, Object?>> usersForUpdate =
+          await _usersServices.getAllUserIdAndUpdatedStarted();
+      List<UserRequest> usersRequest = [];
+      if (usersForUpdate.isNotEmpty) {
+        print("lastID ${usersForUpdate.last['user_id']}");
+        for (var user in usersForUpdate) {
+          usersRequest.add(UserRequest(
+              userId: user['user_id'] as int,
+              updatedDate: user['updated_date'] as String));
+        }
+      }
       //подключаемся к серверу
-      var stub = GrpcUsersClient(GrpcClient().channel);
+      var stub = GrpcSynchronizationClient(GrpcClient().channel);
+      var usersResponse = UsersResponse();
       //отправляем запрос на сервер и получаем всех юзеров
-      var usersServ = await stub.getAllUsers(EmptyUser(lastId: id));
-      print("UsersServ $usersServ");
-      for (var user in usersServ.users) {
+      try {
+        usersResponse = await stub.sync(UsersRequest(users: usersRequest));
+      } catch (e) {
+        print(e);
+      }
+      print("UsersServ $usersResponse");
+      for (var user in usersResponse.usersNew) {
         //парсим всех юзеров и записываем их в локальное дб
         await _usersServices.createUserStart(
             userId: user.userId,
             name: user.name,
             email: user.email,
-            createdDate: user.dateCreate,
-            updatedDate: user.dateUpdate,
-            deletedDate: user.dateDelete,
-            profilePicUrl: user.profilePicUrl);
+            createdDate: user.createdDate,
+            updatedDate: user.updateDate,
+            deletedDate: user.deletedDate,
+            profilePicUrl: user.picture);
+      }
+      for (var user in usersResponse.usersUpdated) {
+        await _usersServices.updateUserStart(
+            newValues: '''name = "${user.name}",
+                          email = "${user.email}",
+                          created_date = "${user.createdDate}",
+                          updated_date = "${user.updateDate}",
+                          deleted_date = "${user.deletedDate}",
+                          profile_pic_link = "${user.picture}"''',
+            condition: 'user_id = ${user.userId}');
       }
 //получаем всех начальных юзеров
       users = await _usersServices.getAllUsersStart();
@@ -64,17 +89,56 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       var maxMessageId = await _messagesServices.getMaxMessageId();
       var maxUserId = await _usersServices.getMaxUserId();
       var stub = GrpcSynchronizationClient(GrpcClient().channel);
-      var response = await stub.getUsersSynh(SynhMainUser(
-          id: maxUserId, chatId: maxChatId, messageId: maxMessageId));
-      for (var user in response.users) {
-        await _usersServices.createUser(
-            userId: user.userId,
-            name: user.name,
-            email: user.email,
-            createdDate: user.createdDate,
-            profilePicUrl: user.picture,
-            updatedDate: user.updateDate,
-            deletedDate: user.deletedDate);
+      //Юзера для обновления данных
+      var usersUp = await _usersServices.getAllUserIdAndUpdated();
+      var usersRequestA = <UserRequest>[];
+      if (usersUp.isNotEmpty) {
+        print("lastID ${usersUp.last['user_id']}");
+        for (var user in usersUp) {
+          usersRequestA.add(UserRequest(
+              userId: user['user_id'] as int,
+              updatedDate: user['updated_date'] as String));
+        }
+      }
+      //запрос на сервер
+      var response = DataDBResponse();
+      try {
+        response = await stub.getUsersSynh(SynhMainUser(
+            mainUserId: maxUserId,
+            chatId: maxChatId,
+            messageId: maxMessageId,
+            users: UsersRequest(users: usersRequestA)));
+      } catch (e) {
+        print(e);
+      }
+      print("NEWUSERS: ${response.newUsers}");
+      //добавление новых юзеров для новых чатов
+      for (var user in response.newUsers) {
+        print(
+            "deleted date is empty? ${user.deletedDate} ${user.deletedDate.isNotEmpty}");
+        if (user.deletedDate.isNotEmpty) {
+          const String deletedUserAvatar =
+              """https://www.iconsdb.com/icons/preview/red/cancel-xxl.png""";
+          await _usersServices.createUser(
+              name: user.name,
+              email: user.email,
+              createdDate: user.createdDate,
+              updatedDate: user.updateDate,
+              deletedDate: user.deletedDate,
+              profilePicUrl: deletedUserAvatar,
+              userId: user.userId);
+        } else
+        //парсим всех юзеров и записываем их в локальное дб
+        {
+          await _usersServices.createUser(
+              name: user.name,
+              email: user.email,
+              createdDate: user.createdDate,
+              updatedDate: user.updateDate,
+              deletedDate: user.deletedDate,
+              profilePicUrl: user.picture,
+              userId: user.userId);
+        }
       }
       print('RESPONSE_CHATS: ${response.chats}');
       for (var chat in response.chats) {
@@ -83,6 +147,34 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             createDate: chat.createdDate,
             userId: chat.userId,
             chatId: chat.chatId);
+      }
+      print('REPSONSE_UPDATEUSERS: ${response.updatedUsers}');
+      for (var user in response.updatedUsers) {
+        print(
+            "deleted date is empty? ${user.deletedDate} ${user.deletedDate.isEmpty}");
+        if (user.deletedDate.isNotEmpty) {
+          const String deletedUserAvatar =
+              """https://www.iconsdb.com/icons/preview/red/cancel-xxl.png""";
+          await _usersServices.updateUser(
+              newValues: '''name = "${user.name}",
+                          email = "${user.email}",
+                          created_date = "${user.createdDate}",
+                          updated_date = "${user.updateDate}",
+                          deleted_date = "${user.deletedDate}",
+                          profile_pic_link = "$deletedUserAvatar"''',
+              condition: 'user_id = ${user.userId}');
+        } else
+        //парсим всех юзеров и записываем их в локальное дб
+        {
+          await _usersServices.updateUser(
+              newValues: '''name = "${user.name}",
+                          email = "${user.email}",
+                          created_date = "${user.createdDate}",
+                          updated_date = "${user.updateDate}",
+                          deleted_date = "${user.deletedDate}",
+                          profile_pic_link = "${user.picture}"''',
+              condition: 'user_id = ${user.userId}');
+        }
       }
       for (var message in response.messages) {
         var msg = Message(
@@ -100,8 +192,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
       users = await _usersServices.getAllUsers();
     }
-
-    print('USERS: $users');
+    for (var userServ in users) {
+      print('USERS BLOCK: $userServ');
+    }
     //Добавляем всех юзеров в state
     emit(state.copyWith(users: users));
 
@@ -136,5 +229,18 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       ChangeUserEvent event, Emitter<UserState> emit) {
     print('GET USER PREF: ${UserPref.getUserDbPref} ');
     UserPref.setUserDbPref = event.userDb;
+  }
+
+  FutureOr<void> _onDeleleUserEvent(
+      DeleteUserEvent event, Emitter<UserState> emit) async {
+    var result;
+    try {
+      result = await GrpcClient().deleteUser(userId: event.userId!);
+    } catch (e) {
+      print(e);
+    }
+    print('event: ${event.userId}');
+    print(result.isDeleted);
+    emit(state.copyWith(isDeleted: result.isDeleted));
   }
 }

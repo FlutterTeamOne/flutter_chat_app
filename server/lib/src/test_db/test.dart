@@ -66,10 +66,10 @@ Future<void> main() async {
   ///
   ///Проверка запроса с синхронизацией
   ///
-  var mainIdUser = 1;
-  var users;
-  var chats;
-  var messages;
+  // var mainIdUser = 1;
+  // var users;
+  // var chats;
+  // var messages;
 
   // users = await usersService.getAllUsersByIDfriend(userId: mainIdUser);
   // print("Users");
@@ -77,11 +77,11 @@ Future<void> main() async {
   //   print(user);
   // }
 
-  print("Chats");
-  chats = await chatsServices.getChatsByUserId(userId: mainIdUser);
-  for (var chat in chats) {
-    print(chat);
-  }
+  // print("Chats");
+  // chats = await chatsServices.getChatsByUserId(userId: mainIdUser);
+  // for (var chat in chats) {
+  //   print(chat);
+  // }
 
   // print("Messages");
   // //await messagesService.addNewMessage(chatId: 1, senderId: 2, content: '222');
@@ -109,4 +109,22 @@ Future<void> main() async {
   // for (var message in messages) {
   //   print(message);
   // }
+
+  print(await usersService.getAllUsers());
+  await usersService.updateUser(
+      newValues:
+          'profile_pic_url = "https://app-images.website.yandexcloud.net/174568/076dfa96dfd0dbadd5b0da03d2632f54.jpg", updated_date = "${DateTime.now().toIso8601String()}"',
+      condition: 'user_id = 2');
+  print(await usersService.getAllUsers());
+  // print(await usersService.getAllUsers());
+  // List<UserRequest> users = [];
+  // users.add(UserRequest(userId: 1, updatedDate: '2022-12-02T21:36:32.653712'));
+  // users.add(UserRequest(userId: 2, updatedDate: '2022-12-02T21:36:32.653712'));
+  // print(await usersService.getUpdatedUsers(users: users));
+  // List<UserRequest> usersUpdated = [];
+  // usersUpdated.add(
+  //     UserRequest(userId: 1, updatedDate: DateTime.now().toIso8601String()));
+  // usersUpdated
+  //     .add(UserRequest(userId: 2, updatedDate: '2022-12-02T21:36:32.653712'));
+  // print(await usersService.getUpdatedUsers(users: usersUpdated));
 }
