@@ -67,20 +67,25 @@ class _ProfileLayout extends StatelessWidget {
                                 builder: (BuildContext context) {
                                   TextEditingController newNameController =
                                       TextEditingController();
-                                  return SizedBox(
-                                    height: 100,
-                                    width: 200,
-                                    child: Dialog(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                      ),
+                                  return Dialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    child: SizedBox(
+                                      height: 150,
+                                      width: 300,
                                       child: Column(
                                         children: [
-                                          Text('Insert image link'),
-                                          TextField(
-                                            controller: newNameController =
-                                                TextEditingController(),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text('Insert new name'),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: TextField(
+                                              controller: newNameController =
+                                                  TextEditingController(),
+                                            ),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
@@ -134,7 +139,7 @@ class _ProfileLayout extends StatelessWidget {
                                   );
                                 });
                           },
-                          icon: Icon(Icons.read_more))
+                          icon: Icon(Icons.create_outlined))
                     ],
                   ),
                   const SizedBox(height: 10),
