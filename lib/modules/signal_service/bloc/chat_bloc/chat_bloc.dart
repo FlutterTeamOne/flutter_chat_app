@@ -49,7 +49,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       if (!listEquals(chats, restChats)) {
         for (var chat in restChats) {
           await _chatServices.createChat(
-              createDate: chat.createdDate, userId: chat.userIdChat);
+              createDate: chat.createdDate,
+              userId: chat.userIdChat,
+              chatId: chat.chatId);
         }
       }
     } else {
@@ -63,7 +65,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     _chatServices = LocalChatServices();
     var chat = event.chat;
     var chats = await _chatServices.createChat(
-        createDate: chat.createdDate, userId: chat.userIdChat);
+        createDate: chat.createdDate,
+        userId: chat.userIdChat,
+        chatId: chat.chatId);
     //TODO:запрос к restApi на создание чата
     await RestClient().createChatRest(
         creatorUserId: UserPref.getUserId, user2Id: chat.userIdChat);

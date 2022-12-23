@@ -1,4 +1,5 @@
-﻿import 'package:chat_app/ui/widgets/asap_page/widgets/search_field.dart';
+﻿import 'package:chat_app/ui/widgets/asap_page/widgets/add_chat_dialog_widget.dart';
+import 'package:chat_app/ui/widgets/asap_page/widgets/search_field.dart';
 
 import '../../../widgets/library/library_widgets.dart';
 import 'package:flutter/material.dart';
@@ -26,11 +27,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
   Widget build(BuildContext context) {
     return Drawer(
         shape: Border(
-          right: BorderSide(
-            width: 1,
-            color: Theme.of(context).dividerColor
-          )
-        ),
+            right: BorderSide(width: 1, color: Theme.of(context).dividerColor)),
         elevation: 0,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -82,27 +79,31 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                     ),
                   ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                // decoration: BoxDecoration(
-                //   borderRadius: BorderRadius.circular(50)
-                // ),
-                child: ElevatedButton.icon(
-                  onPressed:
-                      () {}, //=>context.read<ChatBloc>().add(CreateChatEvent(
-                  //chat: ChatModel(
-                  //localChatId: 1, chatIdMain: 2, friendId: 2),
-                  // )),
-                  icon: Icon(Icons.add),
-                  label: Text('Add Chat'),
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0),
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  // decoration: BoxDecoration(
+                  //   borderRadius: BorderRadius.circular(50)
+                  // ),
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AddChatDialogWidget();
+                          });
+                    },
+                    icon: Icon(Icons.add),
+                    label: Text('Add Chat'),
+                    style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    )),
                   ),
-    )
-                ),
-              ),
-            )
-            )],
+                ))
+          ],
         ));
   }
 }

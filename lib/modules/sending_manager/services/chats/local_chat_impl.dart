@@ -8,14 +8,16 @@ class LocalChatServices implements ILocalChatsServices {
 
   @override
   Future<List<ChatDto>> createChat(
-      {required String createDate, required int userId}) async {
-     await DBHelper.instanse
-        .onAdd(tableName: DatabaseConst.chatsTable, model: {
+      {required String createDate,
+      required int userId,
+      required chatId}) async {
+    await DBHelper.instanse.onAdd(tableName: DatabaseConst.chatsTable, model: {
+      DatabaseConst.chatsColumnChatId: chatId,
       DatabaseConst.chatsColumnUserId: userId,
       DatabaseConst.chatsColumnCreatedDate: createDate,
       DatabaseConst.chatsColumnUpdatedDate: createDate
     });
-     var db = await DBHelper.instanse.database;
+    var db = await DBHelper.instanse.database;
     var chats = await db.rawQuery('''
               SELECT *
               FROM ${DatabaseConst.chatsTable}

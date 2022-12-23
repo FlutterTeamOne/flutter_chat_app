@@ -4,7 +4,8 @@ import 'local_chat_impl.dart';
 
 abstract class ILocalChatsServices {
   factory ILocalChatsServices() => LocalChatServices();
-  createChat({required String createDate, required int userId});
+  createChat(
+      {required String createDate, required int userId, required int chatId});
 
   getChatById({required int id});
 
