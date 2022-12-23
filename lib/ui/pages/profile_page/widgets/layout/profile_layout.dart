@@ -60,86 +60,86 @@ class _ProfileLayout extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                       IconButton(
-                          onPressed: () {
-                            // Пример решения
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  TextEditingController newNameController =
-                                      TextEditingController();
-                                  return Dialog(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                    child: SizedBox(
-                                      height: 150,
-                                      width: 300,
-                                      child: Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text('Insert new name'),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                TextEditingController newNameController =
+                                    TextEditingController();
+                                return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  child: SizedBox(
+                                    height: 150,
+                                    width: 300,
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text('Insert new name'),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: TextField(
+                                            controller: newNameController =
+                                                TextEditingController(),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: TextField(
-                                              controller: newNameController =
-                                                  TextEditingController(),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: ElevatedButton(
-                                                style: ButtonStyle(
-                                                    shape: MaterialStateProperty
-                                                        .all<RoundedRectangleBorder>(
-                                                            RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20.0),
-                                                ))),
-                                                onPressed: () {
-                                                  String updatedDate =
-                                                      DateTime.now()
-                                                          .toIso8601String();
-                                                  late String newName =
-                                                      newNameController.text;
-                                                  UserDto user = context
-                                                      .read<UserBloc>()
-                                                      .state
-                                                      .users![0];
-                                                  var updatedUser = UserDto(
-                                                      userId: user.userId,
-                                                      name: newName,
-                                                      email: user.email,
-                                                      createdDate:
-                                                          user.createdDate,
-                                                      profilePicLink:
-                                                          user.profilePicLink,
-                                                      updatedDate: updatedDate);
-                                                  context.read<UserBloc>().add(
-                                                      UpdateUserEvent(
-                                                          user: updatedUser,
-                                                          userDb: true));
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: ElevatedButton(
+                                              style: ButtonStyle(
+                                                  shape: MaterialStateProperty
+                                                      .all<RoundedRectangleBorder>(
+                                                          RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                              ))),
+                                              onPressed: () {
+                                                String updatedDate =
+                                                    DateTime.now()
+                                                        .toIso8601String();
+                                                late String newName =
+                                                    newNameController.text;
+                                                UserDto user = context
+                                                    .read<UserBloc>()
+                                                    .state
+                                                    .users![0];
+                                                var updatedUser = UserDto(
+                                                    userId: user.userId,
+                                                    name: newName,
+                                                    email: user.email,
+                                                    createdDate:
+                                                        user.createdDate,
+                                                    profilePicLink:
+                                                        user.profilePicLink,
+                                                    updatedDate: updatedDate);
+                                                context.read<UserBloc>().add(
+                                                    UpdateUserEvent(
+                                                        user: updatedUser,
+                                                        userDb: true));
 
-                                                  context.read<UserBloc>().add(
-                                                      ChangeUserEvent(
-                                                          userDb: true));
-                                                  context
-                                                      .read<UserBloc>()
-                                                      .add(ReadUsersEvent());
-                                                  print(newName);
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Icon(Icons.check)),
-                                          )
-                                        ],
-                                      ),
+                                                context.read<UserBloc>().add(
+                                                    ChangeUserEvent(
+                                                        userDb: true));
+                                                context
+                                                    .read<UserBloc>()
+                                                    .add(ReadUsersEvent());
+                                                print(newName);
+                                                Navigator.pop(context);
+                                              },
+                                              child: Icon(Icons.check)),
+                                        )
+                                      ],
                                     ),
-                                  );
-                                });
-                          },
-                          icon: Icon(Icons.create_outlined))
+                                  ),
+                                );
+                              });
+                        },
+                        icon: Icon(Icons.create_outlined),
+                        iconSize: 15,
+                      )
                     ],
                   ),
                   const SizedBox(height: 10),
