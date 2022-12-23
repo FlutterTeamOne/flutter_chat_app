@@ -1,4 +1,6 @@
-﻿import 'package:chat_app/ui/widgets/asap_page/widgets/add_chat_dialog_widget.dart';
+﻿import 'package:chat_app/src/generated/chats/chats.pbgrpc.dart';
+import 'package:chat_app/src/generated/users/users.pbgrpc.dart';
+import 'package:chat_app/ui/widgets/asap_page/widgets/add_chat_dialog_widget.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/search_field.dart';
 
 import '../../../../modules/storage_manager/db_helper/user_path.dart';
@@ -28,6 +30,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
   Widget build(BuildContext context) {
     final chatBloc = context.read<ChatBloc>();
     final userBloc = context.read<UserBloc>();
+    final grpcClient = GrpcClient();
     return Drawer(
         shape: Border(
             right: BorderSide(width: 1, color: Theme.of(context).dividerColor)),
@@ -74,9 +77,9 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                               selected: false,
                               onTap: () {
                                 context.read<ChatBloc>().add(GetChatIdEvent(
-                                    widget.chatModel[index].chatId));
+                                    widget.chatModel[index].chatId!));
                               },
-                              name: friend.name,
+                              name: friend.name ?? 'NAME',
                               image: friend.profilePicLink,
 
                               message: widget.messageModel.isNotEmpty
@@ -95,15 +98,38 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                   //   borderRadius: BorderRadius.circular(50)
                   // ),
                   child: ElevatedButton.icon(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AddChatDialogWidget();
-                          });
+                    onPressed: () async {
+                      int value = 0;
+                      await showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  (AddChatDialogWidget(val: value)))
+                          .then((value) async {
+                        print('FriendId From Add Dialog: $value');
+                        print('Current UserId: ${UserPref.getUserId}');
+                        //FriendId Validation
+                        var idFromServerDb =
+                            await grpcClient.getUser(userId: value);
+                        if (idFromServerDb.toString().isEmpty) {
+                          print(
+                              'no id in server db: ${idFromServerDb.toString()}');
+                        } else {
+                          context.read<ChatBloc>().add(
+                                CreateChatEvent(
+                                  chat: ChatDto(
+                                    userIdChat: value,
+                                    createdDate:
+                                        DateTime.now().toIso8601String(),
+                                    updatedDate:
+                                        DateTime.now().toIso8601String(),
+                                  ),
+                                ),
+                              );
+                        }
+                      });
                     },
-                    icon: Icon(Icons.add),
-                    label: Text('Add Chat'),
+                    icon: const Icon(Icons.add),
+                    label: const Text('Add Chat'),
                     style: ButtonStyle(
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(

@@ -20,8 +20,8 @@ class ChatsServices implements IChatsServices {
       },
     );
 
-    return await db.rawQuery('''
-      SELECT chat_id FROM chats 
+    var chats = await db.rawQuery('''
+      SELECT * FROM chats 
       WHERE (
         (friend1_id = ?) 
         AND 
@@ -31,6 +31,8 @@ class ChatsServices implements IChatsServices {
         AND
         (updated_date = ?));
     ''', [friend1Id, friend2Id, date, date]);
+
+    return chats[0];
   }
 
   @override
@@ -69,12 +71,12 @@ class ChatsServices implements IChatsServices {
     Database db = await DbServerServices.instanse.database;
 
     var id_chat = await db.rawQuery('''
-      SELECT f.main_friends_chat_id FROM chats f 
+      SELECT f.chat_id FROM chats f 
 	      WHERE 
         (((f.friend1_id = $friend1_id) AND (f.friend2_id = $friend2_id)) 
         OR 
         ((f.friend1_id = $friend2_id) AND (f.friend2_id = $friend1_id)))''');
-    return id_chat[0]['main_friends_chat_id'];
+    return id_chat;
   }
 
   @override

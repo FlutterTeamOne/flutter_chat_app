@@ -5,7 +5,6 @@ import 'package:server/src/library/library_server.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-
 class ChatApi {
   // static const String _chats = 'server/bin/restApi/chat.json';
   static const _headers = {'Content-Type': 'application/json'};
@@ -22,26 +21,36 @@ class ChatApi {
     });
     router.get('/<user_id>', (Request request, String userId) async {
       final id = int.parse(userId);
-      var chats = await  _chatService.getChatsByUserId(userId: id);
+      var chats = await _chatService.getChatsByUserId(userId: id);
       print('got chats: $chats');
       return Response.ok(json.encode(chats), headers: _headers);
     });
     router.get('/<chat_id>', (Request request, String chatId) async {
       final id = int.parse(chatId);
-      var chats = await  _chatService.getChatById(id: id);
+      var chats = await _chatService.getChatById(id: id);
       print('got chats: $chats');
       return Response.ok(json.encode(chats), headers: _headers);
     });
     //запрос на добавление в чата в список чатов
-    router.post('/', (Request request) async {
+    router.put('/', (Request request) async {
       final body = await request.readAsString();
       var resp = jsonDecode(body);
-
-      await _chatService.createChat(
-          friend1Id: resp['friend1_id'],
-          friend2Id: resp['friend2_id'],
-          date: resp['date']);
-      return Response.ok(body, headers: _headers);
+      print('RESP: $resp');
+      List<Map<String, Object?>> chatId = await _chatService.getChatByTwoIds(
+          friend1_id: resp['friend1_id'], friend2_id: resp['friend2_id']);
+      print('user ID: $chatId');
+      if (chatId.isEmpty) {
+        print('user id is not empty');
+        var res = await _chatService.createChat(
+            friend1Id: resp['friend1_id'],
+            friend2Id: resp['friend2_id'],
+            date: resp['date']);
+        print('RES: $res');
+        var result = res.toString();
+        return Response.ok(result);
+      } else {
+        return Response.ok('Chat is already created,');
+      }
     });
     router.delete('/', (Request request) async {
       final body = await request.readAsString();
@@ -68,7 +77,10 @@ class ChatApi {
       final body = await request.readAsString();
       var resp = jsonDecode(body);
 
-      await _chatService.createChat(friend1Id: resp['friend1_id'], friend2Id: resp['friend2_id'], date: resp['date']);
+      await _chatService.createChat(
+          friend1Id: resp['friend1_id'],
+          friend2Id: resp['friend2_id'],
+          date: resp['date']);
       return Response.ok(body, headers: _headers);
     });
     //запрос на поиск чата по ид

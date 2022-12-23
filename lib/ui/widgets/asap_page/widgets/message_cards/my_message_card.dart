@@ -51,9 +51,13 @@ class MyMessageCardWidget extends StatelessWidget {
                           message: message,
                         ),
                   InkWell(
-                    onTap: () => context
+                    onTap: () => {},
+                    /*
+                    context НЕТ read MESSAGEBLOC
+                    context
                         .read<MessageBloc>()
-                        .add(CreateMessageEvent(message: message)),
+                        .add(CreateMessageEvent(message: message))
+                    */
                     child: const Text(
                       'Not Delivered',
                     ),

@@ -33,6 +33,20 @@ class GrpcClient {
     return response;
   }
 
+  Future<GetUserResponse> getUser({required int userId}) async {
+    late GrpcUsersClient stub;
+    stub = GrpcUsersClient(channel,
+        options: CallOptions(timeout: const Duration(seconds: 30)));
+    var request = GetUserRequest()..id = userId;
+    GetUserResponse response = GetUserResponse();
+    try {
+      response = await stub.getUser(request);
+    } catch (e) {
+      print('ERROR getUser GRPC_CLIENT: $e');
+    }
+    return response;
+  }
+
   Future createUser({required NewUserModel user}) async {
     late GrpcUsersClient stub;
     stub = GrpcUsersClient(channel,

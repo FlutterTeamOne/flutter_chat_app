@@ -455,11 +455,17 @@ class GrpcUsers extends GrpcUsersServiceBase {
   @override
   Future<GetUserResponse> getUser(
       ServiceCall call, GetUserRequest request) async {
-    var getUserResponse = GetUserResponse();
+    print('ACTIVATE GET USER SERVER');
     var src;
     if (!request.id.isNaN) {
+      print('REQUEST :');
       src = await UsersServices()
-          .getUserByField(field: 'user_id', fieldValue: request.id);
+          .getUserByField(field: 'user_id', fieldValue: '${request.id}');
+      print('OK: $src');
+      if (src.toString().contains('user_id')) {
+        print('src contains user_id');
+        return GetUserResponse(id: request.id);
+      }
     } else if (request.name.isNotEmpty) {
       src = await UsersServices()
           .getUserByField(field: 'name', fieldValue: request.name);
@@ -472,7 +478,7 @@ class GrpcUsers extends GrpcUsersServiceBase {
     } else {
       // // return GrpcError.invalidArgument()
     }
-    return getUserResponse;
+    return GetUserResponse();
   }
 
   @override

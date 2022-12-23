@@ -5,13 +5,13 @@ import 'package:chat_app/src/constants/db_constants.dart';
 import '../model_dto.dart';
 
 class ChatDto extends ModelDto {
-  final int chatId;
+  final int? chatId;
   final int userIdChat;
   final String createdDate;
   final String updatedDate;
   final String? deletedDate;
   ChatDto({
-    required this.chatId,
+    this.chatId,
     required this.userIdChat,
     required this.createdDate,
     required this.updatedDate,

@@ -11,7 +11,7 @@ abstract class IUsersServices {
       required String password,
       required String updatedDate});
 
-  getUserByField({required String field, required Object fieldValue});
+  getUserByField({required String field, required String fieldValue});
 
   updateUser({required String newValues, required String condition});
 

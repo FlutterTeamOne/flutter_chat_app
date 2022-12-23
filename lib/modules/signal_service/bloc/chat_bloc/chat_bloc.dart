@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:chat_app/modules/client/rest_client.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
+import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,6 +20,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   late LocalChatServices _chatServices;
   UserBloc userBloc;
   ChatBloc({required this.userBloc}) : super(const ChatState()) {
+    DBHelper.instanse.updateListenController.stream.listen(
+      (event) {
+        if (event) {
+          add(ReadChatEvent());
+        }
+      },
+    );
     on<ReadChatEvent>(_onReadChatEvent);
     on<CreateChatEvent>(_onCreateChatEvent);
     on<GetChatIdEvent>(_onGetChatIdEvent);
@@ -51,7 +59,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           await _chatServices.createChat(
               createDate: chat.createdDate,
               userId: chat.userIdChat,
-              chatId: chat.chatId);
+              chatId: chat.chatId!);
         }
       }
     } else {
@@ -64,13 +72,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       CreateChatEvent event, Emitter<ChatState> emit) async {
     _chatServices = LocalChatServices();
     var chat = event.chat;
-    var chats = await _chatServices.createChat(
-        createDate: chat.createdDate,
-        userId: chat.userIdChat,
-        chatId: chat.chatId);
+    // var chats = await _chatServices.createChat(
+    //     createDate: chat.createdDate,
+    //     userId: chat.userIdChat,
+    //     chatId: chat.chatId!);
     //TODO:запрос к restApi на создание чата
-    await RestClient().createChatRest(
-        creatorUserId: UserPref.getUserId, user2Id: chat.userIdChat);
+    var restChat = await RestClient().createChatRest(
+        creatorUserId: UserPref.getUserId,
+        user2Id: chat.userIdChat,
+        date: chat.createdDate);
+    var chats = await _chatServices.createChat(
+        createDate: restChat.createdDate,
+        userId: restChat.userIdChat,
+        chatId: restChat.chatId!);
     emit(state.copyWith(chats: chats));
   }
 

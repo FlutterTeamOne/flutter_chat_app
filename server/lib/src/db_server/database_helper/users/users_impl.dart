@@ -107,9 +107,12 @@ class UsersServices implements IUsersServices {
   }
 
   @override
-  getUserByField({required String field, required Object fieldValue}) {
-    // TODO: implement getUserByField
-    throw UnimplementedError();
+  getUserByField({required String field, required String fieldValue}) async {
+    //user by id
+    Database db = await DbServerServices.instanse.database;
+
+    return await db.rawQuery(
+        '''SELECT user_id FROM users WHERE (user_id = $fieldValue)''');
   }
 
   @override

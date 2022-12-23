@@ -110,12 +110,12 @@ Future<void> main() async {
   //   print(message);
   // }
 
-  print(await usersService.getAllUsers());
-  await usersService.updateUser(
-      newValues:
-          'profile_pic_url = "https://app-images.website.yandexcloud.net/174568/076dfa96dfd0dbadd5b0da03d2632f54.jpg", updated_date = "${DateTime.now().toIso8601String()}"',
-      condition: 'user_id = 2');
-  print(await usersService.getAllUsers());
+  // print(await usersService.getAllUsers());
+  // await usersService.updateUser(
+  //     newValues:
+  //         'profile_pic_url = "https://app-images.website.yandexcloud.net/174568/076dfa96dfd0dbadd5b0da03d2632f54.jpg", updated_date = "${DateTime.now().toIso8601String()}"',
+  //     condition: 'user_id = 2');
+  // print(await usersService.getAllUsers());
   // print(await usersService.getAllUsers());
   // List<UserRequest> users = [];
   // users.add(UserRequest(userId: 1, updatedDate: '2022-12-02T21:36:32.653712'));
@@ -127,4 +127,7 @@ Future<void> main() async {
   // usersUpdated
   //     .add(UserRequest(userId: 2, updatedDate: '2022-12-02T21:36:32.653712'));
   // print(await usersService.getUpdatedUsers(users: usersUpdated));
+
+  print(await chatsServices.createChat(
+      friend1Id: 2, friend2Id: 3, date: DateTime.now().toIso8601String()));
 }
