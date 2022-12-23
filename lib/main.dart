@@ -4,8 +4,10 @@ import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_c
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_user_lib.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';
+import 'package:chat_app/ui/pages/custom_theme/custom_page.dart';
 import 'package:chat_app/ui/pages/registration_page/registration_page.dart';
 import 'package:chat_app/ui/widgets/registration_page/bloc/new_user_bloc.dart';
+import 'package:path/path.dart';
 import 'modules/storage_manager/db_helper/db_helper_start.dart';
 
 import 'ui/pages/library/library_pages.dart';
@@ -74,9 +76,9 @@ class MyApp extends StatelessWidget {
           // final int? savedThemeIndex = UserPref.getThemeIndex as int?;
           // final int? savedThemeIndex = UserPreferences().getTheme() as int?;
           final ThemeData? theme =
-          // savedThemeIndex == null
-          //      ? CustomTheme().themes[savedThemeIndex!]
-          //      : state.theme;
+          // savedThemeIndex != null
+          //      ? state.theme
+          //      : CustomTheme().themes[savedThemeIndex!];
               state.theme;
           // savedThemeIndex != null
           //     ? state.theme
@@ -100,6 +102,7 @@ class MyApp extends StatelessWidget {
         AuthPage.routeName: (context) => const AuthPage(),
         MainLayout.routeName: (context) => const MainLayout(),
         '/Settings page': (context) => const SettingsPage(),
+        CustomThemePage.routeName: (context) => const CustomThemePage(),
       },
     );
   }
