@@ -39,7 +39,10 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     _subscription = GrpcMessagesClient(grpcClient.channel)
         .streamMessage(messageController.stream)
         .listen((value) async {
+      print("MESSAGE!!!!!!!!!!!!!!!");
+      print(value.messageState);
       if (value.messageState == MessageStateEnum.isReadMessage) {
+        print("READMESSAGE: ${value}");
         var messages = <MessageDto>[];
         var msg = value.readMessage.message;
         await _messagesServices.addNewMessageFromBase(message: msg);
@@ -77,6 +80,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
         add(ReadMessageEvent(messages: messages));
       } else if (value.messageState == MessageStateEnum.isCreateMessage) {
+        print("IsCreate: ${value.createMessage.message}");
         var msg = value.createMessage.message;
         var newMsg = MessageDto(
             localMessageId: msg.localMessgaeId,
