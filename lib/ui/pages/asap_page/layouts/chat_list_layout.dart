@@ -31,6 +31,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
     final chatBloc = context.read<ChatBloc>();
     final userBloc = context.read<UserBloc>();
     final grpcClient = GrpcClient();
+    final localUserServices = LocalUsersServices();
     return Drawer(
         shape: Border(
             right: BorderSide(width: 1, color: Theme.of(context).dividerColor)),
@@ -111,23 +112,38 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                         print('FriendId From Add Dialog: $value');
                         print('Current UserId: ${UserPref.getUserId}');
                         //FriendId Validation
-                        var idFromServerDb =
+                        var userFromServerDb =
                             await grpcClient.getUser(userId: value);
-                        if (idFromServerDb.toString().isEmpty) {
+                        if (userFromServerDb.toString().isEmpty) {
                           print(
-                              'no id in server db: ${idFromServerDb.toString()}');
+                              'no id in server db: ${userFromServerDb.toString()}');
                         } else {
-                          context.read<ChatBloc>().add(
-                                CreateChatEvent(
-                                  chat: ChatDto(
-                                    userIdChat: value,
-                                    createdDate:
-                                        DateTime.now().toIso8601String(),
-                                    updatedDate:
-                                        DateTime.now().toIso8601String(),
+                          try {
+                            localUserServices.createUser(
+                                userId: value,
+                                name: '$value',
+                                email: '$value@mail.ru',
+                                createdDate: DateTime.now().toIso8601String(),
+                                updatedDate: DateTime.now().toIso8601String(),
+                                profilePicUrl: '');
+                          } catch (e) {
+                            print('CREATE USER e: $e');
+                          }
+                          try {
+                            context.read<ChatBloc>().add(
+                                  CreateChatEvent(
+                                    chat: ChatDto(
+                                      userIdChat: value,
+                                      createdDate:
+                                          DateTime.now().toIso8601String(),
+                                      updatedDate:
+                                          DateTime.now().toIso8601String(),
+                                    ),
                                   ),
-                                ),
-                              );
+                                );
+                          } catch (e) {
+                            print('ADD CHAT e: $e');
+                          }
                         }
                       });
                     },

@@ -63,7 +63,7 @@ class GrpcClient {
     } catch (e) {
       print(e);
     }
-    print(response);
+    print('CREATE USER FROM GRPC CLIENT RESPONSE: ${response.toString()}');
     return UserDto(
         userId: response.id,
         name: response.name,

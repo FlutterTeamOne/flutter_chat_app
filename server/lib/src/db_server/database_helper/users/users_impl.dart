@@ -111,8 +111,8 @@ class UsersServices implements IUsersServices {
     //user by id
     Database db = await DbServerServices.instanse.database;
 
-    return await db.rawQuery(
-        '''SELECT user_id FROM users WHERE (user_id = $fieldValue)''');
+    return await db
+        .rawQuery('''SELECT * FROM users WHERE (user_id = $fieldValue)''');
   }
 
   @override
