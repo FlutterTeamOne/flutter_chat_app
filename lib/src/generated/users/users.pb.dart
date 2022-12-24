@@ -413,7 +413,6 @@ class UpdateUserRequest extends $pb.GeneratedMessage {
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'email')
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'profilePicUrl', protoName: 'profilePicUrl')
-    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'password')
     ..hasRequiredFields = false
   ;
 
@@ -423,7 +422,6 @@ class UpdateUserRequest extends $pb.GeneratedMessage {
     $core.String? name,
     $core.String? email,
     $core.String? profilePicUrl,
-    $core.String? password,
   }) {
     final _result = create();
     if (id != null) {
@@ -437,9 +435,6 @@ class UpdateUserRequest extends $pb.GeneratedMessage {
     }
     if (profilePicUrl != null) {
       _result.profilePicUrl = profilePicUrl;
-    }
-    if (password != null) {
-      _result.password = password;
     }
     return _result;
   }
@@ -499,35 +494,41 @@ class UpdateUserRequest extends $pb.GeneratedMessage {
   $core.bool hasProfilePicUrl() => $_has(3);
   @$pb.TagNumber(4)
   void clearProfilePicUrl() => clearField(4);
-
-  @$pb.TagNumber(5)
-  $core.String get password => $_getSZ(4);
-  @$pb.TagNumber(5)
-  set password($core.String v) { $_setString(4, v); }
-  @$pb.TagNumber(5)
-  $core.bool hasPassword() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearPassword() => clearField(5);
 }
 
 class UpdateUserResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'UpdateUserResponse', createEmptyInstance: create)
-    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dateUpdated', protoName: 'dateUpdated')
-    ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isUpdated', protoName: 'isUpdated')
+    ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userId', $pb.PbFieldType.O3, protoName: 'userId')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'email')
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'profilePicUrl', protoName: 'profilePicUrl')
+    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dateUpdated', protoName: 'dateUpdated')
     ..hasRequiredFields = false
   ;
 
   UpdateUserResponse._() : super();
   factory UpdateUserResponse({
+    $core.int? userId,
+    $core.String? name,
+    $core.String? email,
+    $core.String? profilePicUrl,
     $core.String? dateUpdated,
-    $core.bool? isUpdated,
   }) {
     final _result = create();
+    if (userId != null) {
+      _result.userId = userId;
+    }
+    if (name != null) {
+      _result.name = name;
+    }
+    if (email != null) {
+      _result.email = email;
+    }
+    if (profilePicUrl != null) {
+      _result.profilePicUrl = profilePicUrl;
+    }
     if (dateUpdated != null) {
       _result.dateUpdated = dateUpdated;
-    }
-    if (isUpdated != null) {
-      _result.isUpdated = isUpdated;
     }
     return _result;
   }
@@ -553,22 +554,49 @@ class UpdateUserResponse extends $pb.GeneratedMessage {
   static UpdateUserResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get dateUpdated => $_getSZ(0);
+  $core.int get userId => $_getIZ(0);
   @$pb.TagNumber(1)
-  set dateUpdated($core.String v) { $_setString(0, v); }
+  set userId($core.int v) { $_setSignedInt32(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasDateUpdated() => $_has(0);
+  $core.bool hasUserId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDateUpdated() => clearField(1);
+  void clearUserId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.bool get isUpdated => $_getBF(1);
+  $core.String get name => $_getSZ(1);
   @$pb.TagNumber(2)
-  set isUpdated($core.bool v) { $_setBool(1, v); }
+  set name($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasIsUpdated() => $_has(1);
+  $core.bool hasName() => $_has(1);
   @$pb.TagNumber(2)
-  void clearIsUpdated() => clearField(2);
+  void clearName() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get email => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set email($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasEmail() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearEmail() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get profilePicUrl => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set profilePicUrl($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasProfilePicUrl() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearProfilePicUrl() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.String get dateUpdated => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set dateUpdated($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasDateUpdated() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearDateUpdated() => clearField(5);
 }
 
 class DeleteUserRequest extends $pb.GeneratedMessage {

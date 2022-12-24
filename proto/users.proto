@@ -43,11 +43,13 @@ message UpdateUserRequest{
     string name = 2;
     string email = 3;
     string profilePicUrl = 4;
-    string password = 5;
 }
 message UpdateUserResponse{
-    string dateUpdated = 1;
-    bool isUpdated = 2;
+	int32 userId = 1;
+	string name = 2;
+    string email = 3;
+    string profilePicUrl = 4;
+	string dateUpdated = 5;
 }
 message DeleteUserRequest{
     int32 id = 1;

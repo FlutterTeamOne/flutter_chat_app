@@ -67,90 +67,7 @@ class _ProfileLayout extends StatelessWidget {
                               style: Theme.of(context).textTheme.bodyText2,
                             ),
                             // Кнопка смены имени
-                            IconButton(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      TextEditingController newNameController =
-                                          TextEditingController();
-                                      return Dialog(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20.0),
-                                        ),
-                                        child: SizedBox(
-                                          height: 150,
-                                          width: 300,
-                                          child: Column(
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text('Insert new name'),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: TextField(
-                                                  controller: newNameController =
-                                                      TextEditingController(),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: ElevatedButton(
-                                                    style: ButtonStyle(
-                                                        shape: MaterialStateProperty.all<
-                                                                RoundedRectangleBorder>(
-                                                            RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20.0),
-                                                    ))),
-                                                    onPressed: () {
-                                                      String updatedDate =
-                                                          DateTime.now()
-                                                              .toIso8601String();
-                                                      late String newName =
-                                                          newNameController
-                                                              .text;
-                                                      UserDto user = userMain;
-                                                      var updatedUser = UserDto(
-                                                          userId: user.userId,
-                                                          name: newName,
-                                                          email: user.email,
-                                                          createdDate:
-                                                              user.createdDate,
-                                                          profilePicLink: user
-                                                              .profilePicLink,
-                                                          updatedDate:
-                                                              updatedDate);
-                                                      context
-                                                          .read<UserBloc>()
-                                                          .add(UpdateUserEvent(
-                                                            user: updatedUser,
-                                                          ));
-
-                                                      context
-                                                          .read<UserBloc>()
-                                                          .add(
-                                                              ReadUsersEvent());
-                                                      print(newName);
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: Icon(Icons.check)),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    });
-                              },
-                              icon: Icon(Icons.create_outlined),
-                              iconSize: 15,
-                            )
+                            ButtonChangeName(userMain: userMain)
                           ],
                         ),
                         const SizedBox(height: 10),
@@ -165,90 +82,7 @@ class _ProfileLayout extends StatelessWidget {
                               userMain.email ?? '???',
                               style: Theme.of(context).textTheme.bodyText2,
                             ),
-                            IconButton(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      TextEditingController newEmailController =
-                                          TextEditingController();
-                                      return Dialog(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20.0),
-                                        ),
-                                        child: SizedBox(
-                                          height: 150,
-                                          width: 300,
-                                          child: Column(
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text('Insert new email'),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: TextField(
-                                                  controller: newEmailController =
-                                                      TextEditingController(),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: ElevatedButton(
-                                                    style: ButtonStyle(
-                                                        shape: MaterialStateProperty.all<
-                                                                RoundedRectangleBorder>(
-                                                            RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20.0),
-                                                    ))),
-                                                    onPressed: () {
-                                                      String updatedDate =
-                                                          DateTime.now()
-                                                              .toIso8601String();
-                                                      late String newEmail =
-                                                          newEmailController
-                                                              .text;
-                                                      UserDto user = userMain;
-                                                      var updatedUser = UserDto(
-                                                          userId: user.userId,
-                                                          name: user.name,
-                                                          email: newEmail,
-                                                          createdDate:
-                                                              user.createdDate,
-                                                          profilePicLink: user
-                                                              .profilePicLink,
-                                                          updatedDate:
-                                                              updatedDate);
-                                                      context
-                                                          .read<UserBloc>()
-                                                          .add(UpdateUserEvent(
-                                                            user: updatedUser,
-                                                          ));
-
-                                                      context
-                                                          .read<UserBloc>()
-                                                          .add(
-                                                              ReadUsersEvent());
-                                                      print(newEmail);
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: Icon(Icons.check)),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    });
-                              },
-                              icon: Icon(Icons.create_outlined),
-                              iconSize: 15,
-                            )
+                            ButtonChangeEmail(userMain: userMain)
                           ],
                         ),
                         SizedBox(
@@ -309,6 +143,165 @@ class _ProfileLayout extends StatelessWidget {
                 ],
               );
       },
+    );
+  }
+}
+
+class ButtonChangeEmail extends StatelessWidget {
+  const ButtonChangeEmail({
+    Key? key,
+    required this.userMain,
+  }) : super(key: key);
+
+  final userMain;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              TextEditingController newEmailController =
+                  TextEditingController();
+              return Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: SizedBox(
+                  height: 150,
+                  width: 300,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Insert new email'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          controller: newEmailController =
+                              TextEditingController(),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ))),
+                            onPressed: () {
+                              String updatedDate =
+                                  DateTime.now().toIso8601String();
+                              late String newEmail = newEmailController.text;
+                              UserDto user = userMain;
+                              var updatedUser = UserDto(
+                                  userId: user.userId,
+                                  name: user.name,
+                                  email: newEmail,
+                                  createdDate: user.createdDate,
+                                  profilePicLink: user.profilePicLink,
+                                  updatedDate: updatedDate);
+                              context.read<UserBloc>().add(UpdateUserEvent(
+                                    user: updatedUser,
+                                  ));
+
+                              context.read<UserBloc>().add(ReadUsersEvent());
+                              print(newEmail);
+                              Navigator.pop(context);
+                            },
+                            child: Icon(Icons.check)),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            });
+      },
+      icon: Icon(Icons.create_outlined),
+      iconSize: 15,
+    );
+  }
+}
+
+class ButtonChangeName extends StatelessWidget {
+  const ButtonChangeName({
+    Key? key,
+    required this.userMain,
+  }) : super(key: key);
+
+  final userMain;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              TextEditingController newNameController = TextEditingController();
+              return Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: SizedBox(
+                  height: 150,
+                  width: 300,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Insert new name'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          controller: newNameController =
+                              TextEditingController(),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ))),
+                            onPressed: () {
+                              String updatedDate =
+                                  DateTime.now().toIso8601String();
+                              late String newName = newNameController.text;
+                              UserDto user = userMain;
+                              var updatedUser = UserDto(
+                                  userId: user.userId,
+                                  name: newName,
+                                  email: user.email,
+                                  createdDate: user.createdDate,
+                                  profilePicLink: user.profilePicLink,
+                                  updatedDate: updatedDate);
+                              context.read<UserBloc>().add(UpdateUserEvent(
+                                    user: updatedUser,
+                                  ));
+
+                              context.read<UserBloc>().add(ReadUsersEvent());
+                              print(newName);
+                              Navigator.pop(context);
+                            },
+                            child: Icon(Icons.check)),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            });
+      },
+      icon: Icon(Icons.create_outlined),
+      iconSize: 15,
     );
   }
 }

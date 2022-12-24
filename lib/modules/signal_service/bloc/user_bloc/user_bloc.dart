@@ -257,10 +257,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       print(e);
     }
     await _usersServices.updateUser(
-        newValues:
-            '${DatabaseConst.usersColumnUpdatedDate} = "${result.dateUpdated}"',
-        condition:
-            '${DatabaseConst.usersColumnUserId} = ${event.user!.userId}');
+        newValues: '''${DatabaseConst.usersColumnName} = "${result.name}",
+            ${DatabaseConst.usersColumnEmail} = "${result.email}",
+            ${DatabaseConst.usersColumnProfilePicLink} = "${result.profilePicUrl}",
+            ${DatabaseConst.usersColumnUpdatedDate} = "${result.dateUpdated}"''',
+        condition: '${DatabaseConst.usersColumnUserId} = ${result.userId}');
     var users = await _usersServices.getAllUsers();
     emit(state.copyWith(users: users));
   }
