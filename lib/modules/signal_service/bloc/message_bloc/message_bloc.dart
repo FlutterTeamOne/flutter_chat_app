@@ -132,7 +132,6 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     if (event.mediaPath != null) {
       emit(state.copyWith(mediaPath: event.mediaPath));
     }
-
     if (event.mediaState == MediaState.isCanceled) {
       emit(state.copyWith(mediaState: MediaState.isCanceled));
     }
@@ -190,7 +189,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
                 content: resp.meta,
                 senderId: message?.senderId,
                 attachmentId: resp.id,
-                contentType: message?.contentType));
+                contentType: event.contentType));
         messageController.add(DynamicRequest(
             createMessage: request,
             messageState: MessageStateEnum.isCreateMessage));
@@ -199,7 +198,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         message?.localMessageId = await _messagesServices.addNewMessage(
             chatId: message.chatId,
             senderId: await _mainUserServices.getUserID(),
-            content: message.content,
+            content:
+                {'message': message.content, 'media': resp.meta}.toString(),
             date: message.createdDate!,
             attachId: resp.id,
             contentType: event.contentType);
@@ -210,10 +210,11 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
                 localMessgaeId: message?.localMessageId,
                 messageId: message?.messageId,
                 chatId: message?.chatId,
-                content: message?.content,
+                content: {'message': message?.content, 'media': resp.meta}
+                    .toString(),
                 senderId: message?.senderId,
                 attachmentId: message?.attachId,
-                contentType: message?.contentType));
+                contentType: event.contentType));
         messageController.add(DynamicRequest(
             createMessage: request,
             messageState: MessageStateEnum.isCreateMessage));

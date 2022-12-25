@@ -1,5 +1,6 @@
 ﻿import 'dart:convert';
 
+import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
 
@@ -23,12 +24,29 @@ class AppCardWidget extends StatelessWidget {
     // final dateTime = DateTime.parse(message?.createdDate ?? '');
     // final timeNow = '${dateTime.hour} : ${dateTime.minute}';
     var image;
-    if (message.attachId != null) {
+    var msg;
+    if (message.contentType == ContentType.isMedia) {
       List<String> data = message.content.split(',');
       image = data[3].split('url: ')[1];
-      // image = json.decode(message.content)['data']['url'];
       print('image: $image');
+    } else if (message.contentType == ContentType.isMediaText) {
+      List<String> data = message.content.split(',');
+      msg = data[0].split('message: ')[1];
+      image = data[4].split('url: ')[1];
+      print('image: $image');
+      print('msg: $msg');
+    } else {
+      msg = message.content;
     }
+    // if (message.attachId != null && message.attachId != 0) {
+    //   List<String> data = message.content.split(',');
+    //   msg = data[0].split('message: ')[1];
+    //   image = data[4].split('url: ')[1];
+    //   print('image: $image');
+    //   print('msg: $msg');
+    // } else {
+    //   msg = message.content;
+    // }
     return Card(
       color: bColor,
       elevation: 2,
@@ -49,7 +67,7 @@ class AppCardWidget extends StatelessWidget {
               padding: const EdgeInsets.only(left: 6, bottom: 5, top: 5),
               child: Column(
                 children: [
-                  if (message.attachId != null) ...[
+                  if (message.contentType == ContentType.isMedia) ...[
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
@@ -58,10 +76,26 @@ class AppCardWidget extends StatelessWidget {
                         child: Image.network(image),
                       ),
                     ),
+                  ] else if (message.contentType ==
+                      ContentType.isMediaText) ...[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        height: 200,
+                        width: 200,
+                        child: Image.network(image),
+                      ),
+                    ),
+                    // Text(msg)
+                    SelectableText(
+                      textWidthBasis: TextWidthBasis.longestLine,
+                      msg.toString(),
+                      style: textStyle,
+                    ),
                   ] else ...[
                     SelectableText(
                       textWidthBasis: TextWidthBasis.longestLine,
-                      message.content,
+                      msg.toString(),
                       style: textStyle,
                     ),
                   ]

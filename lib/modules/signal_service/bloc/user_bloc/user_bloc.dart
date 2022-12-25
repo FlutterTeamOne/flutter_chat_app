@@ -23,7 +23,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   late StreamSubscription _subscription;
   // final GrpcClient grpcClient;
   UserBloc() : super(const UserState()) {
-    
     _usersServices = LocalUsersServices();
     _mainUserServices = MainUserServices();
     _messagesServices = LocalMessagesServices();
@@ -81,10 +80,16 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       for (var chat in response.chats) {
         print('USER BLOC CHAT: $chat');
         await _chatServices.createChat(
-            createDate: chat.createdDate,
-            userId: chat.userId);
+            createDate: chat.createdDate, userId: chat.userId);
       }
       for (var message in response.messages) {
+        var type = ContentType.isText.name == message.contentType.name
+            ? ContentType.isText
+            : ContentType.isMedia.name == message.contentType.name
+                ? ContentType.isMedia
+                : ContentType.isMediaText.name == message.contentType.name
+                    ? ContentType.isMediaText
+                    : ContentType.isText;
         var msg = Message(
           messageId: message.messageId,
           chatId: message.chatId,
@@ -93,6 +98,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           dateCreate: message.createdDate,
           dateUpdate: message.updatedDate,
           dateDelete: message.deletedDate,
+          contentType: type,
+          attachmentId: message.attachmentId,
           isRead: message.isRead,
         );
         await _messagesServices.addNewMessageFromBase(message: msg);

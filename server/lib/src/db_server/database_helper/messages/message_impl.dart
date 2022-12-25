@@ -7,7 +7,8 @@ class MessagesDBServices implements IMessagesDBServices {
     required int chatId,
     required int senderId,
     required String content,
-    int? attachmentId
+    int? attachmentId,
+    required ContentType contentType,
   }) async {
     var date = DateTime.now().toIso8601String();
     Database db = await DbServerServices.instanse.database;
@@ -17,7 +18,8 @@ class MessagesDBServices implements IMessagesDBServices {
       'content': content,
       'created_date': date,
       'updated_date': date,
-      'attachment_id': attachmentId
+      'attachment_id': attachmentId,
+      'content_type': contentType.name
     });
 
     var idAndDate = await db.rawQuery('''

@@ -54,18 +54,18 @@ class UserChatLayoutState extends State<UserChatLayout> {
 
   _sendAndChange(MessageBloc messageBloc) async {
     if (messageBloc.state.editState == EditState.isNotEditing &&
-        controller.text.isNotEmpty) {
+        controller.text.isNotEmpty &&
+        messageBloc.state.mediaState != MediaState.isPreparation) {
       messageBloc.add(
         CreateMessageEvent(
-          message: MessageDto(
-            chatId: widget.chatId,
-            senderId: await MainUserServices().getUserID(),
-            content: controller.text,
-            createdDate: DateTime.now().toIso8601String(),
-            updatedDate: DateTime.now().toIso8601String(),
-            contentType: ContentType.isText
-          ),
-        ),
+            message: MessageDto(
+                chatId: widget.chatId,
+                senderId: await MainUserServices().getUserID(),
+                content: controller.text,
+                createdDate: DateTime.now().toIso8601String(),
+                updatedDate: DateTime.now().toIso8601String(),
+                contentType: ContentType.isText),
+            contentType: ContentType.isText),
       );
       FocusScope.of(context).unfocus();
       controller.clear();

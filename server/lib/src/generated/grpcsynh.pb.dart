@@ -9,6 +9,10 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'grpcsynh.pbenum.dart';
+
+export 'grpcsynh.pbenum.dart';
+
 class SynhMainUser extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SynhMainUser', createEmptyInstance: create)
     ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id', $pb.PbFieldType.O3)
@@ -329,6 +333,8 @@ class SynhMessage extends $pb.GeneratedMessage {
     ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'updatedDate')
     ..aOS(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'deletedDate')
     ..a<$core.int>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isRead', $pb.PbFieldType.O3)
+    ..a<$core.int>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'attachmentId', $pb.PbFieldType.O3, protoName: 'attachmentId')
+    ..e<ContentTypeSynch>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'contentType', $pb.PbFieldType.OE, protoName: 'contentType', defaultOrMaker: ContentTypeSynch.isText, valueOf: ContentTypeSynch.valueOf, enumValues: ContentTypeSynch.values)
     ..hasRequiredFields = false
   ;
 
@@ -343,6 +349,8 @@ class SynhMessage extends $pb.GeneratedMessage {
     $core.String? updatedDate,
     $core.String? deletedDate,
     $core.int? isRead,
+    $core.int? attachmentId,
+    ContentTypeSynch? contentType,
   }) {
     final _result = create();
     if (localMessageId != null) {
@@ -371,6 +379,12 @@ class SynhMessage extends $pb.GeneratedMessage {
     }
     if (isRead != null) {
       _result.isRead = isRead;
+    }
+    if (attachmentId != null) {
+      _result.attachmentId = attachmentId;
+    }
+    if (contentType != null) {
+      _result.contentType = contentType;
     }
     return _result;
   }
@@ -475,6 +489,24 @@ class SynhMessage extends $pb.GeneratedMessage {
   $core.bool hasIsRead() => $_has(8);
   @$pb.TagNumber(9)
   void clearIsRead() => clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.int get attachmentId => $_getIZ(9);
+  @$pb.TagNumber(10)
+  set attachmentId($core.int v) { $_setSignedInt32(9, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasAttachmentId() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearAttachmentId() => clearField(10);
+
+  @$pb.TagNumber(11)
+  ContentTypeSynch get contentType => $_getN(10);
+  @$pb.TagNumber(11)
+  set contentType(ContentTypeSynch v) { setField(11, v); }
+  @$pb.TagNumber(11)
+  $core.bool hasContentType() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearContentType() => clearField(11);
 }
 
 class DataDBResponse extends $pb.GeneratedMessage {
