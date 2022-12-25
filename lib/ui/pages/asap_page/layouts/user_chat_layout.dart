@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../src/libraries/library_all.dart';
@@ -62,6 +63,7 @@ class UserChatLayoutState extends State<UserChatLayout> {
             content: controller.text,
             createdDate: DateTime.now().toIso8601String(),
             updatedDate: DateTime.now().toIso8601String(),
+            contentType: ContentType.isText
           ),
         ),
       );
@@ -89,19 +91,37 @@ class UserChatLayoutState extends State<UserChatLayout> {
       );
       controller.clear();
     }
-  
-    if (messageBloc.state.mediaState == MediaState.isPreparation) {
+
+    if (messageBloc.state.mediaState == MediaState.isPreparation &&
+        controller.text.isNotEmpty) {
       messageBloc.add(
         CreateMessageEvent(
-          message: MessageDto(
-            chatId: widget.chatId,
-            senderId: await MainUserServices().getUserID(),
-            content: controller.text,
-            createdDate: DateTime.now().toIso8601String(),
-            updatedDate: DateTime.now().toIso8601String(),
-          ),
-          mediaState: MediaState.isSending
-        ),
+            message: MessageDto(
+                chatId: widget.chatId,
+                senderId: await MainUserServices().getUserID(),
+                content: controller.text,
+                createdDate: DateTime.now().toIso8601String(),
+                updatedDate: DateTime.now().toIso8601String(),
+                contentType: ContentType.isMediaText),
+            contentType: ContentType.isMediaText,
+            mediaState: MediaState.isSending),
+      );
+      FocusScope.of(context).unfocus();
+      controller.clear();
+    }
+    if (messageBloc.state.mediaState == MediaState.isPreparation &&
+        controller.text.isEmpty) {
+      messageBloc.add(
+        CreateMessageEvent(
+            message: MessageDto(
+                chatId: widget.chatId,
+                senderId: await MainUserServices().getUserID(),
+                content: controller.text,
+                createdDate: DateTime.now().toIso8601String(),
+                updatedDate: DateTime.now().toIso8601String(),
+                contentType: ContentType.isMedia),
+            contentType: ContentType.isMedia,
+            mediaState: MediaState.isSending),
       );
       FocusScope.of(context).unfocus();
       controller.clear();

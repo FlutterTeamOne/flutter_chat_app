@@ -1,4 +1,6 @@
-﻿import 'package:chat_app/src/libraries/library_all.dart';
+﻿import 'dart:convert';
+
+import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
 
 class AppCardWidget extends StatelessWidget {
@@ -20,7 +22,13 @@ class AppCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     // final dateTime = DateTime.parse(message?.createdDate ?? '');
     // final timeNow = '${dateTime.hour} : ${dateTime.minute}';
-
+    var image;
+    if (message.attachId != null) {
+      List<String> data = message.content.split(',');
+      image = data[3].split('url: ')[1];
+      // image = json.decode(message.content)['data']['url'];
+      print('image: $image');
+    }
     return Card(
       color: bColor,
       elevation: 2,
@@ -28,12 +36,7 @@ class AppCardWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         side: BorderSide.none,
       ),
-      margin: EdgeInsets.only(
-        left: 10,
-        bottom: 5,
-        top: 5,
-        right: marginIndex,
-      ),
+      margin: EdgeInsets.only(left: 10, bottom: 5, top: 5, right: marginIndex),
       child: Padding(
         padding: const EdgeInsets.only(bottom: 3, right: 5),
         child: Wrap(
@@ -43,11 +46,7 @@ class AppCardWidget extends StatelessWidget {
           spacing: 2,
           children: [
             Padding(
-              padding: const EdgeInsets.only(
-                left: 6,
-                bottom: 5,
-                top: 5,
-              ),
+              padding: const EdgeInsets.only(left: 6, bottom: 5, top: 5),
               child: Column(
                 children: [
                   if (message.attachId != null) ...[
@@ -56,15 +55,16 @@ class AppCardWidget extends StatelessWidget {
                       child: SizedBox(
                         height: 200,
                         width: 200,
-                        child: Placeholder(),
+                        child: Image.network(image),
                       ),
                     ),
-                  ],
-                  SelectableText(
-                    textWidthBasis: TextWidthBasis.longestLine,
-                    message.content==''?'s':message.content,
-                    style: textStyle,
-                  ),
+                  ] else ...[
+                    SelectableText(
+                      textWidthBasis: TextWidthBasis.longestLine,
+                      message.content,
+                      style: textStyle,
+                    ),
+                  ]
                 ],
               ),
             ),

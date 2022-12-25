@@ -188,6 +188,7 @@ class GrpcMessage extends GrpcMessagesServiceBase {
           chatId: req.createMessage.message.chatId,
           senderId: req.createMessage.message.senderId,
           content: req.createMessage.message.content,
+          attachmentId: req.createMessage.message.attachmentId
         );
 
         req.createMessage.message.messageId = newMessage['message_id'] as int;

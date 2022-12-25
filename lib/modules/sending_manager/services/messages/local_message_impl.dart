@@ -28,7 +28,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
           DatabaseConst.messagesColumnContent: content,
           DatabaseConst.messagesColumnCreatedDate: date,
           DatabaseConst.messagesColumnUpdatedDate: date,
-          DatabaseConst.messagesColumnContentType: ContentType.isText
+          DatabaseConst.messagesColumnContentType: ContentType.isText.name
         },
       );
     } else {
@@ -41,7 +41,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
           DatabaseConst.messagesColumnCreatedDate: date,
           DatabaseConst.messagesColumnUpdatedDate: date,
           DatabaseConst.messagesColumnAttachmentId: attachId,
-          DatabaseConst.messagesColumnContentType: contentType,
+          DatabaseConst.messagesColumnContentType: contentType?.name,
         },
       );
     }
@@ -66,7 +66,9 @@ class LocalMessagesServices implements ILocalMessagesServices {
       DatabaseConst.messagesColumnContent: message.content,
       DatabaseConst.messagesColumnCreatedDate: message.dateCreate,
       DatabaseConst.messagesColumnUpdatedDate: message.dateUpdate,
-      DatabaseConst.messagesColumnMessageId: message.messageId
+      DatabaseConst.messagesColumnMessageId: message.messageId,
+      DatabaseConst.messagesColumnAttachmentId: message.attachmentId,
+      DatabaseConst.messagesColumnContentType: message.contentType.name
     });
 
     ///Загрузка листа сообщений

@@ -12,12 +12,14 @@ class MessageState extends Equatable {
   final DeleteState deleteState;
   final MediaState mediaState;
   final int? messageId;
+  final String? mediaPath;
   const MessageState({
     this.messages,
     this.editState = EditState.isNotEditing,
     this.deleteState = DeleteState.isRemoval,
     this.mediaState = MediaState.isCanceled,
     this.messageId,
+    this.mediaPath,
   });
 
   MessageState copyWith({
@@ -26,6 +28,7 @@ class MessageState extends Equatable {
     DeleteState? deleteState,
     MediaState? mediaState,
     int? messageId,
+    String? mediaPath,
   }) {
     return MessageState(
       messages: messages ?? this.messages,
@@ -33,10 +36,11 @@ class MessageState extends Equatable {
       deleteState: deleteState ?? this.deleteState,
       mediaState: mediaState ?? this.mediaState,
       messageId: messageId ?? this.messageId,
+      mediaPath: mediaPath ?? this.mediaPath,
     );
   }
 
   @override
   List<Object?> get props =>
-      [messages, editState, messageId, mediaState, deleteState];
+      [messages, editState, messageId, mediaState, deleteState, mediaPath];
 }

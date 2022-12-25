@@ -74,18 +74,28 @@ class MessageDto extends ModelDto {
 
   factory MessageDto.fromMap(Map<String, dynamic> map) {
     return MessageDto(
-      localMessageId: map[DatabaseConst.messagesColumnLocalMessagesId] as int,
-      chatId: map[DatabaseConst.messagesColumnChatId] as int,
-      senderId: map[DatabaseConst.messagesColumnSenderId] as int,
-      createdDate: map[DatabaseConst.messagesColumnCreatedDate] as String,
-      content: map[DatabaseConst.messagesColumnContent] as String,
-      messageId: map[DatabaseConst.messagesColumnMessageId],
-      updatedDate: map[DatabaseConst.messagesColumnUpdatedDate] as String,
-      deletedDate: map[DatabaseConst.messagesColumnDeletedDate] ?? '',
-      attachId: map[DatabaseConst.messagesColumnAttachmentId],
-      isRead: map[DatabaseConst.messagesColumnIsRead] as int,
-      contentType: map[DatabaseConst.messagesColumnContentType],
-    );
+        localMessageId: map[DatabaseConst.messagesColumnLocalMessagesId] as int,
+        chatId: map[DatabaseConst.messagesColumnChatId] as int,
+        senderId: map[DatabaseConst.messagesColumnSenderId] as int,
+        createdDate: map[DatabaseConst.messagesColumnCreatedDate] as String,
+        content: map[DatabaseConst.messagesColumnContent] as String,
+        messageId: map[DatabaseConst.messagesColumnMessageId],
+        updatedDate: map[DatabaseConst.messagesColumnUpdatedDate] as String,
+        deletedDate: map[DatabaseConst.messagesColumnDeletedDate] ?? '',
+        attachId: map[DatabaseConst.messagesColumnAttachmentId],
+        isRead: map[DatabaseConst.messagesColumnIsRead] as int,
+        contentType: map[DatabaseConst.messagesColumnContentType] == null
+            ? ContentType.isText
+            : map[DatabaseConst.messagesColumnContentType] ==
+                    ContentType.isText.name
+                ? ContentType.isText
+                : map[DatabaseConst.messagesColumnContentType] ==
+                        ContentType.isMedia.name
+                    ? ContentType.isMedia
+                    : map[DatabaseConst.messagesColumnContentType] ==
+                            ContentType.isMediaText.name
+                        ? ContentType.isMediaText
+                        : ContentType.isText);
   }
 
   String toJson() => json.encode(toMap());
