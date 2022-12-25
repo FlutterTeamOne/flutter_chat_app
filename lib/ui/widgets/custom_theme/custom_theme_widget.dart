@@ -9,6 +9,28 @@ class CustomThemeWidget extends StatefulWidget {
 }
 
 class _CustomThemeWidgetState extends State<CustomThemeWidget> {
+  final iconCheck = Icons.check;
+  final themeMainColor = [
+    Colors.pink,
+    Colors.red,
+    Colors.deepOrange,
+    Colors.orange,
+    Colors.amber,
+    Colors.yellow,
+    Colors.lime,
+    Colors.lightGreen,
+    Colors.green,
+    Colors.teal,
+    Colors.cyan,
+    Colors.lightBlue,
+    Colors.blue,
+    Colors.indigo,
+    Colors.purple,
+    Colors.deepPurple,
+    Colors.blueGrey,
+    Colors.brown,
+    Colors.grey,
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +45,35 @@ class _CustomThemeWidgetState extends State<CustomThemeWidget> {
                   },
                   icon: Icon(Icons.close_rounded))
             ],
-          )
+          ),
+          Text('Choise main theme color'),
+          Expanded(
+            child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: themeMainColor.length,
+                itemBuilder: (context, index) {
+                  return ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(themeMainColor[index])),
+                      onPressed: () {},
+                      child: Icon(iconCheck));
+                }),
+          ),
+          Text('Choise secondary theme color'),
+          Expanded(
+            child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: themeMainColor.length,
+                itemBuilder: (context, index) {
+                  return ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(themeMainColor[index])),
+                      onPressed: () {},
+                      child: Icon(iconCheck));
+                }),
+          ),
         ],
       ),
     );
