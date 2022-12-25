@@ -1,4 +1,7 @@
-﻿import 'package:chat_app/modules/signal_service/library/library_signal_service.dart';
+﻿import 'dart:io';
+
+import 'package:chat_app/domain/data/dto/message_dto/message_dto.dart';
+import 'package:chat_app/modules/signal_service/library/library_signal_service.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/app_circle_button.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +30,7 @@ class TextInputWidget extends StatefulWidget {
 }
 
 class TextInputWidgetState extends State<TextInputWidget> {
+  String filePath = '';
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -46,12 +50,15 @@ class TextInputWidgetState extends State<TextInputWidget> {
               const SizedBox(width: 10),
               AppCircleButtonWidget(
                   onTap: () async {
+                    context.read<MessageBloc>().add(
+                        CreateMessageEvent(mediaState: MediaState.isCanceled));
                     var result = await FilePicker.platform.pickFiles();
                     if (result == null) {
                       return;
                     }
                     var file = result.files.first;
                     print('FILE: $file');
+                    filePath = file.path!;
                     _sendPath(file.path!);
                   },
                   icon: Icons.emoji_emotions_outlined),
@@ -60,6 +67,17 @@ class TextInputWidgetState extends State<TextInputWidget> {
                 flex: 9,
                 child: Column(
                   children: [
+                    if (context.watch<MessageBloc>().state.mediaState ==
+                        MediaState.isPreparation) ...[
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: SizedBox(
+                          height: 100,
+                          width: 100,
+                          child: Image.file(File(filePath)),
+                        ),
+                      )
+                    ],
                     if (widget.editState == EditState.isPreparation)
                       Card(
                         child: ListTile(
@@ -122,6 +140,7 @@ class TextInputWidgetState extends State<TextInputWidget> {
   }
 
   _sendPath(String path) {
-    context.read<MessageBloc>().add(CreateMessageEvent(mediaPath: path));
+    context.read<MessageBloc>().add(CreateMessageEvent(
+        mediaState: MediaState.isPreparation, mediaPath: path));
   }
 }

@@ -8,6 +8,18 @@
 import 'dart:core' as $core;
 import 'dart:convert' as $convert;
 import 'dart:typed_data' as $typed_data;
+@$core.Deprecated('Use contentTypeDescriptor instead')
+const ContentType$json = const {
+  '1': 'ContentType',
+  '2': const [
+    const {'1': 'isText', '2': 0},
+    const {'1': 'isMedia', '2': 1},
+    const {'1': 'isMediaText', '2': 2},
+  ],
+};
+
+/// Descriptor for `ContentType`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List contentTypeDescriptor = $convert.base64Decode('CgtDb250ZW50VHlwZRIKCgZpc1RleHQQABILCgdpc01lZGlhEAESDwoLaXNNZWRpYVRleHQQAg==');
 @$core.Deprecated('Use messageStateEnumDescriptor instead')
 const MessageStateEnum$json = const {
   '1': 'MessageStateEnum',
@@ -70,11 +82,13 @@ const Message$json = const {
     const {'1': 'dateDelete', '3': 7, '4': 1, '5': 9, '10': 'dateDelete'},
     const {'1': 'isRead', '3': 8, '4': 1, '5': 5, '10': 'isRead'},
     const {'1': 'localMessgaeId', '3': 9, '4': 1, '5': 5, '10': 'localMessgaeId'},
+    const {'1': 'attachmentId', '3': 10, '4': 1, '5': 5, '10': 'attachmentId'},
+    const {'1': 'contentType', '3': 11, '4': 1, '5': 14, '6': '.ContentType', '10': 'contentType'},
   ],
 };
 
 /// Descriptor for `Message`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List messageDescriptor = $convert.base64Decode('CgdNZXNzYWdlEhwKCW1lc3NhZ2VJZBgBIAEoBVIJbWVzc2FnZUlkEhYKBmNoYXRJZBgCIAEoBVIGY2hhdElkEhoKCHNlbmRlcklkGAMgASgFUghzZW5kZXJJZBIYCgdjb250ZW50GAQgASgJUgdjb250ZW50Eh4KCmRhdGVDcmVhdGUYBSABKAlSCmRhdGVDcmVhdGUSHgoKZGF0ZVVwZGF0ZRgGIAEoCVIKZGF0ZVVwZGF0ZRIeCgpkYXRlRGVsZXRlGAcgASgJUgpkYXRlRGVsZXRlEhYKBmlzUmVhZBgIIAEoBVIGaXNSZWFkEiYKDmxvY2FsTWVzc2dhZUlkGAkgASgFUg5sb2NhbE1lc3NnYWVJZA==');
+final $typed_data.Uint8List messageDescriptor = $convert.base64Decode('CgdNZXNzYWdlEhwKCW1lc3NhZ2VJZBgBIAEoBVIJbWVzc2FnZUlkEhYKBmNoYXRJZBgCIAEoBVIGY2hhdElkEhoKCHNlbmRlcklkGAMgASgFUghzZW5kZXJJZBIYCgdjb250ZW50GAQgASgJUgdjb250ZW50Eh4KCmRhdGVDcmVhdGUYBSABKAlSCmRhdGVDcmVhdGUSHgoKZGF0ZVVwZGF0ZRgGIAEoCVIKZGF0ZVVwZGF0ZRIeCgpkYXRlRGVsZXRlGAcgASgJUgpkYXRlRGVsZXRlEhYKBmlzUmVhZBgIIAEoBVIGaXNSZWFkEiYKDmxvY2FsTWVzc2dhZUlkGAkgASgFUg5sb2NhbE1lc3NnYWVJZBIiCgxhdHRhY2htZW50SWQYCiABKAVSDGF0dGFjaG1lbnRJZBIuCgtjb250ZW50VHlwZRgLIAEoDjIMLkNvbnRlbnRUeXBlUgtjb250ZW50VHlwZQ==');
 @$core.Deprecated('Use readMessageRequestDescriptor instead')
 const ReadMessageRequest$json = const {
   '1': 'ReadMessageRequest',

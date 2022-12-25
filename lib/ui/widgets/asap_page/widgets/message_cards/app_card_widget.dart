@@ -1,19 +1,18 @@
-﻿
+﻿import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
-
 
 class AppCardWidget extends StatelessWidget {
   const AppCardWidget({
     Key? key,
     required this.marginIndex,
-    required this.text,
+    required this.message,
     this.bColor,
     this.textStyle,
     this.time,
   }) : super(key: key);
 
   final double marginIndex;
-  final String text;
+  final MessageDto message;
   final Color? bColor;
   final TextStyle? textStyle;
   final String? time;
@@ -49,10 +48,24 @@ class AppCardWidget extends StatelessWidget {
                 bottom: 5,
                 top: 5,
               ),
-              child: SelectableText(
-                textWidthBasis: TextWidthBasis.longestLine,
-                text,
-                style: textStyle,
+              child: Column(
+                children: [
+                  if (message.attachId != null) ...[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        height: 200,
+                        width: 200,
+                        child: Placeholder(),
+                      ),
+                    ),
+                  ],
+                  SelectableText(
+                    textWidthBasis: TextWidthBasis.longestLine,
+                    message.content==''?'s':message.content,
+                    style: textStyle,
+                  ),
+                ],
               ),
             ),
             Text(time ?? '', style: Theme.of(context).textTheme.bodySmall),

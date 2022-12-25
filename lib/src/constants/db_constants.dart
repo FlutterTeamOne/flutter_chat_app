@@ -33,6 +33,7 @@ class DatabaseConst {
   static const messagesColumnUpdatedDate = 'updated_date';
   static const messagesColumnDeletedDate = 'deleted_date';
   static const messagesColumnAttachmentId = 'attachment_id';
+  static const messagesColumnContentType = 'content_type';
 
   //chats
   static const chatsColumnChatId = 'chat_id';

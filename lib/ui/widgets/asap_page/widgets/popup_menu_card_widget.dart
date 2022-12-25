@@ -67,7 +67,7 @@ class _PopupMenuCardWidgetState extends State<PopupMenuCardWidget> {
       menuBuilder: () => FloatingWindowWidget(items: items),
       child: AppCardWidget(
         marginIndex: widget.marginIndex,
-        text: widget.message!.content,
+        message: widget.message!,
         bColor: Theme.of(context).primaryColor,
         textStyle: const TextStyle(
           color: Colors.white,

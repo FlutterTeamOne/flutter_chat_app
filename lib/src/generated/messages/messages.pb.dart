@@ -275,6 +275,8 @@ class Message extends $pb.GeneratedMessage {
     ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dateDelete', protoName: 'dateDelete')
     ..a<$core.int>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isRead', $pb.PbFieldType.O3, protoName: 'isRead')
     ..a<$core.int>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'localMessgaeId', $pb.PbFieldType.O3, protoName: 'localMessgaeId')
+    ..a<$core.int>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'attachmentId', $pb.PbFieldType.O3, protoName: 'attachmentId')
+    ..e<ContentType>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'contentType', $pb.PbFieldType.OE, protoName: 'contentType', defaultOrMaker: ContentType.isText, valueOf: ContentType.valueOf, enumValues: ContentType.values)
     ..hasRequiredFields = false
   ;
 
@@ -289,6 +291,8 @@ class Message extends $pb.GeneratedMessage {
     $core.String? dateDelete,
     $core.int? isRead,
     $core.int? localMessgaeId,
+    $core.int? attachmentId,
+    ContentType? contentType,
   }) {
     final _result = create();
     if (messageId != null) {
@@ -317,6 +321,12 @@ class Message extends $pb.GeneratedMessage {
     }
     if (localMessgaeId != null) {
       _result.localMessgaeId = localMessgaeId;
+    }
+    if (attachmentId != null) {
+      _result.attachmentId = attachmentId;
+    }
+    if (contentType != null) {
+      _result.contentType = contentType;
     }
     return _result;
   }
@@ -421,6 +431,24 @@ class Message extends $pb.GeneratedMessage {
   $core.bool hasLocalMessgaeId() => $_has(8);
   @$pb.TagNumber(9)
   void clearLocalMessgaeId() => clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.int get attachmentId => $_getIZ(9);
+  @$pb.TagNumber(10)
+  set attachmentId($core.int v) { $_setSignedInt32(9, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasAttachmentId() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearAttachmentId() => clearField(10);
+
+  @$pb.TagNumber(11)
+  ContentType get contentType => $_getN(10);
+  @$pb.TagNumber(11)
+  set contentType(ContentType v) { setField(11, v); }
+  @$pb.TagNumber(11)
+  $core.bool hasContentType() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearContentType() => clearField(11);
 }
 
 class ReadMessageRequest extends $pb.GeneratedMessage {

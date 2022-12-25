@@ -10,22 +10,41 @@ import 'local_message_int.dart';
 class LocalMessagesServices implements ILocalMessagesServices {
   LocalMessagesServices();
   @override
-  Future<dynamic> addNewMessage(
-      {required int chatId,
-      required int senderId,
-      required String content,
-      required String date}) async {
+  Future<dynamic> addNewMessage({
+    required int chatId,
+    required int senderId,
+    required String content,
+    required String date,
+    int? attachId,
+    ContentType? contentType,
+  }) async {
     var db = await DBHelper.instanse.database;
-    await DBHelper.instanse.onAdd(
-      tableName: DatabaseConst.messageTable,
-      model: {
-        DatabaseConst.messagesColumnChatId: chatId,
-        DatabaseConst.messagesColumnSenderId: senderId,
-        DatabaseConst.messagesColumnContent: content,
-        DatabaseConst.messagesColumnCreatedDate: date,
-        DatabaseConst.messagesColumnUpdatedDate: date
-      },
-    );
+    if (attachId == null) {
+      await DBHelper.instanse.onAdd(
+        tableName: DatabaseConst.messageTable,
+        model: {
+          DatabaseConst.messagesColumnChatId: chatId,
+          DatabaseConst.messagesColumnSenderId: senderId,
+          DatabaseConst.messagesColumnContent: content,
+          DatabaseConst.messagesColumnCreatedDate: date,
+          DatabaseConst.messagesColumnUpdatedDate: date,
+          DatabaseConst.messagesColumnContentType: ContentType.isText
+        },
+      );
+    } else {
+      await DBHelper.instanse.onAdd(
+        tableName: DatabaseConst.messageTable,
+        model: {
+          DatabaseConst.messagesColumnChatId: chatId,
+          DatabaseConst.messagesColumnSenderId: senderId,
+          DatabaseConst.messagesColumnContent: content,
+          DatabaseConst.messagesColumnCreatedDate: date,
+          DatabaseConst.messagesColumnUpdatedDate: date,
+          DatabaseConst.messagesColumnAttachmentId: attachId,
+          DatabaseConst.messagesColumnContentType: contentType,
+        },
+      );
+    }
     var message = await db.rawQuery(
         '''SELECT ${DatabaseConst.messagesColumnLocalMessagesId} 
             FROM ${DatabaseConst.messageTable}
@@ -219,7 +238,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
   }
 
   Future addAttach(AttachModel model) async {
-    return await DBHelper.instanse
+    await DBHelper.instanse
         .onAdd(tableName: DatabaseConst.attachmentsTable, model: model.toMap());
   }
 }

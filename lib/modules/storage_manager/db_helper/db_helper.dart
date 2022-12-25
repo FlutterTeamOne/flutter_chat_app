@@ -92,7 +92,7 @@ CREATE TABLE ${DatabaseConst.messageTable} (
  ${DatabaseConst.messagesColumnUpdatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
  ${DatabaseConst.messagesColumnDeletedDate} ${DatabaseConst.char26}, 
  ${DatabaseConst.messagesColumnAttachmentId} ${DatabaseConst.integer},
-
+ ${DatabaseConst.messagesColumnContentType} ${DatabaseConst.text},
  ${DatabaseConst.constraint} MESSAGES_FK_79 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnChatId} ) ${DatabaseConst.references} ${DatabaseConst.chatsTable} ( ${DatabaseConst.chatsColumnChatId} ),
 
  ${DatabaseConst.constraint} MESSAGES_FK_80 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnSenderId} ) ${DatabaseConst.references} ${DatabaseConst.userTable} ( ${DatabaseConst.usersColumnUserId} ),

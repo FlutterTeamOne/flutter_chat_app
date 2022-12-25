@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:chat_app/src/constants/db_constants.dart';
+import 'package:chat_app/src/generated/messages/messages.pbgrpc.dart';
 
 import '../model_dto.dart';
 
@@ -10,33 +11,37 @@ class MessageDto extends ModelDto {
   final int senderId;
   final int? messageId;
   final String content;
+  final int? attachId;
   final String? createdDate;
   final String? updatedDate;
   final String? deletedDate;
   final int isRead;
-
-  MessageDto({
-    this.localMessageId,
-    required this.chatId,
-    required this.senderId,
-    this.messageId,
-    required this.content,
-    this.createdDate,
-    this.updatedDate,
-    this.deletedDate,
-    this.isRead = 0,
-  });
+  final ContentType contentType;
+  MessageDto(
+      {this.localMessageId,
+      required this.chatId,
+      required this.senderId,
+      this.messageId,
+      required this.content,
+      this.attachId,
+      this.createdDate,
+      this.updatedDate,
+      this.deletedDate,
+      this.isRead = 0,
+      this.contentType = ContentType.isText});
 
   MessageDto copyWith(
       {int? localMessageId,
       int? chatId,
       int? senderId,
       int? messageId,
+      int? attachId,
       String? createdDate,
       String? content,
       String? updatedDate,
       String? deletedDate,
-      int? isRead}) {
+      int? isRead,
+      ContentType? contentType}) {
     return MessageDto(
         localMessageId: localMessageId ?? this.localMessageId,
         chatId: chatId ?? this.chatId,
@@ -44,9 +49,11 @@ class MessageDto extends ModelDto {
         messageId: messageId ?? this.messageId,
         createdDate: createdDate ?? this.createdDate,
         content: content ?? this.content,
+        attachId: attachId ?? this.attachId,
         updatedDate: updatedDate ?? this.updatedDate,
         deletedDate: deletedDate ?? this.deletedDate,
-        isRead: isRead ?? this.isRead);
+        isRead: isRead ?? this.isRead,
+        contentType: contentType ?? this.contentType);
   }
 
   Map<String, dynamic> toMap() {
@@ -59,21 +66,26 @@ class MessageDto extends ModelDto {
       DatabaseConst.messagesColumnMessageId: messageId,
       DatabaseConst.messagesColumnUpdatedDate: updatedDate,
       DatabaseConst.messagesColumnDeletedDate: deletedDate,
+      DatabaseConst.messagesColumnAttachmentId: attachId,
       DatabaseConst.messagesColumnIsRead: isRead,
+      DatabaseConst.messagesColumnContentType: contentType
     };
   }
 
   factory MessageDto.fromMap(Map<String, dynamic> map) {
     return MessageDto(
-        localMessageId: map[DatabaseConst.messagesColumnLocalMessagesId] as int,
-        chatId: map[DatabaseConst.messagesColumnChatId] as int,
-        senderId: map[DatabaseConst.messagesColumnSenderId] as int,
-        createdDate: map[DatabaseConst.messagesColumnCreatedDate] as String,
-        content: map[DatabaseConst.messagesColumnContent] as String,
-        messageId: map[DatabaseConst.messagesColumnMessageId],
-        updatedDate: map[DatabaseConst.messagesColumnUpdatedDate] as String,
-        deletedDate: map[DatabaseConst.messagesColumnDeletedDate] ?? '',
-        isRead: map[DatabaseConst.messagesColumnIsRead] as int);
+      localMessageId: map[DatabaseConst.messagesColumnLocalMessagesId] as int,
+      chatId: map[DatabaseConst.messagesColumnChatId] as int,
+      senderId: map[DatabaseConst.messagesColumnSenderId] as int,
+      createdDate: map[DatabaseConst.messagesColumnCreatedDate] as String,
+      content: map[DatabaseConst.messagesColumnContent] as String,
+      messageId: map[DatabaseConst.messagesColumnMessageId],
+      updatedDate: map[DatabaseConst.messagesColumnUpdatedDate] as String,
+      deletedDate: map[DatabaseConst.messagesColumnDeletedDate] ?? '',
+      attachId: map[DatabaseConst.messagesColumnAttachmentId],
+      isRead: map[DatabaseConst.messagesColumnIsRead] as int,
+      contentType: map[DatabaseConst.messagesColumnContentType],
+    );
   }
 
   String toJson() => json.encode(toMap());
@@ -93,8 +105,10 @@ class MessageDto extends ModelDto {
         other.createdDate == createdDate &&
         other.updatedDate == updatedDate &&
         other.content == content &&
+        other.attachId == attachId &&
         other.deletedDate == deletedDate &&
-        other.isRead == isRead;
+        other.isRead == isRead &&
+        other.contentType == contentType;
   }
 
   @override
@@ -107,7 +121,9 @@ class MessageDto extends ModelDto {
         updatedDate.hashCode ^
         deletedDate.hashCode ^
         isRead.hashCode ^
-        content.hashCode;
+        content.hashCode ^
+        attachId.hashCode ^
+        contentType.hashCode;
   }
 
   @override

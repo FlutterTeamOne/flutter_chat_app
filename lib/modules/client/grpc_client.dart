@@ -16,6 +16,7 @@ class GrpcClient {
 
   ClientChannel get channel => _channel;
   Stream<ConnectionState> get channelState => _channel.onConnectionStateChanged;
+  
 
   Future createUser({required NewUserModel user}) async {
     late GrpcUsersClient stub;

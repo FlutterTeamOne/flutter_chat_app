@@ -49,7 +49,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
             messageId: msg.messageId,
             content: msg.content,
             createdDate: msg.dateCreate,
-            updatedDate: msg.dateUpdate));
+            updatedDate: msg.dateUpdate,
+            attachId: msg.attachmentId));
 
         add(ReadMessageEvent(messages: messages));
       } else if (value.messageState == MessageStateEnum.isUpdateMessage) {
@@ -86,7 +87,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
             senderId: msg.senderId,
             content: msg.content,
             createdDate: msg.dateCreate,
-            updatedDate: msg.dateUpdate);
+            updatedDate: msg.dateUpdate,
+            attachId: msg.attachmentId);
         await _messagesServices.updateMessage(
             message: newMsg, localMessageId: msg.localMessgaeId);
       }
@@ -126,10 +128,16 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       CreateMessageEvent event, Emitter<MessageState> emit) async {
     var message = event.message;
     var mediaPath = event.mediaPath;
-    
+    var media = mediaPath;
+    if (event.mediaState == MediaState.isCanceled) {
+      emit(state.copyWith(mediaState: MediaState.isCanceled));
+    }
+    if (event.mediaState == MediaState.isPreparation) {
+      emit(state.copyWith(mediaState: MediaState.isPreparation));
+    }
     print('MESSAGE: $message');
-     //отправка текстового сообщения
-    if (mediaPath == null && message != null) {
+    //отправка текстового сообщения
+    if (media == null && message != null) {
       if (message.localMessageId == null) {
         message.localMessageId = await _messagesServices.addNewMessage(
           chatId: message.chatId,
@@ -150,17 +158,39 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
             createMessage: request,
             messageState: MessageStateEnum.isCreateMessage));
       }
-    } 
+    }
     //отправка сообщения с медиа
-    else {
+    else if (media != null && event.mediaState == MediaState.isSending) {
       //запрос в рест на добавление медиа
-      var resp = await RestClient().sendImageRest(path: mediaPath!);
+      var resp = await RestClient().sendImageRest(path: media);
 
-      //получаем обратно attach id
+      //получаем обратно model attach
       //записываем всю информацию об сообщении в локальное хранилище
       await _messagesServices.addAttach(resp);
+
       //записать в локальное хранилище новое сообщение
+      message?.localMessageId = await _messagesServices.addNewMessage(
+          chatId: message.chatId,
+          senderId: await _mainUserServices.getUserID(),
+          content: message.content,
+          date: message.createdDate!,
+          attachId: resp.id,
+          contentType: event.contentType);
+
       //и отправляем через grpc второму клиенту
+      var request = CreateMessageRequest(
+          message: Message(
+              localMessgaeId: message?.localMessageId,
+              messageId: message?.messageId,
+              chatId: message?.chatId,
+              content: message?.content,
+              senderId: message?.senderId,
+              attachmentId: message?.attachId,
+              contentType: message?.contentType));
+      messageController.add(DynamicRequest(
+          createMessage: request,
+          messageState: MessageStateEnum.isCreateMessage));
+      emit(state.copyWith(mediaState: MediaState.isCanceled));
     }
   }
 

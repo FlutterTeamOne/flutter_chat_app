@@ -32,10 +32,9 @@ class MessagesDBServices implements IMessagesDBServices {
         (created_date = ?)
         AND
         (updated_date = ?)       
-        AND
-        (attachment_id = ?)
+       
         )
-    ''', [chatId, senderId, content, date, date, attachmentId]);
+    ''', [chatId, senderId, content, date, date]);
     return idAndDate[0];
   }
 
