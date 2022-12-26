@@ -1,4 +1,5 @@
 import 'package:chat_app/ui/pages/library/library_pages.dart';
+import 'package:chat_app/ui/widgets/custom_theme/color_wheel_picker.dart';
 import 'package:flutter/material.dart';
 
 class CustomThemeWidget extends StatefulWidget {
@@ -74,6 +75,7 @@ class _CustomThemeWidgetState extends State<CustomThemeWidget> {
                       child: Icon(iconCheck));
                 }),
           ),
+          Expanded(child: ColorWheelPicker(color: Colors.blueGrey, onChanged: (Color value) {  }, onWheel: (bool value) {  }, )),
         ],
       ),
     );
