@@ -4,10 +4,10 @@ class _ProfileLayout extends StatelessWidget {
   const _ProfileLayout({
     Key? key,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserBloc, UserState>(
+    return BlocConsumer<UserBloc, UserState>(
+      listener: (context, state) {},
       builder: (context, state) {
         var userMain;
         for (var user in state.users!) {
@@ -39,7 +39,7 @@ class _ProfileLayout extends StatelessWidget {
                           //закрыть базу
                           context
                               .read<UserBloc>()
-                              .add(ChangeUserEvent(userDb: true));
+                              .add(ChangeUserEvent(isStartDB: true));
                           context.read<UserBloc>().add(ReadUsersEvent());
                           context.read<ChatBloc>().add(GetChatIdEvent(-1));
                           await DBHelper.instanse.close();
@@ -50,9 +50,8 @@ class _ProfileLayout extends StatelessWidget {
                       ),
                     ],
                   ),
-                  // Остальное
                   Padding(
-                    padding: const EdgeInsets.all(15),
+                    padding: const EdgeInsets.all(15.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -61,9 +60,15 @@ class _ProfileLayout extends StatelessWidget {
                           style: Theme.of(context).textTheme.headline6,
                         ),
                         const SizedBox(height: 2),
-                        Text(
-                          userMain.name ?? 'unknow',
-                          style: Theme.of(context).textTheme.bodyText2,
+                        Row(
+                          children: [
+                            Text(
+                              userMain.name ?? 'unknow',
+                              style: Theme.of(context).textTheme.bodyText2,
+                            ),
+                            // Кнопка смены имени
+                            ButtonChangeName(userMain: userMain)
+                          ],
                         ),
                         const SizedBox(height: 10),
                         Text(
@@ -71,14 +76,117 @@ class _ProfileLayout extends StatelessWidget {
                           style: Theme.of(context).textTheme.headline6,
                         ),
                         const SizedBox(height: 2),
-                        Text(
-                          userMain.email ?? '???',
-                          style: Theme.of(context).textTheme.bodyText2,
+                        Row(
+                          children: [
+                            Text(
+                              userMain.email ?? '???',
+                              style: Theme.of(context).textTheme.bodyText2,
+                            ),
+                            ButtonChangeEmail(userMain: userMain)
+                          ],
                         ),
                         SizedBox(
                           height: 20,
                         ),
-                        ElevatedButton(
+                        Row(
+                          children: [
+                            ElevatedButton(
+                                style: ButtonStyle(
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ))),
+                                onPressed: () {
+                                  context.read<UserBloc>().add(
+                                      DeleteUserEvent(userId: userMain.userId));
+                                  print(userMain.userId);
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        final userIsDeleted = context
+                                            .watch<UserBloc>()
+                                            .state
+                                            .isDeleted;
+                                        return Dialog(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                          ),
+                                          child: SizedBox(
+                                            height: 80,
+                                            width: 50,
+                                            child: Column(
+                                              children: [
+                                                Padding(
+                                                    padding:
+                                                        EdgeInsets.all(8.0),
+                                                    child: userIsDeleted ==
+                                                            false
+                                                        ? Text(
+                                                            'User ${userMain.name} is not deleted')
+                                                        : Text(
+                                                            'User ${userMain.name} is deleted')),
+                                                DeleteDialogWidget()
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                },
+                                child: Text('Delete user')),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+      },
+    );
+  }
+}
+
+class ButtonChangeEmail extends StatelessWidget {
+  const ButtonChangeEmail({
+    Key? key,
+    required this.userMain,
+  }) : super(key: key);
+
+  final userMain;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              TextEditingController newEmailController =
+                  TextEditingController();
+              return Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: SizedBox(
+                  height: 150,
+                  width: 300,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Insert new email'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          controller: newEmailController =
+                              TextEditingController(),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
                             style: ButtonStyle(
                                 shape: MaterialStateProperty.all<
                                         RoundedRectangleBorder>(
@@ -86,47 +194,114 @@ class _ProfileLayout extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20.0),
                             ))),
                             onPressed: () {
-                              context.read<UserBloc>().add(
-                                  DeleteUserEvent(userId: userMain.userId));
-                              print(userMain.userId);
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    final userIsDeleted = context
-                                        .watch<UserBloc>()
-                                        .state
-                                        .isDeleted;
-                                    return Dialog(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                      ),
-                                      child: SizedBox(
-                                        height: 80,
-                                        width: 50,
-                                        child: Column(
-                                          children: [
-                                            Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: userIsDeleted == false
-                                                    ? Text(
-                                                        'User ${userMain.name} is not deleted')
-                                                    : Text(
-                                                        'User ${userMain.name} is deleted')),
-                                            DeleteDialogWidget()
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  });
+                              String updatedDate =
+                                  DateTime.now().toIso8601String();
+                              late String newEmail = newEmailController.text;
+                              UserDto user = userMain;
+                              var updatedUser = UserDto(
+                                  userId: user.userId,
+                                  name: user.name,
+                                  email: newEmail,
+                                  createdDate: user.createdDate,
+                                  profilePicLink: user.profilePicLink,
+                                  updatedDate: updatedDate);
+                              context.read<UserBloc>().add(UpdateUserEvent(
+                                    user: updatedUser,
+                                  ));
+
+                              context.read<UserBloc>().add(ReadUsersEvent());
+                              print(newEmail);
+                              Navigator.pop(context);
                             },
-                            child: Text('Delete user')),
-                      ],
-                    ),
+                            child: Icon(Icons.check)),
+                      )
+                    ],
                   ),
-                ],
+                ),
               );
+            });
       },
+      icon: Icon(Icons.create_outlined),
+      iconSize: 15,
+    );
+  }
+}
+
+class ButtonChangeName extends StatelessWidget {
+  const ButtonChangeName({
+    Key? key,
+    required this.userMain,
+  }) : super(key: key);
+
+  final userMain;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              TextEditingController newNameController = TextEditingController();
+              return Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: SizedBox(
+                  height: 150,
+                  width: 300,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Insert new name'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          controller: newNameController =
+                              TextEditingController(),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ))),
+                            onPressed: () {
+                              String updatedDate =
+                                  DateTime.now().toIso8601String();
+                              late String newName = newNameController.text;
+                              UserDto user = userMain;
+                              var updatedUser = UserDto(
+                                  userId: user.userId,
+                                  name: newName,
+                                  email: user.email,
+                                  createdDate: user.createdDate,
+                                  profilePicLink: user.profilePicLink,
+                                  updatedDate: updatedDate);
+                              context.read<UserBloc>().add(UpdateUserEvent(
+                                    user: updatedUser,
+                                  ));
+
+                              context.read<UserBloc>().add(ReadUsersEvent());
+                              print(newName);
+                              Navigator.pop(context);
+                            },
+                            child: Icon(Icons.check)),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            });
+      },
+      icon: Icon(Icons.create_outlined),
+      iconSize: 15,
     );
   }
 }
@@ -146,7 +321,7 @@ class DeleteDialogWidget extends StatelessWidget {
         ))),
         onPressed: () async {
           //закрыть базу
-          context.read<UserBloc>().add(ChangeUserEvent(userDb: true));
+          context.read<UserBloc>().add(ChangeUserEvent(isStartDB: true));
           context.read<UserBloc>().add(ReadUsersEvent());
           context.read<ChatBloc>().add(GetChatIdEvent(-1));
           await DBHelper.instanse.deleteDB();
