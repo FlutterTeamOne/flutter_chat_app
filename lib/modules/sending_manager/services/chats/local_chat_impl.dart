@@ -38,6 +38,18 @@ class LocalChatServices implements ILocalChatsServices {
     return chats.map((item) => ChatDto.fromMap(item)).toList();
   }
 
+  Future<List<ChatDto>> getAllChatsSortedByUpdatedDate() async {
+    var db = await DBHelper.instanse.database;
+
+    var chats = await db.rawQuery('''SELECT * FROM chats ORDER BY update_date DESC''');
+    
+    var res = chats.map((item) => ChatDto.fromMap(item)).toList();
+    print ('getAllChatsSortedByUpdatedDate chats: $chats');
+    print ('getAllChatsSortedByUpdatedDate res: $res');
+
+    return res;
+  }
+
   @override
   Future<Map<String, Object?>> getChatById({required int id}) async {
     var db = await DBHelper.instanse.database;
@@ -62,9 +74,13 @@ class LocalChatServices implements ILocalChatsServices {
   }
 
   @override
-  Future<int> updateChat({required int chatId}) {
-    // TODO: изменение в БД информации о чате
-    throw UnimplementedError();
+  Future updateChatDateUpdated({required int chatId, required String dateUpdated}) async {
+    var db = await DBHelper.instanse.database;
+    await db.rawQuery('''
+      UPDATE chats
+      SET update_date = '$dateUpdated'
+      WHERE (chat_id = $chatId)
+    ''');
   }
 
   @override

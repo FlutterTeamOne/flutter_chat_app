@@ -27,15 +27,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     //   var localUserId = usersItem.users?.;
     //   event.chats![localUserId!].localChatId;
     // });
-    if (event.chats == null) {
+    // if (event.chats == null) {
       _chatServices = LocalChatServices();
-      var chats = await _chatServices.getAllChats();
+      var chats = await _chatServices.getAllChatsSortedByUpdatedDate();
       print('IF CHATS NULL - ADD CHATS FROM LOCAL DB: $chats');
       emit(state.copyWith(chats: chats));
-    } else {
-      emit(state.copyWith(chats: event.chats));
-      print('ADD CHAT FROM EVENT: ${event.chats}');
-    }
+    // } else {
+    //   emit(state.copyWith(chats: event.chats));
+    //   print('ADD CHAT FROM EVENT: ${event.chats}');
+    // }
   }
 
   FutureOr<void> _onCreateChatEvent(

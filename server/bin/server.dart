@@ -194,6 +194,7 @@ class GrpcMessage extends GrpcMessagesServiceBase {
             newMessage['created_date'] as String;
         req.createMessage.message.dateUpdate =
             newMessage['updated_date'] as String;
+        await ChatsServices().updateChat(newValues: 'updated_date = "${req.createMessage.message.dateUpdate}"', condition: 'chat_id = ${req.createMessage.message.chatId}');
         print('REQ message UPDATE: ${req.createMessage.message}, ');
         _controllers.forEach((controller, _) async => await _onCreateMessage(
             controller: controller,
@@ -363,17 +364,16 @@ class GrpcMessage extends GrpcMessagesServiceBase {
 
 class GrpcChats extends GrpcChatsServiceBase {
   @override
-  Future<CreateChatResponse> createChat(
-      ServiceCall call, CreateChatRequest request) async {
-    var src = await ChatsServices().createChat(
-        friend1_id: request.friend1Id, friend2_id: request.friend1Id);
-    var createChatResponse = CreateChatResponse();
-    if (src[0]['chat_id'] != 0) {
-      createChatResponse.id = src[0]['chat_id'];
-      createChatResponse.createdDate = DateTime.now().toIso8601String();
-    }
-    return createChatResponse;
-  }
+  // Future<CreateChatResponse> createChat(
+  //     ServiceCall call, CreateChatRequest request) async {
+  //   var src = await ChatsServices().createChat(friend1Id: null, friend2Id: null, date: '');
+  //   var createChatResponse = CreateChatResponse();
+  //   if (src[0]['chat_id'] != 0) {
+  //     createChatResponse.id = src[0]['chat_id'];
+  //     createChatResponse.createdDate = DateTime.now().toIso8601String();
+  //   }
+  //   return createChatResponse;
+  // }
 
   @override
   Future<DeleteChatResponse> deleteChat(
@@ -386,19 +386,19 @@ class GrpcChats extends GrpcChatsServiceBase {
     return deleteResponse;
   }
 
-  @override
-  Future<GetChatResponse> getChat(
-      ServiceCall call, GetChatRequest request) async {
-    var getChatResp = GetChatResponse();
-    var src = await ChatsServices().getChatById(id: request.id);
+  // @override
+  // Future<GetChatResponse> getChat(
+  //     ServiceCall call, GetChatRequest request) async {
+  //   var getChatResp = GetChatResponse();
+  //   var src = await ChatsServices().getChatById(id: request.id);
 
-    if (src[0]['user_id'] != 0 && src[0]['user_id'] != null) {
-      getChatResp.friend1Id = src[0]['friend1_id'];
-      getChatResp.friend2Id = src[0]['friend2_id'];
-      getChatResp.createdDate = DateTime.now().toIso8601String();
-    }
-    return getChatResp;
-  }
+  //   if (src[0]['user_id'] != 0 && src[0]['user_id'] != null) {
+  //     getChatResp.friend1Id = src[0]['friend1_id'];
+  //     getChatResp.friend2Id = src[0]['friend2_id'];
+  //     getChatResp.createdDate = DateTime.now().toIso8601String();
+  //   }
+  //   return getChatResp;
+  // }
 
   @override
   Future<UpdateChatResponse> updateChat(
@@ -406,6 +406,18 @@ class GrpcChats extends GrpcChatsServiceBase {
     var updateChatResp = UpdateChatResponse();
 
     return updateChatResp;
+  }
+  
+  @override
+  Future<CreateChatResponse> createChat(ServiceCall call, CreateChatRequest request) {
+    // TODO: implement createChat
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<GetChatResponse> getChat(ServiceCall call, GetChatRequest request) {
+    // TODO: implement getChat
+    throw UnimplementedError();
   }
 }
 

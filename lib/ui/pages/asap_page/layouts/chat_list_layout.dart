@@ -60,27 +60,32 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                 break;
                               }
                             }
-                            var lastMessageId = widget.messageModel.isEmpty
-                                ? 0
-                                : widget.messageModel.length - 1;
+                            var lastMessage = MessageDto(chatId: 0, senderId: 0, content: '');
+                            for (var i in widget.messageModel) {
+                              if (i.chatId == widget.chatModel[index].chatId) {
+                                lastMessage = i;
+                              }
+                            }
+                            // var lastMessageId = widget.chatModel.
+                                // : widget.messageModel.length - 1;
                             return UserCardWidget(
-                              sender: !checkSender(widget
-                                      .messageModel[lastMessageId].senderId)
+                              sender: !checkSender(lastMessage.senderId)
                                   ? userBloc.state.users![index].name
                                   : 'You',
                               // checkSender(widget.messageModel[lastMessageId].senderId),
                               // ? userBloc.state.users[index].name:'You'),
                               selected: false,
                               onTap: () {
+                                //TODO: GetChatId => SetChatId
                                 context.read<ChatBloc>().add(GetChatIdEvent(
                                     widget.chatModel[index].chatId));
                               },
                               name: friend.name,
                               image: friend.profilePicLink,
 
-                              message: widget.messageModel.isNotEmpty
-                                  ? widget.messageModel[lastMessageId].content
-                                  : '',
+                              message: lastMessage.chatId != 0
+                                  ? lastMessage.content
+                                  : 'Start chating',
                             );
                           },
                         )
