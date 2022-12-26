@@ -20,7 +20,7 @@ class _UserCardState extends State<UserCard> {
           hoverColor: Colors.transparent,
           focusColor: Colors.transparent,
           onTap: () async {
-            userBloc.add(ChangeUserEvent(user: widget.user, userDb: false));
+            userBloc.add(ChangeUserEvent(user: widget.user, isStartDB: false));
             UserPref.setUserId = widget.user.userId!;
             UserPath.user = widget.user;
             var db = await DBHelper.instanse.initDB();

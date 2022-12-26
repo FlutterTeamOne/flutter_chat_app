@@ -35,7 +35,10 @@ class UserChatLayoutState extends State<UserChatLayout> {
     return Column(
       children: [
         ChatAppBarWidget(
-          image: user.profilePicLink,
+          image: user.deletedDate!.isEmpty
+              ? user.profilePicLink
+              : 'https://www.iconsdb.com/icons/preview/red/cancel-xxl.png',
+          // user.profilePicLink,
           name: user.name,
         ),
         Expanded(
@@ -46,20 +49,53 @@ class UserChatLayoutState extends State<UserChatLayout> {
                 )
               : const Center(child: CircularProgressIndicator()),
         ),
-        user.deletedDate.isNotEmpty
-            ? Text('Пользователь удален')
-            : TextInputWidget(
-                onSubmitted: (text) => _sendAndChange(messageBloc),
-                controller: controller,
-                onTap: () => _sendAndChange(messageBloc),
-                editState: messageBloc.state.editState,
-                editText: controller.text,
-                cancelEdit: () {
-                  messageBloc.add(
-                      UpdateMessageEvent(isEditing: EditState.isNotEditing));
-                  controller.clear();
-                },
-              ),
+        TextInputWidget(
+          onSubmitted: (text) => _sendAndChange(messageBloc),
+          controller: controller,
+          onTap: () => user.deletedDate!.isNotEmpty
+              ? showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: SizedBox(
+                        height: 80,
+                        width: 80,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('User ${user.name} is deleted'),
+                            ),
+                            ElevatedButton(
+                                style: ButtonStyle(
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ))),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Icon(
+                                  Icons.close_rounded,
+                                ))
+                          ],
+                        ),
+                      ),
+                    );
+                  })
+              : _sendAndChange(messageBloc),
+          editState: messageBloc.state.editState,
+          editText: controller.text,
+          cancelEdit: () {
+            messageBloc
+                .add(UpdateMessageEvent(isEditing: EditState.isNotEditing));
+            controller.clear();
+          },
+        ),
       ],
     );
   }

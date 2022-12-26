@@ -90,18 +90,17 @@ class UsersServices implements IUsersServices {
   }
 
   @override
-  Future<List<Map<String, Object?>>> getUserById(
-      {required String field, required Object fieldValue}) async {
+  Future<Map<String, Object?>> getUserById({required int userId}) async {
     Database db = await DbServerServices.instanse.database;
 
-    return await db
-        .rawQuery('''SELECT * FROM users WHERE ($field = $fieldValue)''');
+    var user =
+        await db.rawQuery('''SELECT * FROM users WHERE (user_id = $userId)''');
+    return user[0];
   }
 
   @override
   updateUser({required String newValues, required String condition}) async {
     Database db = await DbServerServices.instanse.database;
-
     return await db
         .rawUpdate('''UPDATE users SET $newValues WHERE ($condition)''');
   }

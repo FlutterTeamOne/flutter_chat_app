@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:chat_app/modules/client/grpc_client.dart';
 import 'package:chat_app/modules/signal_service/service_locator/locator.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
+import 'package:chat_app/src/constants/db_constants.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_user_lib.dart';
 import 'package:equatable/equatable.dart';
@@ -40,6 +41,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<ReadUsersEvent>(_onReadUsersEvent);
     on<CreateUserEvent>(_onCreateUserEvent);
     on<ChangeUserEvent>(_onChangeUserEvent);
+    on<UpdateUserEvent>(_onUpdateUserEvent);
     on<DeleteUserEvent>(_onDeleleUserEvent);
   }
 
@@ -238,7 +240,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   FutureOr<void> _onChangeUserEvent(
       ChangeUserEvent event, Emitter<UserState> emit) {
     print('GET USER PREF: ${UserPref.getUserDbPref} ');
-    UserPref.setUserDbPref = event.userDb;
+    UserPref.setUserDbPref = event.isStartDB;
   }
 
   FutureOr<void> _onDeleleUserEvent(
@@ -252,5 +254,25 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     print('event: ${event.userId}');
     print(result.isDeleted);
     emit(state.copyWith(isDeleted: result.isDeleted));
+  }
+
+  FutureOr<void> _onUpdateUserEvent(
+      UpdateUserEvent event, Emitter<UserState> emit) async {
+    UserDto? user = event.user;
+    var result = UpdateUserResponse();
+    try {
+      result = await GrpcClient().updateUser(updatedUser: user!);
+      print('RESULT: $result');
+    } catch (e) {
+      print(e);
+    }
+    await _usersServices.updateUser(
+        newValues: '''${DatabaseConst.usersColumnName} = "${result.name}",
+            ${DatabaseConst.usersColumnEmail} = "${result.email}",
+            ${DatabaseConst.usersColumnProfilePicLink} = "${result.profilePicUrl}",
+            ${DatabaseConst.usersColumnUpdatedDate} = "${result.dateUpdated}"''',
+        condition: '${DatabaseConst.usersColumnUserId} = ${result.userId}');
+    var users = await _usersServices.getAllUsers();
+    emit(state.copyWith(users: users));
   }
 }
