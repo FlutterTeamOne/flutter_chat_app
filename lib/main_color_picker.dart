@@ -35,11 +35,11 @@ class _ColorPickerDemoState extends State<ColorPickerDemo> {
           ThemeData.from(colorScheme: const ColorScheme.highContrastDark()),
       themeMode: themeMode,
       home: ColorPickerPage(
-        themeMode: (ThemeMode mode) {
-          setState(() {
-            themeMode = mode;
-          });
-        },
+        // themeMode: (ThemeMode mode) {
+        //   setState(() {
+        //     themeMode = mode;
+        //   });
+        // },
       ),
     );
   }

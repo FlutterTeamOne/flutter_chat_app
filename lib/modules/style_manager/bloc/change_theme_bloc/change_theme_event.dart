@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
+
 abstract class ChangeThemeEvent {
   late int index;
+  late Brightness brightness;
 }
 
 class SetThemeEvent extends ChangeThemeEvent {
@@ -7,4 +10,10 @@ class SetThemeEvent extends ChangeThemeEvent {
   SetThemeEvent({
     required this.index,
   });
+}
+
+class SetCustomThemesEvent extends ChangeThemeEvent {
+  final int index;
+  final Brightness brightness;
+  SetCustomThemesEvent({required this.index, required this.brightness});
 }

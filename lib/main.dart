@@ -4,6 +4,7 @@ import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_c
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_user_lib.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';
+import 'package:chat_app/ui/pages/custom_theme/color_picker_page.dart';
 import 'package:chat_app/ui/pages/custom_theme/custom_page.dart';
 import 'package:chat_app/ui/pages/registration_page/registration_page.dart';
 import 'package:chat_app/ui/widgets/registration_page/bloc/new_user_bloc.dart';
@@ -73,17 +74,29 @@ class MyApp extends StatelessWidget {
       ],
       child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
         builder: (context, state) {
-          // final int? savedThemeIndex = UserPref.getThemeIndex as int?;
-          // final int? savedThemeIndex = UserPreferences().getTheme() as int?;
-          final ThemeData? theme =
-          // savedThemeIndex != null
-          //      ? state.theme
-          //      : CustomTheme().themes[savedThemeIndex!];
-              state.theme;
-          // savedThemeIndex != null
-          //     ? state.theme
-          //     : CustomTheme().themes[savedThemeIndex!];
-          return buildMaterialApp(theme!);
+          if (state.index == 6) {
+            final ThemeData? theme = ThemeData(
+              brightness: state.brightness,
+              primarySwatch: Colors.blueGrey,
+              primaryColor: Colors.blueGrey,
+              errorColor: Colors.redAccent.shade200,
+              // backgroundColor: Colors.black45,
+              textSelectionTheme: const TextSelectionThemeData(
+                cursorColor: Colors.white70,
+                selectionColor: Colors.white70,
+                selectionHandleColor: Colors.white70,
+              ),
+              //стиль для scroll down button
+              floatingActionButtonTheme: const FloatingActionButtonThemeData(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.black54,
+              ),
+            );
+            return buildMaterialApp(theme!);
+          } else {
+            final ThemeData? theme = state.theme;
+            return buildMaterialApp(theme!);
+          }
         },
       ),
     );
@@ -102,7 +115,8 @@ class MyApp extends StatelessWidget {
         AuthPage.routeName: (context) => const AuthPage(),
         MainLayout.routeName: (context) => const MainLayout(),
         '/Settings page': (context) => const SettingsPage(),
-        CustomThemePage.routeName: (context) => const CustomThemePage(),
+        CustomThemesPage.routeName: (context) => const CustomThemesPage(),
+        '/color picker page': (context) => const ColorPickerPage(),
       },
     );
   }

@@ -1,12 +1,21 @@
-import 'package:flutter/material.dart';
+// import 'dart:js_util';
 
+import 'package:chat_app/modules/style_manager/bloc/change_theme_bloc/change_theme_event.dart';
+import 'package:chat_app/modules/style_manager/themes/custom_themes.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../modules/style_manager/bloc/change_theme_bloc/change_theme_bloc.dart';
 import '../../widgets/custom_theme/color_indicator.dart';
 import '../../widgets/custom_theme/color_tools.dart';
 import '../../widgets/custom_theme/flex_color_picker.dart';
 
 class ColorPickerPage extends StatefulWidget {
-  const ColorPickerPage({super.key, required this.themeMode});
-  final ValueChanged<ThemeMode> themeMode;
+  const ColorPickerPage({
+    super.key,
+    // required this.themeMode
+  });
+  // final ValueChanged<ThemeMode> themeMode;
 
   @override
   _ColorPickerPageState createState() => _ColorPickerPageState();
@@ -31,7 +40,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
 
   // Make a custom ColorSwatch to name map from the above custom colors.
   final Map<ColorSwatch<Object>, String> colorsNameMap =
-  <ColorSwatch<Object>, String>{
+      <ColorSwatch<Object>, String>{
     ColorTools.createPrimarySwatch(guidePrimary): 'Guide Purple',
     ColorTools.createPrimarySwatch(guidePrimaryVariant): 'Guide Purple Variant',
     ColorTools.createAccentSwatch(guideSecondary): 'Guide Teal',
@@ -69,7 +78,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
             subtitle: Text(
               // ignore: lines_longer_than_80_chars
               '${ColorTools.materialNameAndCode(dialogPickerColor, colorSwatchNameMap: colorsNameMap)} '
-                  'aka ${ColorTools.nameThatColor(dialogPickerColor)}',
+              'aka ${ColorTools.nameThatColor(dialogPickerColor)}',
             ),
             trailing: ColorIndicator(
               width: 44,
@@ -97,7 +106,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
             subtitle: Text(
               // ignore: lines_longer_than_80_chars
               '${ColorTools.materialNameAndCode(dialogSelectColor, colorSwatchNameMap: colorsNameMap)} '
-                  'aka ${ColorTools.nameThatColor(dialogSelectColor)}',
+              'aka ${ColorTools.nameThatColor(dialogSelectColor)}',
             ),
             trailing: ColorIndicator(
                 width: 40,
@@ -171,8 +180,8 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
           ListTile(
             title: const Text('Select color below to change this color'),
             subtitle:
-            Text('${ColorTools.materialNameAndCode(screenPickerColor)} '
-                'aka ${ColorTools.nameThatColor(screenPickerColor)}'),
+                Text('${ColorTools.materialNameAndCode(screenPickerColor)} '
+                    'aka ${ColorTools.nameThatColor(screenPickerColor)}'),
             trailing: ColorIndicator(
               width: 44,
               height: 44,
@@ -218,8 +227,13 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
             onChanged: (bool value) {
               setState(() {
                 isDark = value;
-                widget.themeMode(isDark ? ThemeMode.dark : ThemeMode.light);
+                // widget.themeMode(isDark ? ThemeMode.dark : ThemeMode.light);
               });
+              late var brightness = value ? Brightness.dark : Brightness.light;
+              // context.read<ChangeThemeBloc>().add(SetThemeEvent(index: 6));
+              context
+                  .read<ChangeThemeBloc>()
+                  .add(SetCustomThemesEvent(index: 6, brightness: brightness));
             },
           )
         ],
@@ -274,7 +288,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
       context,
       actionsPadding: const EdgeInsets.all(16),
       constraints:
-      const BoxConstraints(minHeight: 480, minWidth: 300, maxWidth: 320),
+          const BoxConstraints(minHeight: 480, minWidth: 300, maxWidth: 320),
     );
   }
 }

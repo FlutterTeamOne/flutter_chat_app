@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:chat_app/modules/style_manager/themes/saved_theme.dart';
-import 'package:chat_app/modules/style_manager/themes/themes.dart';
+import 'package:chat_app/modules/style_manager/themes/custom_themes.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chat_app/modules/storage_manager/preferences/user_preferences.dart';
-
 
 import 'change_theme_event.dart';
 import 'change_theme_state.dart';
@@ -11,10 +13,12 @@ class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
   // static int initIndex = SavedTheme().initThemeIndex;
   ChangeThemeBloc()
       : super(ChangeThemeState(
-          theme: CustomTheme().themes[1],
+          brightness: Brightness.dark,
+          theme: CustomThemes().themes[1],
           index: 1,
         )) {
     on<SetThemeEvent>(_setThemeEvent);
+    on<SetCustomThemesEvent>(_onSetCustomThemesEvent);
   }
 
   void _setThemeEvent(
@@ -24,6 +28,14 @@ class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
     // var i = await UserPreferences().getTheme();
     // print(i);
     emit(ChangeThemeState(
-        theme: CustomTheme().themes[event.index], index: event.index));
+        brightness: CustomThemes().themes[event.index].brightness,
+        theme: CustomThemes().themes[event.index],
+        index: event.index));
+  }
+
+  FutureOr<void> _onSetCustomThemesEvent(
+      SetCustomThemesEvent event, Emitter<ChangeThemeState> emit) {
+    print(event.index);
+    emit(ChangeThemeState(index: event.index, brightness: event.brightness));
   }
 }

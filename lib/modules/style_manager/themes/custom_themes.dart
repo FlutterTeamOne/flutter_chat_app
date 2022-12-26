@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
-class CustomTheme {
+class CustomThemes {
   static final ThemeData lightThemeDeepPurple = ThemeData(
       brightness: Brightness.light,
       primarySwatch: Colors.deepPurple,
@@ -110,12 +110,33 @@ class CustomTheme {
     ),
   );
 
+  static final ThemeData CustomTheme = ThemeData(
+    brightness: Brightness.dark,
+    primarySwatch: Colors.blueGrey,
+    primaryColor: Colors.blueGrey,
+    errorColor: Colors.redAccent.shade200,
+    // backgroundColor: Colors.black45,
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.white70,
+      selectionColor: Colors.white70,
+      selectionHandleColor: Colors.white70,
+    ),
+    //стиль для scroll down button
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: Colors.white,
+      foregroundColor: Colors.black54,
+    ),
+  );
+
   final themes = [
-    CustomTheme.lightThemeDeepPurple,
-    CustomTheme.darkThemeDeepPurple,
-    CustomTheme.lightThemeLightBlue,
-    CustomTheme.darkThemeLightBlue,
-    CustomTheme.lightThemeBlueGray,
-    CustomTheme.darkThemeBlueGray,
+    CustomThemes.lightThemeDeepPurple,
+    CustomThemes.darkThemeDeepPurple,
+    CustomThemes.lightThemeLightBlue,
+    CustomThemes.darkThemeLightBlue,
+    CustomThemes.lightThemeBlueGray,
+    CustomThemes.darkThemeBlueGray,
+    CustomThemes.CustomTheme,
   ];
+
+
 }

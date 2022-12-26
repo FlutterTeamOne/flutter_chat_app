@@ -1,5 +1,8 @@
+import 'package:chat_app/modules/style_manager/bloc/change_theme_bloc/change_theme_bloc.dart';
+import 'package:chat_app/modules/style_manager/bloc/change_theme_bloc/change_theme_event.dart';
 import 'package:chat_app/ui/pages/custom_theme/custom_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../widgets/settings_page/theme_settings_widget.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -32,7 +35,8 @@ class SettingsPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(20.0),
             ))),
             onPressed: () {
-              Navigator.of(context).pushNamed(CustomThemePage.routeName);
+              // context.read<ChangeThemeBloc>().add(SetThemeEvent(index: 6));
+              Navigator.of(context).pushNamed('/color picker page');
             },
             child: Text('Custom theme'))
       ],

@@ -2,14 +2,14 @@ import 'package:chat_app/ui/pages/library/library_pages.dart';
 import 'package:chat_app/ui/widgets/custom_theme/color_wheel_picker.dart';
 import 'package:flutter/material.dart';
 
-class CustomThemeWidget extends StatefulWidget {
-  const CustomThemeWidget({Key? key}) : super(key: key);
+class CustomThemesWidget extends StatefulWidget {
+  const CustomThemesWidget({Key? key}) : super(key: key);
 
   @override
-  State<CustomThemeWidget> createState() => _CustomThemeWidgetState();
+  State<CustomThemesWidget> createState() => _CustomThemesWidgetState();
 }
 
-class _CustomThemeWidgetState extends State<CustomThemeWidget> {
+class _CustomThemesWidgetState extends State<CustomThemesWidget> {
   final iconCheck = Icons.check;
   final themeMainColor = [
     Colors.pink,

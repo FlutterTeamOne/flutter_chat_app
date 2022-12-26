@@ -2,9 +2,10 @@ import 'package:chat_app/modules/style_manager/library/library_style_manager.dar
 import 'package:flutter/material.dart';
 
 
-import '../../themes/themes.dart';
+import '../../themes/custom_themes.dart';
 
 class ChangeThemeState {
+  final Brightness? brightness;
   final ThemeData? theme;
   final int? index;
   final iconColor = [
@@ -16,15 +17,16 @@ class ChangeThemeState {
     Colors.white.withOpacity(0.2),
   ];
   final cardColor = <Color>[
-    CustomTheme.darkThemeDeepPurple.primaryColor,
-    CustomTheme.darkThemeLightBlue.primaryColor,
-    CustomTheme.darkThemeBlueGray.primaryColor,
+    CustomThemes.darkThemeDeepPurple.primaryColor,
+    CustomThemes.darkThemeLightBlue.primaryColor,
+    CustomThemes.darkThemeBlueGray.primaryColor,
   ];
   final selectIcon = <IconData>[
     Icons.light_mode_outlined,
     Icons.dark_mode_outlined,
   ];
   ChangeThemeState({
+    this.brightness,
     this.theme,
     this.index,
   }) {
