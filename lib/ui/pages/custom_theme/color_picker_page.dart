@@ -213,6 +213,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                               index: 6,
                               primaryColor: color,
                               brightness: state.brightness!,
+                          borderRadius: state.borderRadius
                             ));
                         print(color);
                       },
@@ -245,10 +246,37 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                   late var brightness =
                       value ? Brightness.dark : Brightness.light;
                   // context.read<ChangeThemeBloc>().add(SetThemeEvent(index: 6));
-                  context.read<ChangeThemeBloc>().add(
-                      SetCustomThemesEvent(index: 6, brightness: brightness, primaryColor: state.primaryColor!));
+                  context.read<ChangeThemeBloc>().add(SetCustomThemesEvent(
+                      index: 6,
+                      brightness: brightness,
+                      primaryColor: state.primaryColor!,
+                  borderRadius: state.borderRadius));
                 },
-              )
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+
+                      onPressed: () {
+                        context.read<ChangeThemeBloc>().add(
+                            SetCustomThemesEvent(
+                                index: 6,
+                                brightness: state.brightness!,
+                                primaryColor: state.primaryColor!,
+                                borderRadius: 20));
+                      },
+                      child: Text('Rounded border')),
+                  SizedBox(width: 8,),
+                  ElevatedButton(
+                      onPressed: () {context.read<ChangeThemeBloc>().add(
+                          SetCustomThemesEvent(
+                              index: 6,
+                              brightness: state.brightness!,
+                              primaryColor: state.primaryColor!,
+                              borderRadius: 0));}, child: Text('Squared border'))
+                ],
+              ),
             ],
           ),
         );
@@ -260,16 +288,15 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
     return ColorPicker(
       color: dialogPickerColor,
       onColorChanged: (Color color) {
-          setState(() => dialogPickerColor = color);
-          context
-              .read<ChangeThemeBloc>()
-              .add(SetCustomThemesEvent(
-            index: 6,
-            primaryColor: color,
-            brightness: state.brightness!,
-          ));
-          print(color);
-          },
+        setState(() => dialogPickerColor = color);
+        context.read<ChangeThemeBloc>().add(SetCustomThemesEvent(
+              index: 6,
+              primaryColor: color,
+              brightness: state.brightness!,
+          borderRadius: state.borderRadius,
+            ));
+        print(color);
+      },
       width: 40,
       height: 40,
       borderRadius: 4,

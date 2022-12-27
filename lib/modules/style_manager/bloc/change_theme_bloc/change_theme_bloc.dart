@@ -13,6 +13,7 @@ class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
   // static int initIndex = SavedTheme().initThemeIndex;
   ChangeThemeBloc()
       : super(ChangeThemeState(
+    borderRadius: 20,
           primaryColor: Colors.blueGrey,
           brightness: Brightness.dark,
           theme: CustomThemes().themes[1],
@@ -38,6 +39,7 @@ class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
       SetCustomThemesEvent event, Emitter<ChangeThemeState> emit) {
     print(event.index);
     emit(ChangeThemeState(
+      borderRadius: event.borderRadius,
         primaryColor: event.primaryColor,
         index: event.index,
         brightness: event.brightness));

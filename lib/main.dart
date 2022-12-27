@@ -37,7 +37,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
   final GrpcClient grpcClient = GrpcClient();
-  
+
   MaterialColor createMaterialColor(Color color) {
     List strengths = <double>[.05];
     Map<int, Color> swatch = {};
@@ -57,6 +57,7 @@ class MyApp extends StatelessWidget {
     }
     return MaterialColor(color.value, swatch);
   }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -95,6 +96,15 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           if (state.index == 6) {
             final ThemeData theme = ThemeData(
+              elevatedButtonTheme: ElevatedButtonThemeData(
+                  style: ButtonStyle(
+                      shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(state.borderRadius!))))),
+              buttonTheme: ButtonThemeData(
+                  shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(state.borderRadius!))),
               brightness: state.brightness,
               primarySwatch: createMaterialColor(state.primaryColor!),
               primaryColor: createMaterialColor(state.primaryColor!),
@@ -138,7 +148,5 @@ class MyApp extends StatelessWidget {
         '/color picker page': (context) => const ColorPickerPage(),
       },
     );
-
   }
-
 }
