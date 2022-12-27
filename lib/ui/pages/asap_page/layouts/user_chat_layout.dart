@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../src/libraries/library_all.dart';
@@ -104,17 +105,18 @@ class UserChatLayoutState extends State<UserChatLayout> {
 
   _sendAndChange(MessageBloc messageBloc) async {
     if (messageBloc.state.editState == EditState.isNotEditing &&
-        controller.text.isNotEmpty) {
+        controller.text.isNotEmpty &&
+        messageBloc.state.mediaState != MediaState.isPreparation) {
       messageBloc.add(
         CreateMessageEvent(
-          message: MessageDto(
-            chatId: widget.chatId,
-            senderId: await MainUserServices().getUserID(),
-            content: controller.text,
-            createdDate: DateTime.now().toIso8601String(),
-            updatedDate: DateTime.now().toIso8601String(),
-          ),
-        ),
+            message: MessageDto(
+                chatId: widget.chatId,
+                senderId: await MainUserServices().getUserID(),
+                content: controller.text,
+                createdDate: DateTime.now().toIso8601String(),
+                updatedDate: DateTime.now().toIso8601String(),
+                contentType: ContentType.isText),
+            contentType: ContentType.isText),
       );
       context.read<ChatBloc>().add(
         ReadChatEvent()
@@ -141,6 +143,40 @@ class UserChatLayoutState extends State<UserChatLayout> {
                 updatedDate: DateTime.now().toIso8601String()),
             isEditing: EditState.isEditing),
       );
+      controller.clear();
+    }
+
+    if (messageBloc.state.mediaState == MediaState.isPreparation &&
+        controller.text.isNotEmpty) {
+      messageBloc.add(
+        CreateMessageEvent(
+            message: MessageDto(
+                chatId: widget.chatId,
+                senderId: await MainUserServices().getUserID(),
+                content: controller.text,
+                createdDate: DateTime.now().toIso8601String(),
+                updatedDate: DateTime.now().toIso8601String(),
+                contentType: ContentType.isMediaText),
+            contentType: ContentType.isMediaText,
+            mediaState: MediaState.isSending),
+      );
+      FocusScope.of(context).unfocus();
+      controller.clear();
+    } else if (messageBloc.state.mediaState == MediaState.isPreparation &&
+        controller.text.isEmpty) {
+      messageBloc.add(
+        CreateMessageEvent(
+            message: MessageDto(
+                chatId: widget.chatId,
+                senderId: await MainUserServices().getUserID(),
+                content: controller.text,
+                createdDate: DateTime.now().toIso8601String(),
+                updatedDate: DateTime.now().toIso8601String(),
+                contentType: ContentType.isMedia),
+            contentType: ContentType.isMedia,
+            mediaState: MediaState.isSending),
+      );
+      FocusScope.of(context).unfocus();
       controller.clear();
     } else {
       return null;

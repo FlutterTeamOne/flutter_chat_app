@@ -11,6 +11,13 @@ service  GrpcMessages{
     // rpc synchronization (LastMessage) returns (stream MessageFromBase) {}
 }
 message Empty {}
+
+enum ContentType{
+    isText = 0;
+    isMedia = 1;
+    isMediaText=2;
+}
+
 enum MessageStateEnum {
     connecting = 0;
     isReadMessage=1;
@@ -45,6 +52,8 @@ message Message{
     string dateDelete = 7;
     int32 isRead = 8;
     int32 localMessgaeId = 9;
+    int32 attachmentId = 10;
+    ContentType contentType = 11;
 }
 // message ConnectRequest {
 //     int32 id = 1;

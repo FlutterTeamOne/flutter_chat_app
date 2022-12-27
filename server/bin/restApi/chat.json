@@ -1,0 +1,18 @@
+[{
+    "user_id": 1,
+    "chats": [{
+            "chat_id": 2,
+            "user_id": 2,
+            "created_date": "2022-12-21T10:36:40.890231",
+            "updated_date": "2022-12-21T10:36:40.893231",
+            "deleted_date": null
+        },
+        {
+            "chat_id": 2,
+            "user_id": 2,
+            "created_date": "2022-12-21T10:36:40.890231",
+            "updated_date": "2022-12-21T10:36:40.893231",
+            "deleted_date": null
+        }
+    ]
+}]

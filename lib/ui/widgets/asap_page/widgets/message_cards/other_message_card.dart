@@ -30,7 +30,7 @@ class OtherMessageCardWidget extends StatelessWidget {
           maxWidth: currentWidth > 1150 ? 750 : 350,
         ),
         child: AppCardWidget(
-          text: message.content,
+          message: message,
           marginIndex: 5,
           time: realTime,
           edited: message.createdDate == message.updatedDate ? '' : 'edited ',

@@ -16,12 +16,14 @@ class _ProfileLayout extends StatelessWidget {
             break;
           }
         }
+
         return userMain == null
             ? Center(
                 widthFactor: 100,
                 heightFactor: 100,
                 child: CircularProgressIndicator())
             : ListView(
+
                 children: [
                   // Фон и аватарка
                   Stack(

@@ -1,5 +1,10 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 
+import 'package:chat_app/modules/client/rest_client.dart';
+import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../domain/data/library/library_data.dart';
@@ -29,13 +34,30 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     // });
     // if (event.chats == null) {
       _chatServices = LocalChatServices();
-      var chats = await _chatServices.getAllChatsSortedByUpdatedDate();
-      print('IF CHATS NULL - ADD CHATS FROM LOCAL DB: $chats');
-      emit(state.copyWith(chats: chats));
-    // } else {
-    //   emit(state.copyWith(chats: event.chats));
-    //   print('ADD CHAT FROM EVENT: ${event.chats}');
-    // }
+
+    //TODO: Поменять getAllChats на сортированную выборку getAllChatsSortedByUpdatedDate()
+      var chats = await _chatServices.getAllChats();
+      //
+      var restChats = await RestClient().getChats();
+      print('IF CHATS is NULL - ADD CHAT FROM LOCAL DB: $restChats');
+      print('IF CHATS is NULL - ADD CHAT FROM LOCAL DB: $chats');
+      //сравниваем два листа и в зависимости от этого меняем стейт на нужный лист
+      listEquals(chats, restChats)
+          ? emit(state.copyWith(chats: restChats))
+          : emit(state.copyWith(chats: chats));
+
+      //если локальная база отличается от серверной,
+      //то перезаписываем локальную базу
+      if (!listEquals(chats, restChats)) {
+        for (var chat in restChats) {
+          await _chatServices.createChat(
+              createDate: chat.createdDate, userId: chat.userIdChat);
+        }
+      }
+    } else {
+      emit(state.copyWith(chats: event.chats));
+      print('ADD CHAT FROM EVENT: ${event.chats}');
+    }
   }
 
   FutureOr<void> _onCreateChatEvent(
@@ -43,9 +65,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     _chatServices = LocalChatServices();
     var chat = event.chat;
     var chats = await _chatServices.createChat(
-        chatId: chat.chatId,
-        createDate: chat.createdDate,
-        userId: chat.userIdChat);
+        createDate: chat.createdDate, userId: chat.userIdChat);
+    //TODO:запрос к restApi на создание чата
+    await RestClient().createChatRest(
+        creatorUserId: UserPref.getUserId, user2Id: chat.userIdChat);
     emit(state.copyWith(chats: chats));
   }
 
@@ -59,6 +82,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       DeleteChatEvent event, Emitter<ChatState> emit) async {
     //TODO: func delete chat
     await _chatServices.deleteChat(id: event.chatId);
+    //запрос на удаление к рест серверу
+    await RestClient().deleteChatRest(id: event.chatId);
     print('CHAT ID: ${event.chatId}');
   }
 

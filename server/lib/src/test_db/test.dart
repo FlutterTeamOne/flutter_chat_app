@@ -12,7 +12,7 @@ Future<void> main() async {
   var chatsHelper = ChatsServices();
 
   //Обращаемся к методам работы с таблицей сообщений через:
-  var messagesService = MessagesServices();
+  var messagesService = MessagesDBServices();
 
   //Обращаемся к методам работы с таблицей юзеров через:
   var usersService = UsersServices();
