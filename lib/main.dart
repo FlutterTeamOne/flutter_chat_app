@@ -37,7 +37,26 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
   final GrpcClient grpcClient = GrpcClient();
+  
+  MaterialColor createMaterialColor(Color color) {
+    List strengths = <double>[.05];
+    Map<int, Color> swatch = {};
+    final int r = color.red, g = color.green, b = color.blue;
 
+    for (int i = 1; i < 10; i++) {
+      strengths.add(0.1 * i);
+    }
+    for (var strength in strengths) {
+      final double ds = 0.5 - strength;
+      swatch[(strength * 1000).round()] = Color.fromRGBO(
+        r + ((ds < 0 ? r : (255 - r)) * ds).round(),
+        g + ((ds < 0 ? g : (255 - g)) * ds).round(),
+        b + ((ds < 0 ? b : (255 - b)) * ds).round(),
+        1,
+      );
+    }
+    return MaterialColor(color.value, swatch);
+  }
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -75,10 +94,10 @@ class MyApp extends StatelessWidget {
       child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
         builder: (context, state) {
           if (state.index == 6) {
-            final ThemeData? theme = ThemeData(
+            final ThemeData theme = ThemeData(
               brightness: state.brightness,
-              primarySwatch: state.primaryColor,
-              primaryColor: Colors.blueGrey,
+              primarySwatch: createMaterialColor(state.primaryColor!),
+              primaryColor: createMaterialColor(state.primaryColor!),
               errorColor: Colors.redAccent.shade200,
               // backgroundColor: Colors.black45,
               textSelectionTheme: const TextSelectionThemeData(
@@ -119,5 +138,7 @@ class MyApp extends StatelessWidget {
         '/color picker page': (context) => const ColorPickerPage(),
       },
     );
+
   }
+
 }

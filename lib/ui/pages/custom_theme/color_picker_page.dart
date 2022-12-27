@@ -214,6 +214,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                               primaryColor: color,
                               brightness: state.brightness!,
                             ));
+                        print(color);
                       },
                       width: 44,
                       height: 44,
