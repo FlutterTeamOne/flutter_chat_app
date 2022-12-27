@@ -37,6 +37,9 @@ class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
   FutureOr<void> _onSetCustomThemesEvent(
       SetCustomThemesEvent event, Emitter<ChangeThemeState> emit) {
     print(event.index);
-    emit(ChangeThemeState(primaryColor: event.primaryColor,index: event.index, brightness: event.brightness));
+    emit(ChangeThemeState(
+        primaryColor: event.primaryColor,
+        index: event.index,
+        brightness: event.brightness));
   }
 }
