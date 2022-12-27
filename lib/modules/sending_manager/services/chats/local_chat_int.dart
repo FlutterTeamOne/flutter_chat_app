@@ -13,7 +13,8 @@ abstract class ILocalChatsServices {
 
   Future<List<ChatDto>> getAllChats();
   getMainIdChatByMessage({required int localId});
-  Future<int> updateChat({required int chatId});
+  // Future<int> updateChat({required int chatId});
+  Future updateChatDateUpdated({required int chatId, required String dateUpdated});
   Future<int> getMaxId();
 }
 

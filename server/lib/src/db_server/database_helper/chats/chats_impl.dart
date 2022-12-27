@@ -20,8 +20,8 @@ class ChatsServices implements IChatsServices {
       },
     );
 
-    var chats = await db.rawQuery('''
-      SELECT * FROM chats 
+    return await db.rawQuery('''
+      SELECT chat_id FROM chats 
       WHERE (
         (friend1_id = ?) 
         AND 
@@ -31,8 +31,6 @@ class ChatsServices implements IChatsServices {
         AND
         (updated_date = ?));
     ''', [friend1Id, friend2Id, date, date]);
-
-    return chats[0];
   }
 
   @override
@@ -40,6 +38,13 @@ class ChatsServices implements IChatsServices {
     Database db = await DbServerServices.instanse.database;
 
     return await db.rawQuery('''SELECT * FROM chats''');
+  }
+
+  Future<List<Map<String, Object?>>> getAllChatsSortedByUpdatedDate() async {
+    Database db = await DbServerServices.instanse.database;
+
+    return await db
+        .rawQuery('''SELECT * FROM chats ORDER BY updated_date DESC''');
   }
 
   @override
