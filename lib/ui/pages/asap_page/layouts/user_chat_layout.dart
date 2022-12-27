@@ -108,8 +108,7 @@ class UserChatLayoutState extends State<UserChatLayout> {
       );
       FocusScope.of(context).unfocus();
       controller.clear();
-    }
-    if (messageBloc.state.mediaState == MediaState.isPreparation &&
+    } else if (messageBloc.state.mediaState == MediaState.isPreparation &&
         controller.text.isEmpty) {
       messageBloc.add(
         CreateMessageEvent(
