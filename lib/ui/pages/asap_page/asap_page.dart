@@ -34,7 +34,8 @@ class AsapPage extends StatelessWidget {
                           ? const Text('Sorry')
                           : messageState.messages != null
                               ? ChatListLayout(
-                                  chatModel: chatState.chats!,
+                                  chatModel:
+                                      context.watch<ChatBloc>().state.chats!,
                                   messageModel: messageState.messages!)
                               : Center(
                                   child: CircularProgressIndicator(),

@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:chat_app/domain/data/library/library_data.dart';
+import 'package:chat_app/modules/sending_manager/library/library_sending_manager.dart';
 import 'package:dio/dio.dart';
 
 void main() {
@@ -33,6 +35,7 @@ class RestClient {
       {required creatorUserId, required user2Id, required String date}) async {
     var chatUrl = '$_url/chats/';
     var restChat;
+    var chatId;
     // var date = DateTime.now().toIso8601String();
     try {
       //возвращает один созданный элемент
@@ -44,28 +47,49 @@ class RestClient {
       print('HELLO');
       print('RESP DATA:${resp.data}');
       if (resp.statusCode == 200) {
-        var source = resp.data
-            .toString()
-            .replaceAll('chat_id', "chat_id")
-            .replaceAll('friend1_id', "friend1_id")
-            .replaceAll('friend2_id', "friend2_id")
-            .replaceAll('created_date', "created_date")
-            .replaceAll('deleted_date', "deleted_date")
-            .replaceAll('updated_date', "updated_date");
+        var responseFromRest = resp.data.toString().split(',');
 
-        print('SOURCE: $source');
-        List<String> data = source.split(',');
-        String createdDateInput = data[3].split('created_date: ')[1];
-        String updatedDateInput = data[5].split('updated_date: ')[1];
+        int userId =
+            int.tryParse(responseFromRest[0].split('{friend: {user_id: ')[1])!;
+        String username = responseFromRest[1].split(' name: ')[1];
+        String userEmail = responseFromRest[2].split(' email: ')[1];
+        String userCreatedDate =
+            responseFromRest[3].split(' created_date: ')[1];
+        String profilePicUrl =
+            responseFromRest[4].split(' profile_pic_url: ')[1];
+        String userUpdatedDate =
+            responseFromRest[5].split(' updated_date: ')[1];
+        String? userDeletedDate =
+            responseFromRest[6].split(' deleted_date: ')[1];
 
-        int chatId = int.tryParse('${data[0].split('chat_id: ')[1]}')!;
+        await LocalUsersServices().createUser(
+            userId: userId,
+            name: username,
+            email: userEmail,
+            createdDate: userCreatedDate,
+            updatedDate: userUpdatedDate,
+            profilePicUrl: profilePicUrl);
+
+        Timer(Duration(seconds: 1), () {});
+
+        // name, email, created_date, profile_pic_url, updated_date, deleted_date,
+
+        String createdDateInput =
+            responseFromRest[12].split(' created_date: ')[1];
+        String updatedDateInput =
+            responseFromRest[14].split(' updated_date: ')[1];
+
+        chatId = int.tryParse(
+            '${responseFromRest[9].split('res: [{chat_id: ')[1]}')!;
         print('CHAT ID: $chatId');
-        int friend1_id = int.tryParse('${data[1].split('friend1_id: ')[1]}')!;
+        int friend1_id =
+            int.tryParse('${responseFromRest[10].split(' friend1_id: ')[1]}')!;
         print('FRIEND ID: $friend1_id');
-        int friend2_id = int.tryParse('${data[2].split('friend2_id: ')[1]}')!;
+        int friend2_id =
+            int.tryParse('${responseFromRest[11].split(' friend2_id: ')[1]}')!;
         print('FRIEND 2: $friend2_id');
         String updateDate =
-            '"${updatedDateInput.substring(0, updatedDateInput.length - 1)}"';
+            '"${updatedDateInput.substring(0, updatedDateInput.length - 3)}"';
         print('UPDATEDDATE: $updateDate');
         String createdDate = '"${createdDateInput}"';
         print('CREATE DATE: $createdDate');
@@ -84,10 +108,8 @@ class RestClient {
     } catch (e) {
       print('ERROR RESP CHAT:$e');
     }
-    int chatId = restChat['chat_id'];
-    print(chatId);
     return ChatDto(
-        chatId: restChat['chat_id'],
+        chatId: chatId,
         userIdChat: restChat['friend2_id'],
         createdDate: restChat['created_date'].toString(),
         updatedDate: restChat['updated_date'].toString());

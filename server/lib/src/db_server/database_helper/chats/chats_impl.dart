@@ -21,7 +21,7 @@ class ChatsServices implements IChatsServices {
     );
 
     return await db.rawQuery('''
-      SELECT chat_id FROM chats 
+      SELECT * FROM chats 
       WHERE (
         (friend1_id = ?) 
         AND 

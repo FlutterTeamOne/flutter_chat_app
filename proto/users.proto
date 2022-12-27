@@ -15,6 +15,7 @@ message GetUserRequest {
     string dateCreation = 4;
    
 }
+
 message GetUserResponse {
     int32 id = 1;
     string dateUpdated = 2;

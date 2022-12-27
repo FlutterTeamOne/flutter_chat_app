@@ -46,7 +46,9 @@ class ChatApi {
             friend2Id: resp['friend2_id'],
             date: resp['date']);
         print('RES: $res');
-        var result = res.toString();
+        var userFriend = await UsersServices()
+            .getUserById(userId: resp['friend2_id'] as int);
+        var result = {'friend': userFriend, 'res': res}.toString();
         return Response.ok(result);
       } else {
         return Response.ok('Chat is already created,');

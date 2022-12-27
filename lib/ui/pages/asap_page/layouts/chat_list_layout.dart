@@ -1,4 +1,7 @@
-﻿import 'package:chat_app/src/generated/chats/chats.pbgrpc.dart';
+﻿import 'dart:async';
+
+import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
+import 'package:chat_app/src/generated/chats/chats.pbgrpc.dart';
 import 'package:chat_app/src/generated/users/users.pbgrpc.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/add_chat_dialog_widget.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/search_field.dart';
@@ -28,8 +31,8 @@ class _ChatListLayoutState extends State<ChatListLayout> {
 
   @override
   Widget build(BuildContext context) {
-    final chatBloc = context.read<ChatBloc>();
-    final userBloc = context.read<UserBloc>();
+    final chatBloc = context.watch<ChatBloc>();
+    final userBloc = context.watch<UserBloc>();
     final grpcClient = GrpcClient();
     final localUserServices = LocalUsersServices();
     return Drawer(
@@ -56,15 +59,38 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                               const SizedBox(height: 25),
                           itemBuilder: (context, index) {
                             var friend;
+                            print(
+                                'CHAT LIST LAYOUT: ${context.read<UserBloc>().state.users}');
+
+                            friend = context
+                                .read<UserBloc>()
+                                .state
+                                .users!
+                                .firstWhere((user) {
+                              return user.userId ==
+                                  widget.chatModel[index].userIdChat;
+                            });
+
                             //TODO: тут заменить на юзера, если будет 5 ид, а юзеры 1 2 5, то будет ошибка
-                            for (var user
-                                in context.read<UserBloc>().state.users!) {
-                              if (user.userId ==
-                                  widget.chatModel[index].userIdChat) {
-                                friend = user;
-                                break;
-                              }
-                            }
+                            // for (var user
+                            //     in context.watch<UserBloc>().state.users.firstWhere((element) => false)) {
+                            //   for (var chat in widget.chatModel) {
+                            //     print('USER FOR: $user');
+                            //     print('CHAT FOR: $chat');
+                            //     if (user.userId == chat.userIdChat) {
+                            //       friend = user;
+                            //       break;
+                            //     } else {
+                            //       friend =
+                            //           context.read<UserBloc>().state.users?[0];
+                            //     }
+                            //   }
+                            // if (user.userId ==
+                            //     widget.chatModel[index].userIdChat) {
+                            //   friend = user;
+                            //   break;
+                            // }
+                            // }
                             var lastMessage =
                                 MessageDto(chatId: 0, senderId: 0, content: '');
                             for (var i in widget.messageModel) {
@@ -121,17 +147,6 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                           print(
                               'no id in server db: ${userFromServerDb.toString()}');
                         } else {
-                          // try {
-                          //   localUserServices.createUser(
-                          //       userId: value,
-                          //       name: '$value',
-                          //       email: '$value@mail.ru',
-                          //       createdDate: DateTime.now().toIso8601String(),
-                          //       updatedDate: DateTime.now().toIso8601String(),
-                          //       profilePicUrl: '');
-                          // } catch (e) {
-                          //   print('CREATE USER e: $e');
-                          // }
                           try {
                             context.read<ChatBloc>().add(
                                   CreateChatEvent(
@@ -144,6 +159,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                     ),
                                   ),
                                 );
+                            Future.delayed(Duration(seconds: 1));
                           } catch (e) {
                             print('ADD CHAT e: $e');
                           }
