@@ -34,18 +34,21 @@
 - `protoc -I .\proto\ .\proto\chats.proto --dart_out=grpc:./lib/src/generated/chats`
 - `protoc -I .\proto\ .\proto\messages.proto --dart_out=grpc:./lib/src/generated/messages`
 - `protoc -I .\proto\ .\proto\users.proto --dart_out=grpc:./lib/src/generated/users`
+- `protoc -I ./proto/ ./proto/grpcsynh.proto --dart_out=grpc:./lib/src/generated/sync`
 
 Генерация прото файла для сервера
 - `protoc -I .\proto\ .\proto\chats.proto --dart_out=grpc:./server/lib/src/generated`
 - `protoc -I .\proto\ .\proto\messages.proto --dart_out=grpc:./server/lib/src/generated`
 - `protoc -I .\proto\ .\proto\users.proto --dart_out=grpc:./server/lib/src/generated`
+- `protoc -I ./proto/ ./proto/grpcsynh.proto --dart_out=grpc:./lib/src/generated/sync`
 
-Запуск локального сервера:
-- Вы должны находится в директории сервера `cd` \server
-- `dart .\server.dart `
+Запуск gRPC сервера:
+- Вы должны находится в директории `flutter_chap_app`
+- `dart .\server\bin\server.dart`
 
-
-В консоли проверьте на каком порту реализован сервер. Зайти в файл `lib/client/grpc_client.dart` Поменять порт на тот который вывел сервер.
+Запуск REST сервера:
+- Вы должны находится в директории `flutter_chap_app`
+- `dart .\server\bin\restApi\rest_server.dart`
 
 Можем запускать приложение:
 - Вы должны находится в директории `flutter_chap_app`
@@ -57,7 +60,7 @@
 Для проверки успешной записи в базу раскомментировать нужные строки(создать базу) в файле:
 `\server\lib\src\test_db\test.dart`
 
-Запуск проверки:
+Запуск проверки gRPC сервера:
 `dart .\server\lib\src\test_db\test.dart`
 
 ### Запуск приложения 

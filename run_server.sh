@@ -10,4 +10,5 @@ protoc -I ./proto/ ./proto/chats.proto --dart_out=grpc:./lib/src/generated/chats
 protoc -I ./proto/ ./proto/chats.proto --dart_out=grpc:./server/lib/src/generated
 protoc -I ./proto/ ./proto/grpcsynh.proto --dart_out=grpc:./lib/src/generated/sync
 protoc -I ./proto/ ./proto/grpcsynh.proto --dart_out=grpc:./server/lib/src/generated
+
 dart server/bin/server.dart  
