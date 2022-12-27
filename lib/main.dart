@@ -5,7 +5,7 @@ import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_user_lib.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';
 import 'package:chat_app/ui/pages/custom_theme/color_picker_page.dart';
-import 'package:chat_app/ui/pages/custom_theme/custom_page.dart';
+import 'package:chat_app/ui/pages/custom_theme/custom_theme_page.dart';
 import 'package:chat_app/ui/pages/registration_page/registration_page.dart';
 import 'package:chat_app/ui/widgets/registration_page/bloc/new_user_bloc.dart';
 import 'package:path/path.dart';
@@ -77,7 +77,7 @@ class MyApp extends StatelessWidget {
           if (state.index == 6) {
             final ThemeData? theme = ThemeData(
               brightness: state.brightness,
-              primarySwatch: Colors.blueGrey,
+              primarySwatch: state.primaryColor,
               primaryColor: Colors.blueGrey,
               errorColor: Colors.redAccent.shade200,
               // backgroundColor: Colors.black45,

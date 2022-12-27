@@ -15,5 +15,6 @@ class SetThemeEvent extends ChangeThemeEvent {
 class SetCustomThemesEvent extends ChangeThemeEvent {
   final int index;
   final Brightness brightness;
-  SetCustomThemesEvent({required this.index, required this.brightness});
+  final Color primaryColor;
+  SetCustomThemesEvent({required this.index, required this.brightness, required Color this.primaryColor});
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../themes/custom_themes.dart';
 
 class ChangeThemeState {
+  final Color? primaryColor;
   final Brightness? brightness;
   final ThemeData? theme;
   final int? index;
@@ -26,6 +27,7 @@ class ChangeThemeState {
     Icons.dark_mode_outlined,
   ];
   ChangeThemeState({
+    this.primaryColor,
     this.brightness,
     this.theme,
     this.index,
