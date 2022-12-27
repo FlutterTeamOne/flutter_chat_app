@@ -28,8 +28,8 @@ class _ChatListLayoutState extends State<ChatListLayout> {
     final chatBloc = context.read<ChatBloc>();
     final userBloc = context.read<UserBloc>();
     return Drawer(
-        shape: Border(
-            right: BorderSide(width: 1, color: Theme.of(context).dividerColor)),
+        // shape: Border(
+        //     right: BorderSide(width: 1, color: Theme.of(context).dividerColor)),
         elevation: 0,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -92,13 +92,13 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                     // )),
                     icon: Icon(Icons.add),
                     label: Text('Add Chat'),
-                    style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    )),
+                    // style: ButtonStyle(
+                    //     shape:
+                    //         MaterialStateProperty.all<RoundedRectangleBorder>(
+                    //   RoundedRectangleBorder(
+                    //     borderRadius: BorderRadius.circular(20.0),
+                    //   ),
+                    // )),
                   ),
                 ))
           ],

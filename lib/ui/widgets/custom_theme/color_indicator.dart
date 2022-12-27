@@ -154,11 +154,11 @@ class _ColorIndicatorState extends State<ColorIndicator> {
       color: widget.color,
       elevation: widget.elevation,
       clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(widget.borderRadius),
-          side: widget.hasBorder
-              ? BorderSide(color: borderColor)
-              : BorderSide.none),
+      // shape: RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.circular(widget.borderRadius),
+      //     side: widget.hasBorder
+      //         ? BorderSide(color: borderColor)
+      //         : BorderSide.none),
       child: SizedBox(
         width: widget.width,
         height: widget.height,

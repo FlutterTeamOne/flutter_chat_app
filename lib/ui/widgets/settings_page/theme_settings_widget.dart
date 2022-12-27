@@ -11,9 +11,9 @@ Widget CardWidget(BuildContext context, int index) {
     builder: (context, state) {
       return Card(
         color: state.cardColor[index],
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
+        // shape: RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.circular(20.0),
+        // ),
         child: SizedBox(
           height: 40,
           width: 40,

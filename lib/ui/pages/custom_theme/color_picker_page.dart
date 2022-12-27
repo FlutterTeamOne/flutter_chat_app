@@ -257,7 +257,6 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-
                       onPressed: () {
                         context.read<ChangeThemeBloc>().add(
                             SetCustomThemesEvent(

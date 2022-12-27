@@ -96,6 +96,14 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           if (state.index == 6) {
             final ThemeData theme = ThemeData(
+              listTileTheme: ListTileThemeData(
+                  shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(state.borderRadius!))),
+              cardTheme: CardTheme(
+                  shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(state.borderRadius!))),
               elevatedButtonTheme: ElevatedButtonThemeData(
                   style: ButtonStyle(
                       shape: MaterialStatePropertyAll(RoundedRectangleBorder(

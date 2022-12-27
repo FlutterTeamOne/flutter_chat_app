@@ -40,13 +40,13 @@ class _AuthPageState extends State<AuthPage> {
                     ),
                   ),
                 ElevatedButton(
-                    style: ButtonStyle(
-                        shape: MaterialStateProperty.all<
-                            RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.circular(20.0),
-                            ))),
+                    // style: ButtonStyle(
+                    //     shape: MaterialStateProperty.all<
+                    //         RoundedRectangleBorder>(
+                    //         RoundedRectangleBorder(
+                    //           borderRadius:
+                    //           BorderRadius.circular(20.0),
+                    //         ))),
                     onPressed: () {
 
                   Navigator.of(context).pushNamed('/registration page');

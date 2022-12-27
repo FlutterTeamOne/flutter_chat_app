@@ -181,11 +181,11 @@ class _NewUserWidgetState extends State<NewUserWidget> {
             listener: (context, state) {},
             builder: (context, state) {
               return ElevatedButton(
-                  style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ))),
+                  // style: ButtonStyle(
+                  //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  //         RoundedRectangleBorder(
+                  //   borderRadius: BorderRadius.circular(20.0),
+                  // ))),
                   onPressed: () {
                     // if (_nameKey.currentState!.validate() &&
                     //     _emailKey.currentState!.validate() &&
@@ -208,9 +208,9 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                             builder: (BuildContext context) {
                               newUserName = context.watch<NewUserBloc>().state.newUser.name;
                               return Dialog(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
+                                // shape: RoundedRectangleBorder(
+                                //   borderRadius: BorderRadius.circular(20.0),
+                                // ),
                                 child: SizedBox(
                                   height: 80,
                                   width: 50,
@@ -222,13 +222,13 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                                             Text('User $newUserName created'),
                                       ),
                                       ElevatedButton(
-                                          style: ButtonStyle(
-                                              shape: MaterialStateProperty.all<
-                                                      RoundedRectangleBorder>(
-                                                  RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
-                                          ))),
+                                          // style: ButtonStyle(
+                                          //     shape: MaterialStateProperty.all<
+                                          //             RoundedRectangleBorder>(
+                                          //         RoundedRectangleBorder(
+                                          //   borderRadius:
+                                          //       BorderRadius.circular(20.0),
+                                          // ))),
                                           onPressed: () {
 
                                             context.read<UserBloc>().add(ReadUsersEvent());
