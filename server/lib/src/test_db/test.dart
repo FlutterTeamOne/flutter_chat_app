@@ -17,6 +17,12 @@ Future<void> main() async {
   //Обращаемся к методам работы с таблицей юзеров через:
   var usersService = UsersServices();
 
+  var result = await chatsHelper.getAllChatsSortedByUpdatedDate();
+  for (var i in result) {
+    print(i);
+  }
+  // print(result);
+
   // db.rawUpdate(''' UPDATE messages
   //         SET content = 'Zdarova papasha'
   //         WHERE main_message_id = '22';
@@ -66,10 +72,10 @@ Future<void> main() async {
   ///
   ///Проверка запроса с синхронизацией
   ///
-  var mainIdUser = 1;
-  var users;
-  var chats;
-  var messages;
+  // var mainIdUser = 1;
+  // var users;
+  // var chats;
+  // var messages;
 
   // users = await usersService.getAllUsersByIDfriend(userId: mainIdUser);
   // print("Users");
@@ -109,4 +115,22 @@ Future<void> main() async {
   // for (var message in messages) {
   //   print(message);
   // }
+
+  // print(await usersService.getAllUsers());
+  // await usersService.updateUser(
+  //     newValues:
+  //         'deleted_date = "", updated_date = "${DateTime.now().toIso8601String()}"',
+  //     condition: 'user_id = 1');
+  // print(await usersService.getAllUsers());
+  // print(await usersService.getAllUsers());
+  // List<UserRequest> users = [];
+  // users.add(UserRequest(userId: 1, updatedDate: '2022-12-02T21:36:32.653712'));
+  // users.add(UserRequest(userId: 2, updatedDate: '2022-12-02T21:36:32.653712'));
+  // print(await usersService.getUpdatedUsers(users: users));
+  // List<UserRequest> usersUpdated = [];
+  // usersUpdated.add(
+  //     UserRequest(userId: 1, updatedDate: DateTime.now().toIso8601String()));
+  // usersUpdated
+  //     .add(UserRequest(userId: 2, updatedDate: '2022-12-02T21:36:32.653712'));
+  // print(await usersService.getUpdatedUsers(users: usersUpdated));
 }

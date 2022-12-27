@@ -17,7 +17,6 @@ class PopupMenuCardWidget extends StatefulWidget {
   final MessageDto? message;
   final double marginIndex;
   final TextEditingController? textController;
-
   @override
   State<PopupMenuCardWidget> createState() => _PopupMenuCardWidgetState();
 }
@@ -55,7 +54,18 @@ class _PopupMenuCardWidgetState extends State<PopupMenuCardWidget> {
       ),
     ];
     var time = DateTime.parse(widget.message?.createdDate ?? '');
-    String? realTime = '${time.hour}:${time.minute}';
+    var correctminute =
+        time.minute.toString().length == 1 ? '0${time.minute}' : time.minute;
+    String? realTime = '${time.hour}:$correctminute';
+
+    // print('Message: ${widget.message!.content}');
+    // print("MessageCreate: ${widget.message!.createdDate}");
+    // print("MessageUpdate: ${widget.message!.updatedDate}");
+    // print('==? ${widget.message!.createdDate == widget.message!.updatedDate}');
+
+    var editedText = widget.message?.createdDate == widget.message?.updatedDate
+        ? ''
+        : 'edited ';
     return CustomPopupMenu(
       controller: popupmenuController,
       showArrow: false,
@@ -66,13 +76,14 @@ class _PopupMenuCardWidgetState extends State<PopupMenuCardWidget> {
       pressType: PressType.singleClick,
       menuBuilder: () => FloatingWindowWidget(items: items),
       child: AppCardWidget(
+        edited: editedText,
+        time: realTime,
         marginIndex: widget.marginIndex,
         message: widget.message!,
         bColor: Theme.of(context).primaryColor,
         textStyle: const TextStyle(
           color: Colors.white,
         ),
-        time: realTime,
       ),
     );
   }

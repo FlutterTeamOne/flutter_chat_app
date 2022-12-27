@@ -14,7 +14,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_size/window_size.dart';
 
+
+
 Future<void> main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowMinSize(const Size(960, 480));
@@ -54,15 +57,14 @@ class MyApp extends StatelessWidget {
               UserBloc()..add(ReadUsersEvent(userDb: UserPref.getUserDbPref)),
         ),
         BlocProvider<ChatBloc>(
-          create: (context) =>
-              ChatBloc(userBloc: UserBloc())
-              ..add(ReadChatEvent()),
+
+          create: (context) => ChatBloc(userBloc: UserBloc()),
+
         ),
         BlocProvider<MessageBloc>(
           create: (context) => MessageBloc(
               grpcClient: grpcClient,
-              grpcConnection: context.read<GrpcConnectionBloc>())
-            ..add(ReadMessageEvent()),
+              grpcConnection: context.read<GrpcConnectionBloc>()),
         ),
         BlocProvider(
           create: (context) => ChangeThemeBloc(),

@@ -194,6 +194,7 @@ class GrpcMessage extends GrpcMessagesServiceBase {
             newMessage['created_date'] as String;
         req.createMessage.message.dateUpdate =
             newMessage['updated_date'] as String;
+        await ChatsServices().updateChat(newValues: 'updated_date = "${req.createMessage.message.dateUpdate}"', condition: 'chat_id = ${req.createMessage.message.chatId}');
         print('REQ message UPDATE: ${req.createMessage.message}, ');
         _controllers.forEach((controller, _) async =>
             await MessageService.onCreateMessage(
@@ -279,6 +280,7 @@ class GrpcMessage extends GrpcMessagesServiceBase {
     //   if (req.messageState == MessageState.isUpdateMessage) {}
     // }
   }
+
 }
 
 // class GrpcChats extends GrpcChatsServiceBase {
@@ -330,24 +332,27 @@ class GrpcMessage extends GrpcMessagesServiceBase {
 //   }
 // }
 
+
 class GrpcUsers extends GrpcUsersServiceBase {
   @override
   Future<CreateUserResponse> createUser(
       ServiceCall call, CreateUserRequest request) async {
+    var date = DateTime.now().toIso8601String();
     var src = await UsersServices().createUser(
         name: request.name,
         email: request.email,
-        registrationDate: request.dateCreated,
+        createdDate: date,
         profilePicUrl: request.profilePicUrl,
         password: request.password,
-        updatedDate: request.dateCreated);
+        updatedDate: date);
+
     var createUserResponse = CreateUserResponse();
     if (src[0]['user_id'] != 0) {
-      createUserResponse.id = src[0]['user_id'] as int;
-      createUserResponse.name = src[0]['name'] as String;
-      createUserResponse.email = src[0]['email'] as String;
-      createUserResponse.profilePicUrl = src[0]['profile_pic_url'] as String;
-      createUserResponse.dateCreated = src[0]['created_date'] as String;
+      createUserResponse.dateCreated = request.dateCreated;
+      createUserResponse.email = request.email;
+      createUserResponse.name = request.name;
+      createUserResponse.profilePicUrl = request.profilePicUrl;
+      createUserResponse.id = src[0]['user_id'];
     }
     return createUserResponse;
   }
@@ -358,8 +363,9 @@ class GrpcUsers extends GrpcUsersServiceBase {
     var deleteUserResponse = DeleteUserResponse();
     var dateDeleted = DateTime.now().toIso8601String();
     var src = await UsersServices().updateUser(
-        newValues: 'deleted_date = $dateDeleted',
-        condition: 'user_id = ${request.id}');
+        newValues:
+            "deleted_date = '$dateDeleted', updated_date = '$dateDeleted'",
+        condition: "user_id = '${request.id}'");
     if (src != 0) {
       deleteUserResponse.isDeleted = true;
     }
@@ -395,36 +401,23 @@ class GrpcUsers extends GrpcUsersServiceBase {
     var updateUserResponse = UpdateUserResponse();
     updateUserResponse.dateUpdated = DateTime.now().toIso8601String();
     var src = await UsersServices().updateUser(
-        newValues:
-            'name = ${request.name}, email = ${request.email}, profile_pic_url = ${request.profilePicUrl}, password = ${request.password}, updated_date = ${updateUserResponse.dateUpdated}',
-        condition: 'user_id = ${request.id}');
+        newValues: '''name = '${request.name}', 
+            email = '${request.email}', 
+            profile_pic_url = "${request.profilePicUrl}",  
+            updated_date = "${updateUserResponse.dateUpdated}"''',
+        condition: "user_id = ${request.id}");
     if (src != 0) {
-      updateUserResponse.isUpdated = true;
+      var user = await UsersServices().getUserById(userId: request.id);
+      if (user.isNotEmpty) {
+        updateUserResponse = UpdateUserResponse(
+            userId: user['user_id'] as int,
+            name: user['name'] as String,
+            email: user['email'] as String,
+            profilePicUrl: user['profile_pic_url'] as String,
+            dateUpdated: user['updated_date'] as String);
+      }
     }
     return updateUserResponse;
-  }
-
-  @override
-  Future<Users> getAllUsers(ServiceCall call, EmptyUser request) async {
-    var usersList = <User>[];
-    var users;
-    if (request.lastId == 0) {
-      users = await usersServices.getAllUsers();
-    } else {
-      users = await usersServices.getAllUsersMoreId(id: request.lastId);
-    }
-    for (int i = 0; i < users.length; i++) {
-      var userForList = User();
-      userForList.userId = users[i]['user_id'] as int;
-      userForList.name = users[i]['name'] as String;
-      userForList.email = users[i]['email'] as String;
-      userForList.profilePicUrl = users[i]['profile_pic_url'] as String;
-      userForList.dateCreate = users[i]['created_date'] as String;
-      userForList.dateUpdate = users[i]['updated_date'] as String;
-      userForList.dateDelete = users[i]['deleted_date'] ?? '';
-      usersList.add(userForList);
-    }
-    return Users(users: usersList);
   }
 }
 
@@ -433,54 +426,76 @@ class GrpcSynh extends GrpcSynchronizationServiceBase {
   Future<DataDBResponse> getUsersSynh(
       ServiceCall call, SynhMainUser request) async {
     var chats;
-    var users;
+    var newUsers;
+    var updateUsers;
     var messages;
     if (request.chatId == 0) {
-      chats = await ChatsServices().getChatsByUserId(userId: request.id);
-      users = await UsersServices().getAllUsersByIDfriend(userId: request.id);
+      chats =
+          await ChatsServices().getChatsByUserId(userId: request.mainUserId);
+      newUsers = await UsersServices()
+          .getAllUsersByIDfriend(userId: request.mainUserId);
+      updateUsers = [];
     } else {
       chats = await ChatsServices().getChatsByUserIdMoreChatId(
-          userId: request.id, chatId: request.chatId);
-      users = await UsersServices().getAllUsersByIDfriendMoreChatId(
-          id: request.id, chatId: request.chatId);
+          userId: request.mainUserId, chatId: request.chatId);
+      updateUsers =
+          await UsersServices().getUpdatedUsers(users: request.users.users);
+      newUsers = await UsersServices().getAllUsersByIDfriendMoreChatId(
+          id: request.mainUserId, chatId: request.chatId);
     }
     if (request.messageId == 0) {
-      messages =
-          await MessagesDBServices().getMessageByUserId(userId: request.id);
+
+      messages = await MessagesServices()
+          .getMessageByUserId(userId: request.mainUserId);
     } else {
-      messages = await MessagesDBServices().getMessageByUserIdMoreMessageId(
-          userId: request.id, messageId: request.messageId);
+      messages = await MessagesServices().getMessageByUserIdMoreMessageId(
+          userId: request.mainUserId, messageId: request.messageId);
+
     }
 
-    print('USERS: $users');
+    print('USERSNEW: $newUsers');
+    print('UPDATEDUSERS: $updateUsers');
     print('CHATS: $chats');
     print('MESSAGES: $messages');
     List<SynhUser> userList = [];
+    List<SynhUser> updateUserList = [];
     List<SynhChat> chatList = [];
     List<SynhMessage> messageList = [];
 
     for (int i = 0; i < chats.length; i++) {
       var chatForList = SynhChat();
       chatForList.chatId = chats[i]['chat_id'] as int;
-      chatForList.userId = chats[i]['friend1_id'] == request.id
-          ? chats[i]['friend2_id'] as int
-          : chats[i]['friend1_id'] as int;
+      chatForList.userId = (chats[i]['friend1_id'] == request.mainUserId
+          ? chats[i]['friend2_id']
+          : chats[i]['friend1_id']) as int;
       chatForList.createdDate = chats[i]['created_date'] as String;
       chatForList.updateDate = chats[i]['updated_date'] as String;
       chatForList.deletedDate = chats[i]['deleted_date'] ?? '';
       chatList.add(chatForList);
     }
 
-    for (int i = 0; i < users.length; i++) {
+    for (int i = 0; i < newUsers.length; i++) {
       var userForList = SynhUser();
-      userForList.userId = users[i]['user_id'] as int;
-      userForList.name = users[i]['name'] as String;
-      userForList.email = users[i]['email'] as String;
-      userForList.picture = users[i]['profile_pic_url'] as String;
-      userForList.createdDate = users[i]['created_date'] as String;
-      userForList.updateDate = users[i]['updated_date'] as String;
-      userForList.deletedDate = users[i]['deleted_date'] ?? '';
+      userForList.userId = newUsers[i]['user_id'] as int;
+      userForList.name = newUsers[i]['name'] as String;
+      userForList.email = newUsers[i]['email'] as String;
+      userForList.picture = newUsers[i]['profile_pic_url'] as String;
+      userForList.createdDate = newUsers[i]['created_date'] as String;
+      userForList.updateDate = newUsers[i]['updated_date'] as String;
+      userForList.deletedDate = newUsers[i]['deleted_date'] ?? '';
       userList.add(userForList);
+    }
+
+    for (var user in updateUsers) {
+      var userForList = SynhUser();
+      userForList.userId = user['user_id'] as int;
+      userForList.name = user['name'] as String;
+      userForList.email = user['email'] as String;
+      userForList.picture = user['profile_pic_url'] as String;
+      userForList.createdDate = user['created_date'] as String;
+      userForList.updateDate = user['updated_date'] as String;
+      userForList.deletedDate = user['deleted_date'] ?? '';
+      updateUserList.add(userForList);
     }
 
     for (int i = 0; i < messages.length; i++) {
@@ -507,11 +522,51 @@ class GrpcSynh extends GrpcSynchronizationServiceBase {
     }
 
     var dbRequest = DataDBResponse(
-      users: userList,
-      chats: chatList,
-      messages: messageList,
-    );
+        newUsers: userList,
+        chats: chatList,
+        messages: messageList,
+        updatedUsers: updateUserList);
     return dbRequest;
+  }
+
+  @override
+  Future<UsersResponse> sync(ServiceCall call, UsersRequest request) async {
+    // TODO: implement sync
+    var newUsersList = <SynhUser>[];
+    var usersUpdatedList = <SynhUser>[];
+    var lastId = 0;
+    if (request.users.length > 0) {
+      var usersUpdated =
+          await usersServices.getUpdatedUsers(users: request.users);
+      lastId = request.users.last.userId;
+      for (int i = 0; i < usersUpdated.length; i++) {
+        var userForList = SynhUser();
+        userForList.userId = usersUpdated[i]['user_id'] as int;
+        userForList.name = usersUpdated[i]['name'] as String;
+        userForList.email = usersUpdated[i]['email'] as String;
+        userForList.picture = usersUpdated[i]['profile_pic_url'] as String;
+        userForList.createdDate = usersUpdated[i]['created_date'] as String;
+        userForList.updateDate = usersUpdated[i]['updated_date'] as String;
+        userForList.deletedDate =
+            (usersUpdated[i]['deleted_date'] ?? '') as String;
+        usersUpdatedList.add(userForList);
+      }
+    }
+    var newUsers = await usersServices.getAllUsersMoreId(id: lastId);
+
+    for (int i = 0; i < newUsers.length; i++) {
+      var userForList = SynhUser();
+      userForList.userId = newUsers[i]['user_id'] as int;
+      userForList.name = newUsers[i]['name'] as String;
+      userForList.email = newUsers[i]['email'] as String;
+      userForList.picture = newUsers[i]['profile_pic_url'] as String;
+      userForList.createdDate = newUsers[i]['created_date'] as String;
+      userForList.updateDate = newUsers[i]['updated_date'] as String;
+      userForList.deletedDate = (newUsers[i]['deleted_date'] ?? '') as String;
+      newUsersList.add(userForList);
+    }
+    return UsersResponse(
+        usersNew: newUsersList, usersUpdated: usersUpdatedList);
   }
 }
 
@@ -528,7 +583,7 @@ Future<void> main() async {
     CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
   );
 
-  await server.serve(port: 5000);
+  await server.serve(port: 6000);
   await DbServerServices.instanse.openDatabase();
   print('✅ Server listening on port ${server.port}...');
 }

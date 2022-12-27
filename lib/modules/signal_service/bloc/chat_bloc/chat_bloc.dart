@@ -32,8 +32,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     //   var localUserId = usersItem.users?.;
     //   event.chats![localUserId!].localChatId;
     // });
-    if (event.chats == null) {
+    // if (event.chats == null) {
       _chatServices = LocalChatServices();
+
+    //TODO: Поменять getAllChats на сортированную выборку getAllChatsSortedByUpdatedDate()
       var chats = await _chatServices.getAllChats();
       //
       var restChats = await RestClient().getChats();

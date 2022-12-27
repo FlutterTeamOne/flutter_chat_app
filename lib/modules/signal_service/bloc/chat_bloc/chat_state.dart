@@ -7,11 +7,10 @@ class ChatState extends Equatable {
 
   const ChatState({this.chats, this.chatId, this.localChatId});
 
-  ChatState copyWith({List<ChatDto>? chats, int? chatId, int? localChatId}) {
+  ChatState copyWith({List<ChatDto>? chats, int? chatId}) {
     return ChatState(
       chats: chats ?? this.chats,
       chatId: chatId ?? this.chatId,
-      localChatId: localChatId ?? this.localChatId,
     );
   }
 

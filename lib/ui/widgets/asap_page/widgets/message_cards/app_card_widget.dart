@@ -1,8 +1,10 @@
+
 ﻿import 'dart:convert';
 
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
+
 
 class AppCardWidget extends StatelessWidget {
   const AppCardWidget({
@@ -12,6 +14,7 @@ class AppCardWidget extends StatelessWidget {
     this.bColor,
     this.textStyle,
     this.time,
+    required this.edited,
   }) : super(key: key);
 
   final double marginIndex;
@@ -19,8 +22,10 @@ class AppCardWidget extends StatelessWidget {
   final Color? bColor;
   final TextStyle? textStyle;
   final String? time;
+  final String edited;
   @override
   Widget build(BuildContext context) {
+
     // final dateTime = DateTime.parse(message?.createdDate ?? '');
     // final timeNow = '${dateTime.hour} : ${dateTime.minute}';
     var image;
@@ -47,6 +52,7 @@ class AppCardWidget extends StatelessWidget {
     // } else {
     //   msg = message.content;
     // }
+
     return Card(
       color: bColor,
       elevation: 2,
@@ -100,7 +106,15 @@ class AppCardWidget extends StatelessWidget {
                     ),
                   ]
                 ],
+
               ),
+            ),
+            Text(
+              edited,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(fontStyle: FontStyle.italic),
             ),
             Text(time ?? '', style: Theme.of(context).textTheme.bodySmall),
           ],

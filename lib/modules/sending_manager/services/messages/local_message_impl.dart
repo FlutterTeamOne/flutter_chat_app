@@ -179,6 +179,8 @@ class LocalMessagesServices implements ILocalMessagesServices {
           DatabaseConst.messagesColumnChatId: message.chatId,
           DatabaseConst.messagesColumnSenderId: message.senderId,
           DatabaseConst.messagesColumnCreatedDate: message.createdDate,
+          DatabaseConst.messagesColumnUpdatedDate: message.updatedDate,
+          DatabaseConst.messagesColumnDeletedDate: message.deletedDate,
           DatabaseConst.messagesColumnIsRead: message.isRead,
           DatabaseConst.messagesColumnContent: message.content,
           DatabaseConst.messagesColumnMessageId: message.messageId

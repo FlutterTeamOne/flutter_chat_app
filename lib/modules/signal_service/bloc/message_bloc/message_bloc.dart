@@ -16,6 +16,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   late LocalUsersServices _userServices;
   late MainUserServices _mainUserServices;
   late StreamSubscription _subscription;
+
   StreamController<DynamicRequest> messageController =
       StreamController.broadcast();
   // StreamController<MessageFromBase> connect = StreamController.broadcast();
@@ -39,7 +40,10 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     _subscription = GrpcMessagesClient(grpcClient.channel)
         .streamMessage(messageController.stream)
         .listen((value) async {
+      print("MESSAGE!!!!!!!!!!!!!!!");
+      print(value.messageState);
       if (value.messageState == MessageStateEnum.isReadMessage) {
+        print("READMESSAGE: ${value}");
         var messages = <MessageDto>[];
         var msg = value.readMessage.message;
         await _messagesServices.addNewMessageFromBase(message: msg);
@@ -52,10 +56,10 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
             updatedDate: msg.dateUpdate,
             attachId: msg.attachmentId,
             contentType: msg.contentType));
-
+        LocalChatServices().updateChatDateUpdated(chatId: messages[0].chatId, dateUpdated: '${messages[0].updatedDate}');
         add(ReadMessageEvent(messages: messages));
       } else if (value.messageState == MessageStateEnum.isUpdateMessage) {
-        var updMsg = value.updateMessage;
+        var updMsg = value.updateMessage; 
 
         await _messagesServices.updateMessageFromBase(
             content: updMsg.content,
@@ -66,7 +70,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         print('date update: ${updMsg.idMessageMain}');
 
         var messages = await _messagesServices.getAllMessages();
-        print('sort message:$messages');
+
+        print('IsUpdate message:$messages');
 
         add(ReadMessageEvent(messages: messages));
       } else if (value.messageState == MessageStateEnum.isDeleteMesage) {
@@ -76,12 +81,14 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
             id: del.idMessageMain, dateDelete: del.dateDelete);
         var messages = await _messagesServices.getAllMessages();
 
-        print('sort message:$messages');
+        print('IsDelete message:$messages');
 
         add(ReadMessageEvent(messages: messages));
       } else if (value.messageState == MessageStateEnum.isCreateMessage) {
+        print("IsCreate: ${value.createMessage.message}");
         var msg = value.createMessage.message;
         var newMsg = MessageDto(
+
             localMessageId: msg.localMessgaeId,
             messageId: msg.messageId,
             chatId: msg.chatId,
@@ -91,14 +98,21 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
             updatedDate: msg.dateUpdate,
             attachId: msg.attachmentId,
             contentType: msg.contentType);
+
         await _messagesServices.updateMessage(
-            message: newMsg, localMessageId: msg.localMessgaeId);
+          message: newMsg, localMessageId: msg.localMessgaeId);
+        await LocalChatServices().updateChatDateUpdated(chatId: newMsg.chatId, dateUpdated: '${newMsg.updatedDate}');
       }
+        
     });
     DBHelper.instanse.updateListenController.stream.listen((event) async {
       if (event == true) {
         var messages = await _messagesServices.getAllMessages();
-        print('sort message:$messages');
+
+        // messages.sort((a, b) => a.localMessageId!.compareTo(b.localMessageId!));
+        
+        print('sortListen message:$messages');
+
         add(ReadMessageEvent(messages: messages));
         // state.copyWith(messages: messages);
       }

@@ -10,10 +10,12 @@ class ChatWidget extends StatefulWidget {
   const ChatWidget({
     Key? key,
     required this.messages,
+    required this.chatId,
     required this.textController,
   }) : super(key: key);
 
   final List<MessageDto> messages;
+  final int chatId;
   final TextEditingController textController;
 
   @override
@@ -43,6 +45,15 @@ class ChatWidgetState extends State<ChatWidget> {
 
   @override
   Widget build(BuildContext context) {
+
+    var messages = <MessageDto>[];
+
+    for (var i in widget.messages) {
+      if (i.chatId == widget.chatId) {
+        messages.add(i);
+      }
+    }
+
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
       floatingActionButton: ValueListenableBuilder(
@@ -51,7 +62,7 @@ class ChatWidgetState extends State<ChatWidget> {
           onTap: () {
             scrollController.animateTo(
                 curve: Curves.decelerate,
-                duration: const Duration(milliseconds: 800),
+                duration: const Duration(milliseconds: 400),
                 scrollController.position.minScrollExtent);
           },
           buttonSize: _btSize.value,
@@ -61,7 +72,7 @@ class ChatWidgetState extends State<ChatWidget> {
       body: GroupedListView<MessageDto, int>(
         controller: scrollController,
         padding: const EdgeInsets.all(10),
-        elements: widget.messages,
+        elements: messages,
         reverse: true,
         floatingHeader: true,
         groupBy: (message) => message.localMessageId!,

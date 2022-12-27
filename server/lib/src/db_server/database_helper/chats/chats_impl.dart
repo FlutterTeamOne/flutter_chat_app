@@ -40,9 +40,17 @@ class ChatsServices implements IChatsServices {
     return await db.rawQuery('''SELECT * FROM chats''');
   }
 
+
+  Future<List<Map<String, Object?>>> getAllChatsSortedByUpdatedDate() async {
+    Database db = await DbServerServices.instanse.database;
+
+    return await db.rawQuery('''SELECT * FROM chats ORDER BY updated_date DESC''');
+  }
+
   @override
   Future<Map<String, Object?>> getChatById({required int id}) async {
     Database db = await DbServerServices.instanse.database;
+
     var chats = await db.rawQuery('''
       SELECT * FROM chats 
         WHERE (chat_id = $id)

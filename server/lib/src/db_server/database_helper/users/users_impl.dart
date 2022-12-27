@@ -7,7 +7,7 @@ class UsersServices implements IUsersServices {
   createUser(
       {required String name,
       required String email,
-      required String registrationDate,
+      required String createdDate,
       required String profilePicUrl,
       required String password,
       required String updatedDate}) async {
@@ -17,7 +17,7 @@ class UsersServices implements IUsersServices {
       INSERT INTO users (name, email, created_date, profile_pic_url, password, updated_date) VALUES (
         '$name',
         '$email',
-        '$registrationDate',
+        '$createdDate',
         '$profilePicUrl',
         '$password',
         '$updatedDate'
@@ -31,7 +31,7 @@ class UsersServices implements IUsersServices {
         AND 
         (email = '$email')
         AND
-        (created_date = '$registrationDate')
+        (created_date = '$createdDate')
         AND
         (profile_pic_url = '$profilePicUrl')
         AND
@@ -43,7 +43,7 @@ class UsersServices implements IUsersServices {
   }
 
   @override
-  deleteUser({required int id}) async {
+  deleteUser({required int newValues, required String condition}) async {
     Database db = await DbServerServices.instanse.database;
 
     return await db
@@ -90,18 +90,17 @@ class UsersServices implements IUsersServices {
   }
 
   @override
-  Future<List<Map<String, Object?>>> getUserById(
-      {required String field, required Object fieldValue}) async {
+  Future<Map<String, Object?>> getUserById({required int userId}) async {
     Database db = await DbServerServices.instanse.database;
 
-    return await db
-        .rawQuery('''SELECT * FROM users WHERE ($field = $fieldValue)''');
+    var user =
+        await db.rawQuery('''SELECT * FROM users WHERE (user_id = $userId)''');
+    return user[0];
   }
 
   @override
   updateUser({required String newValues, required String condition}) async {
     Database db = await DbServerServices.instanse.database;
-
     return await db
         .rawUpdate('''UPDATE users SET $newValues WHERE ($condition)''');
   }
@@ -173,5 +172,21 @@ class UsersServices implements IUsersServices {
           FROM users
           WHERE user_id IN (${idFriends.join(",")})''');
     return users;
+  }
+
+  @override
+  getUpdatedUsers({required List<UserRequest> users}) async {
+    List<Map<String, Object?>> usersUpdated = [];
+    Database db = await DbServerServices.instanse.database;
+    for (var user in users) {
+      var userUpdated = await db.rawQuery('''SELECT *
+          FROM users
+          WHERE (user_id = ${user.userId} AND 
+                updated_date NOT LIKE "${user.updatedDate}")''');
+      if (userUpdated.length > 0) {
+        usersUpdated.add(userUpdated[0]);
+      }
+    }
+    return usersUpdated;
   }
 }

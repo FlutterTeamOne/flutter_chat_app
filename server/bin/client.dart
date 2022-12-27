@@ -204,7 +204,7 @@ void main() async {
 
   // print(await client.getUsers(messageEmpty));
 
-  var message = SynhMainUser(id: 1);
+  var message = SynhMainUser(mainUserId: 1);
   print("Обратный ответ:");
 
   print(await client.GetUsersSynh(message));

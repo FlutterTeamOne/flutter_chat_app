@@ -50,28 +50,42 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                           separatorBuilder: (context, index) =>
                               const SizedBox(height: 25),
                           itemBuilder: (context, index) {
-                            var friendId =
-                                widget.chatModel[index].userIdChat - 1;
-                            var lastMessageId = widget.messageModel.isEmpty
-                                ? 0
-                                : widget.messageModel.length - 1;
+                            var friend;
+                            //TODO: тут заменить на юзера, если будет 5 ид, а юзеры 1 2 5, то будет ошибка
+                            for (var user
+                                in context.read<UserBloc>().state.users!) {
+                              if (user.userId ==
+                                  widget.chatModel[index].userIdChat) {
+                                friend = user;
+                                break;
+                              }
+                            }
+                            var lastMessage = MessageDto(chatId: 0, senderId: 0, content: '');
+                            for (var i in widget.messageModel) {
+                              if (i.chatId == widget.chatModel[index].chatId) {
+                                lastMessage = i;
+                              }
+                            }
+                            // var lastMessageId = widget.chatModel.
+                                // : widget.messageModel.length - 1;
                             return UserCardWidget(
-                              sender: !checkSender(widget
-                                      .messageModel[lastMessageId].senderId)
+                              sender: !checkSender(lastMessage.senderId)
                                   ? userBloc.state.users![index].name
                                   : 'You',
                               // checkSender(widget.messageModel[lastMessageId].senderId),
                               // ? userBloc.state.users[index].name:'You'),
                               selected: false,
                               onTap: () {
-                                chatBloc.add(GetChatIdEvent(friendId));
+                                //TODO: GetChatId => SetChatId
+                                context.read<ChatBloc>().add(GetChatIdEvent(
+                                    widget.chatModel[index].chatId));
                               },
-                              name: userBloc.state.users![friendId].name,
-                              image: userBloc
-                                  .state.users![friendId].profilePicLink,
-                              message: widget.messageModel.isNotEmpty
-                                  ? widget.messageModel[lastMessageId].content
-                                  : '',
+                              name: friend.name,
+                              image: friend.profilePicLink,
+
+                              message: lastMessage.chatId != 0
+                                  ? lastMessage.content
+                                  : 'Start chating',
                             );
                           },
                         )
