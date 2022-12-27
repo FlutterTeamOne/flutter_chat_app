@@ -53,7 +53,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           await _chatServices.createChat(
               createDate: chat.createdDate, userId: chat.userIdChat);
         }
-      }
+      
     } else {
       emit(state.copyWith(chats: event.chats));
       print('ADD CHAT FROM EVENT: ${event.chats}');

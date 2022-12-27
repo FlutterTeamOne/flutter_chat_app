@@ -1,5 +1,5 @@
 
-﻿import 'dart:convert';
+import 'dart:convert';
 
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
