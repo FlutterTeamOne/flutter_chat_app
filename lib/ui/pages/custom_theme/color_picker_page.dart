@@ -94,7 +94,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                     final Color colorBeforeDialog = dialogPickerColor;
                     // Wait for the picker to close, if dialog was dismissed,
                     // then restore the color we had before it was opened.
-                    if (!(await colorPickerDialog())) {
+                    if (!(await colorPickerDialog(state))) {
                       setState(() {
                         dialogPickerColor = colorBeforeDialog;
                       });
@@ -256,11 +256,20 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
     );
   }
 
-  Future<bool> colorPickerDialog() async {
+  Future<bool> colorPickerDialog(state) async {
     return ColorPicker(
       color: dialogPickerColor,
-      onColorChanged: (Color color) =>
-          setState(() => dialogPickerColor = color),
+      onColorChanged: (Color color) {
+          setState(() => dialogPickerColor = color);
+          context
+              .read<ChangeThemeBloc>()
+              .add(SetCustomThemesEvent(
+            index: 6,
+            primaryColor: color,
+            brightness: state.brightness!,
+          ));
+          print(color);
+          },
       width: 40,
       height: 40,
       borderRadius: 4,
