@@ -3,7 +3,9 @@ import '../../../library/library_server.dart';
 abstract class IChatsServices {
   factory IChatsServices() => ChatsServices();
 
-  createChat({required int friend1_id, required int friend2_id});
+  createChat({required int friend1Id,
+      required int friend2Id,
+      required String date});
 
   getChatById({required int id});
 

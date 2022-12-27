@@ -17,6 +17,12 @@ Future<void> main() async {
   //Обращаемся к методам работы с таблицей юзеров через:
   var usersService = UsersServices();
 
+  var result = await chatsHelper.getAllChatsSortedByUpdatedDate();
+  for (var i in result) {
+    print(i);
+  }
+  // print(result);
+
   // db.rawUpdate(''' UPDATE messages
   //         SET content = 'Zdarova papasha'
   //         WHERE main_message_id = '22';
@@ -110,12 +116,12 @@ Future<void> main() async {
   //   print(message);
   // }
 
-  print(await usersService.getAllUsers());
-  await usersService.updateUser(
-      newValues:
-          'deleted_date = "", updated_date = "${DateTime.now().toIso8601String()}"',
-      condition: 'user_id = 1');
-  print(await usersService.getAllUsers());
+  // print(await usersService.getAllUsers());
+  // await usersService.updateUser(
+  //     newValues:
+  //         'deleted_date = "", updated_date = "${DateTime.now().toIso8601String()}"',
+  //     condition: 'user_id = 1');
+  // print(await usersService.getAllUsers());
   // print(await usersService.getAllUsers());
   // List<UserRequest> users = [];
   // users.add(UserRequest(userId: 1, updatedDate: '2022-12-02T21:36:32.653712'));

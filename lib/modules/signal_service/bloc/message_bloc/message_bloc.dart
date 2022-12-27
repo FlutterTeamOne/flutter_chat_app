@@ -16,6 +16,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   late LocalUsersServices _userServices;
   late MainUserServices _mainUserServices;
   late StreamSubscription _subscription;
+
   StreamController<DynamicRequest> messageController =
       StreamController.broadcast();
   // StreamController<MessageFromBase> connect = StreamController.broadcast();
@@ -53,10 +54,10 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
             content: msg.content,
             createdDate: msg.dateCreate,
             updatedDate: msg.dateUpdate));
-
+        LocalChatServices().updateChatDateUpdated(chatId: messages[0].chatId, dateUpdated: '${messages[0].updatedDate}');
         add(ReadMessageEvent(messages: messages));
       } else if (value.messageState == MessageStateEnum.isUpdateMessage) {
-        var updMsg = value.updateMessage;
+        var updMsg = value.updateMessage; 
 
         await _messagesServices.updateMessageFromBase(
             content: updMsg.content,
@@ -80,16 +81,18 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         print("IsCreate: ${value.createMessage.message}");
         var msg = value.createMessage.message;
         var newMsg = MessageDto(
-            localMessageId: msg.localMessgaeId,
-            messageId: msg.messageId,
-            chatId: msg.chatId,
-            senderId: msg.senderId,
-            content: msg.content,
-            createdDate: msg.dateCreate,
-            updatedDate: msg.dateUpdate);
+          localMessageId: msg.localMessgaeId,
+          messageId: msg.messageId,
+          chatId: msg.chatId,
+          senderId: msg.senderId,
+          content: msg.content,
+          createdDate: msg.dateCreate,
+          updatedDate: msg.dateUpdate);
         await _messagesServices.updateMessage(
-            message: newMsg, localMessageId: msg.localMessgaeId);
+          message: newMsg, localMessageId: msg.localMessgaeId);
+        await LocalChatServices().updateChatDateUpdated(chatId: newMsg.chatId, dateUpdated: '${newMsg.updatedDate}');
       }
+        
     });
     DBHelper.instanse.updateListenController.stream.listen((event) async {
       if (event == true) {
@@ -167,9 +170,11 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
             content: message.content,
             senderId: message.senderId));
     //reqStream.add(request);
+
     messageController.add(DynamicRequest(
         createMessage: request,
         messageState: MessageStateEnum.isCreateMessage));
+    
     // var messageToServer = CreateMessageRequest(
     //     chatIdMain:
     //         await chats.getMainIdChatByMessage(localId: message.localChatId),

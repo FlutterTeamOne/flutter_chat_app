@@ -34,6 +34,7 @@ class UserChatLayoutState extends State<UserChatLayout> {
     var messageBloc = context.read<MessageBloc>();
     return Column(
       children: [
+        //Top bar of the user_chat_layout screen part, that contains the friend's name and pic 
         ChatAppBarWidget(
           image: user.deletedDate!.isEmpty
               ? user.profilePicLink
@@ -45,7 +46,8 @@ class UserChatLayoutState extends State<UserChatLayout> {
           child: context.watch<MessageBloc>().state.messages != null
               ? ChatWidget(
                   textController: controller,
-                  messages: context.watch<MessageBloc>().state.messages!,
+                  messages: context.watch<MessageBloc>().state.messages!, 
+                  chatId: widget.chatId,
                 )
               : const Center(child: CircularProgressIndicator()),
         ),
@@ -113,6 +115,9 @@ class UserChatLayoutState extends State<UserChatLayout> {
             updatedDate: DateTime.now().toIso8601String(),
           ),
         ),
+      );
+      context.read<ChatBloc>().add(
+        ReadChatEvent()
       );
       FocusScope.of(context).unfocus();
       controller.clear();
