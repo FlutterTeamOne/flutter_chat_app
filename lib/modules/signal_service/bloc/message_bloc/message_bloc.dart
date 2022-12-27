@@ -155,6 +155,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     print('MESSAGE: $message');
     //отправка текстового сообщения
     if (event.contentType == ContentType.isText && message != null) {
+      // ignore: prefer_conditional_assignment
       if (message.localMessageId == null) {
         message.localMessageId = await _messagesServices.addNewMessage(
           chatId: message.chatId,
@@ -171,6 +172,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
                 chatId: message.chatId,
                 content: message.content,
                 senderId: message.senderId));
+        // await LocalChatServices().updateChatDateUpdated(chatId: message.chatId, dateUpdated: '${message.createdDate}');
         messageController.add(DynamicRequest(
             createMessage: request,
             messageState: MessageStateEnum.isCreateMessage));
@@ -204,6 +206,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
                 senderId: message?.senderId,
                 attachmentId: resp.id,
                 contentType: event.contentType));
+        await LocalChatServices().updateChatDateUpdated(chatId: message!.chatId, dateUpdated: '${message.createdDate}');
         messageController.add(DynamicRequest(
             createMessage: request,
             messageState: MessageStateEnum.isCreateMessage));
@@ -229,6 +232,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
                 senderId: message?.senderId,
                 attachmentId: message?.attachId,
                 contentType: event.contentType));
+        await LocalChatServices().updateChatDateUpdated(chatId: message!.chatId, dateUpdated: '${message.createdDate}');
         messageController.add(DynamicRequest(
             createMessage: request,
             messageState: MessageStateEnum.isCreateMessage));
