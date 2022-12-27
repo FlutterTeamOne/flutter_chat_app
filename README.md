@@ -63,41 +63,45 @@
 ### Запуск приложения 
 Каждый шаг выполнять в отдельной консоли, не закрывая предыдущие.
 
-1. Запустить [gRPC сервер](#^066ceb)
-2. Запустить [REST сервер](#^f51363)
+1. Запустить [gRPC сервер](#запуск-grpc-сервера)
+2. Запустить [REST сервер](#запуск-rest-сервера)
 3. Запустить клиент (`flutter run`)
 
 #### Запуск gRPC сервера
 
-^066ceb
-
-1. [Открыть консоль bash](#^617191)
+1. [Открыть консоль bash](#как-запустить-консоль-bash-в-windows-(visual-studio-code))
 
 2. В консоли из директории приложения запустить команду `./run_server.sh`.
+
 ![image ./run_server.sh](assets/images/for_readme/20221210145111.png)
 
 Скрипт запустит pub get как для основного приложения, так и для сервера; сгенерирует protoc для grpc; запустит сервер в консоли).
+
 ![image resolving dependences](assets/images/for_readme/20221210145136.png)
 
 
 #### Запуск REST сервера
 
-^f51363
+1. Открыть консоль bash.
 
-1. Открыть консоль bash.![image bash terminal is opened](assets/images/for_readme/20221210145042.png)
-2. Запустить команду `./run_rest_server.sh ![image open new terminal](assets/images/for_readme/20221227150920.png)
+![image bash terminal is opened](assets/images/for_readme/20221210145042.png)
+
+2. Запустить команду `./run_rest_server.sh 
+
+![image open new terminal](assets/images/for_readme/20221227150920.png)
 
 ##### Как запустить консоль bash в Windows (Visual Studio Code)
 
-^617191
-
 1. Открыть новый терминал
+
 ![image open new terminal](assets/images/for_readme/20221210144947.png)
 
 2. В открытом терминале открыть выпадающий список launch profiles
+
 ![image choose a terminal](assets/images/for_readme/20221210145029.png)
 
 3. Выбрать bash
+
 ![image bash terminal is opened](assets/images/for_readme/20221210145042.png)
 
  
