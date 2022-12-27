@@ -30,8 +30,6 @@ Future<void> main() async {
   UserPref.getUserDbPref
       ? await DBHelperStart.instanse.initDB()
       : await DBHelper.instanse.initDB();
-  var directory = await Directory('dir/subdir').create(recursive: true);
-  print(directory.path);
   runApp(MyApp());
 }
 
