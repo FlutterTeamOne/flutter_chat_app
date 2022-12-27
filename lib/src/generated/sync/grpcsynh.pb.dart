@@ -9,6 +9,9 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'grpcsynh.pbenum.dart';
+
+export 'grpcsynh.pbenum.dart';
 
 class UserRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'UserRequest', createEmptyInstance: create)
@@ -160,7 +163,6 @@ class UsersResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.List<SynhUser> get usersUpdated => $_getList(1);
 }
-
 
 class SynhMainUser extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SynhMainUser', createEmptyInstance: create)

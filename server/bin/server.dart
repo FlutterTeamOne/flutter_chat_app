@@ -445,10 +445,10 @@ class GrpcSynh extends GrpcSynchronizationServiceBase {
     }
     if (request.messageId == 0) {
 
-      messages = await MessagesServices()
+      messages = await MessagesDBServices()
           .getMessageByUserId(userId: request.mainUserId);
     } else {
-      messages = await MessagesServices().getMessageByUserIdMoreMessageId(
+      messages = await MessagesDBServices().getMessageByUserIdMoreMessageId(
           userId: request.mainUserId, messageId: request.messageId);
 
     }

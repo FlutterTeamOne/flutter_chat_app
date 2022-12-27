@@ -8,7 +8,18 @@
 import 'dart:core' as $core;
 import 'dart:convert' as $convert;
 import 'dart:typed_data' as $typed_data;
+@$core.Deprecated('Use contentTypeSynchDescriptor instead')
+const ContentTypeSynch$json = const {
+  '1': 'ContentTypeSynch',
+  '2': const [
+    const {'1': 'isText', '2': 0},
+    const {'1': 'isMedia', '2': 1},
+    const {'1': 'isMediaText', '2': 2},
+  ],
+};
 
+/// Descriptor for `ContentTypeSynch`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List contentTypeSynchDescriptor = $convert.base64Decode('ChBDb250ZW50VHlwZVN5bmNoEgoKBmlzVGV4dBAAEgsKB2lzTWVkaWEQARIPCgtpc01lZGlhVGV4dBAC');
 @$core.Deprecated('Use userRequestDescriptor instead')
 const UserRequest$json = const {
   '1': 'UserRequest',
@@ -41,7 +52,6 @@ const UsersResponse$json = const {
 
 /// Descriptor for `UsersResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List usersResponseDescriptor = $convert.base64Decode('Cg1Vc2Vyc1Jlc3BvbnNlEiUKCHVzZXJzTmV3GAEgAygLMgkuU3luaFVzZXJSCHVzZXJzTmV3Ei0KDHVzZXJzVXBkYXRlZBgCIAMoCzIJLlN5bmhVc2VyUgx1c2Vyc1VwZGF0ZWQ=');
-
 @$core.Deprecated('Use synhMainUserDescriptor instead')
 const SynhMainUser$json = const {
   '1': 'SynhMainUser',
