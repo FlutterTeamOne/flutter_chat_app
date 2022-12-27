@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:chat_app/modules/client/rest_client.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
+import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,6 +20,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   late LocalChatServices _chatServices;
   UserBloc userBloc;
   ChatBloc({required this.userBloc}) : super(const ChatState()) {
+    DBHelper.instanse.updateListenController.stream.listen((event) {
+      if (event) {
+        add(ReadChatEvent());
+      }
+    });
     on<ReadChatEvent>(_onReadChatEvent);
     on<CreateChatEvent>(_onCreateChatEvent);
     on<GetChatIdEvent>(_onGetChatIdEvent);
@@ -36,7 +42,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       _chatServices = LocalChatServices();
 
     //TODO: Поменять getAllChats на сортированную выборку getAllChatsSortedByUpdatedDate()
-      var chats = await _chatServices.getAllChats();
+      var chats = await _chatServices.getAllChatsSortedByUpdatedDate();
       //
       var restChats = await RestClient().getChats();
       print('IF CHATS is NULL - ADD CHAT FROM LOCAL DB: $restChats');
