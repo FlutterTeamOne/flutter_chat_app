@@ -31,8 +31,10 @@ class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
     // var i = await UserPreferences().getTheme();
     // print(i);
     emit(ChangeThemeState(
+        primaryColor: CustomThemes().themes[event.index].primaryColor,
       fontSizeFactor: event.fontSizeFactor,
         brightness: CustomThemes().themes[event.index].brightness,
+        borderRadius: 1,
         theme: CustomThemes().themes[event.index],
         index: event.index));
   }

@@ -281,7 +281,9 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                                 index: 6,
                                 brightness: state.brightness!,
                                 primaryColor: state.primaryColor!,
-                                borderRadius: 0));
+                                borderRadius: 0,
+                                fontSizeFactor: state.fontSizeFactor,
+                            ));
                       },
                       child: Text('Squared border')),
                   SizedBox(
@@ -339,6 +341,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
               primaryColor: color,
               brightness: state.brightness!,
               borderRadius: state.borderRadius,
+          fontSizeFactor: state.fontSizeFactor,
             ));
         print(color);
       },
