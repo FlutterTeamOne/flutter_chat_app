@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:chat_app/main.dart';
 import 'package:chat_app/modules/style_manager/themes/saved_theme.dart';
 import 'package:chat_app/modules/style_manager/themes/custom_themes.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,8 @@ class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
       : super(ChangeThemeState(
           borderRadius: 20,
           fontSizeFactor: 1,
-          primaryColor: Colors.blueGrey,
+          primaryColor: MyApp().createMaterialColor(const Color(0xFFFF9800)),
+          // primaryColor: Colors.blueGrey,
           brightness: Brightness.dark,
           theme: CustomThemes().themes[1],
           index: 1,

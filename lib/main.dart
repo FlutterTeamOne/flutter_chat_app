@@ -6,7 +6,7 @@ import 'package:chat_app/modules/style_manager/themes/custom_themes.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_user_lib.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';
 import 'package:chat_app/ui/pages/custom_theme/color_picker_page.dart';
-import 'package:chat_app/ui/pages/custom_theme/custom_theme_page.dart';
+
 import 'package:chat_app/ui/pages/registration_page/registration_page.dart';
 import 'package:chat_app/ui/widgets/registration_page/bloc/new_user_bloc.dart';
 import 'package:path/path.dart';
@@ -97,7 +97,7 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           if (state.index == 6) {
             final ThemeData theme = ThemeData(
-              textTheme: CustomThemes().themes[6].textTheme.apply(fontSizeFactor: state.fontSizeFactor!, fontSizeDelta: 0),
+              textTheme: Theme.of(context).textTheme.apply(fontSizeFactor: state.fontSizeFactor!),
               useMaterial3: true,
               listTileTheme: ListTileThemeData(
                   shape: RoundedRectangleBorder(
@@ -155,7 +155,7 @@ class MyApp extends StatelessWidget {
         AuthPage.routeName: (context) => const AuthPage(),
         MainLayout.routeName: (context) => const MainLayout(),
         '/Settings page': (context) => const SettingsPage(),
-        CustomThemesPage.routeName: (context) => const CustomThemesPage(),
+
         '/color picker page': (context) => const ColorPickerPage(),
       },
     );
