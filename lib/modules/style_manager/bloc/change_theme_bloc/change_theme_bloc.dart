@@ -42,6 +42,7 @@ class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
   FutureOr<void> _onSetCustomThemesEvent(
       SetCustomThemesEvent event, Emitter<ChangeThemeState> emit) {
     print(event.index);
+    print(event.fontSizeFactor);
     emit(ChangeThemeState(
       borderRadius: event.borderRadius,
       primaryColor: event.primaryColor,

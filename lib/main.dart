@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
+import 'package:chat_app/modules/style_manager/themes/custom_themes.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_user_lib.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';
 import 'package:chat_app/ui/pages/custom_theme/color_picker_page.dart';
@@ -96,7 +97,7 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           if (state.index == 6) {
             final ThemeData theme = ThemeData(
-              textTheme: Theme.of(context).textTheme.apply(fontSizeFactor: state.fontSizeFactor!),
+              textTheme: CustomThemes().themes[6].textTheme.apply(fontSizeFactor: state.fontSizeFactor!, fontSizeDelta: 0),
               useMaterial3: true,
               listTileTheme: ListTileThemeData(
                   shape: RoundedRectangleBorder(
