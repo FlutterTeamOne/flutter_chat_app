@@ -96,6 +96,8 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           if (state.index == 6) {
             final ThemeData theme = ThemeData(
+              textTheme: Theme.of(context).textTheme.apply(fontSizeFactor: state.fontSizeFactor!),
+              useMaterial3: true,
               listTileTheme: ListTileThemeData(
                   shape: RoundedRectangleBorder(
                       borderRadius:

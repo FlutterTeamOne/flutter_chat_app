@@ -1,13 +1,13 @@
 import 'package:chat_app/modules/style_manager/library/library_style_manager.dart';
 import 'package:flutter/material.dart';
 
-
 import '../../themes/custom_themes.dart';
 
 class ChangeThemeState {
   final Color? primaryColor;
   final Brightness? brightness;
   final double? borderRadius;
+  final double? fontSizeFactor;
   final ThemeData? theme;
   final int? index;
   final iconColor = [
@@ -28,8 +28,8 @@ class ChangeThemeState {
     Icons.dark_mode_outlined,
   ];
 
-
   ChangeThemeState({
+    this.fontSizeFactor,
     this.borderRadius,
     this.primaryColor,
     this.brightness,

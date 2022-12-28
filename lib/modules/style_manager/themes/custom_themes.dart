@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class CustomThemes {
   static final ThemeData lightThemeDeepPurple = ThemeData(
+      useMaterial3: true,
       brightness: Brightness.light,
       primarySwatch: Colors.deepPurple,
       primaryColor: Colors.deepPurple,
@@ -21,6 +22,7 @@ class CustomThemes {
         selectionHandleColor: Colors.black26,
       ));
   static final ThemeData darkThemeDeepPurple = ThemeData(
+    useMaterial3: true,
     brightness: Brightness.dark,
     primarySwatch: Colors.deepPurple,
     primaryColor: Colors.deepPurple,
@@ -40,6 +42,7 @@ class CustomThemes {
   );
 
   static final ThemeData darkThemeLightBlue = ThemeData(
+    useMaterial3: true,
     brightness: Brightness.dark,
     primarySwatch: Colors.indigo,
     primaryColor: Colors.indigo,
@@ -58,6 +61,7 @@ class CustomThemes {
   );
 
   static final ThemeData lightThemeLightBlue = ThemeData(
+      useMaterial3: true,
       brightness: Brightness.light,
       primarySwatch: Colors.indigo,
       primaryColor: Colors.indigo,
@@ -75,6 +79,7 @@ class CustomThemes {
       ));
 
   static final ThemeData darkThemeBlueGray = ThemeData(
+    useMaterial3: true,
     brightness: Brightness.dark,
     primarySwatch: Colors.blueGrey,
     primaryColor: Colors.blueGrey,
@@ -93,6 +98,7 @@ class CustomThemes {
   );
 
   static final ThemeData lightThemeBlueGray = ThemeData(
+    useMaterial3: true,
     brightness: Brightness.light,
     primarySwatch: Colors.blueGrey,
     primaryColor: Colors.blueGrey,
@@ -111,6 +117,7 @@ class CustomThemes {
   );
 
   static final ThemeData CustomTheme = ThemeData(
+    useMaterial3: true,
     brightness: Brightness.dark,
     primarySwatch: Colors.blueGrey,
     primaryColor: Colors.blueGrey,
@@ -137,6 +144,4 @@ class CustomThemes {
     CustomThemes.darkThemeBlueGray,
     CustomThemes.CustomTheme,
   ];
-
-
 }

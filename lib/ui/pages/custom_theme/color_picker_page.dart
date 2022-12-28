@@ -213,7 +213,8 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                               index: 6,
                               primaryColor: color,
                               brightness: state.brightness!,
-                          borderRadius: state.borderRadius
+                          borderRadius: state.borderRadius,
+                            fontSizeFactor: state.fontSizeFactor
                             ));
                         print(color);
                       },
@@ -250,12 +251,14 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                       index: 6,
                       brightness: brightness,
                       primaryColor: state.primaryColor!,
-                  borderRadius: state.borderRadius));
+                  borderRadius: state.borderRadius,
+                      fontSizeFactor: state.fontSizeFactor));
                 },
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  /// Rounded border button
                   ElevatedButton(
                       onPressed: () {
                         context.read<ChangeThemeBloc>().add(
@@ -263,17 +266,47 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                                 index: 6,
                                 brightness: state.brightness!,
                                 primaryColor: state.primaryColor!,
-                                borderRadius: 20));
+                                borderRadius: 20,
+                                fontSizeFactor: state.fontSizeFactor
+                            ));
                       },
                       child: Text('Rounded border')),
                   SizedBox(width: 8,),
+                  /// Squared border button
                   ElevatedButton(
                       onPressed: () {context.read<ChangeThemeBloc>().add(
                           SetCustomThemesEvent(
                               index: 6,
                               brightness: state.brightness!,
                               primaryColor: state.primaryColor!,
-                              borderRadius: 0));}, child: Text('Squared border'))
+                              borderRadius: 0));}, child: Text('Squared border')),
+                  SizedBox(width: 8,),
+                  /// Normal text size button
+                  ElevatedButton(
+                      onPressed: () {
+                        context.read<ChangeThemeBloc>().add(
+                            SetCustomThemesEvent(
+                                index: 6,
+                                brightness: state.brightness!,
+                                primaryColor: state.primaryColor!,
+                              borderRadius: state.borderRadius,
+                              fontSizeFactor: 1,   ));
+                      },
+                      child: Text('Normal text size')),
+                  SizedBox(width: 8,),
+                  /// Big text size button
+                  ElevatedButton(
+                      onPressed: () {
+                        context.read<ChangeThemeBloc>().add(
+                            SetCustomThemesEvent(
+                                index: 6,
+                                brightness: state.brightness!,
+                                primaryColor: state.primaryColor!,
+                                borderRadius: state.borderRadius,
+                                fontSizeFactor: 1.15,
+                            ));
+                      },
+                      child: Text('Big text size')),
                 ],
               ),
             ],

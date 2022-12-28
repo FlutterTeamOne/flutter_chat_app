@@ -17,5 +17,11 @@ class SetCustomThemesEvent extends ChangeThemeEvent {
   final Brightness brightness;
   final Color primaryColor;
   final double? borderRadius;
-  SetCustomThemesEvent({required this.index, required this.brightness, required this.primaryColor, this.borderRadius});
+  final double? fontSizeFactor;
+  SetCustomThemesEvent(
+      {required this.index,
+      required this.brightness,
+      required this.primaryColor,
+      this.borderRadius,
+      this.fontSizeFactor});
 }
