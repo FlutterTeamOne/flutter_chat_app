@@ -18,9 +18,9 @@ class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
           fontSizeFactor: 1,
           primaryColor: MyApp().createMaterialColor(const Color(0xFFFF9800)),
           // primaryColor: Colors.blueGrey,
-          brightness: Brightness.dark,
-          theme: CustomThemes().themes[1],
-          index: 1,
+          brightness: Brightness.light,
+          theme: CustomThemes().themes[6],
+          index: 6,
         )) {
     on<SetThemeEvent>(_setThemeEvent);
     on<SetCustomThemesEvent>(_onSetCustomThemesEvent);

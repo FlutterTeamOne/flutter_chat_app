@@ -59,6 +59,26 @@ class MyApp extends StatelessWidget {
     return MaterialColor(color.value, swatch);
   }
 
+  MaterialColor getMaterialColor(Color color) {
+    final int red = color.red;
+    final int green = color.green;
+    final int blue = color.blue;
+
+    final Map<int, Color> shades = {
+      50: Color.fromRGBO(red, green, blue, .1),
+      100: Color.fromRGBO(red, green, blue, .2),
+      200: Color.fromRGBO(red, green, blue, .3),
+      300: Color.fromRGBO(red, green, blue, .4),
+      400: Color.fromRGBO(red, green, blue, .5),
+      500: Color.fromRGBO(red, green, blue, .6),
+      600: Color.fromRGBO(red, green, blue, .7),
+      700: Color.fromRGBO(red, green, blue, .8),
+      800: Color.fromRGBO(red, green, blue, .9),
+      900: Color.fromRGBO(red, green, blue, 1),
+    };
+    return MaterialColor(color.value, shades);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -97,7 +117,21 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           if (state.index == 6) {
             final ThemeData theme = ThemeData(
-              textTheme: Theme.of(context).textTheme.apply(fontSizeFactor: state.fontSizeFactor!),
+              // colorScheme: ColorScheme(
+              //     brightness: state.brightness!,
+              //     primary: state.primaryColor!,
+              //     onPrimary: Colors.white,
+              //     secondary: Colors.white,
+              //     onSecondary: Colors.white,
+              //     error: Colors.redAccent,
+              //     onError: Colors.white,
+              //     background: Colors.black54,
+              //     onBackground: Colors.white,
+              //     surface: Colors.black54,
+              //     onSurface: Colors.black54),
+              textTheme: Theme.of(context).textTheme.apply(
+                  // displayColor: Colors.white,
+                  fontSizeFactor: state.fontSizeFactor!),
               useMaterial3: true,
               listTileTheme: ListTileThemeData(
                   shape: RoundedRectangleBorder(
@@ -118,6 +152,7 @@ class MyApp extends StatelessWidget {
                           BorderRadius.circular(state.borderRadius!))),
               brightness: state.brightness,
               primarySwatch: createMaterialColor(state.primaryColor!),
+              // primarySwatch: createMaterialColor(state.primaryColor!),
               primaryColor: createMaterialColor(state.primaryColor!),
               errorColor: Colors.redAccent.shade200,
               // backgroundColor: Colors.black45,
@@ -155,7 +190,6 @@ class MyApp extends StatelessWidget {
         AuthPage.routeName: (context) => const AuthPage(),
         MainLayout.routeName: (context) => const MainLayout(),
         '/Settings page': (context) => const SettingsPage(),
-
         '/color picker page': (context) => const ColorPickerPage(),
       },
     );

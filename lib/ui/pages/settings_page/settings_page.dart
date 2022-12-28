@@ -18,15 +18,15 @@ class SettingsPage extends StatelessWidget {
         child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(
-          height: 200,
-          width: 100,
-          child: ListView.builder(
-              itemCount: 3,
-              itemBuilder: (BuildContext context, int index) {
-                return CardWidget(context, index);
-              }),
-        ),
+        // SizedBox(
+        //   height: 200,
+        //   width: 100,
+        //   child: ListView.builder(
+        //       itemCount: 3,
+        //       itemBuilder: (BuildContext context, int index) {
+        //         return CardWidget(context, index);
+        //       }),
+        // ),
         ElevatedButton(
             // style: ButtonStyle(
             //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
