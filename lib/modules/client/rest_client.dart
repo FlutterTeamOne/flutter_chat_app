@@ -46,10 +46,14 @@ class RestClient {
   }
 
   Future deleteChatRest({required int id}) async {
-    var chatUrl = '$_url/chats';
+    var chatUrl = '$_url/chats/';
     try {
-      var resp = await _dio.delete('$chatUrl/$id');
+      var resp = await _dio.delete('$chatUrl$id');
       print('DEL RESP:$resp');
+      if (resp.statusCode == 200) {
+        var data = json.decode(resp.data);
+        print('DEL DATA: $data');
+      }
     } catch (e) {}
   }
 
