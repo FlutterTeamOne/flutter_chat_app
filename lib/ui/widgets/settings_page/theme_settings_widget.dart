@@ -20,7 +20,7 @@ Widget CardWidget(BuildContext context, int index) {
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             IconButton(
               onPressed: () {
-                changeThemeBloc.add(SetThemeEvent(index: index * 2 + 0));
+                changeThemeBloc.add(SetThemeEvent(fontSizeFactor: 1, index: index * 2 + 0));
               },
               icon: Icon(
                 state.selectIcon[0],
@@ -30,7 +30,7 @@ Widget CardWidget(BuildContext context, int index) {
             ),
             IconButton(
               onPressed: () {
-                changeThemeBloc.add(SetThemeEvent(index: index * 2 + 1));
+                changeThemeBloc.add(SetThemeEvent(fontSizeFactor: 1, index: index * 2 + 1));
               },
               icon: Icon(
                 state.selectIcon[1],

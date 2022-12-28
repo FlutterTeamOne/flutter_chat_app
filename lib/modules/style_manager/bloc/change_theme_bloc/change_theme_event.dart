@@ -7,8 +7,10 @@ abstract class ChangeThemeEvent {
 
 class SetThemeEvent extends ChangeThemeEvent {
   final int index;
+  final double fontSizeFactor;
   SetThemeEvent({
     required this.index,
+    required this.fontSizeFactor,
   });
 }
 

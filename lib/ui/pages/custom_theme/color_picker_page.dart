@@ -207,15 +207,13 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                       /// Update the screenPickerColor using the callback.
                       onColorChanged: (Color color) {
                         setState(() => screenPickerColor = color);
-                        context
-                            .read<ChangeThemeBloc>()
-                            .add(SetCustomThemesEvent(
-                              index: 6,
-                              primaryColor: color,
-                              brightness: state.brightness!,
-                          borderRadius: state.borderRadius,
-                            fontSizeFactor: state.fontSizeFactor
-                            ));
+                        context.read<ChangeThemeBloc>().add(
+                            SetCustomThemesEvent(
+                                index: 6,
+                                primaryColor: color,
+                                brightness: state.brightness!,
+                                borderRadius: state.borderRadius,
+                                fontSizeFactor: state.fontSizeFactor));
                         print(color);
                       },
                       width: 44,
@@ -251,10 +249,11 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                       index: 6,
                       brightness: brightness,
                       primaryColor: state.primaryColor!,
-                  borderRadius: state.borderRadius,
+                      borderRadius: state.borderRadius,
                       fontSizeFactor: state.fontSizeFactor));
                 },
               ),
+              SizedBox(height: 8,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -267,43 +266,57 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                                 brightness: state.brightness!,
                                 primaryColor: state.primaryColor!,
                                 borderRadius: 20,
-                                fontSizeFactor: state.fontSizeFactor
-                            ));
+                                fontSizeFactor: state.fontSizeFactor));
                       },
                       child: Text('Rounded border')),
-                  SizedBox(width: 8,),
+                  SizedBox(
+                    width: 8,
+                  ),
+
                   /// Squared border button
                   ElevatedButton(
-                      onPressed: () {context.read<ChangeThemeBloc>().add(
-                          SetCustomThemesEvent(
-                              index: 6,
-                              brightness: state.brightness!,
-                              primaryColor: state.primaryColor!,
-                              borderRadius: 0));}, child: Text('Squared border')),
-                  SizedBox(width: 8,),
+                      onPressed: () {
+                        context.read<ChangeThemeBloc>().add(
+                            SetCustomThemesEvent(
+                                index: 6,
+                                brightness: state.brightness!,
+                                primaryColor: state.primaryColor!,
+                                borderRadius: 0));
+                      },
+                      child: Text('Squared border')),
+                  SizedBox(
+                    width: 8,
+                  ),
+
                   /// Normal text size button
                   ElevatedButton(
                       onPressed: () {
-                        context.read<ChangeThemeBloc>().add(
-                            SetCustomThemesEvent(
-                                index: 6,
-                                brightness: state.brightness!,
-                                primaryColor: state.primaryColor!,
+                        context
+                            .read<ChangeThemeBloc>()
+                            .add(SetCustomThemesEvent(
+                              index: 6,
+                              brightness: state.brightness!,
+                              primaryColor: state.primaryColor!,
                               borderRadius: state.borderRadius,
-                              fontSizeFactor: 1,   ));
+                              fontSizeFactor: 1,
+                            ));
                       },
                       child: Text('Normal text size')),
-                  SizedBox(width: 8,),
+                  SizedBox(
+                    width: 8,
+                  ),
+
                   /// Big text size button
                   ElevatedButton(
                       onPressed: () {
-                        context.read<ChangeThemeBloc>().add(
-                            SetCustomThemesEvent(
-                                index: 6,
-                                brightness: state.brightness!,
-                                primaryColor: state.primaryColor!,
-                                borderRadius: state.borderRadius,
-                                fontSizeFactor: 1.15,
+                        context
+                            .read<ChangeThemeBloc>()
+                            .add(SetCustomThemesEvent(
+                              index: 6,
+                              brightness: state.brightness!,
+                              primaryColor: state.primaryColor!,
+                              borderRadius: state.borderRadius,
+                              fontSizeFactor: 1.15,
                             ));
                       },
                       child: Text('Big text size')),
@@ -325,7 +338,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
               index: 6,
               primaryColor: color,
               brightness: state.brightness!,
-          borderRadius: state.borderRadius,
+              borderRadius: state.borderRadius,
             ));
         print(color);
       },
