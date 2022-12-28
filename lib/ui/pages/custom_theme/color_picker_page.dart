@@ -53,10 +53,12 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
 
   @override
   void initState() {
-    screenPickerColor = Colors.blue;
+    screenPickerColor = context.read<ChangeThemeBloc>().state.primaryColor!;
     dialogPickerColor = Colors.red;
     dialogSelectColor = const Color(0xFFA239CA);
-    isDark = false;
+    isDark = context.read<ChangeThemeBloc>().state.brightness == Brightness.dark
+        ? true
+        : false;
     super.initState();
   }
 
@@ -253,7 +255,9 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                       fontSizeFactor: state.fontSizeFactor));
                 },
               ),
-              SizedBox(height: 8,),
+              SizedBox(
+                height: 8,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -276,13 +280,14 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                   /// Squared border button
                   ElevatedButton(
                       onPressed: () {
-                        context.read<ChangeThemeBloc>().add(
-                            SetCustomThemesEvent(
-                                index: 6,
-                                brightness: state.brightness!,
-                                primaryColor: state.primaryColor!,
-                                borderRadius: 0,
-                                fontSizeFactor: state.fontSizeFactor,
+                        context
+                            .read<ChangeThemeBloc>()
+                            .add(SetCustomThemesEvent(
+                              index: 6,
+                              brightness: state.brightness!,
+                              primaryColor: state.primaryColor!,
+                              borderRadius: 0,
+                              fontSizeFactor: state.fontSizeFactor,
                             ));
                       },
                       child: Text('Squared border')),
@@ -341,7 +346,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
               primaryColor: color,
               brightness: state.brightness!,
               borderRadius: state.borderRadius,
-          fontSizeFactor: state.fontSizeFactor,
+              fontSizeFactor: state.fontSizeFactor,
             ));
         print(color);
       },
