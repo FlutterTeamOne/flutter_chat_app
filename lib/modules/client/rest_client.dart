@@ -89,9 +89,9 @@ class RestClient {
         int friend2_id =
             int.tryParse('${responseFromRest[11].split(' friend2_id: ')[1]}')!;
         print('FRIEND 2: $friend2_id');
-        String updateDate =
+        String updatedDate =
             '"${updatedDateInput.substring(0, updatedDateInput.length - 3)}"';
-        print('UPDATEDDATE: $updateDate');
+        print('UPDATEDDATE: $updatedDate');
         String createdDate = '"${createdDateInput}"';
         print('CREATE DATE: $createdDate');
 
@@ -99,9 +99,9 @@ class RestClient {
           'chat_id': chatId,
           'friend1_id': friend1_id,
           'friend2_id': friend2_id,
-          'created_date': createdDate,
+          'created_date': createdDateInput,
           'deleted_date': "",
-          'updated_date': updateDate
+          'updated_date': updatedDateInput
         };
         // print(source.);
         print('RESTCHAT CLIENT $restChat');

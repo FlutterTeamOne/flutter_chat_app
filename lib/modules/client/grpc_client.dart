@@ -17,12 +17,11 @@ class GrpcClient {
 
   ClientChannel get channel => _channel;
   Stream<ConnectionState> get channelState => _channel.onConnectionStateChanged;
-  
 
   Future deleteUser({required int userId}) async {
     late GrpcUsersClient stub;
     stub = GrpcUsersClient(channel,
-        options: CallOptions(timeout: Duration(seconds: 30)));
+        options: CallOptions(timeout: const Duration(seconds: 30)));
     var request = DeleteUserRequest()..id = userId;
     var response = await stub.deleteUser(request);
     try {

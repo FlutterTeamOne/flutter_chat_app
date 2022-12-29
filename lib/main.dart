@@ -29,7 +29,7 @@ Future<void> main() async {
       ? await DBHelperStart.instanse.initDB()
       : await DBHelper.instanse.initDB();
 
-  var envVars = AppDataConstants.envVars;
+  //var envVars = AppDataConstants.envVars;
   var userDir = AppDataConstants.userDirectory;
   var directory =
       await Directory('$userDir/AppData/Local/FlutterChatApp/databases')
