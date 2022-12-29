@@ -101,7 +101,7 @@ class CustomTheme {
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.white70,
       selectionColor: Colors.white70,
-      selectionHandleColor: Colors.white70,
+      selectionHandleColor: Colors.black26,
     ),
     //стиль для scroll down button
     floatingActionButtonTheme: const FloatingActionButtonThemeData(

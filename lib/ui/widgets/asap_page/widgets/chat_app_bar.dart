@@ -15,19 +15,14 @@ class ChatAppBarWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
       height: 52,
       decoration: BoxDecoration(
-
         border: Border(
-          left: BorderSide(
-            width: 1,
-              color: Theme.of(context).dividerColor
-
-          )
-        //   right: BorderSide.none,
-        //   bottom: BorderSide(
-        //       color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
-        //       ),
-        //   top: BorderSide.none
-        ),
+            bottom: BorderSide(width: 1, color: Theme.of(context).dividerColor)
+            //   right: BorderSide.none,
+            //   bottom: BorderSide(
+            //       color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+            //       ),
+            //   top: BorderSide.none
+            ),
       ),
       child: Row(
         children: [
@@ -41,6 +36,15 @@ class ChatAppBarWidget extends StatelessWidget {
           Text(
             name,
             // style: AppTextStyle.s17Abel.copyWith(fontSize: 20),
+          ),
+          const Spacer(),
+          IconButton(
+            splashRadius: 20,
+            onPressed: () {},
+            icon: const Icon(
+              Icons.more_vert_outlined,
+              size: 22,
+            ),
           ),
         ],
       ),
