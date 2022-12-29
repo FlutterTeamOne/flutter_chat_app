@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import '../../themes/custom_themes.dart';
 
 class ChangeThemeState {
+  final Color? primaryColor;
+  final Brightness? brightness;
+  final Color? textColor;
+  final double? borderRadius;
+  final double? fontSizeFactor;
   final ThemeData? theme;
   final int? index;
   final iconColor = [
@@ -15,15 +20,23 @@ class ChangeThemeState {
     Colors.white.withOpacity(0.2),
   ];
   final cardColor = <Color>[
-    CustomTheme.darkThemeDeepPurple.primaryColor,
-    CustomTheme.darkThemeLightBlue.primaryColor,
-    CustomTheme.darkThemeBlueGray.primaryColor,
+    CustomThemes.darkThemeDeepPurple.primaryColor,
+    CustomThemes.darkThemeLightBlue.primaryColor,
+    CustomThemes.darkThemeBlueGray.primaryColor,
   ];
   final selectIcon = <IconData>[
     Icons.light_mode_outlined,
     Icons.dark_mode_outlined,
   ];
+
+
+
   ChangeThemeState({
+    this.fontSizeFactor,
+    this.borderRadius,
+    this.primaryColor,
+    this.brightness,
+    this.textColor,
     this.theme,
     this.index,
   }) {

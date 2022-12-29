@@ -1,4 +1,3 @@
-
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:chat_app/ui/pages/library/library_pages.dart';
@@ -38,16 +37,17 @@ class AuthPage extends StatelessWidget {
                     ),
                   ),
                   ElevatedButton(
-                      style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ))),
+                      // style: ButtonStyle(
+                      //     shape: MaterialStateProperty.all<
+                      //         RoundedRectangleBorder>(
+                      //         RoundedRectangleBorder(
+                      //           borderRadius:
+                      //           BorderRadius.circular(20.0),
+                      //         ))),
                       onPressed: () {
-                        Navigator.of(context).pushNamed(RegistrationPage.routeName);
+                        Navigator.of(context).pushNamed('/registration_page');
                       },
-                      child: const Text('Create new user')),
+                      child: Text('Create new user')),
                 ],
               );
       }),

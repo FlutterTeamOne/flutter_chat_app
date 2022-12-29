@@ -36,12 +36,12 @@ class _ChatListLayoutState extends State<ChatListLayout> {
     final grpcClient = GrpcClient();
     final localUserServices = LocalUsersServices();
     return Drawer(
-        shape: Border(
-            right: BorderSide(width: 1, color: Theme.of(context).dividerColor)),
-        elevation: 0,
-        child: Flexible(
-          flex: 1,
-          child: Column(
+      // shape: Border(
+      //     right: BorderSide(width: 1, color: Theme.of(context).dividerColor)),
+      elevation: 0,
+      child: Flexible(
+        flex: 1,
+        child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -104,81 +104,76 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                       : 'Start chating',
                                 );
                               },
-                            )
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SizedBox(
+                                child: ElevatedButton.icon(
+                                  onPressed: () async {
+                                    int value = 0;
+                                    await showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                (AddChatDialogWidget(
+                                                    val: value)))
+                                        .then((value) async {
+                                      print('FriendId From Add Dialog: $value');
+                                      print(
+                                          'Current UserId: ${UserPref.getUserId}');
+                                      //FriendId Validation
+                                      var userFromServerDb = await grpcClient
+                                          .getUser(userId: value);
+                                      if (userFromServerDb.toString().isEmpty) {
+                                        await showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: const Text('Ошибка'),
+                                                content: const Text(
+                                                    'Нет юзера с таким Id'),
+                                                actions: [
+                                                  TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              context, 'OK'),
+                                                      child: const Text('OK'))
+                                                ],
+                                              );
+                                            });
+                                        print(
+                                            'no id in server db: ${userFromServerDb.toString()}');
+                                      } else {
+                                        try {
+                                          context.read<ChatBloc>().add(
+                                                CreateChatEvent(
+                                                  chat: ChatDto(
+                                                    userIdChat: value,
+                                                    createdDate: DateTime.now()
+                                                        .toIso8601String(),
+                                                    updatedDate: DateTime.now()
+                                                        .toIso8601String(),
+                                                  ),
+                                                ),
+                                              );
+                                          Future.delayed(Duration(seconds: 1));
+                                        } catch (e) {
+                                          print('ADD CHAT e: $e');
+                                        }
+                                      }
+                                    });
+                                  },
+                                  icon: Icon(Icons.add),
+                                  label: Text('Add Chat'),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
                     ),
-              Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    // decoration: BoxDecoration(
-                    //   borderRadius: BorderRadius.circular(50)
-                    // ),
-                    child: ElevatedButton.icon(
-                      onPressed: () async {
-                        int value = 0;
-                        await showDialog(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    (AddChatDialogWidget(val: value)))
-                            .then((value) async {
-                          print('FriendId From Add Dialog: $value');
-                          print('Current UserId: ${UserPref.getUserId}');
-                          //FriendId Validation
-                          var userFromServerDb =
-                              await grpcClient.getUser(userId: value);
-                          if (userFromServerDb.toString().isEmpty) {
-                            await showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text('Ошибка'),
-                                    content: const Text('Нет юзера с таким Id'),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, 'OK'),
-                                          child: const Text('OK'))
-                                    ],
-                                  );
-                                });
-                            print(
-                                'no id in server db: ${userFromServerDb.toString()}');
-                          } else {
-                            try {
-                              context.read<ChatBloc>().add(
-                                    CreateChatEvent(
-                                      chat: ChatDto(
-                                        userIdChat: value,
-                                        createdDate:
-                                            DateTime.now().toIso8601String(),
-                                        updatedDate:
-                                            DateTime.now().toIso8601String(),
-                                      ),
-                                    ),
-                                  );
-                              Future.delayed(Duration(seconds: 1));
-                            } catch (e) {
-                              print('ADD CHAT e: $e');
-                            }
-                          }
-                        });
-                      },
-                      icon: Icon(Icons.add),
-                      label: Text('Add Chat'),
-                      style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      )),
-                    ),
-                  ))
-            ],
-          ),
-        ));
+            ]),
+      ),
+    );
   }
 
   bool checkSender(int id) => id == UserPref.getUserId ? true : false;

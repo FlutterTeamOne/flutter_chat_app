@@ -38,9 +38,11 @@ dependencies:
   stream_transform: ^2.1.0
   internet_connection_checker: ^1.0.0+1
   async: ^2.9.0
+  js: ^0.6.2
+  flex_color_picker: ^3.0.0
   dio: ^4.0.6
   file_picker: ^5.2.4
-  
+
 
 
 
