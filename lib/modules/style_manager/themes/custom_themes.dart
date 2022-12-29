@@ -107,7 +107,26 @@ class CustomThemes {
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.white70,
       selectionColor: Colors.white70,
-      selectionHandleColor: Colors.black26,
+      selectionHandleColor: Colors.white70,
+    ),
+    //стиль для scroll down button
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: Colors.white,
+      foregroundColor: Colors.black54,
+    ),
+  );
+
+  static final ThemeData lightThemeBlueGray = ThemeData(
+    useMaterial3: true,
+    brightness: Brightness.dark,
+    primarySwatch: Colors.blueGrey,
+    primaryColor: Colors.blueGrey,
+    errorColor: Colors.redAccent.shade200,
+    // backgroundColor: Colors.black45,
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.white70,
+      selectionColor: Colors.white70,
+      selectionHandleColor: Colors.white70,
     ),
     //стиль для scroll down button
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
@@ -140,6 +159,7 @@ class CustomThemes {
     CustomThemes.darkThemeDeepPurple,
     CustomThemes.lightThemeLightBlue,
     CustomThemes.darkThemeLightBlue,
+    CustomThemes.lightThemeBlueGray,
     CustomThemes.darkThemeBlueGray,
     CustomThemes.CustomTheme,
   ];

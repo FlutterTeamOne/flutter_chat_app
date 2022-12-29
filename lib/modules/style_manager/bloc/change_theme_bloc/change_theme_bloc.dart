@@ -12,7 +12,7 @@ import 'change_theme_event.dart';
 import 'change_theme_state.dart';
 
 class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
-  static Future<int?> get initThemeIndex => UserPreferences().getTheme();
+  static get initThemeIndex => UserPreferences().getTheme();
 
   // UserPref.getThemeIndex == null ? 1 : UserPref.getThemeIndex;
   ChangeThemeBloc()
@@ -23,8 +23,8 @@ class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
           // primaryColor: Colors.blueGrey,
           textColor: Colors.black87,
           brightness: Brightness.light,
-          theme: CustomThemes().themes[5],
-          index: 5,
+          theme: CustomThemes().themes[6],
+          index: 6,
         )) {
     on<SetThemeEvent>(_setThemeEvent);
     on<SetCustomThemesEvent>(_onSetCustomThemesEvent);

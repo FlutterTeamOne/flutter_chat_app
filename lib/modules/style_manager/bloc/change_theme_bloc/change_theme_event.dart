@@ -25,7 +25,7 @@ class SetCustomThemesEvent extends ChangeThemeEvent {
       {required this.index,
       required this.brightness,
       required this.primaryColor,
-        this.textColor,
-        this.borderRadius,
+      this.textColor,
+      this.borderRadius,
       this.fontSizeFactor});
 }

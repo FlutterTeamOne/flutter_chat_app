@@ -119,7 +119,7 @@ class MyApp extends StatelessWidget {
       ],
       child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
         builder: (context, state) {
-          if (state.index == 5) {
+          if (state.index == 6) {
             final ThemeData theme = ThemeData(
               // colorScheme: ColorScheme(
               //     brightness: state.brightness!,
