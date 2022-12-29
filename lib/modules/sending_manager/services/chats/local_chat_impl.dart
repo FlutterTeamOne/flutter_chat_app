@@ -9,13 +9,12 @@ class LocalChatServices implements ILocalChatsServices {
   @override
   Future<List<ChatDto>> createChat(
       {required String createDate, required int userId}) async {
-     await DBHelper.instanse
-        .onAdd(tableName: DatabaseConst.chatsTable, model: {
+    await DBHelper.instanse.onAdd(tableName: DatabaseConst.chatsTable, model: {
       DatabaseConst.chatsColumnUserId: userId,
       DatabaseConst.chatsColumnCreatedDate: createDate,
       DatabaseConst.chatsColumnUpdatedDate: createDate
     });
-     var db = await DBHelper.instanse.database;
+    var db = await DBHelper.instanse.database;
     var chats = await db.rawQuery('''
               SELECT *
               FROM ${DatabaseConst.chatsTable}
@@ -26,8 +25,10 @@ class LocalChatServices implements ILocalChatsServices {
   @override
   Future<int> deleteChat({required int id}) async {
     var db = await DBHelper.instanse.database;
+    DBHelper.instanse.updateListenController.sink.add(true);
+
     return await db.rawDelete(
-        'DELETE FROM ${DatabaseConst.chatsTable} WHERE ${DatabaseConst.chatsColumnUserId}=?',
+        'DELETE FROM ${DatabaseConst.chatsTable} WHERE ${DatabaseConst.chatsColumnChatId}=?',
         [id]);
   }
 
@@ -44,11 +45,12 @@ class LocalChatServices implements ILocalChatsServices {
   Future<List<ChatDto>> getAllChatsSortedByUpdatedDate() async {
     var db = await DBHelper.instanse.database;
 
-    var chats = await db.rawQuery('''SELECT * FROM chats ORDER BY update_date DESC''');
-    
+    var chats =
+        await db.rawQuery('''SELECT * FROM chats ORDER BY update_date DESC''');
+
     var res = chats.map((item) => ChatDto.fromMap(item)).toList();
-    print ('getAllChatsSortedByUpdatedDate chats: $chats');
-    print ('getAllChatsSortedByUpdatedDate res: $res');
+    print('getAllChatsSortedByUpdatedDate chats: $chats');
+    print('getAllChatsSortedByUpdatedDate res: $res');
 
     return res;
   }
@@ -75,7 +77,8 @@ class LocalChatServices implements ILocalChatsServices {
   }
 
   @override
-  Future updateChatDateUpdated({required int chatId, required String dateUpdated}) async {
+  Future updateChatDateUpdated(
+      {required int chatId, required String dateUpdated}) async {
     var db = await DBHelper.instanse.database;
     await db.rawQuery('''
       UPDATE chats
