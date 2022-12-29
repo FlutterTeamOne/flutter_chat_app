@@ -73,11 +73,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       CreateChatEvent event, Emitter<ChatState> emit) async {
     _chatServices = LocalChatServices();
     var chat = event.chat;
-    // var chats = await _chatServices.createChat(
-    //     createDate: chat.createdDate,
-    //     userId: chat.userIdChat,
-    //     chatId: chat.chatId!);
-    //TODO:запрос к restApi на создание чата
     var restChat = await RestClient().createChatRest(
         creatorUserId: UserPref.getUserId,
         user2Id: chat.userIdChat,

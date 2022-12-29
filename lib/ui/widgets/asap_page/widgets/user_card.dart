@@ -27,12 +27,15 @@ class UserCardWidget extends StatelessWidget {
       // selectedTileColor: Theme.of(context).colorScheme.secondary,
       // selectedColor: Theme.of(context).colorScheme.secondary,
       onTap: onTap,
-      leading: ClipRRect(
-        borderRadius: BorderRadius.circular(100),
-        child: Image.network(
+      leading: CircleAvatar(
+        radius: 45,
+        child: ClipOval(
+            child: Image.network(
           image ?? '',
-          scale: 2,
-        ),
+          fit: BoxFit.cover,
+          width: 50,
+          height: 50,
+        )),
       ),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

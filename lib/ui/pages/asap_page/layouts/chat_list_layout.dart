@@ -104,85 +104,85 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                 );
                               },
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SizedBox(
-                                child: ElevatedButton.icon(
-                                  onPressed: () async {
-                                    int value = 0;
-                                    await showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                (AddChatDialogWidget(
-                                                    val: value)))
-                                        .then((value) async {
-                                      print('FriendId From Add Dialog: $value');
-                                      print(
-                                          'Current UserId: ${UserPref.getUserId}');
-                                      //FriendId Validation
-                                      var userFromServerDb = await grpcClient
-                                          .getUser(userId: value);
-                                      if (userFromServerDb.toString().isEmpty) {
-                                        await showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                title: const Text('Ошибка'),
-                                                content: const Text(
-                                                    'Нет юзера с таким Id'),
-                                                actions: [
-                                                  TextButton(
-                                                      onPressed: () =>
-                                                          Navigator.pop(
-                                                              context, 'OK'),
-                                                      child: const Text('OK'))
-                                                ],
-                                              );
-                                            });
-                                      } else {
-                                        try {
-                                          if (!mounted) return;
-                                          context.read<ChatBloc>().add(
-                                                CreateChatEvent(
-                                                  chat: ChatDto(
-                                                    userIdChat: value,
-                                                    createdDate: DateTime.now()
-                                                        .toIso8601String(),
-                                                    updatedDate: DateTime.now()
-                                                        .toIso8601String(),
-                                                  ),
-                                                ),
-                                              );
-                                        } catch (e) {
-                                          await showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: const Text('Ошибка'),
-                                                  content: const Text(
-                                                      'Не удалось создать чат'),
-                                                  actions: [
-                                                    TextButton(
-                                                        onPressed: () =>
-                                                            Navigator.pop(
-                                                                context, 'OK'),
-                                                        child: const Text('OK'))
-                                                  ],
-                                                );
-                                              });
-                                        }
-                                      }
-                                    });
-                                  },
-                                  icon: const Icon(Icons.add),
-                                  label: const Text('Add Chat'),
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                       ),
                     ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  child: ElevatedButton.icon(
+                    onPressed: () async {
+                      int value = 0;
+                      await showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  (AddChatDialogWidget(val: value)))
+                          .then((value) async {
+                        print('FriendId From Add Dialog: $value');
+                        print('Current UserId: ${UserPref.getUserId}');
+                        //FriendId Validation
+                        GetUserResponse userFromServerDb;
+                        try {
+                          userFromServerDb =
+                              await grpcClient.getUser(userId: value);
+                          if (userFromServerDb.toString().isEmpty) {
+                            await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Ошибка'),
+                                    content: const Text('Нет юзера с таким Id'),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, 'OK'),
+                                          child: const Text('OK'))
+                                    ],
+                                  );
+                                });
+                          } else {
+                            try {
+                              if (!mounted) return;
+                              context.read<ChatBloc>().add(
+                                    CreateChatEvent(
+                                      chat: ChatDto(
+                                        userIdChat: value,
+                                        createdDate:
+                                            DateTime.now().toIso8601String(),
+                                        updatedDate:
+                                            DateTime.now().toIso8601String(),
+                                      ),
+                                    ),
+                                  );
+                            } catch (e) {
+                              await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Ошибка'),
+                                      content:
+                                          const Text('Не удалось создать чат'),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context, 'OK'),
+                                            child: const Text('OK'))
+                                      ],
+                                    );
+                                  });
+                            }
+                          }
+                        } catch (e) {
+                          print('GET USER RESPONSE ERROR: $e');
+                        }
+                      });
+                    },
+                    icon: const Icon(Icons.add),
+                    label: const Text('Add Chat'),
+                  ),
+                ),
+              ),
             ]),
       ),
     );

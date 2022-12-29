@@ -71,8 +71,6 @@ class RestClient {
             updatedDate: userUpdatedDate,
             profilePicUrl: profilePicUrl);
 
-        Timer(Duration(seconds: 1), () {});
-
         // name, email, created_date, profile_pic_url, updated_date, deleted_date,
 
         String createdDateInput =
