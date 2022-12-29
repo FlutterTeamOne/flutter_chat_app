@@ -6,6 +6,7 @@ import '../../themes/custom_themes.dart';
 class ChangeThemeState {
   final Color? primaryColor;
   final Brightness? brightness;
+  final Color? textColor;
   final double? borderRadius;
   final double? fontSizeFactor;
   final ThemeData? theme;
@@ -28,11 +29,14 @@ class ChangeThemeState {
     Icons.dark_mode_outlined,
   ];
 
+
+
   ChangeThemeState({
     this.fontSizeFactor,
     this.borderRadius,
     this.primaryColor,
     this.brightness,
+    this.textColor,
     this.theme,
     this.index,
   }) {

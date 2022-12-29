@@ -130,8 +130,10 @@ class MyApp extends StatelessWidget {
               //     surface: Colors.black54,
               //     onSurface: Colors.black54),
               textTheme: Theme.of(context).textTheme.apply(
-                  // displayColor: Colors.white,
+                  displayColor: state.textColor,
+                  bodyColor: state.textColor,
                   fontSizeFactor: state.fontSizeFactor!),
+              // iconTheme: IconThemeData(color: Colors.white),
               useMaterial3: true,
               listTileTheme: ListTileThemeData(
                   shape: RoundedRectangleBorder(
@@ -156,10 +158,10 @@ class MyApp extends StatelessWidget {
               primaryColor: createMaterialColor(state.primaryColor!),
               errorColor: Colors.redAccent.shade200,
               // backgroundColor: Colors.black45,
-              textSelectionTheme: const TextSelectionThemeData(
-                cursorColor: Colors.white70,
-                selectionColor: Colors.white70,
-                selectionHandleColor: Colors.white70,
+              textSelectionTheme: TextSelectionThemeData(
+                cursorColor: state.textColor,
+                selectionColor: state.textColor,
+                selectionHandleColor: state.textColor,
               ),
               //стиль для scroll down button
               floatingActionButtonTheme: const FloatingActionButtonThemeData(

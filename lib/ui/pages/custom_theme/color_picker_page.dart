@@ -213,6 +213,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                             SetCustomThemesEvent(
                                 index: 6,
                                 primaryColor: color,
+                                textColor: state.textColor,
                                 brightness: state.brightness!,
                                 borderRadius: state.borderRadius,
                                 fontSizeFactor: state.fontSizeFactor));
@@ -251,6 +252,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                       index: 6,
                       brightness: brightness,
                       primaryColor: state.primaryColor!,
+                      textColor: value == true ? Colors.white : Colors.black87,
                       borderRadius: state.borderRadius,
                       fontSizeFactor: state.fontSizeFactor));
                 },
@@ -269,6 +271,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                                 index: 6,
                                 brightness: state.brightness!,
                                 primaryColor: state.primaryColor!,
+                                textColor: state.textColor,
                                 borderRadius: 20,
                                 fontSizeFactor: state.fontSizeFactor));
                       },
@@ -286,6 +289,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                               index: 6,
                               brightness: state.brightness!,
                               primaryColor: state.primaryColor!,
+                          textColor: state.textColor,
                               borderRadius: 0,
                               fontSizeFactor: state.fontSizeFactor,
                             ));
@@ -304,6 +308,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                               index: 6,
                               brightness: state.brightness!,
                               primaryColor: state.primaryColor!,
+                          textColor: state.textColor,
                               borderRadius: state.borderRadius,
                               fontSizeFactor: 1,
                             ));
@@ -322,6 +327,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                               index: 6,
                               brightness: state.brightness!,
                               primaryColor: state.primaryColor!,
+                          textColor: state.textColor,
                               borderRadius: state.borderRadius,
                               fontSizeFactor: 1.15,
                             ));
@@ -344,6 +350,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
         context.read<ChangeThemeBloc>().add(SetCustomThemesEvent(
               index: 6,
               primaryColor: color,
+          textColor: state.textColor,
               brightness: state.brightness!,
               borderRadius: state.borderRadius,
               fontSizeFactor: state.fontSizeFactor,
