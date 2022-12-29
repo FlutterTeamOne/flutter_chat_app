@@ -47,7 +47,7 @@ class AuthPage extends StatelessWidget {
                       onPressed: () {
                         Navigator.of(context).pushNamed('/registration_page');
                       },
-                      child: Text('Create new user')),
+                      child: const Text('Create new user')),
                 ],
               );
       }),

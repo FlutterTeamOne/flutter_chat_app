@@ -92,7 +92,6 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                   // ? userBloc.state.users[index].name:'You'),
                                   selected: false,
                                   onTap: () {
-                                    //TODO: GetChatId => SetChatId
                                     context.read<ChatBloc>().add(GetChatIdEvent(
                                         widget.chatModel[index].chatId!));
                                   },
@@ -140,10 +139,9 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                                 ],
                                               );
                                             });
-                                        print(
-                                            'no id in server db: ${userFromServerDb.toString()}');
                                       } else {
                                         try {
+                                          if (!mounted) return;
                                           context.read<ChatBloc>().add(
                                                 CreateChatEvent(
                                                   chat: ChatDto(
@@ -155,15 +153,29 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                                   ),
                                                 ),
                                               );
-                                          Future.delayed(Duration(seconds: 1));
                                         } catch (e) {
-                                          print('ADD CHAT e: $e');
+                                          await showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: const Text('Ошибка'),
+                                                  content: const Text(
+                                                      'Не удалось создать чат'),
+                                                  actions: [
+                                                    TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                context, 'OK'),
+                                                        child: const Text('OK'))
+                                                  ],
+                                                );
+                                              });
                                         }
                                       }
                                     });
                                   },
-                                  icon: Icon(Icons.add),
-                                  label: Text('Add Chat'),
+                                  icon: const Icon(Icons.add),
+                                  label: const Text('Add Chat'),
                                 ),
                               ),
                             ),

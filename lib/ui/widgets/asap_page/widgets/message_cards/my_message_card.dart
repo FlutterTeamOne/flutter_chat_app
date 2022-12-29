@@ -31,11 +31,11 @@ class MyMessageCardWidget extends StatelessWidget {
                 marginIndex: 15)
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
+                children: <Widget>[
                   currentWidth > 888.8
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
+                          children: <Widget>[
                             PopupMenuCardWidget(
                                 marginIndex: 5,
                                 textController: textController,

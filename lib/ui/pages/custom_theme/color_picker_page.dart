@@ -257,7 +257,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                       fontSizeFactor: state.fontSizeFactor));
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               Row(
@@ -275,8 +275,8 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                                 borderRadius: 20,
                                 fontSizeFactor: state.fontSizeFactor));
                       },
-                      child: Text('Rounded border')),
-                  SizedBox(
+                      child: const Text('Rounded border')),
+                  const SizedBox(
                     width: 8,
                   ),
 
@@ -289,13 +289,13 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                               index: 6,
                               brightness: state.brightness!,
                               primaryColor: state.primaryColor!,
-                          textColor: state.textColor,
+                              textColor: state.textColor,
                               borderRadius: 0,
                               fontSizeFactor: state.fontSizeFactor,
                             ));
                       },
-                      child: Text('Squared border')),
-                  SizedBox(
+                      child: const Text('Squared border')),
+                  const SizedBox(
                     width: 8,
                   ),
 
@@ -308,13 +308,13 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                               index: 6,
                               brightness: state.brightness!,
                               primaryColor: state.primaryColor!,
-                          textColor: state.textColor,
+                              textColor: state.textColor,
                               borderRadius: state.borderRadius,
                               fontSizeFactor: 1,
                             ));
                       },
-                      child: Text('Normal text size')),
-                  SizedBox(
+                      child: const Text('Normal text size')),
+                  const SizedBox(
                     width: 8,
                   ),
 
@@ -327,12 +327,12 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                               index: 6,
                               brightness: state.brightness!,
                               primaryColor: state.primaryColor!,
-                          textColor: state.textColor,
+                              textColor: state.textColor,
                               borderRadius: state.borderRadius,
                               fontSizeFactor: 1.15,
                             ));
                       },
-                      child: Text('Big text size')),
+                      child: const Text('Big text size')),
                 ],
               ),
             ],
@@ -350,7 +350,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
         context.read<ChangeThemeBloc>().add(SetCustomThemesEvent(
               index: 6,
               primaryColor: color,
-          textColor: state.textColor,
+              textColor: state.textColor,
               brightness: state.brightness!,
               borderRadius: state.borderRadius,
               fontSizeFactor: state.fontSizeFactor,

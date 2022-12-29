@@ -159,6 +159,7 @@ class UserChatLayoutState extends State<UserChatLayout> {
                 contentType: ContentType.isText),
             contentType: ContentType.isText),
       );
+      if (!mounted) return;
       context.read<ChatBloc>().add(ReadChatEvent());
       FocusScope.of(context).unfocus();
       controller.clear();
@@ -199,6 +200,7 @@ class UserChatLayoutState extends State<UserChatLayout> {
             contentType: ContentType.isMediaText,
             mediaState: MediaState.isSending),
       );
+      if (!mounted) return;
       FocusScope.of(context).unfocus();
       controller.clear();
     } else if (messageBloc.state.mediaState == MediaState.isPreparation &&
@@ -215,6 +217,7 @@ class UserChatLayoutState extends State<UserChatLayout> {
             contentType: ContentType.isMedia,
             mediaState: MediaState.isSending),
       );
+      if (!mounted) return;
       FocusScope.of(context).unfocus();
       controller.clear();
     } else {
