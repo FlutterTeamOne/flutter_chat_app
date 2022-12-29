@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:chat_app/domain/data/dto/user_dto/user_dto.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
+import 'package:chat_app/src/constants/app_data_constants.dart';
 
 import '../../../src/constants/db_constants.dart';
 import 'package:path/path.dart';
@@ -31,7 +32,7 @@ class DBHelper {
     var dbFactory = databaseFactoryFfi;
     // var dbPath = await dbFactory.getDatabasesPath();
     // var dbPath = await getTemporaryDirectory();
-    var dbPath = '.dart_tool/sqflite_common_ffi/databases/';
+    var dbPath = AppDataConstants.dbDirectory;
     // print('PATH: ${dbPath.path}');
     var user = UserPath.getUser;
     print('USER DB:  $user');
