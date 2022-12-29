@@ -39,6 +39,7 @@ dependencies:
   internet_connection_checker: ^1.0.0+1
   async: ^2.9.0
   js: ^0.6.2
+  flex_color_picker: ^3.0.0
 
 
 

@@ -54,7 +54,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
   @override
   void initState() {
     screenPickerColor = context.read<ChangeThemeBloc>().state.primaryColor!;
-    dialogPickerColor = Colors.red;
+    dialogPickerColor = context.read<ChangeThemeBloc>().state.primaryColor!;
     dialogSelectColor = const Color(0xFFA239CA);
     isDark = context.read<ChangeThemeBloc>().state.brightness == Brightness.dark
         ? true
@@ -104,82 +104,82 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                   },
                 ),
               ),
-              ListTile(
-                title: const Text('Click to select a new color from a dialog '
-                    'that uses custom open/close animation. The color is only '
-                    'modified after dialog is closed with OK'),
-                subtitle: Text(
-                  // ignore: lines_longer_than_80_chars
-                  '${ColorTools.materialNameAndCode(dialogSelectColor, colorSwatchNameMap: colorsNameMap)} '
-                  'aka ${ColorTools.nameThatColor(dialogSelectColor)}',
-                ),
-                trailing: ColorIndicator(
-                    width: 40,
-                    height: 40,
-                    borderRadius: 0,
-                    color: dialogSelectColor,
-                    elevation: 1,
-                    onSelectFocus: false,
-                    onSelect: () async {
-                      // Wait for the dialog to return color selection result.
-                      final Color newColor = await showColorPickerDialog(
-                        // The dialog needs a context, we pass it in.
-                        context,
-                        // We use the dialogSelectColor, as its starting color.
-                        dialogSelectColor,
-                        title: Text('ColorPicker',
-                            style: Theme.of(context).textTheme.titleLarge),
-                        width: 40,
-                        height: 40,
-                        spacing: 0,
-                        runSpacing: 0,
-                        borderRadius: 0,
-                        wheelDiameter: 165,
-                        enableOpacity: true,
-                        showColorCode: true,
-                        colorCodeHasColor: true,
-                        pickersEnabled: <ColorPickerType, bool>{
-                          ColorPickerType.wheel: true,
-                        },
-                        copyPasteBehavior: const ColorPickerCopyPasteBehavior(
-                          copyButton: true,
-                          pasteButton: true,
-                          longPressMenu: true,
-                        ),
-                        actionButtons: const ColorPickerActionButtons(
-                          okButton: true,
-                          closeButton: true,
-                          dialogActionButtons: false,
-                        ),
-                        transitionBuilder: (BuildContext context,
-                            Animation<double> a1,
-                            Animation<double> a2,
-                            Widget widget) {
-                          final double curvedValue =
-                              Curves.easeInOutBack.transform(a1.value) - 1.0;
-                          return Transform(
-                            transform: Matrix4.translationValues(
-                                0.0, curvedValue * 200, 0.0),
-                            child: Opacity(
-                              opacity: a1.value,
-                              child: widget,
-                            ),
-                          );
-                        },
-                        transitionDuration: const Duration(milliseconds: 400),
-                        constraints: const BoxConstraints(
-                            minHeight: 480, minWidth: 320, maxWidth: 320),
-                      );
-                      // We update the dialogSelectColor, to the returned result
-                      // color. If the dialog was dismissed it actually returns
-                      // the color we started with. The extra update for that
-                      // below does not really matter, but if you want you can
-                      // check if they are equal and skip the update below.
-                      setState(() {
-                        dialogSelectColor = newColor;
-                      });
-                    }),
-              ),
+              // ListTile(
+              //   title: const Text('Click to select a new color from a dialog '
+              //       'that uses custom open/close animation. The color is only '
+              //       'modified after dialog is closed with OK'),
+              //   subtitle: Text(
+              //     // ignore: lines_longer_than_80_chars
+              //     '${ColorTools.materialNameAndCode(dialogSelectColor, colorSwatchNameMap: colorsNameMap)} '
+              //     'aka ${ColorTools.nameThatColor(dialogSelectColor)}',
+              //   ),
+              //   trailing: ColorIndicator(
+              //       width: 40,
+              //       height: 40,
+              //       borderRadius: 0,
+              //       color: dialogSelectColor,
+              //       elevation: 1,
+              //       onSelectFocus: false,
+              //       onSelect: () async {
+              //         // Wait for the dialog to return color selection result.
+              //         final Color newColor = await showColorPickerDialog(
+              //           // The dialog needs a context, we pass it in.
+              //           context,
+              //           // We use the dialogSelectColor, as its starting color.
+              //           dialogSelectColor,
+              //           title: Text('ColorPicker',
+              //               style: Theme.of(context).textTheme.titleLarge),
+              //           width: 40,
+              //           height: 40,
+              //           spacing: 0,
+              //           runSpacing: 0,
+              //           borderRadius: 0,
+              //           wheelDiameter: 165,
+              //           enableOpacity: true,
+              //           showColorCode: true,
+              //           colorCodeHasColor: true,
+              //           pickersEnabled: <ColorPickerType, bool>{
+              //             ColorPickerType.wheel: true,
+              //           },
+              //           copyPasteBehavior: const ColorPickerCopyPasteBehavior(
+              //             copyButton: true,
+              //             pasteButton: true,
+              //             longPressMenu: true,
+              //           ),
+              //           actionButtons: const ColorPickerActionButtons(
+              //             okButton: true,
+              //             closeButton: true,
+              //             dialogActionButtons: false,
+              //           ),
+              //           transitionBuilder: (BuildContext context,
+              //               Animation<double> a1,
+              //               Animation<double> a2,
+              //               Widget widget) {
+              //             final double curvedValue =
+              //                 Curves.easeInOutBack.transform(a1.value) - 1.0;
+              //             return Transform(
+              //               transform: Matrix4.translationValues(
+              //                   0.0, curvedValue * 200, 0.0),
+              //               child: Opacity(
+              //                 opacity: a1.value,
+              //                 child: widget,
+              //               ),
+              //             );
+              //           },
+              //           transitionDuration: const Duration(milliseconds: 400),
+              //           constraints: const BoxConstraints(
+              //               minHeight: 480, minWidth: 320, maxWidth: 320),
+              //         );
+              //         // We update the dialogSelectColor, to the returned result
+              //         // color. If the dialog was dismissed it actually returns
+              //         // the color we started with. The extra update for that
+              //         // below does not really matter, but if you want you can
+              //         // check if they are equal and skip the update below.
+              //         setState(() {
+              //           dialogSelectColor = newColor;
+              //         });
+              //       }),
+              // ),
 
               // Show the selected color.
               ListTile(
