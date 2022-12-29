@@ -44,8 +44,6 @@ class _AddChatDialogWidgetState extends State<AddChatDialogWidget> {
     return AlertDialog(
       actionsAlignment: MainAxisAlignment.center,
       title: const Text('Add Chat'),
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20))),
       content: SizedBox(
         width: 500,
         height: 500,

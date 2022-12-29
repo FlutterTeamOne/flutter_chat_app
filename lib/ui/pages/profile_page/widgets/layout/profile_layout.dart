@@ -57,8 +57,8 @@ class _ProfileLayout extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Username',
-                          style: Theme.of(context).textTheme.headline6,
+                          userMain.name ?? 'unknow',
+                          style: Theme.of(context).textTheme.bodyText2,
                         ),
                         const SizedBox(height: 2),
                         Row(

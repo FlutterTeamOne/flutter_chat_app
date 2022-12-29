@@ -144,6 +144,20 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                         var userFromServerDb =
                             await grpcClient.getUser(userId: value);
                         if (userFromServerDb.toString().isEmpty) {
+                          await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Ошибка'),
+                                  content: const Text('Нет юзера с таким Id'),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'OK'),
+                                        child: const Text('OK'))
+                                  ],
+                                );
+                              });
                           print(
                               'no id in server db: ${userFromServerDb.toString()}');
                         } else {
