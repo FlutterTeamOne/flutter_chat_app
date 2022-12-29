@@ -39,161 +39,182 @@ class _ChatListLayoutState extends State<ChatListLayout> {
         shape: Border(
             right: BorderSide(width: 1, color: Theme.of(context).dividerColor)),
         elevation: 0,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            widget.chatModel.isEmpty || widget.chatModel == []
-                ? const Center(
-                    child: Text('Oops...\nno chats'),
-                  )
-                : SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        SearchFieldWidget(controller: _searchController),
-                        const SizedBox(height: 5),
-                        ListView.separated(
-                          itemCount: widget.chatModel.length,
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          separatorBuilder: (context, index) =>
-                              const SizedBox(height: 25),
-                          itemBuilder: (context, index) {
-                            var friend;
-                            print(
-                                'CHAT LIST LAYOUT: ${context.read<UserBloc>().state.users}');
+        child: Flexible(
+          flex: 1,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              widget.chatModel.isEmpty || widget.chatModel == []
+                  ? const Center(
+                      child: Text('Oops...\nno chats'),
+                    )
+                  : Expanded(
+                      flex: 1,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            SearchFieldWidget(controller: _searchController),
+                            const SizedBox(height: 5),
+                            ListView.separated(
+                              itemCount: widget.chatModel.length,
+                              physics: const BouncingScrollPhysics(),
+                              shrinkWrap: true,
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(height: 25),
+                              itemBuilder: (context, index) {
+                                var friend;
+                                friend = context
+                                    .read<UserBloc>()
+                                    .state
+                                    .users!
+                                    .firstWhere((user) {
+                                  return user.userId ==
+                                      widget.chatModel[index].userIdChat;
+                                });
+                                var lastMessage = MessageDto(
+                                    chatId: 0, senderId: 0, content: '');
+                                for (var i in widget.messageModel) {
+                                  if (i.chatId ==
+                                      widget.chatModel[index].chatId) {
+                                    lastMessage = i;
+                                  }
+                                }
+                                // var lastMessageId = widget.chatModel.
+                                // : widget.messageModel.length - 1;
+                                return UserCardWidget(
+                                  updatedDate: getUpdateDate(
+                                      widget.chatModel[index].updatedDate),
+                                  sender: !checkSender(lastMessage.senderId)
+                                      ? userBloc.state.users![index].name
+                                      : 'You',
+                                  // checkSender(widget.messageModel[lastMessageId].senderId),
+                                  // ? userBloc.state.users[index].name:'You'),
+                                  selected: false,
+                                  onTap: () {
+                                    //TODO: GetChatId => SetChatId
+                                    context.read<ChatBloc>().add(GetChatIdEvent(
+                                        widget.chatModel[index].chatId!));
+                                  },
+                                  name: friend.name,
+                                  image: friend.profilePicLink,
 
-                            friend = context
-                                .read<UserBloc>()
-                                .state
-                                .users!
-                                .firstWhere((user) {
-                              return user.userId ==
-                                  widget.chatModel[index].userIdChat;
-                            });
-
-                            //TODO: тут заменить на юзера, если будет 5 ид, а юзеры 1 2 5, то будет ошибка
-                            // for (var user
-                            //     in context.watch<UserBloc>().state.users.firstWhere((element) => false)) {
-                            //   for (var chat in widget.chatModel) {
-                            //     print('USER FOR: $user');
-                            //     print('CHAT FOR: $chat');
-                            //     if (user.userId == chat.userIdChat) {
-                            //       friend = user;
-                            //       break;
-                            //     } else {
-                            //       friend =
-                            //           context.read<UserBloc>().state.users?[0];
-                            //     }
-                            //   }
-                            // if (user.userId ==
-                            //     widget.chatModel[index].userIdChat) {
-                            //   friend = user;
-                            //   break;
-                            // }
-                            // }
-                            var lastMessage =
-                                MessageDto(chatId: 0, senderId: 0, content: '');
-                            for (var i in widget.messageModel) {
-                              if (i.chatId == widget.chatModel[index].chatId) {
-                                lastMessage = i;
-                              }
-                            }
-                            // var lastMessageId = widget.chatModel.
-                            // : widget.messageModel.length - 1;
-                            return UserCardWidget(
-                              sender: !checkSender(lastMessage.senderId)
-                                  ? userBloc.state.users![index].name
-                                  : 'You',
-                              // checkSender(widget.messageModel[lastMessageId].senderId),
-                              // ? userBloc.state.users[index].name:'You'),
-                              selected: false,
-                              onTap: () {
-                                //TODO: GetChatId => SetChatId
-                                context.read<ChatBloc>().add(GetChatIdEvent(
-                                    widget.chatModel[index].chatId!));
+                                  message: lastMessage.chatId != 0
+                                      ? lastMessage.content
+                                      : 'Start chating',
+                                );
                               },
-                              name: friend.name,
-                              image: friend.profilePicLink,
-
-                              message: lastMessage.chatId != 0
-                                  ? lastMessage.content
-                                  : 'Start chating',
-                            );
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-            Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  // decoration: BoxDecoration(
-                  //   borderRadius: BorderRadius.circular(50)
-                  // ),
-                  child: ElevatedButton.icon(
-                    onPressed: () async {
-                      int value = 0;
-                      await showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  (AddChatDialogWidget(val: value)))
-                          .then((value) async {
-                        print('FriendId From Add Dialog: $value');
-                        print('Current UserId: ${UserPref.getUserId}');
-                        //FriendId Validation
-                        var userFromServerDb =
-                            await grpcClient.getUser(userId: value);
-                        if (userFromServerDb.toString().isEmpty) {
-                          await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('Ошибка'),
-                                  content: const Text('Нет юзера с таким Id'),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, 'OK'),
-                                        child: const Text('OK'))
-                                  ],
-                                );
-                              });
-                          print(
-                              'no id in server db: ${userFromServerDb.toString()}');
-                        } else {
-                          try {
-                            context.read<ChatBloc>().add(
-                                  CreateChatEvent(
-                                    chat: ChatDto(
-                                      userIdChat: value,
-                                      createdDate:
-                                          DateTime.now().toIso8601String(),
-                                      updatedDate:
-                                          DateTime.now().toIso8601String(),
-                                    ),
-                                  ),
-                                );
-                            Future.delayed(Duration(seconds: 1));
-                          } catch (e) {
-                            print('ADD CHAT e: $e');
-                          }
-                        }
-                      });
-                    },
-                    icon: const Icon(Icons.add),
-                    label: const Text('Add Chat'),
-                    style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                            )
+                          ],
+                        ),
                       ),
-                    )),
-                  ),
-                ))
-          ],
+                    ),
+              Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    // decoration: BoxDecoration(
+                    //   borderRadius: BorderRadius.circular(50)
+                    // ),
+                    child: ElevatedButton.icon(
+                      onPressed: () async {
+                        int value = 0;
+                        await showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    (AddChatDialogWidget(val: value)))
+                            .then((value) async {
+                          print('FriendId From Add Dialog: $value');
+                          print('Current UserId: ${UserPref.getUserId}');
+                          //FriendId Validation
+                          var userFromServerDb =
+                              await grpcClient.getUser(userId: value);
+                          if (userFromServerDb.toString().isEmpty) {
+                            await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Ошибка'),
+                                    content: const Text('Нет юзера с таким Id'),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, 'OK'),
+                                          child: const Text('OK'))
+                                    ],
+                                  );
+                                });
+                            print(
+                                'no id in server db: ${userFromServerDb.toString()}');
+                          } else {
+                            try {
+                              context.read<ChatBloc>().add(
+                                    CreateChatEvent(
+                                      chat: ChatDto(
+                                        userIdChat: value,
+                                        createdDate:
+                                            DateTime.now().toIso8601String(),
+                                        updatedDate:
+                                            DateTime.now().toIso8601String(),
+                                      ),
+                                    ),
+                                  );
+                              Future.delayed(Duration(seconds: 1));
+                            } catch (e) {
+                              print('ADD CHAT e: $e');
+                            }
+                          }
+                        });
+                      },
+                      icon: Icon(Icons.add),
+                      label: Text('Add Chat'),
+                      style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      )),
+                    ),
+                  ))
+            ],
+          ),
         ));
   }
 
   bool checkSender(int id) => id == UserPref.getUserId ? true : false;
+
+  getUpdateDate(String updateDate) {
+    var updatedDate = DateTime.parse(updateDate);
+    //день
+    var today = DateTime.now().day;
+    //время
+    var correctMinute = updatedDate.minute.toString().length == 1
+        ? '0${updatedDate.minute}'
+        : updatedDate.minute;
+    String? realTime = '${updatedDate.hour}:$correctMinute';
+    //месяц
+    List<String> months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    int monthNow = updatedDate.month - 1;
+    //год
+    var thisYear = DateTime.now().year;
+    var correctUpdatedDate = updatedDate.day != today
+        ? '${months[monthNow]} ${updatedDate.day}'
+        : updatedDate.year != thisYear
+            ? '${updatedDate.year} ${months[monthNow]} ${updatedDate.day}'
+            : realTime;
+    return correctUpdatedDate;
+  }
 }

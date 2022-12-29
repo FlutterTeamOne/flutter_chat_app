@@ -189,6 +189,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         }
       }
       for (var message in response.messages) {
+        var type = ContentType.isText.name == message.contentType.name
+            ? ContentType.isText
+            : ContentType.isMedia.name == message.contentType.name
+                ? ContentType.isMedia
+                : ContentType.isMediaText.name == message.contentType.name
+                    ? ContentType.isMediaText
+                    : ContentType.isText;
         var msg = Message(
           messageId: message.messageId,
           chatId: message.chatId,
@@ -197,6 +204,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           dateCreate: message.createdDate,
           dateUpdate: message.updatedDate,
           dateDelete: message.deletedDate,
+          contentType: type,
+          attachmentId: message.attachmentId,
           isRead: message.isRead,
         );
         await _messagesServices.addNewMessageFromBase(message: msg);

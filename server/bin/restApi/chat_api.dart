@@ -55,19 +55,23 @@ class ChatApi {
       }
     });
     router.delete('/', (Request request) async {
+      print('req del:${await request.readAsString()}');
       final body = await request.readAsString();
-      var id = int.parse(body);
+      var chatId = json.decode(body);
+      var id = int.parse(chatId);
       await _chatService.deleteChat(id: id);
 
-      return Response.ok('Чат удален', headers: _headers);
+      return Response.ok('Чат удален');
     });
     //запрос на удаление чата по ид
     router.delete('/<id>', (Request request, String id) async {
       var chatId = int.tryParse(id);
+      print('CHAI ID DEL: $chatId');
+      var resp;
       if (chatId != null) {
-        await ChatsServices().deleteChat(id: chatId);
+       resp= await _chatService.deleteChat(id: chatId);
       }
-      return Response.ok('Удалено', headers: _headers);
+      return Response.ok(resp.toString());
     });
     //запрос на редактирования чата по ид
     // router.post('/<id>', (Request request, int id) {

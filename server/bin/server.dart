@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:grpc/grpc.dart';
 import 'package:server/src/db_server/services/message_service.dart';
-import 'package:server/src/generated/users.pb.dart';
-
 import 'package:server/src/library/library_server.dart';
 
 ///
@@ -185,10 +183,11 @@ class GrpcMessage extends GrpcMessagesServiceBase {
       }
       if (req.messageState == MessageStateEnum.isCreateMessage) {
         var newMessage = await messagesService.addNewMessage(
-          chatId: req.createMessage.message.chatId,
-          senderId: req.createMessage.message.senderId,
-          content: req.createMessage.message.content,
-        );
+            chatId: req.createMessage.message.chatId,
+            senderId: req.createMessage.message.senderId,
+            content: req.createMessage.message.content,
+            attachmentId: req.createMessage.message.attachmentId,
+            contentType: req.createMessage.message.contentType);
 
         req.createMessage.message.messageId = newMessage['message_id'] as int;
         req.createMessage.message.dateCreate =
@@ -455,6 +454,7 @@ class GrpcUsers extends GrpcUsersServiceBase {
         profilePicUrl: request.profilePicUrl,
         password: request.password,
         updatedDate: date);
+
     var createUserResponse = CreateUserResponse();
     if (src[0]['user_id'] != 0) {
       createUserResponse.dateCreated = request.dateCreated;
@@ -612,6 +612,13 @@ class GrpcSynh extends GrpcSynchronizationServiceBase {
     }
 
     for (int i = 0; i < messages.length; i++) {
+      var type = messages[i]['content_type'] == null
+          ? ContentTypeSynch.isText
+          : messages[i]['content_type'] == ContentTypeSynch.isMedia.name
+              ? ContentTypeSynch.isMedia
+              : messages[i]['content_type'] == ContentTypeSynch.isMediaText.name
+                  ? ContentTypeSynch.isMediaText
+                  : ContentTypeSynch.isText;
       var messageForList = SynhMessage();
       messageForList.senderId = messages[i]['sender_id'] as int;
       messageForList.chatId = messages[i]['chat_id'] as int;
@@ -620,6 +627,8 @@ class GrpcSynh extends GrpcSynchronizationServiceBase {
       messageForList.content = messages[i]['content'] as String;
       messageForList.updatedDate = messages[i]['updated_date'] as String;
       messageForList.deletedDate = messages[i]['deleted_date'] ?? '';
+      messageForList.contentType = type;
+      messageForList.attachmentId = messages[i]['attachment_id'] ?? 0;
       //Параметра нету в базе
       //messageForList.isRead = messages[i]['is_read'].toInt() ?? 0;
       messageList.add(messageForList);
@@ -680,7 +689,6 @@ class GrpcSynh extends GrpcSynchronizationServiceBase {
 Future<void> main() async {
   final server = Server(
     [GrpcMessage(), GrpcUsers(), GrpcSynh()],
-
     const <Interceptor>[], //Перехватчик
 
     //Реестр кодеков, отслеживает чем будем пользоваться
@@ -690,4 +698,12 @@ Future<void> main() async {
   await server.serve(port: 6000);
   await DbServerServices.instanse.openDatabase();
   print('✅ Server listening on port ${server.port}...');
+}
+
+Future<void> measureInterceptor(ServiceCall call, ServiceMethod method,
+    Future<void> Function(ServiceCall call, ServiceMethod method) next) async {
+  final Stopwatch stopwatch = Stopwatch()..start();
+  await next(call, method);
+  stopwatch.stop();
+  print("method: ${method.name}, took ${stopwatch.elapsedMilliseconds} ms");
 }

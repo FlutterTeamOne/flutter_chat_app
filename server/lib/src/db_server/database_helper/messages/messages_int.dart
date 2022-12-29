@@ -4,10 +4,11 @@ abstract class IMessagesDBServices {
   factory IMessagesDBServices() => MessagesDBServices();
 
   addNewMessage({
-    required int chatId,
+     required int chatId,
     required int senderId,
     required String content,
-    required int attachmentId
+    int? attachmentId,
+    required ContentType contentType,
   });
 
   getMessageById({required int id});

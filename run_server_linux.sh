@@ -3,6 +3,7 @@ cd server
 dart pub get
 cd ..
 rm  -R .dart_tool/sqflite_common_ffi/databases/
+rm  -R /home/slavlen/AppData/
 protoc -I ./proto/ ./proto/messages.proto --dart_out=grpc:./lib/src/generated/messages
 protoc -I ./proto/ ./proto/messages.proto --dart_out=grpc:./server/lib/src/generated
 protoc -I ./proto/ ./proto/users.proto --dart_out=grpc:./lib/src/generated/users

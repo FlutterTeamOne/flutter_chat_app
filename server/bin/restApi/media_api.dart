@@ -29,17 +29,17 @@ class MediaApi {
     router.post('/', (Request request) async {
       final body = await request.readAsString();
       var bodyDecode = jsonDecode(body);
-      var resp =
-          await _sender.uploadImage(bodyDecode['path']);
-
-      return Response.ok(resp, headers: _headers);
+      var resp = await _sender.uploadImage(bodyDecode['path']);
+      print('POST RESP:${resp.toString()}');
+      return Response.ok('УДАЧНО', headers: _headers);
     });
     //Запрос на добавление изображения
     router.put('/', (Request request) async {
       final body = await request.readAsString();
-      var resp = jsonDecode(body);
-
-      return Response.ok(body, headers: _headers);
+      var bodyDecode = jsonDecode(body);
+      var resp = await _sender.uploadImage(bodyDecode['path']);
+      print('POST RESP:${resp.toString()}');
+      return Response.ok(resp.toString());
     });
     //
     router.delete('/', (Request request) async {

@@ -37,8 +37,10 @@ class UserPref {
   static bool get getUserDbPref => _prefs.getBool('userDb') ?? true;
   static set setUserDbPref(bool value) => _prefs.setBool('userDb', value);
   static set setUserId(int id) => _prefs.setInt('userId', id);
+
   static set setThemeIndex(int index) => _prefs.setInt('theme_key', index);
   static get getUserId => _prefs.getInt('userId');
   static get getThemeIndex => _prefs.getInt('theme_key');
+
   static restore() async => await _prefs.clear();
 }

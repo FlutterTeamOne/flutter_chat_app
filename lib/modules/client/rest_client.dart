@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:chat_app/domain/data/dto/attach_dto/attach_dto.dart';
 import 'package:chat_app/domain/data/library/library_data.dart';
 import 'package:chat_app/modules/sending_manager/library/library_sending_manager.dart';
 import 'package:dio/dio.dart';
@@ -116,26 +117,38 @@ class RestClient {
   }
 
   Future deleteChatRest({required int id}) async {
-    var chatUrl = '$_url/chats';
+    var chatUrl = '$_url/chats/';
     try {
-      var resp = await _dio.delete('$chatUrl/$id');
+      var resp = await _dio.delete('$chatUrl$id');
       print('DEL RESP:$resp');
+      if (resp.statusCode == 200) {
+        var data = json.decode(resp.data);
+        print('DEL DATA: $data');
+      }
     } catch (e) {}
   }
 
-  Future<int> sendImageRest({required String path}) async {
+  Future<AttachModel> sendImageRest({required String path}) async {
     var imageUrl = '$_url/images/';
-    var attachId;
+    late AttachModel attach;
     try {
-      var resp = await _dio.post(imageUrl, data: {"path": path});
+      var resp = await _dio.put(imageUrl, data: {"path": path});
+      print("RESP: $resp");
       if (resp.statusCode == 200) {
-        var data = jsonDecode(resp.data);
-        attachId = data['attachment_id'];
+        var source = resp.data
+            .toString()
+            .replaceAll('attachment_id', '"attachment_id"')
+            .replaceAll('attachment_meta', '"attachment_meta"');
+        print('source:$source');
+        // var res = json.decode(source);
+
+        attach = AttachModel.fromJson(source);
+        print('mod:$attach');
       }
     } catch (e) {
       print(e);
     }
-    return attachId as int;
+    return attach;
   }
 
   Future getImageRest({required int imageId}) async {

@@ -64,8 +64,25 @@ class ChatsServices implements IChatsServices {
         .rawUpdate('''UPDATE chats SET $newValues WHERE ($condition)''');
   }
 
+  Future updateChatUpdatedDate(
+      {required int id, required String updatedDate}) async {
+    Database db = await DbServerServices.instanse.database;
+    await db.transaction((txn) async {
+      await txn.execute('''
+      INSERT INTO chats (updated_date)
+        VALUES ('$updatedDate')
+        WHERE (chat_id = $id)
+      ''');
+
+      return await txn.execute('''SELECT * FROM chats
+          WHERE 
+          (chat_id = $id)
+        ''');
+    });
+  }
+
   @override
-  deleteChat({required int id}) async {
+  Future<int> deleteChat({required int id}) async {
     Database db = await DbServerServices.instanse.database;
 
     return await db.rawDelete('''DELETE FROM chats WHERE (chat_id = $id)''');

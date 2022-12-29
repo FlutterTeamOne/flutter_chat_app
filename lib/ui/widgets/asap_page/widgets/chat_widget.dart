@@ -69,7 +69,12 @@ class ChatWidgetState extends State<ChatWidget> {
           iconSize: _icSize,
         ),
       ),
-      body: GroupedListView<MessageDto, int>(
+
+      body: 
+      messages.length == 0 
+      ? Center(child: Text('Start chatting'))
+      : GroupedListView<MessageDto, int>(
+        
         controller: scrollController,
         padding: const EdgeInsets.all(10),
         elements: messages,
