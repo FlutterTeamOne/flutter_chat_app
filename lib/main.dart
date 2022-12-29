@@ -92,7 +92,7 @@ class MyApp extends StatelessWidget {
       initialRoute:
           !UserPref.getUserDbPref ? MainLayout.routeName : AuthPage.routeName,
       routes: {
-        '/registration_page': (context) => const RegistrationPage(),
+        RegistrationPage.routeName: (context) => const RegistrationPage(),
         AuthPage.routeName: (context) => const AuthPage(),
         MainLayout.routeName: (context) => const MainLayout(),
         '/Settings page': (context) => const SettingsPage(),

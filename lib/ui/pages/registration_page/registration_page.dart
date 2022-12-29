@@ -6,14 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../widgets/registration_page/bloc/new_user_state.dart';
 
-class RegistrationPage extends StatefulWidget {
+class RegistrationPage extends StatelessWidget {
   const RegistrationPage({Key? key}) : super(key: key);
+  static const routeName = '/registration_page';
 
-  @override
-  State<RegistrationPage> createState() => _RegistrationPageState();
-}
-
-class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NewUserBloc, NewUserState>(

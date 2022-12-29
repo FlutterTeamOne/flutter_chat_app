@@ -1,15 +1,10 @@
 part of '../authorization_page.dart';
 
-class UserCard extends StatefulWidget {
+class UserCard extends StatelessWidget {
   const UserCard({super.key, required this.user});
 
   final UserDto user;
 
-  @override
-  State<UserCard> createState() => _UserCardState();
-}
-
-class _UserCardState extends State<UserCard> {
   @override
   Widget build(BuildContext context) {
     var userBloc = context.read<UserBloc>();
@@ -20,22 +15,23 @@ class _UserCardState extends State<UserCard> {
           hoverColor: Colors.transparent,
           focusColor: Colors.transparent,
           onTap: () async {
-            userBloc.add(ChangeUserEvent(user: widget.user, isStartDB: false));
-            UserPref.setUserId = widget.user.userId!;
-            UserPath.user = widget.user;
+            userBloc.add(ChangeUserEvent(user: user, isStartDB: false));
+            UserPref.setUserId = user.userId!;
+            UserPath.user = user;
             var db = await DBHelper.instanse.initDB();
             print("db open? ${db.path},${db.isOpen}");
-            Future.delayed(Duration(seconds: 1),
-                () => Navigator.of(context).pushNamed(MainLayout.routeName));
+            // Future.delayed(const Duration(seconds: 1),
+            //     () => Navigator.of(context).pushNamed(MainLayout.routeName));
+            Navigator.of(context).pushNamed(MainLayout.routeName);
           },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            child: Image.network(widget.user.profilePicLink,
+            child: Image.network(user.profilePicLink,
                 fit: BoxFit.cover, width: 150, height: 150),
           ),
         ),
         Text(
-          widget.user.email,
+          user.email,
           style: Theme.of(context).textTheme.headline6,
         ),
         // const SizedBox(height: 10),

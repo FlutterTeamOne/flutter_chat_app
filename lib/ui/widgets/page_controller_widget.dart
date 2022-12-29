@@ -1,5 +1,4 @@
-﻿import 'package:chat_app/ui/pages/registration_page/registration_page.dart';
-import 'package:sidebarx/sidebarx.dart';
+﻿import 'package:sidebarx/sidebarx.dart';
 import 'package:flutter/material.dart';
 
 import '../pages/library/library_pages.dart';
