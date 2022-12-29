@@ -194,7 +194,10 @@ class GrpcMessage extends GrpcMessagesServiceBase {
             newMessage['created_date'] as String;
         req.createMessage.message.dateUpdate =
             newMessage['updated_date'] as String;
-        await ChatsServices().updateChat(newValues: 'updated_date = "${req.createMessage.message.dateUpdate}"', condition: 'chat_id = ${req.createMessage.message.chatId}');
+        await ChatsServices().updateChat(
+            newValues:
+                'updated_date = "${req.createMessage.message.dateUpdate}"',
+            condition: 'chat_id = ${req.createMessage.message.chatId}');
         print('REQ message UPDATE: ${req.createMessage.message}, ');
         _controllers.forEach((controller, _) async =>
             await MessageService.onCreateMessage(
@@ -280,7 +283,6 @@ class GrpcMessage extends GrpcMessagesServiceBase {
     //   if (req.messageState == MessageState.isUpdateMessage) {}
     // }
   }
-
 }
 
 // class GrpcChats extends GrpcChatsServiceBase {
@@ -331,7 +333,6 @@ class GrpcMessage extends GrpcMessagesServiceBase {
 //     return updateChatResp;
 //   }
 // }
-
 
 class GrpcUsers extends GrpcUsersServiceBase {
   @override
@@ -444,13 +445,11 @@ class GrpcSynh extends GrpcSynchronizationServiceBase {
           id: request.mainUserId, chatId: request.chatId);
     }
     if (request.messageId == 0) {
-
       messages = await MessagesDBServices()
           .getMessageByUserId(userId: request.mainUserId);
     } else {
       messages = await MessagesDBServices().getMessageByUserIdMoreMessageId(
           userId: request.mainUserId, messageId: request.messageId);
-
     }
 
     print('USERSNEW: $newUsers');
@@ -576,7 +575,6 @@ class GrpcSynh extends GrpcSynchronizationServiceBase {
 Future<void> main() async {
   final server = Server(
     [GrpcMessage(), GrpcUsers(), GrpcSynh()],
-
     const <Interceptor>[], //Перехватчик
 
     //Реестр кодеков, отслеживает чем будем пользоваться
@@ -586,4 +584,12 @@ Future<void> main() async {
   await server.serve(port: 6000);
   await DbServerServices.instanse.openDatabase();
   print('✅ Server listening on port ${server.port}...');
+}
+
+Future<void> measureInterceptor(ServiceCall call, ServiceMethod method,
+    Future<void> Function(ServiceCall call, ServiceMethod method) next) async {
+  final Stopwatch stopwatch = Stopwatch()..start();
+  await next(call, method);
+  stopwatch.stop();
+  print("method: ${method.name}, took ${stopwatch.elapsedMilliseconds} ms");
 }

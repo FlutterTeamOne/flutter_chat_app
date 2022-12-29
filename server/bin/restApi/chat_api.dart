@@ -5,7 +5,6 @@ import 'package:server/src/library/library_server.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-
 class ChatApi {
   // static const String _chats = 'server/bin/restApi/chat.json';
   static const _headers = {'Content-Type': 'application/json'};
@@ -22,13 +21,13 @@ class ChatApi {
     });
     router.get('/<user_id>', (Request request, String userId) async {
       final id = int.parse(userId);
-      var chats = await  _chatService.getChatsByUserId(userId: id);
+      var chats = await _chatService.getChatsByUserId(userId: id);
       print('got chats: $chats');
       return Response.ok(json.encode(chats), headers: _headers);
     });
     router.get('/<chat_id>', (Request request, String chatId) async {
       final id = int.parse(chatId);
-      var chats = await  _chatService.getChatById(id: id);
+      var chats = await _chatService.getChatById(id: id);
       print('got chats: $chats');
       return Response.ok(json.encode(chats), headers: _headers);
     });
@@ -44,19 +43,23 @@ class ChatApi {
       return Response.ok(body, headers: _headers);
     });
     router.delete('/', (Request request) async {
+      print('req del:${await request.readAsString()}');
       final body = await request.readAsString();
-      var id = int.parse(body);
+      var chatId = json.decode(body);
+      var id = int.parse(chatId);
       await _chatService.deleteChat(id: id);
 
-      return Response.ok('Чат удален', headers: _headers);
+      return Response.ok('Чат удален');
     });
     //запрос на удаление чата по ид
     router.delete('/<id>', (Request request, String id) async {
       var chatId = int.tryParse(id);
+      print('CHAI ID DEL: $chatId');
+      var resp;
       if (chatId != null) {
-        await ChatsServices().deleteChat(id: chatId);
+       resp= await _chatService.deleteChat(id: chatId);
       }
-      return Response.ok('Удалено', headers: _headers);
+      return Response.ok(resp.toString());
     });
     //запрос на редактирования чата по ид
     // router.post('/<id>', (Request request, int id) {
@@ -68,7 +71,10 @@ class ChatApi {
       final body = await request.readAsString();
       var resp = jsonDecode(body);
 
-      await _chatService.createChat(friend1Id: resp['friend1_id'], friend2Id: resp['friend2_id'], date: resp['date']);
+      await _chatService.createChat(
+          friend1Id: resp['friend1_id'],
+          friend2Id: resp['friend2_id'],
+          date: resp['date']);
       return Response.ok(body, headers: _headers);
     });
     //запрос на поиск чата по ид

@@ -40,11 +40,11 @@ class ChatsServices implements IChatsServices {
     return await db.rawQuery('''SELECT * FROM chats''');
   }
 
-
   Future<List<Map<String, Object?>>> getAllChatsSortedByUpdatedDate() async {
     Database db = await DbServerServices.instanse.database;
 
-    return await db.rawQuery('''SELECT * FROM chats ORDER BY updated_date DESC''');
+    return await db
+        .rawQuery('''SELECT * FROM chats ORDER BY updated_date DESC''');
   }
 
   @override
@@ -65,7 +65,8 @@ class ChatsServices implements IChatsServices {
         .rawUpdate('''UPDATE chats SET $newValues WHERE ($condition)''');
   }
 
-  Future updateChatUpdatedDate({required int id, required String updatedDate}) async {
+  Future updateChatUpdatedDate(
+      {required int id, required String updatedDate}) async {
     Database db = await DbServerServices.instanse.database;
     await db.transaction((txn) async {
       await txn.execute('''
@@ -74,17 +75,15 @@ class ChatsServices implements IChatsServices {
         WHERE (chat_id = $id)
       ''');
 
-      return await txn.execute(
-        '''SELECT * FROM chats
+      return await txn.execute('''SELECT * FROM chats
           WHERE 
           (chat_id = $id)
-        '''
-      );
+        ''');
     });
   }
 
   @override
-  deleteChat({required int id}) async {
+  Future<int> deleteChat({required int id}) async {
     Database db = await DbServerServices.instanse.database;
 
     return await db.rawDelete('''DELETE FROM chats WHERE (chat_id = $id)''');

@@ -26,6 +26,7 @@ class AsapPage extends StatelessWidget {
             builder: (context, messageState) {
               print("chatState: ${chatState.chats}");
               print("messageState: ${messageState.messages}");
+              
               return Row(
                 children: [
                   // Список чатов
@@ -34,9 +35,10 @@ class AsapPage extends StatelessWidget {
                           ? const Text('Sorry')
                           : messageState.messages != null
                               ? ChatListLayout(
-                                  chatModel: chatState.chats!,
+                                  chatModel:
+                                      context.watch<ChatBloc>().state.chats!,
                                   messageModel: messageState.messages!)
-                              : Center(
+                              : const Center(
                                   child: CircularProgressIndicator(),
                                 )),
                   // Чат
@@ -46,9 +48,8 @@ class AsapPage extends StatelessWidget {
                           ? const DefaultUserChatLayout()
                           : messageState.messages != null
                               ? UserChatLayout(chatId: chatState.chatId!)
-                              : Center(
-                                  child: CircularProgressIndicator(),
-                                )),
+                              : const Center(
+                                  child: CircularProgressIndicator())),
                   // Профиль
                   // Expanded(
                   //   flex: 2,
