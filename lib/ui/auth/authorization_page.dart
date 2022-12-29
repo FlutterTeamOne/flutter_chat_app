@@ -1,22 +1,17 @@
-import 'dart:developer';
 
-import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:chat_app/ui/pages/library/library_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../pages/registration_page/registration_page.dart';
 part '../auth/widgets/user_card.dart';
 
-class AuthPage extends StatefulWidget {
+class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
   static const routeName = '/';
 
-  @override
-  State<AuthPage> createState() => _AuthPageState();
-}
-
-class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +22,7 @@ class _AuthPageState extends State<AuthPage> {
               )
             : Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 100,
                   ),
                   Center(
@@ -50,9 +45,9 @@ class _AuthPageState extends State<AuthPage> {
                         borderRadius: BorderRadius.circular(20.0),
                       ))),
                       onPressed: () {
-                        Navigator.of(context).pushNamed('/registration_page');
+                        Navigator.of(context).pushNamed(RegistrationPage.routeName);
                       },
-                      child: Text('Create new user')),
+                      child: const Text('Create new user')),
                 ],
               );
       }),

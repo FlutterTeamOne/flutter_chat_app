@@ -6,6 +6,8 @@ import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../auth/authorization_page.dart';
+
 part 'widgets/change_user_pic.dart';
 part 'widgets/load_method.dart';
 part 'widgets/app_blured_image.dart';
