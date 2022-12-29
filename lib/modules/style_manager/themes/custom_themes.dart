@@ -97,7 +97,8 @@ class CustomThemes {
     ),
   );
 
-  static final ThemeData lightThemeBlueGray = ThemeData(
+
+  static final ThemeData lightThemeOrange = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
     primarySwatch: Colors.blueGrey,
@@ -115,6 +116,7 @@ class CustomThemes {
       foregroundColor: Colors.black54,
     ),
   );
+
 
   static final ThemeData CustomTheme = ThemeData(
     useMaterial3: true,
@@ -143,5 +145,6 @@ class CustomThemes {
     CustomThemes.lightThemeBlueGray,
     CustomThemes.darkThemeBlueGray,
     CustomThemes.CustomTheme,
+
   ];
 }

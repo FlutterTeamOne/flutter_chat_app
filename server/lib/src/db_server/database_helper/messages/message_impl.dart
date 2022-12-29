@@ -1,12 +1,14 @@
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:server/src/library/library_server.dart';
 
-class MessagesServices implements IMessagesServices {
+class MessagesDBServices implements IMessagesDBServices {
   @override
   Future<Map<String, Object?>> addNewMessage({
     required int chatId,
     required int senderId,
     required String content,
+    int? attachmentId,
+    required ContentType contentType,
   }) async {
     var date = DateTime.now().toIso8601String();
     Database db = await DbServerServices.instanse.database;
@@ -15,18 +17,10 @@ class MessagesServices implements IMessagesServices {
       'sender_id': senderId,
       'content': content,
       'created_date': date,
-      'updated_date': date
+      'updated_date': date,
+      'attachment_id': attachmentId,
+      'content_type': contentType.name
     });
-    // await db.execute('''
-    //   INSERT INTO messages (chat_id, sender_id, content, created_date, updated_date, deleted_date) VALUES (
-    //     $chatId,
-    //     $senderId,
-    //     "$content",
-    //     "$createdDate",
-    //     "$updatedDate",
-    //     "$deletedDate"
-    //   )
-    //   ''');
 
     var idAndDate = await db.rawQuery('''
       SELECT message_id, created_date, updated_date FROM messages
@@ -40,6 +34,7 @@ class MessagesServices implements IMessagesServices {
         (created_date = ?)
         AND
         (updated_date = ?)       
+       
         )
     ''', [chatId, senderId, content, date, date]);
     return idAndDate[0];

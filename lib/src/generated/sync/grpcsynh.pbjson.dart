@@ -8,18 +8,63 @@
 import 'dart:core' as $core;
 import 'dart:convert' as $convert;
 import 'dart:typed_data' as $typed_data;
+@$core.Deprecated('Use contentTypeSynchDescriptor instead')
+const ContentTypeSynch$json = const {
+  '1': 'ContentTypeSynch',
+  '2': const [
+    const {'1': 'isText', '2': 0},
+    const {'1': 'isMedia', '2': 1},
+    const {'1': 'isMediaText', '2': 2},
+  ],
+};
+
+/// Descriptor for `ContentTypeSynch`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List contentTypeSynchDescriptor = $convert.base64Decode('ChBDb250ZW50VHlwZVN5bmNoEgoKBmlzVGV4dBAAEgsKB2lzTWVkaWEQARIPCgtpc01lZGlhVGV4dBAC');
+@$core.Deprecated('Use userRequestDescriptor instead')
+const UserRequest$json = const {
+  '1': 'UserRequest',
+  '2': const [
+    const {'1': 'userId', '3': 1, '4': 1, '5': 5, '10': 'userId'},
+    const {'1': 'updatedDate', '3': 2, '4': 1, '5': 9, '10': 'updatedDate'},
+  ],
+};
+
+/// Descriptor for `UserRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List userRequestDescriptor = $convert.base64Decode('CgtVc2VyUmVxdWVzdBIWCgZ1c2VySWQYASABKAVSBnVzZXJJZBIgCgt1cGRhdGVkRGF0ZRgCIAEoCVILdXBkYXRlZERhdGU=');
+@$core.Deprecated('Use usersRequestDescriptor instead')
+const UsersRequest$json = const {
+  '1': 'UsersRequest',
+  '2': const [
+    const {'1': 'users', '3': 1, '4': 3, '5': 11, '6': '.UserRequest', '10': 'users'},
+  ],
+};
+
+/// Descriptor for `UsersRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List usersRequestDescriptor = $convert.base64Decode('CgxVc2Vyc1JlcXVlc3QSIgoFdXNlcnMYASADKAsyDC5Vc2VyUmVxdWVzdFIFdXNlcnM=');
+@$core.Deprecated('Use usersResponseDescriptor instead')
+const UsersResponse$json = const {
+  '1': 'UsersResponse',
+  '2': const [
+    const {'1': 'usersNew', '3': 1, '4': 3, '5': 11, '6': '.SynhUser', '10': 'usersNew'},
+    const {'1': 'usersUpdated', '3': 2, '4': 3, '5': 11, '6': '.SynhUser', '10': 'usersUpdated'},
+  ],
+};
+
+/// Descriptor for `UsersResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List usersResponseDescriptor = $convert.base64Decode('Cg1Vc2Vyc1Jlc3BvbnNlEiUKCHVzZXJzTmV3GAEgAygLMgkuU3luaFVzZXJSCHVzZXJzTmV3Ei0KDHVzZXJzVXBkYXRlZBgCIAMoCzIJLlN5bmhVc2VyUgx1c2Vyc1VwZGF0ZWQ=');
 @$core.Deprecated('Use synhMainUserDescriptor instead')
 const SynhMainUser$json = const {
   '1': 'SynhMainUser',
   '2': const [
-    const {'1': 'id', '3': 1, '4': 1, '5': 5, '10': 'id'},
+    const {'1': 'mainUserId', '3': 1, '4': 1, '5': 5, '10': 'mainUserId'},
     const {'1': 'chatId', '3': 2, '4': 1, '5': 5, '10': 'chatId'},
     const {'1': 'messageId', '3': 3, '4': 1, '5': 5, '10': 'messageId'},
+    const {'1': 'users', '3': 4, '4': 1, '5': 11, '6': '.UsersRequest', '10': 'users'},
   ],
 };
 
 /// Descriptor for `SynhMainUser`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List synhMainUserDescriptor = $convert.base64Decode('CgxTeW5oTWFpblVzZXISDgoCaWQYASABKAVSAmlkEhYKBmNoYXRJZBgCIAEoBVIGY2hhdElkEhwKCW1lc3NhZ2VJZBgDIAEoBVIJbWVzc2FnZUlk');
+final $typed_data.Uint8List synhMainUserDescriptor = $convert.base64Decode('CgxTeW5oTWFpblVzZXISHgoKbWFpblVzZXJJZBgBIAEoBVIKbWFpblVzZXJJZBIWCgZjaGF0SWQYAiABKAVSBmNoYXRJZBIcCgltZXNzYWdlSWQYAyABKAVSCW1lc3NhZ2VJZBIjCgV1c2VycxgEIAEoCzINLlVzZXJzUmVxdWVzdFIFdXNlcnM=');
 @$core.Deprecated('Use synhUserDescriptor instead')
 const SynhUser$json = const {
   '1': 'SynhUser',
@@ -63,20 +108,23 @@ const SynhMessage$json = const {
     const {'1': 'updated_date', '3': 7, '4': 1, '5': 9, '10': 'updatedDate'},
     const {'1': 'deleted_date', '3': 8, '4': 1, '5': 9, '10': 'deletedDate'},
     const {'1': 'is_read', '3': 9, '4': 1, '5': 5, '10': 'isRead'},
+    const {'1': 'attachmentId', '3': 10, '4': 1, '5': 5, '10': 'attachmentId'},
+    const {'1': 'contentType', '3': 11, '4': 1, '5': 14, '6': '.ContentTypeSynch', '10': 'contentType'},
   ],
 };
 
 /// Descriptor for `SynhMessage`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List synhMessageDescriptor = $convert.base64Decode('CgtTeW5oTWVzc2FnZRIoChBsb2NhbF9tZXNzYWdlX2lkGAEgASgFUg5sb2NhbE1lc3NhZ2VJZBIbCglzZW5kZXJfaWQYAiABKAVSCHNlbmRlcklkEhcKB2NoYXRfaWQYAyABKAVSBmNoYXRJZBIhCgxjcmVhdGVkX2RhdGUYBCABKAlSC2NyZWF0ZWREYXRlEh0KCm1lc3NhZ2VfaWQYBSABKAVSCW1lc3NhZ2VJZBIYCgdjb250ZW50GAYgASgJUgdjb250ZW50EiEKDHVwZGF0ZWRfZGF0ZRgHIAEoCVILdXBkYXRlZERhdGUSIQoMZGVsZXRlZF9kYXRlGAggASgJUgtkZWxldGVkRGF0ZRIXCgdpc19yZWFkGAkgASgFUgZpc1JlYWQ=');
+final $typed_data.Uint8List synhMessageDescriptor = $convert.base64Decode('CgtTeW5oTWVzc2FnZRIoChBsb2NhbF9tZXNzYWdlX2lkGAEgASgFUg5sb2NhbE1lc3NhZ2VJZBIbCglzZW5kZXJfaWQYAiABKAVSCHNlbmRlcklkEhcKB2NoYXRfaWQYAyABKAVSBmNoYXRJZBIhCgxjcmVhdGVkX2RhdGUYBCABKAlSC2NyZWF0ZWREYXRlEh0KCm1lc3NhZ2VfaWQYBSABKAVSCW1lc3NhZ2VJZBIYCgdjb250ZW50GAYgASgJUgdjb250ZW50EiEKDHVwZGF0ZWRfZGF0ZRgHIAEoCVILdXBkYXRlZERhdGUSIQoMZGVsZXRlZF9kYXRlGAggASgJUgtkZWxldGVkRGF0ZRIXCgdpc19yZWFkGAkgASgFUgZpc1JlYWQSIgoMYXR0YWNobWVudElkGAogASgFUgxhdHRhY2htZW50SWQSMwoLY29udGVudFR5cGUYCyABKA4yES5Db250ZW50VHlwZVN5bmNoUgtjb250ZW50VHlwZQ==');
 @$core.Deprecated('Use dataDBResponseDescriptor instead')
 const DataDBResponse$json = const {
   '1': 'DataDBResponse',
   '2': const [
-    const {'1': 'users', '3': 1, '4': 3, '5': 11, '6': '.SynhUser', '10': 'users'},
+    const {'1': 'newUsers', '3': 1, '4': 3, '5': 11, '6': '.SynhUser', '10': 'newUsers'},
+    const {'1': 'updatedUsers', '3': 4, '4': 3, '5': 11, '6': '.SynhUser', '10': 'updatedUsers'},
     const {'1': 'chats', '3': 2, '4': 3, '5': 11, '6': '.SynhChat', '10': 'chats'},
     const {'1': 'messages', '3': 3, '4': 3, '5': 11, '6': '.SynhMessage', '10': 'messages'},
   ],
 };
 
 /// Descriptor for `DataDBResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List dataDBResponseDescriptor = $convert.base64Decode('Cg5EYXRhREJSZXNwb25zZRIfCgV1c2VycxgBIAMoCzIJLlN5bmhVc2VyUgV1c2VycxIfCgVjaGF0cxgCIAMoCzIJLlN5bmhDaGF0UgVjaGF0cxIoCghtZXNzYWdlcxgDIAMoCzIMLlN5bmhNZXNzYWdlUghtZXNzYWdlcw==');
+final $typed_data.Uint8List dataDBResponseDescriptor = $convert.base64Decode('Cg5EYXRhREJSZXNwb25zZRIlCghuZXdVc2VycxgBIAMoCzIJLlN5bmhVc2VyUghuZXdVc2VycxItCgx1cGRhdGVkVXNlcnMYBCADKAsyCS5TeW5oVXNlclIMdXBkYXRlZFVzZXJzEh8KBWNoYXRzGAIgAygLMgkuU3luaENoYXRSBWNoYXRzEigKCG1lc3NhZ2VzGAMgAygLMgwuU3luaE1lc3NhZ2VSCG1lc3NhZ2Vz');

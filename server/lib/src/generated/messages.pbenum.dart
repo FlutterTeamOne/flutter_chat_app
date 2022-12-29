@@ -9,6 +9,23 @@
 import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
+class ContentType extends $pb.ProtobufEnum {
+  static const ContentType isText = ContentType._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'isText');
+  static const ContentType isMedia = ContentType._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'isMedia');
+  static const ContentType isMediaText = ContentType._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'isMediaText');
+
+  static const $core.List<ContentType> values = <ContentType> [
+    isText,
+    isMedia,
+    isMediaText,
+  ];
+
+  static final $core.Map<$core.int, ContentType> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static ContentType? valueOf($core.int value) => _byValue[value];
+
+  const ContentType._($core.int v, $core.String n) : super(v, n);
+}
+
 class MessageStateEnum extends $pb.ProtobufEnum {
   static const MessageStateEnum connecting = MessageStateEnum._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'connecting');
   static const MessageStateEnum isReadMessage = MessageStateEnum._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'isReadMessage');

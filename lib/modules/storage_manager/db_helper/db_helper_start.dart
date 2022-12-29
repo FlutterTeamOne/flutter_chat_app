@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:chat_app/src/constants/app_data_constants.dart';
+
 import '../../../src/constants/db_constants.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -28,9 +30,11 @@ class DBHelperStart {
     sqfliteFfiInit();
     var dbFactory = databaseFactoryFfi;
     // var dbPath = await dbFactory.getDatabasesPath();
-    var dbPath = await getTemporaryDirectory();
-    print('PATH_start: ${dbPath.path}');
-    String path = join(dbPath.path, DatabaseConst.dbFileNameStart);
+    //var dbPath = await getTemporaryDirectory();
+    var dbPath = AppDataConstants.dbDirectory;
+    // print('PATH_start: ${dbPath.path}');
+    // String path = join(dbPath.path, DatabaseConst.dbFileNameStart);
+    String path = join(dbPath, DatabaseConst.dbFileNameStart);
     print('PATH_absolute: ${path}');
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(

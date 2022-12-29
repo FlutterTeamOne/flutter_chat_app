@@ -7,17 +7,20 @@ class LocalChatServices implements ILocalChatsServices {
   LocalChatServices();
 
   @override
-  Future<dynamic> createChat(
-      {required int chatId,
-      required String createDate,
-      required int userId}) async {
-    return await DBHelper.instanse
+  Future<List<ChatDto>> createChat(
+      {required String createDate, required int userId}) async {
+     await DBHelper.instanse
         .onAdd(tableName: DatabaseConst.chatsTable, model: {
-      DatabaseConst.chatsColumnChatId: chatId,
       DatabaseConst.chatsColumnUserId: userId,
       DatabaseConst.chatsColumnCreatedDate: createDate,
       DatabaseConst.chatsColumnUpdatedDate: createDate
     });
+     var db = await DBHelper.instanse.database;
+    var chats = await db.rawQuery('''
+              SELECT *
+              FROM ${DatabaseConst.chatsTable}
+              ''');
+    return chats.map((item) => ChatDto.fromMap(item)).toList();
   }
 
   @override
@@ -38,6 +41,18 @@ class LocalChatServices implements ILocalChatsServices {
     return chats.map((item) => ChatDto.fromMap(item)).toList();
   }
 
+  Future<List<ChatDto>> getAllChatsSortedByUpdatedDate() async {
+    var db = await DBHelper.instanse.database;
+
+    var chats = await db.rawQuery('''SELECT * FROM chats ORDER BY update_date DESC''');
+    
+    var res = chats.map((item) => ChatDto.fromMap(item)).toList();
+    print ('getAllChatsSortedByUpdatedDate chats: $chats');
+    print ('getAllChatsSortedByUpdatedDate res: $res');
+
+    return res;
+  }
+
   @override
   Future<Map<String, Object?>> getChatById({required int id}) async {
     var db = await DBHelper.instanse.database;
@@ -52,19 +67,21 @@ class LocalChatServices implements ILocalChatsServices {
   @override
   Future<int> getMainIdChatByMessage({required int localId}) async {
     var db = await DBHelper.instanse.database;
-    var chat = await db.rawQuery(
-        '''SELECT ${DatabaseConst.chatsColumnChatId} 
+    var chat = await db.rawQuery('''SELECT ${DatabaseConst.chatsColumnChatId} 
         FROM ${DatabaseConst.chatsTable} 
-        WHERE ${DatabaseConst.chatsColumnChatId}=?''',
-        [localId]);
+        WHERE ${DatabaseConst.chatsColumnChatId}=?''', [localId]);
 
     return chat[0][DatabaseConst.chatsColumnChatId] as int;
   }
 
   @override
-  Future<int> updateChat({required int chatId}) {
-    // TODO: изменение в БД информации о чате
-    throw UnimplementedError();
+  Future updateChatDateUpdated({required int chatId, required String dateUpdated}) async {
+    var db = await DBHelper.instanse.database;
+    await db.rawQuery('''
+      UPDATE chats
+      SET update_date = '$dateUpdated'
+      WHERE (chat_id = $chatId)
+    ''');
   }
 
   @override

@@ -1,6 +1,8 @@
+
 import 'dart:async';
 
 import 'package:chat_app/main.dart';
+
 import 'package:chat_app/modules/style_manager/themes/saved_theme.dart';
 import 'package:chat_app/modules/style_manager/themes/custom_themes.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +13,9 @@ import 'change_theme_event.dart';
 import 'change_theme_state.dart';
 
 class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
-  // static int initIndex = SavedTheme().initThemeIndex;
+  static int get initThemeIndex => UserPreferences().getTheme();
+
+      // UserPref.getThemeIndex == null ? 1 : UserPref.getThemeIndex;
   ChangeThemeBloc()
       : super(ChangeThemeState(
           borderRadius: 20,
@@ -30,9 +34,11 @@ textColor: Colors.black87,
   void _setThemeEvent(
       SetThemeEvent event, Emitter<ChangeThemeState> emit) async {
     await UserPreferences().setThemeEvent(event.index);
+
     // SavedTheme().initThemeIndex = event.index;
     // var i = await UserPreferences().getTheme();
     // print(i);
+
     emit(ChangeThemeState(
         primaryColor: CustomThemes().themes[event.index].primaryColor,
       fontSizeFactor: event.fontSizeFactor,

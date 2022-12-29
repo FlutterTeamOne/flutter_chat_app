@@ -4,6 +4,8 @@ import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_c
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/modules/style_manager/themes/custom_themes.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_user_lib.dart';
+import 'package:chat_app/src/constants/app_data_constants.dart';
+
 import 'package:chat_app/ui/auth/authorization_page.dart';
 import 'package:chat_app/ui/pages/custom_theme/color_picker_page.dart';
 
@@ -19,7 +21,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_size/window_size.dart';
 
+
+
 Future<void> main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowMinSize(const Size(960, 480));
@@ -30,8 +35,13 @@ Future<void> main() async {
   await UserPref.restore();
   print("UserPref: ${UserPref.getUserDbPref}");
   UserPref.getUserDbPref
-      ? await DBHelperStart.instanse.initDB()
-      : await DBHelper.instanse.initDB();
+    ? await DBHelperStart.instanse.initDB()
+    : await DBHelper.instanse.initDB();
+  
+  var envVars = AppDataConstants.envVars;
+  var userDir = AppDataConstants.userDirectory;
+  var directory = await Directory('$userDir/AppData/Local/FlutterChatApp/databases').create(recursive: true);
+  print(directory.path);
   runApp(MyApp());
 }
 
@@ -99,14 +109,14 @@ class MyApp extends StatelessWidget {
               UserBloc()..add(ReadUsersEvent(userDb: UserPref.getUserDbPref)),
         ),
         BlocProvider<ChatBloc>(
-          create: (context) =>
-              ChatBloc(userBloc: UserBloc())..add(ReadChatEvent()),
+
+          create: (context) => ChatBloc(userBloc: UserBloc()),
+
         ),
         BlocProvider<MessageBloc>(
           create: (context) => MessageBloc(
               grpcClient: grpcClient,
-              grpcConnection: context.read<GrpcConnectionBloc>())
-            ..add(ReadMessageEvent()),
+              grpcConnection: context.read<GrpcConnectionBloc>()),
         ),
         BlocProvider(
           create: (context) => ChangeThemeBloc(),

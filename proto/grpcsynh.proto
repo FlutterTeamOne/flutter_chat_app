@@ -2,16 +2,41 @@ syntax ="proto3";
 
 service GrpcSynchronization{
     rpc getUsersSynh (SynhMainUser) returns (DataDBResponse) {};
+    rpc Sync(UsersRequest) returns (UsersResponse);
     // rpc getChats (MainUser) returns (GetChatsResponse) {};
     // rpc getAllMessage (MainUser) returns (GetMessageRequest) {};
    // rpc synchronization (MainUser) returns () {};
 
 }
 
+enum ContentTypeSynch{
+    isText = 0;
+    isMedia = 1;
+    isMediaText=2;
+}
+
+
+message UserRequest{
+    int32 userId = 1;
+    string updatedDate = 2;
+}
+
+message UsersRequest {
+    repeated UserRequest users = 1;
+}
+
+
+message UsersResponse{ 
+    repeated SynhUser usersNew = 1;
+    repeated SynhUser usersUpdated = 2;
+}
+
+
 message SynhMainUser{
-    int32 id = 1;
+    int32 mainUserId = 1;
     int32 chatId = 2;
     int32 messageId = 3;
+    UsersRequest users = 4;
 }
 
 message SynhUser{
@@ -42,10 +67,13 @@ message SynhMessage{
     string updated_date = 7;
     string deleted_date = 8;
     int32 is_read = 9;
+    int32 attachmentId = 10;
+    ContentTypeSynch contentType = 11;
 }
 
 message DataDBResponse{
-    repeated SynhUser users = 1; 
+    repeated SynhUser newUsers = 1;
+    repeated SynhUser updatedUsers = 4; 
     repeated SynhChat chats = 2;
     repeated SynhMessage messages = 3;
 }
