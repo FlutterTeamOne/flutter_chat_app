@@ -13,6 +13,34 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../src/libraries/library_all.dart';
 
+// class LoadingOverlay {
+//   OverlayEntry? _overlay;
+
+//   LoadingOverlay();
+
+//   void show(BuildContext context) {
+//     if (_overlay == null) {
+//       _overlay = OverlayEntry(
+//         // replace with your own layout
+//         builder: (context) => const ColoredBox(
+//           color: Color(0x80000000),
+//           child: Center(
+//             child: CircularProgressIndicator.adaptive(),
+//           ),
+//         ),
+//       );
+//       Overlay.of(context)?.insert(_overlay!);
+//     }
+//   }
+
+//   void hide() {
+//     if (_overlay != null) {
+//       _overlay?.remove();
+//       _overlay = null;
+//     }
+//   }
+// }
+
 class ChatListLayout extends StatefulWidget {
   const ChatListLayout({
     Key? key,
@@ -28,6 +56,17 @@ class ChatListLayout extends StatefulWidget {
 
 class _ChatListLayoutState extends State<ChatListLayout> {
   final _searchController = TextEditingController();
+  bool _isLoading = false;
+
+  void _loadScreen() async {
+    setState(() {
+      _isLoading = true;
+    });
+    await Future.delayed(const Duration(milliseconds: 300));
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,68 +85,72 @@ class _ChatListLayoutState extends State<ChatListLayout> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               widget.chatModel.isEmpty || widget.chatModel == []
-                  ? const Center(
-                      child: Text('Oops...\nno chats'),
-                    )
-                  : Expanded(
-                      flex: 1,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            SearchFieldWidget(controller: _searchController),
-                            const SizedBox(height: 5),
-                            ListView.separated(
-                              itemCount: widget.chatModel.length,
-                              physics: const BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(height: 25),
-                              itemBuilder: (context, index) {
-                                var friend;
-                                friend = context
-                                    .read<UserBloc>()
-                                    .state
-                                    .users!
-                                    .firstWhere((user) {
-                                  return user.userId ==
-                                      widget.chatModel[index].userIdChat;
-                                });
-                                var lastMessage = MessageDto(
-                                    chatId: 0, senderId: 0, content: '');
-                                for (var i in widget.messageModel) {
-                                  if (i.chatId ==
-                                      widget.chatModel[index].chatId) {
-                                    lastMessage = i;
-                                  }
-                                }
-                                // var lastMessageId = widget.chatModel.
-                                // : widget.messageModel.length - 1;
-                                return UserCardWidget(
-                                  updatedDate: getUpdateDate(
-                                      widget.chatModel[index].updatedDate),
-                                  sender: !checkSender(lastMessage.senderId)
-                                      ? userBloc.state.users![index].name
-                                      : 'You',
-                                  // checkSender(widget.messageModel[lastMessageId].senderId),
-                                  // ? userBloc.state.users[index].name:'You'),
-                                  selected: false,
-                                  onTap: () {
-                                    context.read<ChatBloc>().add(GetChatIdEvent(
-                                        widget.chatModel[index].chatId!));
-                                  },
-                                  name: friend.name,
-                                  image: friend.profilePicLink,
+                  ? const Center(child: Text('Oops, no chats...'))
+                  : _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        )
+                      : Expanded(
+                          flex: 1,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                SearchFieldWidget(
+                                    controller: _searchController),
+                                const SizedBox(height: 5),
+                                ListView.separated(
+                                  itemCount: widget.chatModel.length,
+                                  physics: const BouncingScrollPhysics(),
+                                  shrinkWrap: true,
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(height: 25),
+                                  itemBuilder: (context, index) {
+                                    var friend;
+                                    friend = context
+                                        .read<UserBloc>()
+                                        .state
+                                        .users!
+                                        .firstWhere((user) {
+                                      return user.userId ==
+                                          widget.chatModel[index].userIdChat;
+                                    });
+                                    var lastMessage = MessageDto(
+                                        chatId: 0, senderId: 0, content: '');
+                                    for (var i in widget.messageModel) {
+                                      if (i.chatId ==
+                                          widget.chatModel[index].chatId) {
+                                        lastMessage = i;
+                                      }
+                                    }
+                                    // var lastMessageId = widget.chatModel.
+                                    // : widget.messageModel.length - 1;
+                                    return UserCardWidget(
+                                      updatedDate: getUpdateDate(
+                                          widget.chatModel[index].updatedDate),
+                                      sender: !checkSender(lastMessage.senderId)
+                                          ? userBloc.state.users![index].name
+                                          : 'You',
+                                      // checkSender(widget.messageModel[lastMessageId].senderId),
+                                      // ? userBloc.state.users[index].name:'You'),
+                                      selected: false,
+                                      onTap: () {
+                                        context.read<ChatBloc>().add(
+                                            GetChatIdEvent(widget
+                                                .chatModel[index].chatId!));
+                                      },
+                                      name: friend.name,
+                                      image: friend.profilePicLink,
 
-                                  message: lastMessage.chatId != 0
-                                      ? lastMessage.content
-                                      : 'Start chating',
-                                );
-                              },
+                                      message: lastMessage.chatId != 0
+                                          ? lastMessage.content
+                                          : 'Start chating',
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
@@ -176,7 +219,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                         } catch (e) {
                           print('GET USER RESPONSE ERROR: $e');
                         }
-                      });
+                      }).whenComplete(() => _loadScreen());
                     },
                     icon: const Icon(Icons.add),
                     label: const Text('Add Chat'),
