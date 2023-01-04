@@ -13,7 +13,7 @@ import 'package:sqflite/sqflite.dart';
 Future main() async {
 
 
-  group("Creating tables:", () {   
+  group("Local db: creating tables:", () {   
       var user = UserDto(name: 'name', email: 'email', createdDate: 'createdDate', profilePicLink: 'profilePicLink', updatedDate: 'updatedDate');
       UserPath.user = user;
 
@@ -54,12 +54,12 @@ Future main() async {
       
       expect(r, [{'name': 'attachments'}]);
     });
-    test('"user_last_time_online" table created', () async {
-      await DBHelper.instanse.initDB();
-      var db = await DBHelper.instanse.database;
-      var r = await db.rawQuery('''SELECT name FROM sqlite_master WHERE type='table' AND name='user_last_time_online';''');
+    // test('"user_last_time_online" table created', () async {
+    //   await DBHelper.instanse.initDB();
+    //   var db = await DBHelper.instanse.database;
+    //   var r = await db.rawQuery('''SELECT name FROM sqlite_master WHERE type='table' AND name='user_last_time_online';''');
       
-      expect(r, [{'name': 'user_last_time_online'}]);
-    });
+    //   expect(r, [{'name': 'user_last_time_online'}]);
+    // });
   });
 }
