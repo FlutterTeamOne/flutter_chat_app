@@ -1,11 +1,13 @@
 import 'dart:developer';
 
+import 'package:chat_app/modules/signal_service/river/river.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:chat_app/ui/pages/library/library_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 part '../auth/widgets/user_card.dart';
 
 class AuthPage extends StatefulWidget {
@@ -20,42 +22,75 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<UserBloc, UserState>(builder: (context, usersState) {
-        return usersState.users == null
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : Column(
-              children: [
-                SizedBox(height: 100,),
-                Center(
-                    child: SizedBox(
-                      height: 300,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: usersState.users!.length,
-                        itemBuilder: ((context, index) =>
-                            UserCard(user: usersState.users![index])),
-                      ),
-
+      body: Consumer(
+          builder: (context, ref, _) => ref.watch(River.futureUserPod).when(
+                data: (data) => Column(
+                  children: [
+                    const SizedBox(
+                      height: 100,
                     ),
-                  ),
-                ElevatedButton(
-                    style: ButtonStyle(
-                        shape: MaterialStateProperty.all<
-                            RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.circular(20.0),
-                            ))),
-                    onPressed: () {
-
-                  Navigator.of(context).pushNamed('/registration page');
-                }, child: Text('Create new user')),
-              ],
-            );
-      }),
+                    Center(
+                      child: SizedBox(
+                        height: 300,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: data.users?.length,
+                          itemBuilder: ((context, index) =>
+                              UserCard(user: data.users![index])),
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                        style: ButtonStyle(
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ))),
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/registration page');
+                        },
+                        child: const Text('Create new user')),
+                  ],
+                ),
+                error: (e, s) => Text(e.toString()),
+                loading: () => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              )
+          // ? const Center(
+          //     child: CircularProgressIndicator(),
+          //   )
+          // : Column(
+          //     children: [
+          //       const SizedBox(
+          //         height: 100,
+          //       ),
+          //       Center(
+          //         child: SizedBox(
+          //           height: 300,
+          //           child: ListView.builder(
+          //             shrinkWrap: true,
+          //             scrollDirection: Axis.horizontal,
+          //             itemCount: users.length,
+          //             itemBuilder: ((context, index) =>
+          //                 UserCard(user: users[index])),
+          //           ),
+          //         ),
+          //       ),
+          //       ElevatedButton(
+          //           style: ButtonStyle(
+          //               shape: MaterialStateProperty.all<
+          //                   RoundedRectangleBorder>(RoundedRectangleBorder(
+          //             borderRadius: BorderRadius.circular(20.0),
+          //           ))),
+          //           onPressed: () {
+          //             Navigator.of(context).pushNamed('/registration page');
+          //           },
+          //           child: const Text('Create new user')),
+          //     ],
+          //   )
+          ),
     );
   }
 }

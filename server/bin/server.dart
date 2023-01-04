@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:grpc/grpc.dart';
 import 'package:grpc/grpc.dart';
 import 'package:server/src/db_server/services/message_service.dart';
 import 'package:server/src/library/library_server.dart';
@@ -170,6 +172,9 @@ class GrpcMessage extends GrpcMessagesServiceBase {
   @override
   Stream<DynamicResponse> streamMessage(
       ServiceCall call, Stream<DynamicRequest> request) async* {
+    print('MSG CALL META: ${call.clientMetadata}');
+    print('MSG CL HEADER: ${call.headers}');
+    print('MSG CL STATUS: ${call.isCanceled}');
     var clientController = StreamController<DynamicResponse>();
     _controllers[clientController] = null;
 
@@ -575,21 +580,123 @@ class GrpcSynh extends GrpcSynchronizationServiceBase {
 Future<void> main() async {
   final server = Server(
     [GrpcMessage(), GrpcUsers(), GrpcSynh()],
-    const <Interceptor>[], //Перехватчик
+    // const <Interceptor>[],
+    [
+      Inter().intes(
+          CallService(),
+          MethodService(
+            'check',
+            () {},
+            true,
+            true,
+            (request) {
+              print('SERVER REQUEST: $request');
+              return null;
+            },
+            (response) {
+              print('SERVER RESPONSE: $response');
+              return [];
+            },
+          )),
+    ], //Перехватчик
 
     //Реестр кодеков, отслеживает чем будем пользоваться
     CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
   );
-
   await server.serve(port: 6000);
   await DbServerServices.instanse.openDatabase();
   print('✅ Server listening on port ${server.port}...');
 }
 
-Future<void> measureInterceptor(ServiceCall call, ServiceMethod method,
-    Future<void> Function(ServiceCall call, ServiceMethod method) next) async {
+class MethodService extends ServiceMethod {
+  MethodService(
+      super.name,
+      super.handler,
+      super.streamingRequest,
+      super.streamingResponse,
+      super.requestDeserializer,
+      super.responseSerializer);
+}
+
+class CallService extends ServiceCall {
+  @override
+  // TODO: implement clientCertificate
+  X509Certificate? get clientCertificate => throw UnimplementedError();
+
+  @override
+  // TODO: implement clientMetadata
+  Map<String, String>? get clientMetadata => {'CL': 'metadata'};
+
+  @override
+  // TODO: implement deadline
+  DateTime? get deadline => throw UnimplementedError();
+
+  @override
+  // TODO: implement headers
+  Map<String, String>? get headers => throw UnimplementedError();
+
+  @override
+  // TODO: implement isCanceled
+  bool get isCanceled => throw UnimplementedError();
+
+  @override
+  // TODO: implement isTimedOut
+  bool get isTimedOut => throw UnimplementedError();
+
+  @override
+  void sendHeaders() {
+    // TODO: implement sendHeaders
+  }
+
+  @override
+  void sendTrailers({int? status, String? message}) {
+    // TODO: implement sendTrailers
+  }
+
+  @override
+  // TODO: implement trailers
+  Map<String, String>? get trailers => throw UnimplementedError();
+}
+
+class Inter {
+  FutureOr<GrpcError?> Function(ServiceCall, ServiceMethod<dynamic, dynamic>)
+      intes(ServiceCall call, ServiceMethod method) {
+    // final Stopwatch stopwatch = Stopwatch()..start();
+    print('CL MEDATA: ${call.clientMetadata}');
+    print('Handler: ${method.handler}');
+    var measure = measureInterceptor(call, method, (call, method) async {
+      print('MEASURE META: ${call.clientMetadata} \n: METHOD ${method.handler}');
+      return null;
+    });
+    // stopwatch.stop();
+    // print("method ${method.name} took ${stopwatch.elapsedMilliseconds} ms");
+    return measure;
+  }
+}
+
+FutureOr<GrpcError?> Function(ServiceCall, ServiceMethod<dynamic, dynamic>)
+    measureInterceptor(
+        ServiceCall call,
+        ServiceMethod method,
+        FutureOr<GrpcError?> Function(ServiceCall call, ServiceMethod method)
+            next) {
   final Stopwatch stopwatch = Stopwatch()..start();
-  await next(call, method);
+  next(call, method);
+
   stopwatch.stop();
   print("method: ${method.name}, took ${stopwatch.elapsedMilliseconds} ms");
+  //(ServiceCall, ServiceMethod<dynamic, dynamic>) => Future<GrpcError?>
+  return next;
+}
+
+class ClInter extends ClientInterceptor {
+  @override
+  ResponseFuture<R> interceptUnary<Q, R>(
+      ClientMethod<Q, R> method, Q request, CallOptions options, invoker) {
+    var newOptions = options.mergedWith(CallOptions(metadata: <String, String>{
+      'token': 'Some-Token',
+    }));
+
+    return invoker(method, request, newOptions);
+  }
 }

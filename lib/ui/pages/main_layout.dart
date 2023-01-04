@@ -21,8 +21,8 @@ class _MainLayoutState extends State<MainLayout> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<UserBloc>().add(ReadUsersEvent());
-    print("UserBloc: ${context.read<UserBloc>().state.users}");
+    // context.read<UserBloc>().add(ReadUsersEvent());
+    // print("UserBloc: ${context.read<UserBloc>().state.users}");
     final currentWidth = MediaQuery.of(context).size.width;
     var isConnected = false;
 

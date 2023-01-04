@@ -1,11 +1,13 @@
-﻿import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
+﻿import 'package:chat_app/modules/signal_service/river/river.dart';
+import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../src/libraries/library_all.dart';
 import '../../../widgets/library/library_widgets.dart';
 
-class UserChatLayout extends StatefulWidget {
+class UserChatLayout extends ConsumerStatefulWidget {
   const UserChatLayout({
     Key? key,
     required this.chatId,
@@ -13,10 +15,10 @@ class UserChatLayout extends StatefulWidget {
   final int chatId;
 
   @override
-  State<UserChatLayout> createState() => UserChatLayoutState();
+  ConsumerState<UserChatLayout> createState() => UserChatLayoutState();
 }
 
-class UserChatLayoutState extends State<UserChatLayout> {
+class UserChatLayoutState extends ConsumerState<UserChatLayout> {
   TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class UserChatLayoutState extends State<UserChatLayout> {
     // var chat = context.read<ChatBloc>().state.chats?.firstWhere(
     //       (chats) => chats.chatId == widget.chatId,
     //     );
-    for (var c in context.read<ChatBloc>().state.chats!) {
+    for (var c in ref.read(River.chatPod).chats!) {
       if (c.chatId == widget.chatId) {
         chat = c;
       }
@@ -36,7 +38,7 @@ class UserChatLayoutState extends State<UserChatLayout> {
     //     .state
     //     .users
     //     ?.firstWhere((user) => user.userId == chat?.userIdChat);
-    for (var u in context.read<UserBloc>().state.users!) {
+    for (var u in ref.read(River.userPod).users!) {
       if (chat?.userIdChat == null) {
         break;
       }
@@ -65,20 +67,19 @@ class UserChatLayoutState extends State<UserChatLayout> {
                     PopupMenuButton<int>(
                         itemBuilder: (context) => [
                               PopupMenuItem(
-                                value: 1,
-                                child: Row(
-                                  children: const [
-                                    Icon(Icons.delete),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text("Delete Chat")
-                                  ],
-                                ),
-                                onTap: () => context
-                                    .read<ChatBloc>()
-                                    .add(DeleteChatEvent(widget.chatId)),
-                              ),
+                                  value: 1,
+                                  child: Row(
+                                    children: const [
+                                      Icon(Icons.delete),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text("Delete Chat")
+                                    ],
+                                  ),
+                                  onTap: () => ref
+                                      .read(River.chatPod.notifier)
+                                      .deleteChat(widget.chatId)),
                             ]),
                   ],
                 ),
@@ -159,7 +160,7 @@ class UserChatLayoutState extends State<UserChatLayout> {
                 contentType: ContentType.isText),
             contentType: ContentType.isText),
       );
-      context.read<ChatBloc>().add(ReadChatEvent());
+      // context.read<ChatBloc>().add(ReadChatEvent());
       FocusScope.of(context).unfocus();
       controller.clear();
     }
