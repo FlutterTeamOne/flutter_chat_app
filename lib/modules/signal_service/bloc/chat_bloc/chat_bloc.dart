@@ -53,6 +53,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     listEquals(chats, restChats)
         ? emit(state.copyWith(chats: restChats))
         : emit(state.copyWith(chats: chats));
+    print("ListEquals: ${listEquals(chats, restChats)}");
 
     //если локальная база отличается от серверной,
     //то перезаписываем локальную базу

@@ -15,6 +15,11 @@ class CreateUserEvent extends UserEvent {
   List<Object?> get props => [user];
 }
 
+class LocalReadUsersEvent extends UserEvent {
+  @override
+  List<Object?> get props => [];
+}
+
 class ReadUsersEvent extends UserEvent {
   final List<UserDto>? users;
   final bool userDb;

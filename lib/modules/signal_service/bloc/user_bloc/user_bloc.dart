@@ -30,19 +30,30 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     _mainUserServices = MainUserServices();
     _messagesServices = LocalMessagesServices();
     _chatServices = LocalChatServices();
+
     DBHelper.instanse.updateListenController.stream.listen((event) async {
       if (event == true) {
-        var users = await _usersServices.getAllUsers();
-        print('sort message:$users');
-        add(ReadUsersEvent(users: users));
-        // state.copyWith(messages: messages);
+        add(LocalReadUsersEvent());
       }
     });
+    
     on<ReadUsersEvent>(_onReadUsersEvent);
     on<CreateUserEvent>(_onCreateUserEvent);
     on<ChangeUserEvent>(_onChangeUserEvent);
     on<UpdateUserEvent>(_onUpdateUserEvent);
     on<DeleteUserEvent>(_onDeleleUserEvent);
+    on<LocalReadUsersEvent>(_onLocalReadUsersEvent);
+  }
+
+  FutureOr<void> _onLocalReadUsersEvent(
+      LocalReadUsersEvent event, Emitter<UserState> emit) async {
+    var users = <UserDto>[];
+    users = await _usersServices.getAllUsers();
+    for (var userServ in users) {
+      print('USERS BLOCK: $userServ');
+    }
+    //Добавляем всех юзеров в state
+    emit(state.copyWith(users: users));
   }
 
   FutureOr<void> _onReadUsersEvent(
