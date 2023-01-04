@@ -45,7 +45,6 @@ class ChatWidgetState extends State<ChatWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     var messages = <MessageDto>[];
 
     for (var i in widget.messages) {
@@ -69,37 +68,34 @@ class ChatWidgetState extends State<ChatWidget> {
           iconSize: _icSize,
         ),
       ),
-
-      body: 
-      messages.length == 0 
-      ? Center(child: Text('Start chatting'))
-      : GroupedListView<MessageDto, int>(
-        
-        controller: scrollController,
-        padding: const EdgeInsets.all(10),
-        elements: messages,
-        reverse: true,
-        floatingHeader: true,
-        groupBy: (message) => message.localMessageId!,
-        groupHeaderBuilder: (MessageDto message) =>
-            TimeCardWidget(date: message.createdDate!),
-        groupComparator: (value1, value2) => value2,
-        itemBuilder: (context, MessageDto message) {
-          if (!checkSender(message.senderId)) {
-            // print(message.isSentByMe);
-            // print(message.message);
-            return OtherMessageCardWidget(
-              message: message,
-            );
-          } else {
-            return MyMessageCardWidget(
-              message: message,
-              isSuccess: message.messageId,
-              textController: widget.textController,
-            );
-          }
-        },
-      ),
+      body: messages.isEmpty
+          ? Center(child: Text('Start chatting'))
+          : GroupedListView<MessageDto, int>(
+              controller: scrollController,
+              padding: const EdgeInsets.all(10),
+              elements: messages,
+              reverse: true,
+              floatingHeader: true,
+              groupBy: (message) => message.localMessageId!,
+              groupHeaderBuilder: (MessageDto message) =>
+                  TimeCardWidget(date: message.createdDate!),
+              groupComparator: (value1, value2) => value2,
+              itemBuilder: (context, MessageDto message) {
+                if (!checkSender(message.senderId)) {
+                  // print(message.isSentByMe);
+                  // print(message.message);
+                  return OtherMessageCardWidget(
+                    message: message,
+                  );
+                } else {
+                  return MyMessageCardWidget(
+                    message: message,
+                    isSuccess: message.messageId,
+                    textController: widget.textController,
+                  );
+                }
+              },
+            ),
     );
   }
 
@@ -108,7 +104,6 @@ class ChatWidgetState extends State<ChatWidget> {
     scrollController.removeListener;
     super.dispose();
   }
-  
-  bool checkSender(int id) => id == UserPref.getUserId ? true : false;
 
+  bool checkSender(int id) => id == UserPref.getUserId ? true : false;
 }

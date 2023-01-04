@@ -17,12 +17,11 @@ class GrpcClient {
 
   ClientChannel get channel => _channel;
   Stream<ConnectionState> get channelState => _channel.onConnectionStateChanged;
-  
 
   Future deleteUser({required int userId}) async {
     late GrpcUsersClient stub;
     stub = GrpcUsersClient(channel,
-        options: CallOptions(timeout: Duration(seconds: 30)));
+        options: CallOptions(timeout: const Duration(seconds: 30)));
     var request = DeleteUserRequest()..id = userId;
     var response = await stub.deleteUser(request);
     try {
@@ -31,6 +30,20 @@ class GrpcClient {
       print(e);
     }
     print('User delete: $response');
+    return response;
+  }
+
+  Future<GetUserResponse> getUser({required int userId}) async {
+    late GrpcUsersClient stub;
+    stub = GrpcUsersClient(channel,
+        options: CallOptions(timeout: const Duration(seconds: 30)));
+    var request = GetUserRequest()..id = userId;
+    GetUserResponse response = GetUserResponse();
+    try {
+      response = await stub.getUser(request);
+    } catch (e) {
+      print('ERROR getUser GRPC_CLIENT: $e');
+    }
     return response;
   }
 
@@ -50,7 +63,7 @@ class GrpcClient {
     } catch (e) {
       print(e);
     }
-    print(response);
+    print('CREATE USER FROM GRPC CLIENT RESPONSE: ${response.toString()}');
     return UserDto(
         userId: response.id,
         name: response.name,

@@ -14,10 +14,10 @@ class TimeCardWidget extends StatelessWidget {
       width: 40,
       child: Center(
         child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-
-          ),
+          // shape: RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.circular(10),
+          //
+          // ),
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Text(

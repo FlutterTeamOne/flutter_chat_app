@@ -283,22 +283,103 @@ class GrpcMessage extends GrpcMessagesServiceBase {
     //   if (req.messageState == MessageState.isUpdateMessage) {}
     // }
   }
+
+  _onCreateMessage(
+      {required StreamController<DynamicResponse> controller,
+      required StreamController<DynamicResponse> clientController,
+      required DynamicRequest req}) async {
+    print('for Each Create');
+    var message = DynamicResponse();
+    if (controller != clientController) {
+      message = DynamicResponse(
+          readMessage: ReadMessageResponse(message: req.createMessage.message),
+          messageState: MessageStateEnum.isReadMessage);
+      print(message.messageState);
+      controller.sink.add(message);
+    } else {
+      print('CREATE MSG: ${req.createMessage.message}');
+      message = DynamicResponse(
+          createMessage:
+              CreateMessageResponse(message: req.createMessage.message),
+          messageState: MessageStateEnum.isCreateMessage);
+      print(message.messageState);
+      controller.sink.add(message);
+    }
+
+    ///ТУТ
+    // } else {
+    //   controller.sink.add(
+    //     Dynamic(
+    //         updateMessage: UpdateMessageRequest(
+    //             idMessageMain: req.readMessageRequest.message.messageId),
+    //         messageState: MessageStateEnum.isUpdateMessage),
+    //   );
+    // }
+  }
+
+  _onUpdateMessage(
+      {required StreamController<DynamicResponse> controller,
+      required StreamController<DynamicResponse> clientController,
+      required DynamicRequest req}) async {
+    print('for Each Update');
+    var timeUpdate = DateTime.now().toIso8601String();
+    await messagesService.updateMessage(
+        newValues:
+            "content = '${req.updateMessage.content}', updated_date = '$timeUpdate'",
+        condition: "message_id = ${req.updateMessage.idMessageMain}");
+    var updateMessage = DynamicResponse();
+    if (controller != clientController) {
+      updateMessage = DynamicResponse(
+        updateMessage: UpdateMessageResponse(
+            dateUpdate: timeUpdate,
+            content: req.updateMessage.content,
+            idMessageMain: req.updateMessage.idMessageMain),
+        messageState: MessageStateEnum.isUpdateMessage,
+      );
+      controller.add(updateMessage);
+    } else {
+      updateMessage = DynamicResponse(
+          updateMessage: UpdateMessageResponse(
+              content: req.updateMessage.content,
+              dateUpdate: timeUpdate,
+              idMessageMain: req.updateMessage.idMessageMain),
+          messageState: MessageStateEnum.isUpdateMessage);
+      controller.add(updateMessage);
+    }
+  }
+
+  _onDeleteMessage(
+      {required StreamController<DynamicResponse> controller,
+      required StreamController<DynamicResponse> clientController,
+      required DynamicRequest req}) async {
+    var dateDelete = DateTime.now().toIso8601String();
+    await messagesService.updateMessage(
+        newValues: "deleted_date = '$dateDelete'",
+        condition: 'message_id=${req.deleteMessage.idMessageMain}');
+    if (controller != clientController) {
+      var delMsg = DynamicResponse(
+          deleteMessage: DeleteMessageResponse(
+            idMessageMain: req.deleteMessage.idMessageMain,
+            dateDelete: dateDelete,
+          ),
+          messageState: MessageStateEnum.isDeleteMesage);
+      controller.add(delMsg);
+    } else {}
+  }
 }
 
-// class GrpcChats extends GrpcChatsServiceBase {
-//   @override
-//   Future<CreateChatResponse> createChat(
-//       ServiceCall call, CreateChatRequest request) async {
-//     var src = await ChatsServices().createChat(
-//         friend1_id: request.friend1Id, friend2_id: request.friend1Id);
-//         //запрос к restApi на создание чата
-//     var createChatResponse = CreateChatResponse();
-//     if (src[0]['chat_id'] != 0) {
-//       createChatResponse.id = src[0]['chat_id'];
-//       createChatResponse.createdDate = DateTime.now().toIso8601String();
-//     }
-//     return createChatResponse;
-//   }
+class GrpcChats extends GrpcChatsServiceBase {
+  @override
+  // Future<CreateChatResponse> createChat(
+  //     ServiceCall call, CreateChatRequest request) async {
+  //   var src = await ChatsServices().createChat(friend1Id: null, friend2Id: null, date: '');
+  //   var createChatResponse = CreateChatResponse();
+  //   if (src[0]['chat_id'] != 0) {
+  //     createChatResponse.id = src[0]['chat_id'];
+  //     createChatResponse.createdDate = DateTime.now().toIso8601String();
+  //   }
+  //   return createChatResponse;
+  // }
 
 //   @override
 //   Future<DeleteChatResponse> deleteChat(
@@ -311,28 +392,55 @@ class GrpcMessage extends GrpcMessagesServiceBase {
 //     return deleteResponse;
 //   }
 
-//   @override
-//   Future<GetChatResponse> getChat(
-//       ServiceCall call, GetChatRequest request) async {
-//     var getChatResp = GetChatResponse();
-//     var src = await ChatsServices().getChatById(id: request.id);
+  // @override
+  // Future<GetChatResponse> getChat(
+  //     ServiceCall call, GetChatRequest request) async {
+  //   var getChatResp = GetChatResponse();
+  //   var src = await ChatsServices().getChatById(id: request.id);
 
-//     if (src[0]['user_id'] != 0 && src[0]['user_id'] != null) {
-//       getChatResp.friend1Id = src[0]['friend1_id'];
-//       getChatResp.friend2Id = src[0]['friend2_id'];
-//       getChatResp.createdDate = DateTime.now().toIso8601String();
-//     }
-//     return getChatResp;
-//   }
+  //   if (src[0]['user_id'] != 0 && src[0]['user_id'] != null) {
+  //     getChatResp.friend1Id = src[0]['friend1_id'];
+  //     getChatResp.friend2Id = src[0]['friend2_id'];
+  //     getChatResp.createdDate = DateTime.now().toIso8601String();
+  //   }
+  //   return getChatResp;
+  // }
 
 //   @override
 //   Future<UpdateChatResponse> updateChat(
 //       ServiceCall call, UpdateChatRequest request) async {
 //     var updateChatResp = UpdateChatResponse();
 
-//     return updateChatResp;
-//   }
-// }
+  //   return updateChatResp;
+  // }
+
+  @override
+  Future<CreateChatResponse> createChat(
+      ServiceCall call, CreateChatRequest request) {
+    // TODO: implement createChat
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<GetChatResponse> getChat(ServiceCall call, GetChatRequest request) {
+    // TODO: implement getChat
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DeleteChatResponse> deleteChat(
+      ServiceCall call, DeleteChatRequest request) {
+    // TODO: implement deleteChat
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UpdateChatResponse> updateChat(
+      ServiceCall call, UpdateChatRequest request) {
+    // TODO: implement updateChat
+    throw UnimplementedError();
+  }
+}
 
 class GrpcUsers extends GrpcUsersServiceBase {
   @override
@@ -376,11 +484,17 @@ class GrpcUsers extends GrpcUsersServiceBase {
   @override
   Future<GetUserResponse> getUser(
       ServiceCall call, GetUserRequest request) async {
-    var getUserResponse = GetUserResponse();
+    print('ACTIVATE GET USER SERVER');
     var src;
     if (!request.id.isNaN) {
+      print('REQUEST :');
       src = await UsersServices()
-          .getUserByField(field: 'user_id', fieldValue: request.id);
+          .getUserByField(field: 'user_id', fieldValue: '${request.id}');
+      print('OK: $src');
+      if (src.toString().contains('user_id')) {
+        print('src contains user_id');
+        return GetUserResponse(id: request.id);
+      }
     } else if (request.name.isNotEmpty) {
       src = await UsersServices()
           .getUserByField(field: 'name', fieldValue: request.name);
@@ -393,7 +507,7 @@ class GrpcUsers extends GrpcUsersServiceBase {
     } else {
       // // return GrpcError.invalidArgument()
     }
-    return getUserResponse;
+    return GetUserResponse();
   }
 
   @override

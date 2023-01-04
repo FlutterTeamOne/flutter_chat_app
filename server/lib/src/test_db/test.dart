@@ -133,4 +133,7 @@ Future<void> main() async {
   // usersUpdated
   //     .add(UserRequest(userId: 2, updatedDate: '2022-12-02T21:36:32.653712'));
   // print(await usersService.getUpdatedUsers(users: usersUpdated));
+
+  // print(await chatsServices.createChat(
+  //     friend1Id: 2, friend2Id: 3, date: DateTime.now().toIso8601String()));
 }

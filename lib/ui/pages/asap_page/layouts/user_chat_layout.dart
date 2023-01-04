@@ -48,43 +48,52 @@ class UserChatLayoutState extends State<UserChatLayout> {
     return chat == null
         ? Container()
         : Column(
-            children: [
+            children: <Widget>[
               //Top bar of the user_chat_layout screen part, that contains the friend's name and pic
-              Container(
-                color: Colors.transparent.withOpacity(0.5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ChatAppBarWidget(
-                      image: user!.deletedDate!.isEmpty
-                          ? user.profilePicLink
-                          : 'https://www.iconsdb.com/icons/preview/red/cancel-xxl.png',
-                      // user.profilePicLink,
-                      name: user.name,
-                    ),
-                    PopupMenuButton<int>(
-                        itemBuilder: (context) => [
-                              PopupMenuItem(
-                                value: 1,
-                                child: Row(
-                                  children: const [
-                                    Icon(Icons.delete),
-                                    SizedBox(
-                                      width: 10,
+              Flexible(
+                flex: 1,
+                child: Container(
+                  height: 60,
+                  color: Colors.transparent.withOpacity(0.1),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Flexible(
+                        child: ChatAppBarWidget(
+                          image: user!.deletedDate!.isEmpty
+                              ? user.profilePicLink
+                              : 'https://www.iconsdb.com/icons/preview/red/cancel-xxl.png',
+                          // user.profilePicLink,
+                          name: user.name,
+                        ),
+                      ),
+                      Flexible(
+                        child: PopupMenuButton<int>(
+                            itemBuilder: (context) => [
+                                  PopupMenuItem(
+                                    value: 1,
+                                    child: Row(
+                                      children: const [
+                                        Icon(Icons.delete),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text("Delete Chat")
+                                      ],
                                     ),
-                                    Text("Delete Chat")
-                                  ],
-                                ),
-                                onTap: () => context
-                                    .read<ChatBloc>()
-                                    .add(DeleteChatEvent(widget.chatId)),
-                              ),
-                            ]),
-                  ],
+                                    onTap: () => context
+                                        .read<ChatBloc>()
+                                        .add(DeleteChatEvent(widget.chatId)),
+                                  ),
+                                ]),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Expanded(
-                child: context.watch<MessageBloc>().state.messages != null
+                flex: 10,
+                child: context.read<MessageBloc>().state.messages != null
                     ? ChatWidget(
                         textController: controller,
                         messages: context.watch<MessageBloc>().state.messages!,
@@ -92,53 +101,60 @@ class UserChatLayoutState extends State<UserChatLayout> {
                       )
                     : const Center(child: CircularProgressIndicator()),
               ),
-              TextInputWidget(
-                onSubmitted: (text) => _sendAndChange(messageBloc),
-                controller: controller,
-                onTap: () => user.deletedDate!.isNotEmpty
-                    ? showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            child: SizedBox(
-                              height: 80,
-                              width: 80,
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text('User ${user.name} is deleted'),
+              Flexible(
+                flex: 1,
+                child: SizedBox(
+                  height: 80,
+                  child: TextInputWidget(
+                    onSubmitted: (text) => _sendAndChange(messageBloc),
+                    controller: controller,
+                    onTap: () => user.deletedDate!.isNotEmpty
+                        ? showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Dialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                child: SizedBox(
+                                  height: 80,
+                                  width: 80,
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                            'User ${user.name} is deleted'),
+                                      ),
+                                      ElevatedButton(
+                                          style: ButtonStyle(
+                                              shape: MaterialStateProperty.all<
+                                                      RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                          ))),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Icon(
+                                            Icons.close_rounded,
+                                          ))
+                                    ],
                                   ),
-                                  ElevatedButton(
-                                      style: ButtonStyle(
-                                          shape: MaterialStateProperty.all<
-                                                  RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                      ))),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Icon(
-                                        Icons.close_rounded,
-                                      ))
-                                ],
-                              ),
-                            ),
-                          );
-                        })
-                    : _sendAndChange(messageBloc),
-                editState: messageBloc.state.editState,
-                editText: controller.text,
-                cancelEdit: () {
-                  messageBloc.add(
-                      UpdateMessageEvent(isEditing: EditState.isNotEditing));
-                  controller.clear();
-                },
+                                ),
+                              );
+                            })
+                        : _sendAndChange(messageBloc),
+                    editState: messageBloc.state.editState,
+                    editText: controller.text,
+                    cancelEdit: () {
+                      messageBloc.add(UpdateMessageEvent(
+                          isEditing: EditState.isNotEditing));
+                      controller.clear();
+                    },
+                  ),
+                ),
               ),
             ],
           );
@@ -159,9 +175,11 @@ class UserChatLayoutState extends State<UserChatLayout> {
                 contentType: ContentType.isText),
             contentType: ContentType.isText),
       );
+      if (!mounted) return;
       context.read<ChatBloc>().add(ReadChatEvent());
       FocusScope.of(context).unfocus();
       controller.clear();
+      return;
     }
     // print('IS EDIT F:${context.read<MessageBloc>().isEditing}');
     if (messageBloc.state.editState == EditState.isPreparation &&
@@ -183,6 +201,7 @@ class UserChatLayoutState extends State<UserChatLayout> {
             isEditing: EditState.isEditing),
       );
       controller.clear();
+      return;
     }
 
     if (messageBloc.state.mediaState == MediaState.isPreparation &&
@@ -199,8 +218,10 @@ class UserChatLayoutState extends State<UserChatLayout> {
             contentType: ContentType.isMediaText,
             mediaState: MediaState.isSending),
       );
+      if (!mounted) return;
       FocusScope.of(context).unfocus();
       controller.clear();
+      return;
     } else if (messageBloc.state.mediaState == MediaState.isPreparation &&
         controller.text.isEmpty) {
       messageBloc.add(
@@ -215,8 +236,10 @@ class UserChatLayoutState extends State<UserChatLayout> {
             contentType: ContentType.isMedia,
             mediaState: MediaState.isSending),
       );
+      if (!mounted) return;
       FocusScope.of(context).unfocus();
       controller.clear();
+      return;
     } else {
       return null;
     }

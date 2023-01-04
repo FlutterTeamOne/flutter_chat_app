@@ -31,11 +31,11 @@ class MyMessageCardWidget extends StatelessWidget {
                 marginIndex: 15)
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
+                children: <Widget>[
                   currentWidth > 888.8
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
+                          children: <Widget>[
                             PopupMenuCardWidget(
                                 marginIndex: 5,
                                 textController: textController,
@@ -52,9 +52,13 @@ class MyMessageCardWidget extends StatelessWidget {
                           message: message,
                         ),
                   InkWell(
-                    onTap: () => context
+                    onTap: () => {},
+                    /*
+                    context НЕТ read MESSAGEBLOC
+                    context
                         .read<MessageBloc>()
-                        .add(CreateMessageEvent(message: message)),
+                        .add(CreateMessageEvent(message: message))
+                    */
                     child: const Text(
                       'Not Delivered',
                     ),

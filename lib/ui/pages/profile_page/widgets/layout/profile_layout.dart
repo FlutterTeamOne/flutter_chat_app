@@ -7,24 +7,22 @@ class _ProfileLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<UserBloc, UserState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        var userMain;
-        for (var user in state.users!) {
-          if (user.userId == UserPref.getUserId) {
-            userMain = user;
-            break;
+        listener: (context, state) {},
+        builder: (context, state) {
+          var userMain;
+          for (var user in state.users!) {
+            if (user.userId == UserPref.getUserId) {
+              userMain = user;
+              break;
+            }
           }
-        }
 
-        return userMain == null
-            ? Center(
-                widthFactor: 100,
-                heightFactor: 100,
-                child: CircularProgressIndicator())
-            : ListView(
-
-                children: [
+          return userMain == null
+              ? const Center(
+                  widthFactor: 100,
+                  heightFactor: 100,
+                  child: CircularProgressIndicator())
+              : ListView(children: [
                   // Фон и аватарка
                   Stack(
                     children: [
@@ -45,10 +43,12 @@ class _ProfileLayout extends StatelessWidget {
                           context.read<UserBloc>().add(ReadUsersEvent());
                           context.read<ChatBloc>().add(GetChatIdEvent(-1));
                           await DBHelper.instanse.close();
-                          Future.delayed(Duration(seconds: 1),
-                              () => Navigator.of(context).pushNamed('/'));
+                          Future.delayed(
+                              const Duration(seconds: 1),
+                              () => Navigator.of(context)
+                                  .pushNamed(AuthPage.routeName));
                         },
-                        icon: Icon(Icons.arrow_back),
+                        icon: const Icon(Icons.arrow_back),
                       ),
                     ],
                   ),
@@ -87,7 +87,7 @@ class _ProfileLayout extends StatelessWidget {
                             ButtonChangeEmail(userMain: userMain)
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Row(
@@ -122,30 +122,29 @@ class _ProfileLayout extends StatelessWidget {
                                               children: [
                                                 Padding(
                                                     padding:
-                                                        EdgeInsets.all(8.0),
+                                                        const EdgeInsets.all(
+                                                            8.0),
                                                     child: userIsDeleted ==
                                                             false
                                                         ? Text(
                                                             'User ${userMain.name} is not deleted')
                                                         : Text(
                                                             'User ${userMain.name} is deleted')),
-                                                DeleteDialogWidget()
+                                                const DeleteDialogWidget()
                                               ],
                                             ),
                                           ),
                                         );
                                       });
                                 },
-                                child: Text('Delete user')),
+                                child: const Text('Delete user')),
                           ],
                         ),
                       ],
                     ),
                   ),
-                ],
-              );
-      },
-    );
+                ]);
+        });
   }
 }
 
@@ -175,8 +174,8 @@ class ButtonChangeEmail extends StatelessWidget {
                   width: 300,
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
                         child: Text('Insert new email'),
                       ),
                       Padding(
@@ -215,7 +214,7 @@ class ButtonChangeEmail extends StatelessWidget {
                               print(newEmail);
                               Navigator.pop(context);
                             },
-                            child: Icon(Icons.check)),
+                            child: const Icon(Icons.check)),
                       )
                     ],
                   ),
@@ -223,7 +222,7 @@ class ButtonChangeEmail extends StatelessWidget {
               );
             });
       },
-      icon: Icon(Icons.create_outlined),
+      icon: const Icon(Icons.create_outlined),
       iconSize: 15,
     );
   }
@@ -254,8 +253,8 @@ class ButtonChangeName extends StatelessWidget {
                   width: 300,
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
                         child: Text('Insert new name'),
                       ),
                       Padding(
@@ -294,7 +293,7 @@ class ButtonChangeName extends StatelessWidget {
                               print(newName);
                               Navigator.pop(context);
                             },
-                            child: Icon(Icons.check)),
+                            child: const Icon(Icons.check)),
                       )
                     ],
                   ),
@@ -302,7 +301,7 @@ class ButtonChangeName extends StatelessWidget {
               );
             });
       },
-      icon: Icon(Icons.create_outlined),
+      icon: const Icon(Icons.create_outlined),
       iconSize: 15,
     );
   }
@@ -327,8 +326,8 @@ class DeleteDialogWidget extends StatelessWidget {
           context.read<UserBloc>().add(ReadUsersEvent());
           context.read<ChatBloc>().add(GetChatIdEvent(-1));
           await DBHelper.instanse.deleteDB();
-          Future.delayed(
-              Duration(seconds: 1), () => Navigator.of(context).pushNamed('/'));
+          Future.delayed(const Duration(seconds: 1),
+              () => Navigator.of(context).pushNamed('/'));
         },
         child: const Icon(Icons.check));
   }

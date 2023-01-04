@@ -24,6 +24,7 @@ class AppCircleButtonWidget extends StatelessWidget {
             child: Icon(
               icon,
               size: 22,
+              color: Colors.white,
             ),
           ),
         ),

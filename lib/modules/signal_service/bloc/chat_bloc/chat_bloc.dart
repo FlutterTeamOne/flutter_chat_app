@@ -20,11 +20,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   late LocalChatServices _chatServices;
   UserBloc userBloc;
   ChatBloc({required this.userBloc}) : super(const ChatState()) {
-    DBHelper.instanse.updateListenController.stream.listen((event) {
-      if (event) {
-        add(ReadChatEvent());
-      }
-    });
+    DBHelper.instanse.updateListenController.stream.listen(
+      (event) {
+        if (event) {
+          add(ReadChatEvent());
+        }
+      },
+    );
     on<ReadChatEvent>(_onReadChatEvent);
     on<CreateChatEvent>(_onCreateChatEvent);
     on<GetChatIdEvent>(_onGetChatIdEvent);
@@ -57,7 +59,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     if (!listEquals(chats, restChats)) {
       for (var chat in restChats) {
         await _chatServices.createChat(
-            createDate: chat.createdDate, userId: chat.userIdChat);
+            createDate: chat.createdDate,
+            userId: chat.userIdChat,
+            chatId: chat.chatId!);
       }
     } else {
       emit(state.copyWith(chats: event.chats));
@@ -69,11 +73,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       CreateChatEvent event, Emitter<ChatState> emit) async {
     _chatServices = LocalChatServices();
     var chat = event.chat;
+    var restChat = await RestClient().createChatRest(
+        creatorUserId: UserPref.getUserId,
+        user2Id: chat.userIdChat,
+        date: chat.createdDate);
     var chats = await _chatServices.createChat(
-        createDate: chat.createdDate, userId: chat.userIdChat);
-    //TODO:запрос к restApi на создание чата
-    await RestClient().createChatRest(
-        creatorUserId: UserPref.getUserId, user2Id: chat.userIdChat);
+        createDate: restChat.createdDate,
+        userId: restChat.userIdChat,
+        chatId: restChat.chatId!);
     emit(state.copyWith(chats: chats));
   }
 

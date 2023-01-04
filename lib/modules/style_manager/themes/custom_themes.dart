@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
-class CustomTheme {
+class CustomThemes {
   static final ThemeData lightThemeDeepPurple = ThemeData(
+      useMaterial3: true,
       brightness: Brightness.light,
       primarySwatch: Colors.deepPurple,
       primaryColor: Colors.deepPurple,
@@ -21,6 +22,7 @@ class CustomTheme {
         selectionHandleColor: Colors.black26,
       ));
   static final ThemeData darkThemeDeepPurple = ThemeData(
+    useMaterial3: true,
     brightness: Brightness.dark,
     primarySwatch: Colors.deepPurple,
     primaryColor: Colors.deepPurple,
@@ -40,6 +42,7 @@ class CustomTheme {
   );
 
   static final ThemeData darkThemeLightBlue = ThemeData(
+    useMaterial3: true,
     brightness: Brightness.dark,
     primarySwatch: Colors.indigo,
     primaryColor: Colors.indigo,
@@ -58,6 +61,7 @@ class CustomTheme {
   );
 
   static final ThemeData lightThemeLightBlue = ThemeData(
+      useMaterial3: true,
       brightness: Brightness.light,
       primarySwatch: Colors.indigo,
       primaryColor: Colors.indigo,
@@ -75,6 +79,7 @@ class CustomTheme {
       ));
 
   static final ThemeData darkThemeBlueGray = ThemeData(
+    useMaterial3: true,
     brightness: Brightness.dark,
     primarySwatch: Colors.blueGrey,
     primaryColor: Colors.blueGrey,
@@ -93,6 +98,7 @@ class CustomTheme {
   );
 
   static final ThemeData lightThemeOrange = ThemeData(
+    useMaterial3: true,
     brightness: Brightness.light,
     primarySwatch: Colors.blueGrey,
     primaryColor: Colors.blueGrey,
@@ -101,7 +107,7 @@ class CustomTheme {
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.white70,
       selectionColor: Colors.white70,
-      selectionHandleColor: Colors.black26,
+      selectionHandleColor: Colors.white70,
     ),
     //стиль для scroll down button
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
@@ -109,11 +115,52 @@ class CustomTheme {
       foregroundColor: Colors.black54,
     ),
   );
+
+  static final ThemeData lightThemeBlueGray = ThemeData(
+    useMaterial3: true,
+    brightness: Brightness.dark,
+    primarySwatch: Colors.blueGrey,
+    primaryColor: Colors.blueGrey,
+    errorColor: Colors.redAccent.shade200,
+    // backgroundColor: Colors.black45,
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.white70,
+      selectionColor: Colors.white70,
+      selectionHandleColor: Colors.white70,
+    ),
+    //стиль для scroll down button
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: Colors.white,
+      foregroundColor: Colors.black54,
+    ),
+  );
+
+  static final ThemeData CustomTheme = ThemeData(
+    useMaterial3: true,
+    brightness: Brightness.dark,
+    primarySwatch: Colors.blueGrey,
+    primaryColor: Colors.blueGrey,
+    errorColor: Colors.redAccent.shade200,
+    // backgroundColor: Colors.black45,
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.white70,
+      selectionColor: Colors.white70,
+      selectionHandleColor: Colors.white70,
+    ),
+    //стиль для scroll down button
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: Colors.white,
+      foregroundColor: Colors.black54,
+    ),
+  );
+
   final themes = [
-    CustomTheme.lightThemeDeepPurple,
-    CustomTheme.darkThemeDeepPurple,
-    CustomTheme.lightThemeLightBlue,
-    CustomTheme.darkThemeLightBlue,
-    CustomTheme.lightThemeOrange,
+    CustomThemes.lightThemeDeepPurple,
+    CustomThemes.darkThemeDeepPurple,
+    CustomThemes.lightThemeLightBlue,
+    CustomThemes.darkThemeLightBlue,
+    CustomThemes.lightThemeBlueGray,
+    CustomThemes.darkThemeBlueGray,
+    CustomThemes.CustomTheme,
   ];
 }

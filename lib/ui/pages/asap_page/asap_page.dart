@@ -26,11 +26,12 @@ class AsapPage extends StatelessWidget {
             builder: (context, messageState) {
               print("chatState: ${chatState.chats}");
               print("messageState: ${messageState.messages}");
-              
+
               return Row(
-                children: [
+                children: <Widget>[
                   // Список чатов
                   Expanded(
+                      flex: 1,
                       child: chatState.chats == null
                           ? const Text('Sorry')
                           : messageState.messages != null

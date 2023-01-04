@@ -36,7 +36,7 @@ class UserDto extends ModelDto {
       userId: userId ?? this.userId,
       name: name ?? this.name,
       email: email ?? this.email,
-      createdDate: registrationDate ?? this.createdDate,
+      createdDate: registrationDate ?? createdDate,
       profilePicLink: profilePicLink ?? this.profilePicLink,
       updatedDate: updatedDate ?? this.updatedDate,
       deletedDate: deletedDate ?? this.deletedDate,
