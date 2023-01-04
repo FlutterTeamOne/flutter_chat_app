@@ -70,16 +70,21 @@ class ChatWidgetState extends State<ChatWidget> {
       ),
       body: messages.isEmpty
           ? Center(child: Text('Start chatting'))
-          : GroupedListView<MessageDto, int>(
+          : GroupedListView<MessageDto, DateTime>(
               controller: scrollController,
               padding: const EdgeInsets.all(10),
               elements: messages,
               reverse: true,
+              order: GroupedListOrder.DESC,
+              useStickyGroupSeparators: true,
               floatingHeader: true,
-              groupBy: (message) => message.localMessageId!,
+              groupBy: (message) => DateTime(
+                DateTime.parse(message.createdDate!).month,
+                DateTime.parse(message.createdDate!).day,
+                DateTime.parse(message.createdDate!).year,
+              ),
               groupHeaderBuilder: (MessageDto message) =>
                   TimeCardWidget(date: message.createdDate!),
-              groupComparator: (value1, value2) => value2,
               itemBuilder: (context, MessageDto message) {
                 if (!checkSender(message.senderId)) {
                   // print(message.isSentByMe);
