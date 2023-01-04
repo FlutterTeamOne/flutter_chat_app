@@ -123,4 +123,39 @@ class ChatListLayout extends StatelessWidget {
   }
 
   bool checkSender(int id) => id == UserPref.getUserId ? true : false;
+
+  getUpdateDate(String updateDate) {
+    var updatedDate = DateTime.parse(updateDate);
+    //день
+    var today = DateTime.now().day;
+    //время
+    var correctMinute = updatedDate.minute.toString().length == 1
+        ? '0${updatedDate.minute}'
+        : updatedDate.minute;
+    String? realTime = '${updatedDate.hour}:$correctMinute';
+    //месяц
+    List<String> months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    int monthNow = updatedDate.month - 1;
+    //год
+    var thisYear = DateTime.now().year;
+    var correctUpdatedDate = updatedDate.day != today
+        ? '${months[monthNow]} ${updatedDate.day}'
+        : updatedDate.year != thisYear
+            ? '${updatedDate.year} ${months[monthNow]} ${updatedDate.day}'
+            : realTime;
+    return correctUpdatedDate;
+  }
 }

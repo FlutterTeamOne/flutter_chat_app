@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
+import 'package:chat_app/src/constants/app_data_constants.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';
 import 'package:chat_app/ui/pages/registration_page/registration_page.dart';
 import 'package:chat_app/ui/widgets/registration_page/bloc/new_user_bloc.dart';
@@ -28,8 +29,13 @@ Future<void> main() async {
   await UserPref.restore();
   print("UserPref: ${UserPref.getUserDbPref}");
   UserPref.getUserDbPref
-      ? await DBHelperStart.instanse.initDB()
-      : await DBHelper.instanse.initDB();
+    ? await DBHelperStart.instanse.initDB()
+    : await DBHelper.instanse.initDB();
+  
+  var envVars = AppDataConstants.envVars;
+  var userDir = AppDataConstants.userDirectory;
+  var directory = await Directory('$userDir/AppData/Local/FlutterChatApp/databases').create(recursive: true);
+  print(directory.path);
   runApp(ProviderScope(child: MyApp()));
 }
 
