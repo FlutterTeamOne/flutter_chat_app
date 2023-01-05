@@ -1,4 +1,5 @@
-﻿import 'package:chat_app/src/libraries/library_all.dart';
+﻿import 'package:chat_app/src/generated/messages/messages.pbgrpc.dart';
+import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../library/library_widgets.dart';
 import 'package:flutter/material.dart';
@@ -52,13 +53,11 @@ class MyMessageCardWidget extends StatelessWidget {
                           message: message,
                         ),
                   InkWell(
-                    onTap: () => {},
-                    /*
-                    context НЕТ read MESSAGEBLOC
-                    context
-                        .read<MessageBloc>()
-                        .add(CreateMessageEvent(message: message))
-                    */
+                    onTap: () => context.read<MessageBloc>().add(
+                        CreateMessageEvent(
+                            message: message,
+                            contentType: message.contentType)),
+
                     child: const Text(
                       'Not Delivered',
                     ),
