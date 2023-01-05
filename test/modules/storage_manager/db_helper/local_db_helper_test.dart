@@ -64,7 +64,7 @@ Future main() async {
   });
 
   group('Local db: "CREATE TABLE" queries:', () {
-    setUpAll(() {
+    setUp(() {
       sqfliteFfiInit();
       databaseFactory = databaseFactoryFfi;
     });
@@ -415,5 +415,141 @@ Future main() async {
       expect(r, matcher);
       db.close();
     });
+  });
+
+  group('Local db: "CREATE INDEX" queries', () {
+    setUp(() {
+      sqfliteFfiInit();
+      databaseFactory = databaseFactoryFfi;
+    });
+    test('CHATS_FK_3 ON chats id', () async {
+      databaseFactory.deleteDatabase('test');
+      var db = await databaseFactory.openDatabase('test');
+      await db.transaction((txn) async {
+        await txn.execute('''
+          CREATE TABLE ${DatabaseConst.chatsTable}(
+            ${DatabaseConst.chatsColumnChatId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
+            ${DatabaseConst.chatsColumnUserId} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique},
+            ${DatabaseConst.chatsColumnCreatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
+            ${DatabaseConst.chatsColumnUpdatedDate} ${DatabaseConst.char26},
+            ${DatabaseConst.chatsColumnDeletedDate} ${DatabaseConst.char26},
+            ${DatabaseConst.constraint} CHATS_FK_84 ${DatabaseConst.foreignKey} ( ${DatabaseConst.chatsColumnUserId} ) ${DatabaseConst.references} ${DatabaseConst.userTable} ( ${DatabaseConst.usersColumnUserId} )
+          )
+        ''');
+        await txn.execute('''
+          CREATE INDEX CHATS_FK_3 ON ${DatabaseConst.chatsTable}
+          (
+            ${DatabaseConst.chatsColumnUserId}
+          )
+        ''');
+      });
+      var r = await db.rawQuery('''
+        SELECT * FROM sqlite_master WHERE (type = "index") and (name = "CHATS_FK_3")''');
+      var matcher = [
+            {
+              'type': 'index',
+              'name': 'CHATS_FK_3',
+              'tbl_name': 'chats',
+              'rootpage': 5,
+              'sql': 'CREATE INDEX CHATS_FK_3 ON chats\n'
+                '          (\n'
+                '            user_id\n'
+                '          )\n'
+                '        '
+            }
+          ];
+      expect(r, matcher);
+      db.close();
+    });
+
+    test('MESSAGES_FK_2 ON messages id', () async {
+      databaseFactory.deleteDatabase('test');
+      var db = await databaseFactory.openDatabase('test');
+      await db.transaction((txn) async {
+        await txn.execute('''
+          CREATE TABLE ${DatabaseConst.messageTable} (
+            ${DatabaseConst.messagesColumnLocalMessagesId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
+            ${DatabaseConst.messagesColumnChatId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
+            ${DatabaseConst.messagesColumnCreatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
+            ${DatabaseConst.messagesColumnSenderId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
+            ${DatabaseConst.messagesColumnMessageId} ${DatabaseConst.integer},
+            ${DatabaseConst.messagesColumnIsRead} ${DatabaseConst.integer} ${DatabaseConst.notNull} DEFAULT 0,
+            ${DatabaseConst.messagesColumnContent} ${DatabaseConst.char50} ${DatabaseConst.notNull},
+            ${DatabaseConst.messagesColumnUpdatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
+            ${DatabaseConst.messagesColumnDeletedDate} ${DatabaseConst.char26}, 
+            ${DatabaseConst.messagesColumnAttachmentId} ${DatabaseConst.integer},
+            ${DatabaseConst.messagesColumnContentType} ${DatabaseConst.text},
+            ${DatabaseConst.constraint} MESSAGES_FK_79 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnChatId} ) ${DatabaseConst.references} ${DatabaseConst.chatsTable} ( ${DatabaseConst.chatsColumnChatId} ),
+
+            ${DatabaseConst.constraint} MESSAGES_FK_80 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnSenderId} ) ${DatabaseConst.references} ${DatabaseConst.userTable} ( ${DatabaseConst.usersColumnUserId} ),
+
+            ${DatabaseConst.constraint} MESSAGES_FK_81 ${DatabaseConst.foreignKey} ( ${DatabaseConst.messagesColumnAttachmentId} ) ${DatabaseConst.references} ${DatabaseConst.attachmentsTable} ( ${DatabaseConst.attachmentsColumnAttachmentId} ),
+
+            CHECK ((is_read = 0) OR (is_read = 1)),
+            CHECK (LENGTH(${DatabaseConst.messagesColumnCreatedDate}) = 26)
+          )
+          ''');
+        await txn.execute('''
+          CREATE INDEX MESSAGES_FK_2 ON ${DatabaseConst.messageTable}
+          (
+            ${DatabaseConst.chatsColumnChatId}  
+          );
+          ''');
+      });
+      var r = await db.rawQuery('''
+        SELECT * FROM sqlite_master WHERE (type = "index") and (name = "MESSAGES_FK_2")''');
+      var matcher = [
+            {
+              'type': 'index',
+              'name': 'MESSAGES_FK_2',
+              'tbl_name': 'messages',
+              'rootpage': 4,
+              'sql': 'CREATE INDEX MESSAGES_FK_2 ON messages\n'
+                '          (\n'
+                '            chat_id  \n'
+                '          )'
+            }
+          ];
+      expect(r, matcher);
+      db.close();
+    });
+
+    test('MAIN_USER_FK_1 ON main_user id', () async {
+      databaseFactory.deleteDatabase('test');
+      var db = await databaseFactory.openDatabase('test');
+      await db.transaction((txn) async {
+        await txn.execute('''
+          CREATE TABLE ${DatabaseConst.mainUserTable}(
+            ${DatabaseConst.mainUserColumnUserId} ${DatabaseConst.integer},
+            ${DatabaseConst.mainUserColumnKey} ${DatabaseConst.char50},
+            ${DatabaseConst.mainUserColumnDataSync} ${DatabaseConst.char26}
+          )
+          ''');
+        await txn.execute('''
+          CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
+          (
+            ${DatabaseConst.usersColumnUserId}
+          )
+          ''');
+      });
+      var r = await db.rawQuery('''
+        SELECT * FROM sqlite_master WHERE (type = "index") and (name = "MAIN_USER_FK_1")''');
+      var matcher = [
+            {
+              'type': 'index',
+              'name': 'MAIN_USER_FK_1',
+              'tbl_name': 'main_user',
+              'rootpage': 3,
+              'sql': 'CREATE INDEX MAIN_USER_FK_1 ON main_user\n'
+                '          (\n'
+                '            user_id\n'
+                '          )\n'
+                '          '
+            }
+          ];
+      expect(r, matcher);
+      db.close();
+    });
+
   });
 }
