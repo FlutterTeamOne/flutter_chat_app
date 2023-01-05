@@ -452,7 +452,7 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
 
         print('sortListen message:$messages');
 
-        readMessages();
+        readMessages(messages);
         // state.copyWith(messages: messages);
       }
     });

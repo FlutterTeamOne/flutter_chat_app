@@ -23,19 +23,22 @@ class AsapPage extends StatelessWidget {
         ref.watch(
             River.futureChatPod.selectAsync((data) => chats = data.chats));
         var chatPod = ref.watch(River.chatPod);
-        var messages;
+        var messagePod = ref.watch(River.messagePod);
+        var messages = <MessageDto>[];
         ref.watch(River.futureMessagePod
-            .selectAsync((data) => messages = data.messages));
+            .selectAsync((data) => messages.addAll(data.messages!)));
 
-        for (var m in messages) {
-          print("messageState: $m");
-        }
+        // for (var m in messages) {
+        //   print("messageState: $m");
+        // }
         return Row(
           children: [
             // Список чатов
             Expanded(
-              child: chats != null
-                  ? ChatListLayout(chatModel: chats!, messageModel: messages!)
+              child: chatPod.chats != null
+                  ? ChatListLayout(
+                      chatModel: chatPod.chats!,
+                      messageModel: messagePod.messages!)
                   : const Center(
                       child: CircularProgressIndicator(),
                     ),
@@ -44,7 +47,7 @@ class AsapPage extends StatelessWidget {
                 flex: 3,
                 child: chatPod.chatId == null || chatPod.chatId == -1
                     ? const DefaultUserChatLayout()
-                    : messages != null
+                    : messagePod.messages != null
                         ? UserChatLayout(chatId: chatPod.chatId!)
                         : const Center(child: CircularProgressIndicator())),
           ],
