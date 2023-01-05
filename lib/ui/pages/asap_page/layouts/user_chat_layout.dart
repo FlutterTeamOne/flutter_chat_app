@@ -182,17 +182,36 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
       print("EDITING");
       var messageId = messageRef.messageId;
       var message = messageRef.messages
-          ?.where((element) => element.localMessageId == messageId)
-          .toList();
-      messageNotif.updateMessage(
-          message: MessageDto(
-              chatId: widget.chatId,
-              senderId: await MainUserServices().getUserID(),
-              content: controller.text,
-              messageId: messageId,
-              createdDate: message?[0].createdDate,
-              updatedDate: DateTime.now().toIso8601String()),
-          isEditing: EditState.isEditing);
+          ?.firstWhere((element) => element.localMessageId == messageId);
+      if (message?.contentType == ContentType.isText) {
+        print('EDIT  TEXT');
+        messageNotif.updateMessage(
+            message: MessageDto(
+                chatId: widget.chatId,
+                senderId: await MainUserServices().getUserID(),
+                content: controller.text,
+                messageId: messageId,
+                createdDate: message?.createdDate,
+                updatedDate: DateTime.now().toIso8601String()),
+            isEditing: EditState.isEditing);
+      } else if (message?.contentType == ContentType.isMediaText) {
+        print('EDIT MEDIA TEXT');
+        List<String>? data = message?.content.split('media: ');
+        var msg = data![1];
+        print('MSG UPD: $msg');
+        messageNotif.updateMessage(
+            message: MessageDto(
+                chatId: widget.chatId,
+                senderId: await MainUserServices().getUserID(),
+                content: {'message': controller.text, 'media': msg}.toString(),
+                messageId: messageId,
+                createdDate: message?.createdDate,
+                updatedDate: DateTime.now().toIso8601String()),
+            isEditing: EditState.isEditing);
+      } else {
+        print('EDIT MEDIA ');
+        return;
+      }
       controller.clear();
       return;
     }
