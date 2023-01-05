@@ -1,4 +1,5 @@
-﻿import 'package:chat_app/modules/signal_service/river/river.dart';
+﻿import 'package:chat_app/modules/signal_service/river/message_state_ref.dart';
+import 'package:chat_app/modules/signal_service/river/river.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,7 +47,9 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
         user = u;
       }
     }
-    var messageBloc = context.read<MessageBloc>();
+    var messageNotif = ref.read(River.messagePod.notifier);
+    var messageRead = ref.read(River.messagePod);
+    var messageWatch = ref.watch(River.messagePod);
     return chat == null
         ? Container()
         : Column(
@@ -85,16 +88,17 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                 ),
               ),
               Expanded(
-                child: context.watch<MessageBloc>().state.messages != null
+                child: messageWatch.messages != null
                     ? ChatWidget(
                         textController: controller,
-                        messages: context.watch<MessageBloc>().state.messages!,
+                        messages: messageWatch.messages!,
                         chatId: widget.chatId,
                       )
                     : const Center(child: CircularProgressIndicator()),
               ),
               TextInputWidget(
-                onSubmitted: (text) => _sendAndChange(messageBloc),
+                onSubmitted: (text) =>
+                    _sendAndChange(messageRead, messageNotif),
                 controller: controller,
                 onTap: () => user.deletedDate!.isNotEmpty
                     ? showDialog(
@@ -132,12 +136,12 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                             ),
                           );
                         })
-                    : _sendAndChange(messageBloc),
-                editState: messageBloc.state.editState,
+                    : _sendAndChange(messageRead, messageNotif),
+                editState: messageRead.editState,
                 editText: controller.text,
                 cancelEdit: () {
-                  messageBloc.add(
-                      UpdateMessageEvent(isEditing: EditState.isNotEditing));
+                  messageNotif.updateMessage(isEditing: EditState.isNotEditing);
+
                   controller.clear();
                 },
               ),
@@ -145,77 +149,70 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
           );
   }
 
-  _sendAndChange(MessageBloc messageBloc) async {
-    if (messageBloc.state.editState == EditState.isNotEditing &&
+  _sendAndChange(
+      MessageStateRef messageRef, MessageNotifier messageNotif) async {
+    if (messageRef.editState == EditState.isNotEditing &&
         controller.text.isNotEmpty &&
-        messageBloc.state.mediaState != MediaState.isPreparation) {
-      messageBloc.add(
-        CreateMessageEvent(
-            message: MessageDto(
-                chatId: widget.chatId,
-                senderId: await MainUserServices().getUserID(),
-                content: controller.text,
-                createdDate: DateTime.now().toIso8601String(),
-                updatedDate: DateTime.now().toIso8601String(),
-                contentType: ContentType.isText),
-            contentType: ContentType.isText),
-      );
+        messageRef.mediaState != MediaState.isPreparation) {
+      messageNotif.createMessage(
+          message: MessageDto(
+              chatId: widget.chatId,
+              senderId: await MainUserServices().getUserID(),
+              content: controller.text,
+              createdDate: DateTime.now().toIso8601String(),
+              updatedDate: DateTime.now().toIso8601String(),
+              contentType: ContentType.isText),
+          contentType: ContentType.isText);
       // context.read<ChatBloc>().add(ReadChatEvent());
       FocusScope.of(context).unfocus();
       controller.clear();
     }
     // print('IS EDIT F:${context.read<MessageBloc>().isEditing}');
-    if (messageBloc.state.editState == EditState.isPreparation &&
+    if (messageRef.editState == EditState.isPreparation &&
         controller.text.isNotEmpty) {
       print("EDITING");
-      var messageId = messageBloc.state.messageId;
-      var message = messageBloc.state.messages
+      var messageId = messageRef.messageId;
+      var message = messageRef.messages
           ?.where((element) => element.localMessageId == messageId)
           .toList();
-      messageBloc.add(
-        UpdateMessageEvent(
-            message: MessageDto(
-                chatId: widget.chatId,
-                senderId: await MainUserServices().getUserID(),
-                content: controller.text,
-                messageId: messageId,
-                createdDate: message?[0].createdDate,
-                updatedDate: DateTime.now().toIso8601String()),
-            isEditing: EditState.isEditing),
-      );
+      messageNotif.updateMessage(
+          message: MessageDto(
+              chatId: widget.chatId,
+              senderId: await MainUserServices().getUserID(),
+              content: controller.text,
+              messageId: messageId,
+              createdDate: message?[0].createdDate,
+              updatedDate: DateTime.now().toIso8601String()),
+          isEditing: EditState.isEditing);
       controller.clear();
     }
 
-    if (messageBloc.state.mediaState == MediaState.isPreparation &&
+    if (messageRef.mediaState == MediaState.isPreparation &&
         controller.text.isNotEmpty) {
-      messageBloc.add(
-        CreateMessageEvent(
-            message: MessageDto(
-                chatId: widget.chatId,
-                senderId: await MainUserServices().getUserID(),
-                content: controller.text,
-                createdDate: DateTime.now().toIso8601String(),
-                updatedDate: DateTime.now().toIso8601String(),
-                contentType: ContentType.isMediaText),
-            contentType: ContentType.isMediaText,
-            mediaState: MediaState.isSending),
-      );
+      messageNotif.createMessage(
+          message: MessageDto(
+              chatId: widget.chatId,
+              senderId: await MainUserServices().getUserID(),
+              content: controller.text,
+              createdDate: DateTime.now().toIso8601String(),
+              updatedDate: DateTime.now().toIso8601String(),
+              contentType: ContentType.isMediaText),
+          contentType: ContentType.isMediaText,
+          mediaState: MediaState.isSending);
       FocusScope.of(context).unfocus();
       controller.clear();
-    } else if (messageBloc.state.mediaState == MediaState.isPreparation &&
+    } else if (messageRef.mediaState == MediaState.isPreparation &&
         controller.text.isEmpty) {
-      messageBloc.add(
-        CreateMessageEvent(
-            message: MessageDto(
-                chatId: widget.chatId,
-                senderId: await MainUserServices().getUserID(),
-                content: controller.text,
-                createdDate: DateTime.now().toIso8601String(),
-                updatedDate: DateTime.now().toIso8601String(),
-                contentType: ContentType.isMedia),
-            contentType: ContentType.isMedia,
-            mediaState: MediaState.isSending),
-      );
+      messageNotif.createMessage(
+          message: MessageDto(
+              chatId: widget.chatId,
+              senderId: await MainUserServices().getUserID(),
+              content: controller.text,
+              createdDate: DateTime.now().toIso8601String(),
+              updatedDate: DateTime.now().toIso8601String(),
+              contentType: ContentType.isMedia),
+          contentType: ContentType.isMedia,
+          mediaState: MediaState.isSending);
       FocusScope.of(context).unfocus();
       controller.clear();
     } else {

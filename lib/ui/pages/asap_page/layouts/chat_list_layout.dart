@@ -82,7 +82,7 @@ class ChatListLayout extends StatelessWidget {
                                     },
                                     name: friend.name,
                                     image: friend.profilePicLink,
-                                    updatedDate: friend.updateDate,
+                                    updatedDate: friend.updatedDate,
                                     message: lastMessage.chatId != 0
                                         ? lastMessage.content
                                         : 'Start chating',

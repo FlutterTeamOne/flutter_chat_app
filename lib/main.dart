@@ -15,10 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_size/window_size.dart';
 
-
-
 Future<void> main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowMinSize(const Size(960, 480));
@@ -29,12 +26,14 @@ Future<void> main() async {
   await UserPref.restore();
   print("UserPref: ${UserPref.getUserDbPref}");
   UserPref.getUserDbPref
-    ? await DBHelperStart.instanse.initDB()
-    : await DBHelper.instanse.initDB();
-  
+      ? await DBHelperStart.instanse.initDB()
+      : await DBHelper.instanse.initDB();
+
   var envVars = AppDataConstants.envVars;
   var userDir = AppDataConstants.userDirectory;
-  var directory = await Directory('$userDir/AppData/Local/FlutterChatApp/databases').create(recursive: true);
+  var directory =
+      await Directory('$userDir/AppData/Local/FlutterChatApp/databases')
+          .create(recursive: true);
   print(directory.path);
   runApp(ProviderScope(child: MyApp()));
 }
@@ -47,17 +46,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<ConnectionBloc>(
-          create: (context) => ConnectionBloc(),
-          // lazy: false,
-        ),
-        BlocProvider(
-          create: (_) => GrpcConnectionBloc(grpcClient, ConnectionBloc())
-            ..add(
-              const GrpcConnectionStarted(),
-            ),
-          // lazy: false,
-        ),
+        // BlocProvider<ConnectionBloc>(
+        //   create: (context) => ConnectionBloc(),
+        //   // lazy: false,
+        // ),
+        // BlocProvider(
+        //   create: (_) => GrpcConnectionBloc(grpcClient, ConnectionBloc())
+        //     ..add(
+        //       const GrpcConnectionStarted(),
+        //     ),
+        //   // lazy: false,
+        // ),
         // BlocProvider<UserBloc>(
         //   create: (context) =>
         //       UserBloc()..add(ReadUsersEvent(userDb: UserPref.getUserDbPref)),
@@ -67,11 +66,11 @@ class MyApp extends StatelessWidget {
         //   create: (context) => ChatBloc(userBloc: UserBloc()),
 
         // ),
-        BlocProvider<MessageBloc>(
-          create: (context) => MessageBloc(
-              grpcClient: grpcClient,
-              grpcConnection: context.read<GrpcConnectionBloc>()),
-        ),
+        // BlocProvider<MessageBloc>(
+        //   create: (context) => MessageBloc(
+        //       grpcClient: grpcClient,
+        //       grpcConnection: context.read<GrpcConnectionBloc>()),
+        // ),
         BlocProvider(
           create: (context) => ChangeThemeBloc(),
         ),
@@ -93,7 +92,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter chat app',
       debugShowCheckedModeBanner: false,
       initialRoute:
-          !UserPref.getUserDbPref ? MainLayout.routeName : AuthPage.routeName,
+          UserPref.getUserDbPref ? AuthPage.routeName : MainLayout.routeName,
       routes: {
         '/registration page': (context) => const RegistrationPage(),
         AuthPage.routeName: (context) => const AuthPage(),
