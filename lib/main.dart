@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
@@ -13,17 +14,21 @@ import 'modules/storage_manager/db_helper/db_helper_start.dart';
 
 import 'ui/pages/library/library_pages.dart';
 import 'src/libraries/library_all.dart';
-import 'modules/signal_service/service_locator/locator.dart';
+import 'modules/signal_service/service_locator/locator.dart' as locator;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_size/window_size.dart';
+
+final themeProvider = Provider((ref) {
+
+});
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowMinSize(const Size(960, 480));
   }
-  Locator.setUp();
+  locator.Locator.setUp();
 
   await UserPref.init();
   await UserPref.restore();
@@ -38,7 +43,7 @@ Future<void> main() async {
       await Directory('$userDir/AppData/Local/FlutterChatApp/databases')
           .create(recursive: true);
   print(directory.path);
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
