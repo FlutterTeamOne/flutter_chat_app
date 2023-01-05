@@ -13,6 +13,8 @@ abstract class ILocalUsersServices {
     required String profilePicUrl,
   });
 
+  Future<int> getMainUserId();
+
   Future<int> createUserStart({
     required int userId,
     required String name,
@@ -35,7 +37,7 @@ abstract class ILocalUsersServices {
   Future<int> getMainIdUserByLocalId({required int localId});
   Future<UserDto> getUserByLocalId({required int localId});
   Future<List<UserDto>> getAllUsersStart();
-   Future<int> getMaxUserId();
+  Future<int> getMaxUserId();
 }
 
 final localUsersServices = ILocalUsersServices();

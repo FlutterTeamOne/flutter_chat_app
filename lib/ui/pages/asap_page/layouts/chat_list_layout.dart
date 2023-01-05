@@ -1,10 +1,12 @@
 ﻿import 'dart:async';
+import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/modules/signal_service/river/river.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
 import 'package:chat_app/src/generated/chats/chats.pbgrpc.dart';
 import 'package:chat_app/src/generated/users/users.pbgrpc.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/add_chat_dialog_widget.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/search_field.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../modules/storage_manager/db_helper/user_path.dart';
 import '../../../widgets/library/library_widgets.dart';
@@ -32,7 +34,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
     setState(() {
       _isLoading = true;
     });
-    await Future.delayed(const Duration(milliseconds: 300));
+    await Future.delayed(const Duration(milliseconds: 1000));
     setState(() {
       _isLoading = false;
     });
@@ -40,8 +42,6 @@ class _ChatListLayoutState extends State<ChatListLayout> {
 
   @override
   Widget build(BuildContext context) {
-    // final chatBloc = context.read<ChatBloc>();
-    // final userBloc = context.read<UserBloc>();
     var grpcClient = GrpcClient();
     return Drawer(
       shape: Border(
@@ -79,6 +79,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                     break;
                                   }
                                 }
+
                                 var lastMessage = MessageDto(
                                     chatId: 0, senderId: 0, content: '');
                                 for (var i in widget.messageModel) {
@@ -91,7 +92,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                 // : widget.messageModel.length - 1;
                                 return UserCardWidget(
                                   sender: !checkSender(lastMessage.senderId)
-                                      ? userPod.users![index].name
+                                      ? friend.name
                                       : 'You',
                                   // checkSender(widget.messageModel[lastMessageId].senderId),
                                   // ? userBloc.state.users[index].name:'You'),
@@ -133,20 +134,17 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                         try {
                           userFromServerDb =
                               await grpcClient.getUser(userId: value);
-
+                          print("UserFromServer: $userFromServerDb");
                           if (!mounted) return;
-                          context.read<ChatBloc>().add(
-                                CreateChatEvent(
-                                  chat: ChatDto(
-                                    userIdChat: value,
-                                    createdDate:
-                                        DateTime.now().toIso8601String(),
-                                    updatedDate:
-                                        DateTime.now().toIso8601String(),
-                                  ),
+                          print("BEFORE REST");
+                          await ref.read(River.chatPod.notifier).createChat(
+                                ChatDto(
+                                  userIdChat: value,
+                                  createdDate: DateTime.now().toIso8601String(),
+                                  updatedDate: DateTime.now().toIso8601String(),
                                 ),
                               );
-                        } catch (e) {
+                        } on CustomException catch (e) {
                           print('GET USER RESPONSE ERROR: $e');
                           await showDialog(
                               context: context,
@@ -163,7 +161,28 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                 );
                               });
                         }
-                      }).whenComplete(() => _loadScreen());
+                      }).whenComplete(() async {
+                        await showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (context) {
+                            return Dialog(
+                              backgroundColor:
+                                  Theme.of(context).backgroundColor,
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              ),
+                            );
+                          },
+                        ).timeout(const Duration(seconds: 2),
+                            onTimeout: () => Navigator.pop(context, 'OK'));
+
+                        // await Future.delayed(const Duration(seconds: 2));
+                        // Navigator.pop(context, 'OK');
+                      });
                     },
                     icon: const Icon(Icons.add),
                     label: const Text('Add Chat'),

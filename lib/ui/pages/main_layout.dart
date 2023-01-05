@@ -24,6 +24,8 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
   @override
   Widget build(BuildContext context) {
     ref.read(River.userPod.notifier).readUser();
+    ref.read(River.chatPod.notifier).readChat();
+    ref.read(River.messagePod.notifier).readMessages();
     // context.read<UserBloc>().add(ReadUsersEvent());
     // print("UserBloc: ${context.read<UserBloc>().state.users}");
     final currentWidth = MediaQuery.of(context).size.width;

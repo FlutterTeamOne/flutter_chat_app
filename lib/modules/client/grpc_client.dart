@@ -4,6 +4,7 @@ import 'package:grpc/grpc.dart';
 import '../../src/generated/users/users.pbgrpc.dart';
 import '../../domain/data/dto/user_dto/user_dto.dart';
 import '../../src/generated/grpc_lib/grpc_user_lib.dart';
+import 'custom_exception.dart';
 
 class GrpcClient {
   final ClientChannel _channel;
@@ -41,9 +42,9 @@ class GrpcClient {
     GetUserResponse response = GetUserResponse();
     try {
       response = await stub.getUser(request);
-    } catch (e) {
+    } on GrpcError catch (e) {
       print('ERROR getUser GRPC_CLIENT: $e');
-      throw Exception(e);
+      throw CustomException(e.message.toString());
     }
     return response;
   }

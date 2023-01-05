@@ -573,9 +573,12 @@ class GrpcSynh extends GrpcSynchronizationServiceBase {
           id: request.mainUserId, chatId: request.chatId);
     }
     if (request.messageId == 0) {
+      print("Нет сообщений совсем");
       messages = await MessagesDBServices()
           .getMessageByUserId(userId: request.mainUserId);
     } else {
+      print("Есть ли сообщения больше ${request.messageId}?");
+      print("MainUserId: ${request.mainUserId}");
       messages = await MessagesDBServices().getMessageByUserIdMoreMessageId(
           userId: request.mainUserId, messageId: request.messageId);
     }
@@ -788,7 +791,8 @@ class Inter {
     print('CL MEDATA: ${call.clientMetadata}');
     print('Handler: ${method.handler}');
     var measure = measureInterceptor(call, method, (call, method) async {
-      print('MEASURE META: ${call.clientMetadata} \n: METHOD ${method.handler}');
+      print(
+          'MEASURE META: ${call.clientMetadata} \n: METHOD ${method.handler}');
       return null;
     });
     // stopwatch.stop();

@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:chat_app/modules/client/custom_exception.dart';
+import 'package:dio/dio.dart';
+
 import '../../../domain/data/dto/chat_dto/chat_dto.dart';
 import '../../../domain/data/dto/message_dto/message_dto.dart';
 import '../../../domain/data/dto/user_dto/user_dto.dart';
@@ -110,8 +113,8 @@ class UserNotifier extends StateNotifier<UserStateRef> {
 //делаем синхронизацию
       var maxChatId = await _chatServices.getMaxId();
       var maxMessageId = await _messagesServices.getMaxMessageId();
-      var maxUserId = await _usersServices.getMaxUserId();
       var stub = GrpcSynchronizationClient(GrpcClient().channel);
+      var mainUserId = await _usersServices.getMainUserId();
       //Юзера для обновления данных
       var usersUp = await _usersServices.getAllUserIdAndUpdated();
       var usersRequestA = <UserRequest>[];
@@ -125,9 +128,12 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       }
       //запрос на сервер
       var response = DataDBResponse();
+      print('maxUserId: $mainUserId');
+      print('chatId: $maxChatId');
+      print('messageId: $maxMessageId');
       try {
         response = await stub.getUsersSynh(SynhMainUser(
-            mainUserId: maxUserId,
+            mainUserId: mainUserId,
             chatId: maxChatId,
             messageId: maxMessageId,
             users: UsersRequest(users: usersRequestA)));
@@ -199,6 +205,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
               condition: 'user_id = ${user.userId}');
         }
       }
+      print("RESPONSE_MESSAGES: ${response.messages}");
       for (var message in response.messages) {
         var type = ContentType.isText.name == message.contentType.name
             ? ContentType.isText
@@ -220,6 +227,8 @@ class UserNotifier extends StateNotifier<UserStateRef> {
           isRead: message.isRead,
         );
         await _messagesServices.addNewMessageFromBase(message: msg);
+        await _chatServices.updateChatDateUpdated(
+            chatId: message.chatId, dateUpdated: message.updatedDate);
       }
 
       users = await _usersServices.getAllUsers();
@@ -333,13 +342,22 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
   }
 
   createChat(ChatDto chat) async {
+    ChatDto chatFromRest;
+    try {
+      chatFromRest = await RestClient().createChatRest(
+          creatorUserId: UserPref.getUserId,
+          user2Id: chat.userIdChat,
+          date: chat.createdDate);
+    } on DioError catch (e) {
+      throw CustomException(e.response.toString());
+    }
+
+    print("JAJAJ");
     var chats = await _chatServices.createChat(
-        createDate: chat.createdDate,
-        userId: chat.userIdChat,
-        chatId: chat.chatId!);
+        createDate: chatFromRest.createdDate,
+        userId: chatFromRest.userIdChat,
+        chatId: chatFromRest.chatId!);
     //TODO:запрос к restApi на создание чата
-    await RestClient().createChatRest(
-        creatorUserId: UserPref.getUserId, user2Id: chat.userIdChat, date: '');
     state = state.copyWith(chats: chats);
   }
 
