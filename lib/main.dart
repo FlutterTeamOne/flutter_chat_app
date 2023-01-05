@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:chat_app/modules/style_manager/riverpod/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
@@ -19,9 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_size/window_size.dart';
 
-final themeProvider = Provider((ref) {
-
-});
+part 'modules/style_manager/riverpod/riverpod_providers.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,7 +48,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
   final GrpcClient grpcClient = GrpcClient();
-
   MaterialColor createMaterialColor(Color color) {
     List strengths = <double>[.05];
     Map<int, Color> swatch = {};
@@ -70,127 +68,98 @@ class MyApp extends StatelessWidget {
     return MaterialColor(color.value, swatch);
   }
 
-  MaterialColor getMaterialColor(Color color) {
-    final int red = color.red;
-    final int green = color.green;
-    final int blue = color.blue;
-
-    final Map<int, Color> shades = {
-      50: Color.fromRGBO(red, green, blue, .1),
-      100: Color.fromRGBO(red, green, blue, .2),
-      200: Color.fromRGBO(red, green, blue, .3),
-      300: Color.fromRGBO(red, green, blue, .4),
-      400: Color.fromRGBO(red, green, blue, .5),
-      500: Color.fromRGBO(red, green, blue, .6),
-      600: Color.fromRGBO(red, green, blue, .7),
-      700: Color.fromRGBO(red, green, blue, .8),
-      800: Color.fromRGBO(red, green, blue, .9),
-      900: Color.fromRGBO(red, green, blue, 1),
-    };
-    return MaterialColor(color.value, shades);
-  }
-
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<ConnectionBloc>(
-          create: (context) => ConnectionBloc(),
-          // lazy: false,
-        ),
-        BlocProvider(
-          create: (_) => GrpcConnectionBloc(grpcClient, ConnectionBloc())
-            ..add(
-              const GrpcConnectionStarted(),
-            ),
-          // lazy: false,
-        ),
-        BlocProvider<UserBloc>(
-          create: (context) =>
-              UserBloc()..add(ReadUsersEvent(userDb: UserPref.getUserDbPref)),
-        ),
-        BlocProvider<ChatBloc>(
-          create: (context) => ChatBloc(userBloc: UserBloc()),
-        ),
-        BlocProvider<MessageBloc>(
-          create: (context) => MessageBloc(
-              grpcClient: grpcClient,
-              grpcConnection: context.read<GrpcConnectionBloc>()),
-        ),
-        BlocProvider(
-          create: (context) => ChangeThemeBloc(),
-        ),
-        BlocProvider(create: (context) => NewUserBloc()),
-      ],
-      child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
-        builder: (context, state) {
-          if (state.index == 6) {
-            final ThemeData theme = ThemeData(
-              textTheme: Theme.of(context).textTheme.apply(
-                  fontFamily: state.fontFamily,
-                  displayColor: state.textColor,
-                  bodyColor: state.textColor,
-                  fontSizeFactor: state.fontSizeFactor!),
-              useMaterial3: true,
-              listTileTheme: ListTileThemeData(
-                  shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(state.borderRadius!))),
-              cardTheme: CardTheme(
-                  shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(state.borderRadius!))),
-              elevatedButtonTheme: ElevatedButtonThemeData(
-                  style: ButtonStyle(
-                      shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(state.borderRadius!))))),
-              buttonTheme: ButtonThemeData(
-                  shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(state.borderRadius!))),
-              brightness: state.brightness,
-              primarySwatch: createMaterialColor(state.primaryColor!),
-              // primarySwatch: createMaterialColor(state.primaryColor!),
-              primaryColor: createMaterialColor(state.primaryColor!),
-              errorColor: Colors.redAccent.shade200,
-              // backgroundColor: Colors.black45,
-              textSelectionTheme: TextSelectionThemeData(
-                cursorColor: state.textColor,
-                selectionColor: state.textColor,
-                selectionHandleColor: state.textColor,
-              ),
-              //стиль для scroll down button
-              floatingActionButtonTheme: const FloatingActionButtonThemeData(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black54,
-              ),
-            );
-            return buildMaterialApp(theme);
-          } else {
-            final ThemeData? theme = state.theme;
-            return buildMaterialApp(theme!);
-          }
-        },
+    return MultiBlocProvider(providers: [
+      BlocProvider<ConnectionBloc>(
+        create: (context) => ConnectionBloc(),
+        // lazy: false,
       ),
-    );
+      BlocProvider(
+        create: (_) => GrpcConnectionBloc(grpcClient, ConnectionBloc())
+          ..add(
+            const GrpcConnectionStarted(),
+          ),
+        // lazy: false,
+      ),
+      BlocProvider<UserBloc>(
+        create: (context) =>
+            UserBloc()..add(ReadUsersEvent(userDb: UserPref.getUserDbPref)),
+      ),
+      BlocProvider<ChatBloc>(
+        create: (context) => ChatBloc(userBloc: UserBloc()),
+      ),
+      BlocProvider<MessageBloc>(
+        create: (context) => MessageBloc(
+            grpcClient: grpcClient,
+            grpcConnection: context.read<GrpcConnectionBloc>()),
+      ),
+      BlocProvider(
+        create: (context) => ChangeThemeBloc(),
+      ),
+      BlocProvider(create: (context) => NewUserBloc()),
+    ], child: buildMaterialApp(context));
   }
+}
 
-  //
-  MaterialApp buildMaterialApp(ThemeData theme) {
-    return MaterialApp(
-      theme: theme,
-      title: 'Flutter chat app',
-      debugShowCheckedModeBanner: false,
-      initialRoute:
-          !UserPref.getUserDbPref ? MainLayout.routeName : AuthPage.routeName,
-      routes: {
-        RegistrationPage.routeName: (context) => const RegistrationPage(),
-        AuthPage.routeName: (context) => const AuthPage(),
-        MainLayout.routeName: (context) => const MainLayout(),
-        '/settings_page': (context) => const SettingsPage(),
-        '/color_picker_page': (context) => const ColorPickerPage(),
-      },
-    );
-  }
+
+Consumer buildMaterialApp(BuildContext context) {
+
+
+  return Consumer(
+    builder: (context, ref, child) {
+      final theme = ref.watch(changeCustomThemeStateProvider);
+      return MaterialApp(
+        theme: ThemeData(
+          textTheme: Theme.of(context).textTheme.apply(
+              fontFamily: theme.fontFamily!,
+              displayColor: theme.textColor,
+              bodyColor: theme.textColor,
+              fontSizeFactor: theme.fontSizeFactor!),
+          useMaterial3: true,
+          listTileTheme: ListTileThemeData(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(theme.borderRadius!))),
+          cardTheme: CardTheme(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(theme.borderRadius!))),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ButtonStyle(
+                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(theme.borderRadius!))))),
+          buttonTheme: ButtonThemeData(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(theme.borderRadius!))),
+          brightness: theme.brightness,
+          primarySwatch: MyApp().createMaterialColor(theme.primaryColor!),
+          // primarySwatch: createMaterialColor(state.primaryColor!),
+          primaryColor: MyApp().createMaterialColor(theme.primaryColor!),
+          errorColor: Colors.redAccent.shade200,
+          // backgroundColor: Colors.black45,
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: theme.textColor,
+            selectionColor: theme.textColor,
+            selectionHandleColor: theme.textColor,
+          ),
+          //стиль для scroll down button
+          floatingActionButtonTheme: const FloatingActionButtonThemeData(
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black54,
+          ),
+        ),
+        title: 'Flutter chat app',
+        debugShowCheckedModeBanner: false,
+        initialRoute:
+            !UserPref.getUserDbPref ? MainLayout.routeName : AuthPage.routeName,
+        routes: {
+          RegistrationPage.routeName: (context) => const RegistrationPage(),
+          AuthPage.routeName: (context) => const AuthPage(),
+          MainLayout.routeName: (context) => const MainLayout(),
+          '/settings_page': (context) => const SettingsPage(),
+          '/color_picker_page': (context) => const ColorPickerPage(),
+        },
+      );
+    },
+  );
 }
