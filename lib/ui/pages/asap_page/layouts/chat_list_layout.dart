@@ -1,61 +1,31 @@
 ﻿import 'dart:async';
-
+import 'package:chat_app/modules/signal_service/river/river.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
 import 'package:chat_app/src/generated/chats/chats.pbgrpc.dart';
 import 'package:chat_app/src/generated/users/users.pbgrpc.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/add_chat_dialog_widget.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/search_field.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../modules/storage_manager/db_helper/user_path.dart';
 import '../../../widgets/library/library_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../src/libraries/library_all.dart';
 
-// class LoadingOverlay {
-//   OverlayEntry? _overlay;
-
-//   LoadingOverlay();
-
-//   void show(BuildContext context) {
-//     if (_overlay == null) {
-//       _overlay = OverlayEntry(
-//         // replace with your own layout
-//         builder: (context) => const ColoredBox(
-//           color: Color(0x80000000),
-//           child: Center(
-//             child: CircularProgressIndicator.adaptive(),
-//           ),
-//         ),
-//       );
-//       Overlay.of(context)?.insert(_overlay!);
-//     }
-//   }
-
-//   void hide() {
-//     if (_overlay != null) {
-//       _overlay?.remove();
-//       _overlay = null;
-//     }
-//   }
-// }
-
 class ChatListLayout extends StatefulWidget {
-  const ChatListLayout({
-    Key? key,
-    required this.chatModel,
-    required this.messageModel,
-  }) : super(key: key);
-
   final List<ChatDto> chatModel;
   final List<MessageDto> messageModel;
+
+  ChatListLayout(
+      {super.key, required this.chatModel, required this.messageModel});
+
   @override
   State<ChatListLayout> createState() => _ChatListLayoutState();
 }
 
 class _ChatListLayoutState extends State<ChatListLayout> {
   final _searchController = TextEditingController();
+
   bool _isLoading = false;
 
   void _loadScreen() async {
@@ -70,87 +40,81 @@ class _ChatListLayoutState extends State<ChatListLayout> {
 
   @override
   Widget build(BuildContext context) {
-    final chatBloc = context.watch<ChatBloc>();
-    final userBloc = context.watch<UserBloc>();
-    final grpcClient = GrpcClient();
-    final localUserServices = LocalUsersServices();
+    // final chatBloc = context.read<ChatBloc>();
+    // final userBloc = context.read<UserBloc>();
+    var grpcClient = GrpcClient();
     return Drawer(
-      // shape: Border(
-      //     right: BorderSide(width: 1, color: Theme.of(context).dividerColor)),
+      shape: Border(
+          right: BorderSide(width: 1, color: Theme.of(context).dividerColor)),
       elevation: 0,
-      child: Flexible(
-        flex: 1,
-        child: Column(
+      child: Consumer(builder: (context, ref, child) {
+        var userPod = ref.read(River.userPod);
+        return Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               widget.chatModel.isEmpty || widget.chatModel == []
-                  ? const Center(child: Text('Oops, no chats...'))
-                  : _isLoading
-                      ? const Center(
-                          child: CircularProgressIndicator.adaptive(),
-                        )
-                      : Expanded(
-                          flex: 1,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                SearchFieldWidget(
-                                    controller: _searchController),
-                                const SizedBox(height: 5),
-                                ListView.separated(
-                                  itemCount: widget.chatModel.length,
-                                  physics: const BouncingScrollPhysics(),
-                                  shrinkWrap: true,
-                                  separatorBuilder: (context, index) =>
-                                      const SizedBox(height: 25),
-                                  itemBuilder: (context, index) {
-                                    var friend;
-                                    friend = context
-                                        .read<UserBloc>()
-                                        .state
-                                        .users!
-                                        .firstWhere((user) {
-                                      return user.userId ==
-                                          widget.chatModel[index].userIdChat;
-                                    });
-                                    var lastMessage = MessageDto(
-                                        chatId: 0, senderId: 0, content: '');
-                                    for (var i in widget.messageModel) {
-                                      if (i.chatId ==
-                                          widget.chatModel[index].chatId) {
-                                        lastMessage = i;
-                                      }
-                                    }
-                                    // var lastMessageId = widget.chatModel.
-                                    // : widget.messageModel.length - 1;
-                                    return UserCardWidget(
-                                      updatedDate: getUpdateDate(
-                                          widget.chatModel[index].updatedDate),
-                                      sender: !checkSender(lastMessage.senderId)
-                                          ? userBloc.state.users![index].name
-                                          : 'You',
-                                      // checkSender(widget.messageModel[lastMessageId].senderId),
-                                      // ? userBloc.state.users[index].name:'You'),
-                                      selected: false,
-                                      onTap: () {
-                                        context.read<ChatBloc>().add(
-                                            GetChatIdEvent(widget
-                                                .chatModel[index].chatId!));
-                                      },
-                                      name: friend.name,
-                                      image: friend.profilePicLink,
-
-                                      message: lastMessage.chatId != 0
-                                          ? lastMessage.content
-                                          : 'Start chating',
-                                    );
+                  ? const Center(
+                      child: Text('Oops...\nno chats'),
+                    )
+                  : Expanded(
+                      flex: 1,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            SearchFieldWidget(controller: _searchController),
+                            const SizedBox(height: 5),
+                            ListView.separated(
+                              itemCount: widget.chatModel.length,
+                              physics: const BouncingScrollPhysics(),
+                              shrinkWrap: true,
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(height: 25),
+                              itemBuilder: (context, index) {
+                                var friend;
+                                for (var user in userPod.users!) {
+                                  if (user.userId ==
+                                      widget.chatModel[index].userIdChat) {
+                                    friend = user;
+                                    break;
+                                  }
+                                }
+                                var lastMessage = MessageDto(
+                                    chatId: 0, senderId: 0, content: '');
+                                for (var i in widget.messageModel) {
+                                  if (i.chatId ==
+                                      widget.chatModel[index].chatId) {
+                                    lastMessage = i;
+                                  }
+                                }
+                                // var lastMessageId = widget.chatModel.
+                                // : widget.messageModel.length - 1;
+                                return UserCardWidget(
+                                  sender: !checkSender(lastMessage.senderId)
+                                      ? userPod.users![index].name
+                                      : 'You',
+                                  // checkSender(widget.messageModel[lastMessageId].senderId),
+                                  // ? userBloc.state.users[index].name:'You'),
+                                  selected: false,
+                                  onTap: () {
+                                    //TODO: GetChatId => SetChatId
+                                    ref.watch(River.chatPod.notifier).getChatId(
+                                        widget.chatModel[index].chatId!);
                                   },
-                                ),
-                              ],
-                            ),
-                          ),
+                                  name: friend.name,
+                                  image: friend.profilePicLink,
+                                  updatedDate: getUpdateDate(
+                                      widget.chatModel[index].updatedDate),
+                                  message: lastMessage.chatId != 0
+                                      ? lastMessage.content
+                                      : 'Start chating',
+                                );
+                              },
+                            )
+                          ],
                         ),
+                      ),
+                    ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
@@ -206,8 +170,8 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                   ),
                 ),
               ),
-            ]),
-      ),
+            ]);
+      }),
     );
   }
 

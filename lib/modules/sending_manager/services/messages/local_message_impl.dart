@@ -1,5 +1,5 @@
-import 'package:chat_app/domain/data/dto/attach_dto/attach_dto.dart';
-import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
+import '../../../../domain/data/dto/attach_dto/attach_dto.dart';
+import '../../../../src/generated/grpc_lib/grpc_message_lib.dart';
 
 import '../../../../src/constants/db_constants.dart';
 import '../../../../domain/data/library/library_data.dart';

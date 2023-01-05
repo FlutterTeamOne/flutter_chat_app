@@ -1,6 +1,6 @@
-import 'package:chat_app/modules/sending_manager/services/users/user_online_service_int.dart';
-import 'package:chat_app/modules/storage_manager/db_helper/db_helper.dart';
-import 'package:chat_app/src/constants/db_constants.dart';
+import 'user_online_service_int.dart';
+import '../../../storage_manager/db_helper/db_helper.dart';
+import '../../../../src/constants/db_constants.dart';
 
 class UserOnlinveService implements IUserOnlineService {
   @override

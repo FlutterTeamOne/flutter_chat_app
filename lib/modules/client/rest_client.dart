@@ -6,12 +6,6 @@ import 'package:chat_app/domain/data/library/library_data.dart';
 import 'package:chat_app/modules/sending_manager/library/library_sending_manager.dart';
 import 'package:dio/dio.dart';
 
-void main() {
-  var rest = RestClient();
-  rest.createChatRest(
-      creatorUserId: 1, user2Id: 5, date: DateTime.now().toIso8601String());
-}
-
 class RestClient {
   static const String _url = 'http://localhost:8080';
 

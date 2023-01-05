@@ -1,8 +1,8 @@
-import 'package:chat_app/domain/data/dto/user_dto/user_dto.dart';
-import 'package:chat_app/modules/signal_service/bloc/user_bloc/user_bloc.dart';
-import 'package:chat_app/ui/widgets/registration_page/bloc/new_user_bloc.dart';
-import 'package:chat_app/ui/widgets/registration_page/bloc/new_user_event.dart';
-import 'package:chat_app/ui/widgets/registration_page/models/new_user_model.dart';
+import '../../../../domain/data/dto/user_dto/user_dto.dart';
+import '../../../../modules/signal_service/bloc/user_bloc/user_bloc.dart';
+import '../bloc/new_user_bloc.dart';
+import '../bloc/new_user_event.dart';
+import '../models/new_user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

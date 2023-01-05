@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:chat_app/domain/data/library/library_data.dart';
-import 'package:chat_app/src/constants/db_constants.dart';
+import '../../../../src/constants/db_constants.dart';
+import '../../library/library_data.dart';
 
 class MainUserDto extends ModelDto {
   final int userId;
