@@ -1,4 +1,6 @@
-﻿import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
+﻿import 'dart:developer';
+
+import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 
 import '../../../../src/libraries/library_all.dart';
 import '../../library/library_widgets.dart';
@@ -76,12 +78,10 @@ class ChatWidgetState extends State<ChatWidget> {
               elements: messages,
               reverse: true,
               order: GroupedListOrder.DESC,
-              useStickyGroupSeparators: true,
-              floatingHeader: true,
               groupBy: (message) => DateTime(
+                DateTime.parse(message.createdDate!).year,
                 DateTime.parse(message.createdDate!).month,
                 DateTime.parse(message.createdDate!).day,
-                DateTime.parse(message.createdDate!).year,
               ),
               groupHeaderBuilder: (MessageDto message) =>
                   TimeCardWidget(date: message.createdDate!),
