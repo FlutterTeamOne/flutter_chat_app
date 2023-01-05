@@ -282,27 +282,30 @@ class ExitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-        onPressed: () async {
-          // context.read<ChatBloc>().close();
-          //закрыть базу
-          userPod.changeUser(true);
-          userPod.readUser();
-          chatPod.getChatId(-1);
-          await DBHelper.instanse.close();
-          Future.delayed(const Duration(seconds: 1),
-              () => Navigator.of(context).pushNamed('/'));
-        },
-        icon: const Icon(Icons.exit_to_app),
-        style: const ButtonStyle(
-          backgroundColor: MaterialStatePropertyAll(Colors.white),
-          padding: MaterialStatePropertyAll(EdgeInsets.all(10)),
-          shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-            topRight: Radius.circular(20),
-            bottomLeft: Radius.circular(20),
-          ))),
-        ));
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical:16.0,horizontal: 16),
+      child: IconButton(
+          onPressed: () async {
+            // context.read<ChatBloc>().close();
+            //закрыть базу
+            userPod.changeUser(true);
+            userPod.readUser();
+            chatPod.getChatId(-1);
+            await DBHelper.instanse.close();
+            Future.delayed(const Duration(seconds: 1),
+                () => Navigator.of(context).pushNamed('/'));
+          },
+          icon: const Icon(Icons.exit_to_app),
+          style: const ButtonStyle(
+            backgroundColor: MaterialStatePropertyAll(Colors.white),
+            padding: MaterialStatePropertyAll(EdgeInsets.all(10)),
+            shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+              topRight: Radius.circular(20),
+              bottomLeft: Radius.circular(20),
+            ))),
+          )),
+    );
   }
 }
 
