@@ -1,4 +1,6 @@
-﻿import '../../../../modules/signal_service/river/message_state_ref.dart';
+﻿import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
+
+import '../../../../modules/signal_service/river/message_state_ref.dart';
 import '../../../../modules/signal_service/river/river.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +38,13 @@ class _PopupMenuCardWidgetState extends ConsumerState<PopupMenuCardWidget> {
         icon: Icons.edit,
         text: 'Edit',
         onTap: () {
-          widget.textController?.text = widget.message!.content;
+          if (widget.message?.contentType == ContentType.isText) {
+            widget.textController?.text = widget.message!.content;
+          } else if (widget.message?.contentType == ContentType.isMedia) {
+            widget.textController?.text = '';
+          } else {
+            widget.textController?.text = widget.message!.content;
+          }
           messagePod.updateMessage(
             messageId: widget.message?.localMessageId,
             isEditing: EditState.isPreparation,

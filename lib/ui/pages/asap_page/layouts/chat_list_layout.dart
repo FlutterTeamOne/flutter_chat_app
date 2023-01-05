@@ -3,6 +3,7 @@ import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/modules/signal_service/river/river.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
 import 'package:chat_app/src/generated/chats/chats.pbgrpc.dart';
+import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/generated/users/users.pbgrpc.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/add_chat_dialog_widget.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/search_field.dart';
@@ -91,25 +92,31 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                 // var lastMessageId = widget.chatModel.
                                 // : widget.messageModel.length - 1;
                                 return UserCardWidget(
-                                  sender: !checkSender(lastMessage.senderId)
-                                      ? friend.name
-                                      : 'You',
-                                  // checkSender(widget.messageModel[lastMessageId].senderId),
-                                  // ? userBloc.state.users[index].name:'You'),
-                                  selected: false,
-                                  onTap: () {
-                                    //TODO: GetChatId => SetChatId
-                                    ref.watch(River.chatPod.notifier).getChatId(
-                                        widget.chatModel[index].chatId!);
-                                  },
-                                  name: friend.name,
-                                  image: friend.profilePicLink,
-                                  updatedDate: getUpdateDate(
-                                      widget.chatModel[index].updatedDate),
-                                  message: lastMessage.chatId != 0
-                                      ? lastMessage.content
-                                      : 'Start chating',
-                                );
+                                    sender: lastMessage.chatId == 0
+                                        ? ""
+                                        : !checkSender(lastMessage.senderId)
+                                            ? friend.name
+                                            : 'You',
+                                    // checkSender(widget.messageModel[lastMessageId].senderId),
+                                    // ? userBloc.state.users[index].name:'You'),
+                                    selected: false,
+                                    onTap: () {
+                                      //TODO: GetChatId => SetChatId
+                                      ref
+                                          .watch(River.chatPod.notifier)
+                                          .getChatId(
+                                              widget.chatModel[index].chatId!);
+                                    },
+                                    name: friend.name,
+                                    image: friend.profilePicLink,
+                                    updatedDate: getUpdateDate(
+                                        widget.chatModel[index].updatedDate),
+                                    message: lastMessage.chatId != 0
+                                        ? lastMessage.contentType ==
+                                                ContentType.isText
+                                            ? lastMessage.content
+                                            : 'Image msg'
+                                        : 'Start chating');
                               },
                             )
                           ],
