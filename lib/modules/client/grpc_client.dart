@@ -43,6 +43,7 @@ class GrpcClient {
       response = await stub.getUser(request);
     } catch (e) {
       print('ERROR getUser GRPC_CLIENT: $e');
+      throw Exception(e);
     }
     return response;
   }

@@ -481,6 +481,13 @@ class GrpcUsers extends GrpcUsersServiceBase {
     return deleteUserResponse;
   }
 
+  //TODO: Расписать ошибки и вынести в отдельный класс
+  List<GrpcError> errors = [
+    GrpcError.custom(15, "Нет пользователя с таким ID"),
+    GrpcError.custom(16, "Нет пользователя с таким Name"),
+    GrpcError.custom(17, "Нет пользователя с таким Email")
+  ];
+
   @override
   Future<GetUserResponse> getUser(
       ServiceCall call, GetUserRequest request) async {
@@ -494,6 +501,8 @@ class GrpcUsers extends GrpcUsersServiceBase {
       if (src.toString().contains('user_id')) {
         print('src contains user_id');
         return GetUserResponse(id: request.id);
+      } else {
+        throw errors[0];
       }
     } else if (request.name.isNotEmpty) {
       src = await UsersServices()
@@ -505,7 +514,7 @@ class GrpcUsers extends GrpcUsersServiceBase {
       src = await UsersServices().getUserByField(
           field: 'created_date', fieldValue: request.dateCreation);
     } else {
-      // // return GrpcError.invalidArgument()
+      throw GrpcError.invalidArgument();
     }
     return GetUserResponse();
   }

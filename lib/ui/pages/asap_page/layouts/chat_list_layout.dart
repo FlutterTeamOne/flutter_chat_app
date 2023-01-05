@@ -169,55 +169,35 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                         try {
                           userFromServerDb =
                               await grpcClient.getUser(userId: value);
-                          if (userFromServerDb.toString().isEmpty) {
-                            await showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text('Ошибка'),
-                                    content: const Text('Нет юзера с таким Id'),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, 'OK'),
-                                          child: const Text('OK'))
-                                    ],
-                                  );
-                                });
-                          } else {
-                            try {
-                              if (!mounted) return;
-                              context.read<ChatBloc>().add(
-                                    CreateChatEvent(
-                                      chat: ChatDto(
-                                        userIdChat: value,
-                                        createdDate:
-                                            DateTime.now().toIso8601String(),
-                                        updatedDate:
-                                            DateTime.now().toIso8601String(),
-                                      ),
-                                    ),
-                                  );
-                            } catch (e) {
-                              await showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Ошибка'),
-                                      content:
-                                          const Text('Не удалось создать чат'),
-                                      actions: [
-                                        TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context, 'OK'),
-                                            child: const Text('OK'))
-                                      ],
-                                    );
-                                  });
-                            }
-                          }
+
+                          if (!mounted) return;
+                          context.read<ChatBloc>().add(
+                                CreateChatEvent(
+                                  chat: ChatDto(
+                                    userIdChat: value,
+                                    createdDate:
+                                        DateTime.now().toIso8601String(),
+                                    updatedDate:
+                                        DateTime.now().toIso8601String(),
+                                  ),
+                                ),
+                              );
                         } catch (e) {
                           print('GET USER RESPONSE ERROR: $e');
+                          await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Ошибка'),
+                                  content: Text("$e"),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'OK'),
+                                        child: const Text('OK'))
+                                  ],
+                                );
+                              });
                         }
                       }).whenComplete(() => _loadScreen());
                     },

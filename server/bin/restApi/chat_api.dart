@@ -35,7 +35,13 @@ class ChatApi {
     router.put('/', (Request request) async {
       final body = await request.readAsString();
       var resp = jsonDecode(body);
+
       print('RESP: $resp');
+
+      //Чат с самим собой
+      if (resp['friend1_id'] == resp['friend2_id']) {
+        return Response.notFound("You can't create a chat with yourself");
+      }
       List<Map<String, Object?>> chatId = await _chatService.getChatByTwoIds(
           friend1_id: resp['friend1_id'], friend2_id: resp['friend2_id']);
       print('user ID: $chatId');
@@ -51,7 +57,7 @@ class ChatApi {
         var result = {'friend': userFriend, 'res': res}.toString();
         return Response.ok(result);
       } else {
-        return Response.ok('Chat is already created,');
+        return Response.notFound('Chat is already created.');
       }
     });
     router.delete('/', (Request request) async {
@@ -69,7 +75,7 @@ class ChatApi {
       print('CHAI ID DEL: $chatId');
       var resp;
       if (chatId != null) {
-       resp= await _chatService.deleteChat(id: chatId);
+        resp = await _chatService.deleteChat(id: chatId);
       }
       return Response.ok(resp.toString());
     });

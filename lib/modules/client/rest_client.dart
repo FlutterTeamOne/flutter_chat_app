@@ -103,9 +103,12 @@ class RestClient {
         };
         // print(source.);
         print('RESTCHAT CLIENT $restChat');
+      } else if (resp.statusCode == 404) {
+        throw Exception(resp.data);
       }
     } catch (e) {
       print('ERROR RESP CHAT:$e');
+      throw Exception(e);
     }
     return ChatDto(
         chatId: chatId,
