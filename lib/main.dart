@@ -121,23 +121,11 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           if (state.index == 6) {
             final ThemeData theme = ThemeData(
-              // colorScheme: ColorScheme(
-              //     brightness: state.brightness!,
-              //     primary: state.primaryColor!,
-              //     onPrimary: Colors.white,
-              //     secondary: Colors.white,
-              //     onSecondary: Colors.white,
-              //     error: Colors.redAccent,
-              //     onError: Colors.white,
-              //     background: Colors.black54,
-              //     onBackground: Colors.white,
-              //     surface: Colors.black54,
-              //     onSurface: Colors.black54),
               textTheme: Theme.of(context).textTheme.apply(
+                  fontFamily: state.fontFamily,
                   displayColor: state.textColor,
                   bodyColor: state.textColor,
                   fontSizeFactor: state.fontSizeFactor!),
-              // iconTheme: IconThemeData(color: Colors.white),
               useMaterial3: true,
               listTileTheme: ListTileThemeData(
                   shape: RoundedRectangleBorder(

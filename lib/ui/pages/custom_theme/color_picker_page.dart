@@ -27,6 +27,11 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
   late Color dialogPickerColor; // Color for picker in dialog using onChanged
   late Color dialogSelectColor; // Color for picker using color select dialog.
   late bool isDark;
+  static const List<String> fontFamilyList = <String>[
+    'Roboto',
+    'SeymourOne-Regular',
+    'Lato-Regular'
+  ];
 
   // Define some custom colors for the custom picker segment.
   // The 'guide' color values are from
@@ -66,6 +71,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
       builder: (context, state) {
+        String? fontFamilyValue = state.fontFamily;
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -216,7 +222,8 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                                 textColor: state.textColor,
                                 brightness: state.brightness!,
                                 borderRadius: state.borderRadius,
-                                fontSizeFactor: state.fontSizeFactor));
+                                fontSizeFactor: state.fontSizeFactor,
+                                fontFamily: state.fontFamily));
                         print(color);
                       },
                       width: 44,
@@ -254,7 +261,8 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                       primaryColor: state.primaryColor!,
                       textColor: value == true ? Colors.white : Colors.black87,
                       borderRadius: state.borderRadius,
-                      fontSizeFactor: state.fontSizeFactor));
+                      fontSizeFactor: state.fontSizeFactor,
+                      fontFamily: state.fontFamily));
                 },
               ),
               const SizedBox(
@@ -273,7 +281,8 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                                 primaryColor: state.primaryColor!,
                                 textColor: state.textColor,
                                 borderRadius: 20,
-                                fontSizeFactor: state.fontSizeFactor));
+                                fontSizeFactor: state.fontSizeFactor,
+                                fontFamily: state.fontFamily));
                       },
                       child: const Text('Rounded border')),
                   const SizedBox(
@@ -283,16 +292,15 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                   /// Squared border button
                   ElevatedButton(
                       onPressed: () {
-                        context
-                            .read<ChangeThemeBloc>()
-                            .add(SetCustomThemesEvent(
-                              index: 6,
-                              brightness: state.brightness!,
-                              primaryColor: state.primaryColor!,
-                              textColor: state.textColor,
-                              borderRadius: 0,
-                              fontSizeFactor: state.fontSizeFactor,
-                            ));
+                        context.read<ChangeThemeBloc>().add(
+                            SetCustomThemesEvent(
+                                index: 6,
+                                brightness: state.brightness!,
+                                primaryColor: state.primaryColor!,
+                                textColor: state.textColor,
+                                borderRadius: 0,
+                                fontSizeFactor: state.fontSizeFactor,
+                                fontFamily: state.fontFamily));
                       },
                       child: const Text('Squared border')),
                   const SizedBox(
@@ -302,16 +310,15 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                   /// Normal text size button
                   ElevatedButton(
                       onPressed: () {
-                        context
-                            .read<ChangeThemeBloc>()
-                            .add(SetCustomThemesEvent(
-                              index: 6,
-                              brightness: state.brightness!,
-                              primaryColor: state.primaryColor!,
-                              textColor: state.textColor,
-                              borderRadius: state.borderRadius,
-                              fontSizeFactor: 1,
-                            ));
+                        context.read<ChangeThemeBloc>().add(
+                            SetCustomThemesEvent(
+                                index: 6,
+                                brightness: state.brightness!,
+                                primaryColor: state.primaryColor!,
+                                textColor: state.textColor,
+                                borderRadius: state.borderRadius,
+                                fontSizeFactor: 1,
+                                fontFamily: state.fontFamily));
                       },
                       child: const Text('Normal text size')),
                   const SizedBox(
@@ -321,18 +328,47 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
                   /// Big text size button
                   ElevatedButton(
                       onPressed: () {
-                        context
-                            .read<ChangeThemeBloc>()
-                            .add(SetCustomThemesEvent(
+                        context.read<ChangeThemeBloc>().add(
+                            SetCustomThemesEvent(
+                                index: 6,
+                                brightness: state.brightness!,
+                                primaryColor: state.primaryColor!,
+                                textColor: state.textColor,
+                                borderRadius: state.borderRadius,
+                                fontSizeFactor: 1.15,
+                                fontFamily: state.fontFamily));
+                      },
+                      child: const Text('Big text size')),
+
+                  /// Font family change
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DropdownButton<String>(
+                        value: fontFamilyValue,
+                        items: fontFamilyList
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text('$value font'),
+                          );
+                        }).toList(),
+                        onChanged: (String? value) {
+                          setState(() {
+                            fontFamilyValue = value!;
+                          });
+                          context
+                              .read<ChangeThemeBloc>()
+                              .add(SetCustomThemesEvent(
                               index: 6,
                               brightness: state.brightness!,
                               primaryColor: state.primaryColor!,
                               textColor: state.textColor,
                               borderRadius: state.borderRadius,
-                              fontSizeFactor: 1.15,
-                            ));
-                      },
-                      child: const Text('Big text size')),
+                              fontSizeFactor: 1,
+                              fontFamily: fontFamilyValue,
+                          ));
+                        }),
+                  ),
                 ],
               ),
             ],
@@ -348,13 +384,13 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
       onColorChanged: (Color color) {
         setState(() => dialogPickerColor = color);
         context.read<ChangeThemeBloc>().add(SetCustomThemesEvent(
-              index: 6,
-              primaryColor: color,
-              textColor: state.textColor,
-              brightness: state.brightness!,
-              borderRadius: state.borderRadius,
-              fontSizeFactor: state.fontSizeFactor,
-            ));
+            index: 6,
+            primaryColor: color,
+            textColor: state.textColor,
+            brightness: state.brightness!,
+            borderRadius: state.borderRadius,
+            fontSizeFactor: state.fontSizeFactor,
+            fontFamily: state.fontFamily));
         print(color);
       },
       width: 40,

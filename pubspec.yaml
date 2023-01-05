@@ -46,16 +46,26 @@ dependencies:
 
 
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
 
 flutter:
-   assets:
-     - assets/
+  fonts:
+     - family: SeymourOne-Regular
+       fonts:
+         - asset: fonts/SeymourOne-Regular.ttf
+     - family: Lato-Regular
+       fonts:
+         - asset: fonts/Lato-Regular.ttf
+  #
+  assets:
+    - assets/
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
 
-   uses-material-design: true
+  uses-material-design: true
