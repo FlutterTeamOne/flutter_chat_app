@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../domain/data/library/library_data.dart';
+import '../../../../domain/data/library/library_data.dart';
 
 class ChatStateRef extends Equatable {
   final List<ChatDto>? chats;

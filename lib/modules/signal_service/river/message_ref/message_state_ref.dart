@@ -1,4 +1,4 @@
-import '../../../domain/data/dto/message_dto/message_dto.dart';
+import '../../../../domain/data/dto/message_dto/message_dto.dart';
 import 'package:equatable/equatable.dart';
 
 enum EditState { isEditing, isNotEditing, isPreparation }

@@ -1,4 +1,4 @@
-﻿import '../../../modules/signal_service/river/chat_state_ref.dart';
+﻿import '../../../modules/signal_service/river/chat_ref/chat_state_ref.dart';
 import '../../../modules/signal_service/river/river.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

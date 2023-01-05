@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../../../modules/signal_service/river/message_state_ref.dart';
+import '../../../../modules/signal_service/river/message_ref/message_state_ref.dart';
 import '../../../../modules/signal_service/river/river.dart';
 import 'app_circle_button.dart';
 import 'package:file_picker/file_picker.dart';

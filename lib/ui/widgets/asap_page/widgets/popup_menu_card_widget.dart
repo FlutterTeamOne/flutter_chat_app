@@ -1,6 +1,6 @@
 ﻿import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 
-import '../../../../modules/signal_service/river/message_state_ref.dart';
+import '../../../../modules/signal_service/river/message_ref/message_state_ref.dart';
 import '../../../../modules/signal_service/river/river.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';

@@ -1,4 +1,4 @@
-﻿import '../../../../modules/signal_service/river/message_state_ref.dart';
+﻿import '../../../../modules/signal_service/river/message_ref/message_state_ref.dart';
 import '../../../../modules/signal_service/river/river.dart';
 import '../../../../src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,5 @@
-import '../../../domain/data/dto/user_dto/user_dto.dart';
-import '../../storage_manager/db_helper/user_path.dart';
+import '../../../../domain/data/dto/user_dto/user_dto.dart';
+import '../../../storage_manager/db_helper/user_path.dart';
 import 'package:equatable/equatable.dart';
 
 class UserStateRef extends Equatable {
