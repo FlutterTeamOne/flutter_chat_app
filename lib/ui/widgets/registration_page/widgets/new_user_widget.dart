@@ -1,5 +1,6 @@
-import '../../../../domain/data/dto/user_dto/user_dto.dart';
-import '../../../../modules/signal_service/bloc/user_bloc/user_bloc.dart';
+import 'package:chat_app/modules/signal_service/river/river.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../bloc/new_user_bloc.dart';
 import '../bloc/new_user_event.dart';
 import '../models/new_user_model.dart';
@@ -19,7 +20,8 @@ class _NewUserWidgetState extends State<NewUserWidget> {
   static const double textFieldWidth = 200;
   static const double textPadding = 15;
 
-  static const String newUserPictureUrl = """https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg?w=2000""";
+  static const String newUserPictureUrl =
+      """https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg?w=2000""";
   static String newUserCreateDate = DateTime.now().toIso8601String();
   late TextEditingController newUserNameText;
   late TextEditingController newUserEmailText;
@@ -204,25 +206,32 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                         .read<NewUserBloc>()
                         .add(SetNewUserEvent(user: newUser));
                     showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              newUserName = context.watch<NewUserBloc>().state.newUser.name;
-                              return Dialog(
-                                // shape: RoundedRectangleBorder(
-                                //   borderRadius: BorderRadius.circular(20.0),
-                                // ),
-                                child: SizedBox(
-                                  height: 80,
-                                  width: 50,
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: context.read<NewUserBloc>().state.newUser.name == newUserNameText.text
-                                            ? Text('User $newUserName created')
-                                            : Text('Error')
-                                      ),
-                                      ElevatedButton(
+                        context: context,
+                        builder: (BuildContext context) {
+                          newUserName =
+                              context.watch<NewUserBloc>().state.newUser.name;
+                          return Dialog(
+                            // shape: RoundedRectangleBorder(
+                            //   borderRadius: BorderRadius.circular(20.0),
+                            // ),
+                            child: SizedBox(
+                              height: 80,
+                              width: 50,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: context
+                                                  .read<NewUserBloc>()
+                                                  .state
+                                                  .newUser
+                                                  .name ==
+                                              newUserNameText.text
+                                          ? Text('User $newUserName created')
+                                          : const Text('Error')),
+                                  Consumer(
+                                    builder: (context, ref, _) {
+                                      return ElevatedButton(
                                           // style: ButtonStyle(
                                           //     shape: MaterialStateProperty.all<
                                           //             RoundedRectangleBorder>(
@@ -231,17 +240,21 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                                           //       BorderRadius.circular(20.0),
                                           // ))),
                                           onPressed: () {
+                                            ref
+                                                .read(River.userPod.notifier)
+                                                .readUser();
 
-                                            context.read<UserBloc>().add(ReadUsersEvent());
                                             Navigator.of(context)
                                                 .pushNamed('/');
                                           },
-                                          child: const Icon(Icons.check))
-                                    ],
-                                  ),
-                                ),
-                              );
-                            });
+                                          child: const Icon(Icons.check));
+                                    },
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        });
                     // print(
                     //     '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , ');
                   },
