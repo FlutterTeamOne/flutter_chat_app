@@ -90,7 +90,7 @@ CREATE TABLE ${DatabaseConst.messageTable} (
  ${DatabaseConst.messagesColumnChatId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
  ${DatabaseConst.messagesColumnCreatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
  ${DatabaseConst.messagesColumnSenderId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
- ${DatabaseConst.messagesColumnMessageId} ${DatabaseConst.integer},
+ ${DatabaseConst.messagesColumnMessageId} ${DatabaseConst.integer} ${DatabaseConst.unique},
  ${DatabaseConst.messagesColumnIsRead} ${DatabaseConst.integer} ${DatabaseConst.notNull} DEFAULT 0,
  ${DatabaseConst.messagesColumnContent} ${DatabaseConst.char50} ${DatabaseConst.notNull},
  ${DatabaseConst.messagesColumnUpdatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
