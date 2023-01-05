@@ -1,10 +1,10 @@
 import 'dart:developer';
 
-import 'package:chat_app/modules/signal_service/river/river.dart';
-import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
-import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
-import 'package:chat_app/src/libraries/library_all.dart';
-import 'package:chat_app/ui/pages/library/library_pages.dart';
+import '../../modules/signal_service/river/river.dart';
+import '../../modules/storage_manager/db_helper/db_helper_start.dart';
+import '../../modules/storage_manager/db_helper/user_path.dart';
+import '../../src/libraries/library_all.dart';
+import '../pages/library/library_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 part '../auth/widgets/user_card.dart';

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:chat_app/src/constants/db_constants.dart';
+import '../../../../src/constants/db_constants.dart';
 
 import '../model_dto.dart';
 

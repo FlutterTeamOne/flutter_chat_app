@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:chat_app/domain/data/dto/attach_dto/attach_dto.dart';
-import 'package:chat_app/domain/data/library/library_data.dart';
+import '../../domain/data/dto/attach_dto/attach_dto.dart';
+import '../../domain/data/library/library_data.dart';
 import 'package:dio/dio.dart';
 
 class RestClient {

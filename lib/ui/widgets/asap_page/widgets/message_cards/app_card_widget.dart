@@ -1,8 +1,8 @@
 
 import 'dart:convert';
 
-import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
-import 'package:chat_app/src/libraries/library_all.dart';
+import '../../../../../src/generated/grpc_lib/grpc_message_lib.dart';
+import '../../../../../src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
 
 

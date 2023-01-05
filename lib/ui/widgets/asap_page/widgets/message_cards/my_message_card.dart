@@ -1,5 +1,5 @@
-﻿import 'package:chat_app/modules/signal_service/river/river.dart';
-import 'package:chat_app/src/libraries/library_all.dart';
+﻿import '../../../../../modules/signal_service/river/river.dart';
+import '../../../../../src/libraries/library_all.dart';
 import '../../../library/library_widgets.dart';
 import 'package:flutter/material.dart';
 

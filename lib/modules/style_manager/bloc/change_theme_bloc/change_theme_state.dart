@@ -1,4 +1,4 @@
-import 'package:chat_app/modules/style_manager/library/library_style_manager.dart';
+import '../../library/library_style_manager.dart';
 import 'package:flutter/material.dart';
 
 import '../../themes/custom_themes.dart';

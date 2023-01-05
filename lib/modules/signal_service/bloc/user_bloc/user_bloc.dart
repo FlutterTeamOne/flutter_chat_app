@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'package:chat_app/modules/client/grpc_client.dart';
-import 'package:chat_app/modules/signal_service/service_locator/locator.dart';
-import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
-import 'package:chat_app/src/constants/db_constants.dart';
-import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
-import 'package:chat_app/src/generated/grpc_lib/grpc_user_lib.dart';
+import '../../../client/grpc_client.dart';
+import '../../service_locator/locator.dart';
+import '../../../storage_manager/db_helper/user_path.dart';
+import '../../../../src/constants/db_constants.dart';
+import '../../../../src/generated/grpc_lib/grpc_message_lib.dart';
+import '../../../../src/generated/grpc_lib/grpc_user_lib.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

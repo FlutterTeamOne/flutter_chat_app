@@ -1,8 +1,8 @@
 ﻿import 'dart:io';
 
-import 'package:chat_app/modules/signal_service/river/message_state_ref.dart';
-import 'package:chat_app/modules/signal_service/river/river.dart';
-import 'package:chat_app/ui/widgets/asap_page/widgets/app_circle_button.dart';
+import '../../../../modules/signal_service/river/message_state_ref.dart';
+import '../../../../modules/signal_service/river/river.dart';
+import 'app_circle_button.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -1,5 +1,5 @@
-import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
-import 'package:chat_app/modules/signal_service/river/river.dart';
+import '../../modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
+import '../../modules/signal_service/river/river.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';

@@ -1,4 +1,4 @@
-﻿import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
+﻿import '../../../../modules/storage_manager/db_helper/user_path.dart';
 
 import '../../../../src/libraries/library_all.dart';
 import '../../library/library_widgets.dart';

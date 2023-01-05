@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:chat_app/src/constants/db_constants.dart';
-import 'package:chat_app/src/generated/messages/messages.pbgrpc.dart';
+import '../../../../src/constants/db_constants.dart';
+import '../../../../src/generated/messages/messages.pbgrpc.dart';
 
 import '../model_dto.dart';
 

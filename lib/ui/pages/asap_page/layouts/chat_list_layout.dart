@@ -1,5 +1,5 @@
-﻿import 'package:chat_app/modules/signal_service/river/river.dart';
-import 'package:chat_app/ui/widgets/asap_page/widgets/search_field.dart';
+﻿import '../../../../modules/signal_service/river/river.dart';
+import '../../../widgets/asap_page/widgets/search_field.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../modules/storage_manager/db_helper/user_path.dart';

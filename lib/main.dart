@@ -1,11 +1,10 @@
 import 'dart:io';
 
-import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
-import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
-import 'package:chat_app/src/constants/app_data_constants.dart';
-import 'package:chat_app/ui/auth/authorization_page.dart';
-import 'package:chat_app/ui/pages/registration_page/registration_page.dart';
-import 'package:chat_app/ui/widgets/registration_page/bloc/new_user_bloc.dart';
+import 'modules/storage_manager/db_helper/user_path.dart';
+import 'src/constants/app_data_constants.dart';
+import 'ui/auth/authorization_page.dart';
+import 'ui/pages/registration_page/registration_page.dart';
+import 'ui/widgets/registration_page/bloc/new_user_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'modules/storage_manager/db_helper/db_helper_start.dart';
 

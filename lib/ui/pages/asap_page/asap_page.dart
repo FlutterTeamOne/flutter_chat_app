@@ -1,5 +1,5 @@
-﻿import 'package:chat_app/modules/signal_service/river/chat_state_ref.dart';
-import 'package:chat_app/modules/signal_service/river/river.dart';
+﻿import '../../../modules/signal_service/river/chat_state_ref.dart';
+import '../../../modules/signal_service/river/river.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../src/libraries/library_all.dart';

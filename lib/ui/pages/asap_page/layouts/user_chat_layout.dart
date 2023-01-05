@@ -1,6 +1,6 @@
-﻿import 'package:chat_app/modules/signal_service/river/message_state_ref.dart';
-import 'package:chat_app/modules/signal_service/river/river.dart';
-import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
+﻿import '../../../../modules/signal_service/river/message_state_ref.dart';
+import '../../../../modules/signal_service/river/river.dart';
+import '../../../../src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
