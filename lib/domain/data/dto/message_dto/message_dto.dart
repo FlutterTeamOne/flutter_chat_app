@@ -68,7 +68,7 @@ class MessageDto extends ModelDto {
       DatabaseConst.messagesColumnDeletedDate: deletedDate,
       DatabaseConst.messagesColumnAttachmentId: attachId,
       DatabaseConst.messagesColumnIsRead: isRead,
-      DatabaseConst.messagesColumnContentType: contentType
+      DatabaseConst.messagesColumnContentType: contentType.name
     };
   }
 

@@ -1,12 +1,10 @@
-import '../../modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
+import 'package:chat_app/modules/signal_service/river/connection_ref/connection_notifier.dart';
+
 import '../../modules/signal_service/river/river.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
-import '../../src/libraries/library_all.dart';
 import '../widgets/library/library_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sidebarx/sidebarx.dart';
 
 class MainLayout extends ConsumerStatefulWidget {

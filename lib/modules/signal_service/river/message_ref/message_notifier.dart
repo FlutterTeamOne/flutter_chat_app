@@ -61,11 +61,11 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
         print('id Message Main: ${updMsg.idMessageMain}');
         print('date update: ${updMsg.idMessageMain}');
 
-        var messages = await _messagesServices.getAllMessages();
+        // var messages = await _messagesServices.getAllMessages();
 
-        print('IsUpdate message:$messages');
+        // print('IsUpdate message:$messages');
 
-        readMessages(messages);
+        // readMessages(messages);
       } else if (value.messageState == MessageStateEnum.isDeleteMesage) {
         var del = value.deleteMessage;
 

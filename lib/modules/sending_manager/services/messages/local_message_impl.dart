@@ -174,17 +174,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
     await DBHelper.instanse.onUpdate(
         tableName: 'messages',
         column: DatabaseConst.messagesColumnLocalMessagesId,
-        model: {
-          DatabaseConst.messagesColumnLocalMessagesId: localMessageId,
-          DatabaseConst.messagesColumnChatId: message.chatId,
-          DatabaseConst.messagesColumnSenderId: message.senderId,
-          DatabaseConst.messagesColumnCreatedDate: message.createdDate,
-          DatabaseConst.messagesColumnUpdatedDate: message.updatedDate,
-          DatabaseConst.messagesColumnDeletedDate: message.deletedDate,
-          DatabaseConst.messagesColumnIsRead: message.isRead,
-          DatabaseConst.messagesColumnContent: message.content,
-          DatabaseConst.messagesColumnMessageId: message.messageId
-        },
+        model: message.toMap(),
         id: localMessageId);
   }
 
@@ -197,6 +187,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
     SET ${DatabaseConst.messagesColumnMessageId}=?,${DatabaseConst.messagesColumnUpdatedDate}=?,${DatabaseConst.messagesColumnContent}=?
     WHERE ${DatabaseConst.messagesColumnMessageId} = $messageId''',
         [messageId, updateDate, content]);
+    DBHelper.instanse.updateListenController.add(true);
   }
 
   updateWrittenToServer(
