@@ -1,4 +1,6 @@
-﻿import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
+﻿import 'dart:developer';
+
+import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 
 import '../../../../src/libraries/library_all.dart';
 import '../../library/library_widgets.dart';
@@ -70,16 +72,19 @@ class ChatWidgetState extends State<ChatWidget> {
       ),
       body: messages.isEmpty
           ? Center(child: Text('Start chatting'))
-          : GroupedListView<MessageDto, int>(
+          : GroupedListView<MessageDto, DateTime>(
               controller: scrollController,
               padding: const EdgeInsets.all(10),
               elements: messages,
               reverse: true,
-              floatingHeader: true,
-              groupBy: (message) => message.localMessageId!,
+              order: GroupedListOrder.DESC,
+              groupBy: (message) => DateTime(
+                DateTime.parse(message.createdDate!).year,
+                DateTime.parse(message.createdDate!).month,
+                DateTime.parse(message.createdDate!).day,
+              ),
               groupHeaderBuilder: (MessageDto message) =>
                   TimeCardWidget(date: message.createdDate!),
-              groupComparator: (value1, value2) => value2,
               itemBuilder: (context, MessageDto message) {
                 if (!checkSender(message.senderId)) {
                   // print(message.isSentByMe);

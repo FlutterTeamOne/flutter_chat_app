@@ -10,20 +10,17 @@ class TimeCardWidget extends StatelessWidget {
   final String date;
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 40,
-      child: Center(
-        child: Card(
-          // shape: RoundedRectangleBorder(
-          //   borderRadius: BorderRadius.circular(10),
-          //
-          // ),
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Text(
-              DateFormat.yMMMd().format(DateTime.parse(date)),
-              // style: AppTextStyle.s17Abel.copyWith(fontSize: 14),
-            ),
+    return Center(
+      child: Card(
+        // shape: RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.circular(10),
+        //
+        // ),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Text(
+            DateFormat.yMMMd().format(DateTime.parse(date)),
+            // style: AppTextStyle.s17Abel.copyWith(fontSize: 14),
           ),
         ),
       ),
