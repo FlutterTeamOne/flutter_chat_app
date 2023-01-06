@@ -7,6 +7,7 @@ class ChangeThemeState {
   final Color? textColor;
   final double? borderRadius;
   final double? fontSizeFactor;
+  final String? fontFamily;
   final ThemeData? theme;
   final int? index;
   final iconColor = [
@@ -29,6 +30,7 @@ class ChangeThemeState {
 
   ChangeThemeState({
     this.fontSizeFactor,
+    this.fontFamily,
     this.borderRadius,
     this.primaryColor,
     this.brightness,

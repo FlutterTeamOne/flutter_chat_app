@@ -20,7 +20,7 @@ class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
           borderRadius: 20,
           fontSizeFactor: 1,
           primaryColor: MyApp().createMaterialColor(const Color(0xFFFF9800)),
-          // primaryColor: Colors.blueGrey,
+          fontFamily: 'Roboto',
           textColor: Colors.black87,
           brightness: Brightness.light,
           theme: CustomThemes().themes[6],
@@ -56,6 +56,7 @@ class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
       primaryColor: event.primaryColor,
       textColor: event.textColor,
       index: event.index,
+      fontFamily: event.fontFamily,
       brightness: event.brightness,
       fontSizeFactor: event.fontSizeFactor,
     ));
