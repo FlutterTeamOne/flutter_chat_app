@@ -33,7 +33,8 @@ class TextInputWidgetState extends State<TextInputWidget> {
   String filePath = '';
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[

@@ -50,45 +50,42 @@ class UserChatLayoutState extends State<UserChatLayout> {
         : Column(
             children: <Widget>[
               //Top bar of the user_chat_layout screen part, that contains the friend's name and pic
-              Flexible(
-                flex: 1,
-                child: Container(
-                  height: 60,
-                  color: Colors.transparent.withOpacity(0.1),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Flexible(
-                        child: ChatAppBarWidget(
-                          image: user!.deletedDate!.isEmpty
-                              ? user.profilePicLink
-                              : 'https://www.iconsdb.com/icons/preview/red/cancel-xxl.png',
-                          // user.profilePicLink,
-                          name: user.name,
-                        ),
+              Container(
+                height: 60,
+                color: Colors.transparent.withOpacity(0.1),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Flexible(
+                      child: ChatAppBarWidget(
+                        image: user!.deletedDate!.isEmpty
+                            ? user.profilePicLink
+                            : 'https://www.iconsdb.com/icons/preview/red/cancel-xxl.png',
+                        // user.profilePicLink,
+                        name: user.name,
                       ),
-                      Flexible(
-                        child: PopupMenuButton<int>(
-                            itemBuilder: (context) => [
-                                  PopupMenuItem(
-                                    value: 1,
-                                    child: Row(
-                                      children: const [
-                                        Icon(Icons.delete),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text("Delete Chat")
-                                      ],
-                                    ),
-                                    onTap: () => context
-                                        .read<ChatBloc>()
-                                        .add(DeleteChatEvent(widget.chatId)),
+                    ),
+                    Flexible(
+                      child: PopupMenuButton<int>(
+                          itemBuilder: (context) => [
+                                PopupMenuItem(
+                                  value: 1,
+                                  child: Row(
+                                    children: const [
+                                      Icon(Icons.delete),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text("Delete Chat")
+                                    ],
                                   ),
-                                ]),
-                      ),
-                    ],
-                  ),
+                                  onTap: () => context
+                                      .read<ChatBloc>()
+                                      .add(DeleteChatEvent(widget.chatId)),
+                                ),
+                              ]),
+                    ),
+                  ],
                 ),
               ),
               Expanded(
@@ -101,60 +98,53 @@ class UserChatLayoutState extends State<UserChatLayout> {
                       )
                     : const Center(child: CircularProgressIndicator()),
               ),
-              Flexible(
-                flex: 1,
-                child: SizedBox(
-                  height: 80,
-                  child: TextInputWidget(
-                    onSubmitted: (text) => _sendAndChange(messageBloc),
-                    controller: controller,
-                    onTap: () => user.deletedDate!.isNotEmpty
-                        ? showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return Dialog(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                                child: SizedBox(
-                                  height: 80,
-                                  width: 80,
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                            'User ${user.name} is deleted'),
-                                      ),
-                                      ElevatedButton(
-                                          style: ButtonStyle(
-                                              shape: MaterialStateProperty.all<
-                                                      RoundedRectangleBorder>(
-                                                  RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
-                                          ))),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Icon(
-                                            Icons.close_rounded,
-                                          ))
-                                    ],
+              TextInputWidget(
+                onSubmitted: (text) => _sendAndChange(messageBloc),
+                controller: controller,
+                onTap: () => user.deletedDate!.isNotEmpty
+                    ? showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: SizedBox(
+                              height: 80,
+                              width: 80,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text('User ${user.name} is deleted'),
                                   ),
-                                ),
-                              );
-                            })
-                        : _sendAndChange(messageBloc),
-                    editState: messageBloc.state.editState,
-                    editText: controller.text,
-                    cancelEdit: () {
-                      messageBloc.add(UpdateMessageEvent(
-                          isEditing: EditState.isNotEditing));
-                      controller.clear();
-                    },
-                  ),
-                ),
+                                  ElevatedButton(
+                                      style: ButtonStyle(
+                                          shape: MaterialStateProperty.all<
+                                                  RoundedRectangleBorder>(
+                                              RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                      ))),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Icon(
+                                        Icons.close_rounded,
+                                      ))
+                                ],
+                              ),
+                            ),
+                          );
+                        })
+                    : _sendAndChange(messageBloc),
+                editState: messageBloc.state.editState,
+                editText: controller.text,
+                cancelEdit: () {
+                  messageBloc.add(
+                      UpdateMessageEvent(isEditing: EditState.isNotEditing));
+                  controller.clear();
+                },
               ),
             ],
           );

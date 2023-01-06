@@ -75,6 +75,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
     final grpcClient = GrpcClient();
     final localUserServices = LocalUsersServices();
     return Drawer(
+      width: 300,
       // shape: Border(
       //     right: BorderSide(width: 1, color: Theme.of(context).dividerColor)),
       elevation: 0,
@@ -132,7 +133,6 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                           : 'You',
                                       // checkSender(widget.messageModel[lastMessageId].senderId),
                                       // ? userBloc.state.users[index].name:'You'),
-                                      selected: false,
                                       onTap: () {
                                         context.read<ChatBloc>().add(
                                             GetChatIdEvent(widget
@@ -140,7 +140,6 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                       },
                                       name: friend.name,
                                       image: friend.profilePicLink,
-
                                       message: lastMessage.chatId != 0
                                           ? lastMessage.content
                                           : 'Start chating',
