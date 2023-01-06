@@ -44,11 +44,13 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       var usersResponse = UsersResponse();
       //отправляем запрос на сервер и получаем всех юзеров
       try {
-        usersResponse = await stub.sync(UsersRequest(users: usersRequest));
+        usersResponse = await stub.sync(UsersRequest(
+            mainUser: UserPref.getUserId, usersForUpdate: usersRequest));
       } catch (e) {
         print(e);
       }
-      print("UsersServ $usersResponse");
+      print("UsersServ NEW ${usersResponse.usersNew}");
+      print("UsersServ UPDATED ${usersResponse.usersUpdated}");
       for (var user in usersResponse.usersNew) {
         //парсим всех юзеров и записываем их в локальное дб
         await _usersServices.createUserStart(
@@ -74,102 +76,124 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       users = await _usersServices.getAllUsersStart();
     } else {
 //делаем синхронизацию
-      var maxChatId = await _chatServices.getMaxId();
-      var maxMessageId = await _messagesServices.getMaxMessageId();
-      var stub = GrpcSynchronizationClient(GrpcClient().channel);
+      ///
+      ///Юзеры
+      ///
       var mainUserId = await _usersServices.getMainUserId();
       //Юзера для обновления данных
       var usersUp = await _usersServices.getAllUserIdAndUpdated();
-      var usersRequestA = <UserRequest>[];
+      var usersRequest = <UserRequest>[];
       if (usersUp.isNotEmpty) {
         print("lastID ${usersUp.last['user_id']}");
         for (var user in usersUp) {
-          usersRequestA.add(UserRequest(
+          usersRequest.add(UserRequest(
               userId: user['user_id'] as int,
               updatedDate: user['updated_date'] as String));
         }
       }
+
+      ///
+      ///Чаты
+      ///
+      var maxChatId = await _chatServices.getMaxId();
+      var chatsForUpdate = await _chatServices.getAllChats();
+      var chatsRequest = <ChatRequest>[];
+      if (chatsForUpdate.isNotEmpty) {
+        for (var chat in chatsForUpdate) {
+          chatsRequest.add(
+              ChatRequest(chatId: chat.chatId, updatedDate: chat.updatedDate));
+        }
+      }
+
+      ///
+      ///Сообщения
+      ///
+      var maxMessageId = await _messagesServices.getMaxMessageId();
+      var messagesForUpdate = await _messagesServices.getAllMessagesNotNull();
+      var messagesRequest = <MessageRequest>[];
+      if (messagesForUpdate.isNotEmpty) {
+        for (var message in messagesForUpdate) {
+          messagesRequest.add(MessageRequest(
+              messageId: message.messageId, updatedDate: message.updatedDate));
+        }
+      }
+
+      var stub = GrpcSynchronizationClient(GrpcClient().channel);
+
       //запрос на сервер
       var response = DataDBResponse();
       print('maxUserId: $mainUserId');
       print('chatId: $maxChatId');
       print('messageId: $maxMessageId');
       try {
-        response = await stub.getUsersSynh(SynhMainUser(
-            mainUserId: mainUserId,
-            chatId: maxChatId,
-            messageId: maxMessageId,
-            users: UsersRequest(users: usersRequestA)));
+        response = await stub.getUsersSynh(MainUserRequest(
+          users:
+              UsersRequest(mainUser: mainUserId, usersForUpdate: usersRequest),
+          chats:
+              ChatsRequest(maxChatId: maxChatId, chatsForUpdate: chatsRequest),
+          messages: MessagesRequest(
+              maxMessageId: maxMessageId, messageForUpdate: messagesRequest),
+        ));
       } catch (e) {
         print(e);
       }
-      print("NEWUSERS: ${response.newUsers}");
-      //добавление новых юзеров для новых чатов
-      for (var user in response.newUsers) {
+      print("NEWUSERS: ${response.users.usersNew}");
+
+      ///
+      ///ДОБАВЛЯЕМ НОВЫХ ЮЗЕРОВ
+      ///
+      for (var user in response.users.usersNew) {
         print(
             "deleted date is empty? ${user.deletedDate} ${user.deletedDate.isNotEmpty}");
-        if (user.deletedDate.isNotEmpty) {
-          const String deletedUserAvatar =
-              """https://www.iconsdb.com/icons/preview/red/cancel-xxl.png""";
-          await _usersServices.createUser(
-              name: user.name,
-              email: user.email,
-              createdDate: user.createdDate,
-              updatedDate: user.updateDate,
-              deletedDate: user.deletedDate,
-              profilePicUrl: deletedUserAvatar,
-              userId: user.userId);
-        } else
-        //парсим всех юзеров и записываем их в локальное дб
-        {
-          await _usersServices.createUser(
-              name: user.name,
-              email: user.email,
-              createdDate: user.createdDate,
-              updatedDate: user.updateDate,
-              deletedDate: user.deletedDate,
-              profilePicUrl: user.picture,
-              userId: user.userId);
-        }
+        String userAvatar = (user.deletedDate == "" || user.deletedDate.isEmpty)
+            ? user.picture
+            : """https://www.iconsdb.com/icons/preview/red/cancel-xxl.png""";
+        await _usersServices.createUser(
+            name: user.name,
+            email: user.email,
+            createdDate: user.createdDate,
+            updatedDate: user.updateDate,
+            deletedDate: user.deletedDate,
+            profilePicUrl: userAvatar,
+            userId: user.userId);
       }
-      print('RESPONSE_CHATS: ${response.chats}');
-      for (var chat in response.chats) {
-        print('USER BLOC CHAT: $chat');
+
+      ///
+      ///ДОБАВЛЯЕМ НОВЫЕ ЧАТЫ
+      ///
+      print('NEW_CHATS: ${response.chats.chatsNew}');
+      for (var chat in response.chats.chatsNew) {
         await _chatServices.createChat(
             createDate: chat.createdDate,
             userId: chat.userId,
             chatId: chat.chatId);
       }
-      print('REPSONSE_UPDATEUSERS: ${response.updatedUsers}');
-      for (var user in response.updatedUsers) {
+
+      ///
+      ///ОБНОВЛЯЕМ СТАРЫХ ЮЗЕРОВ
+      ///
+      print('REPSONSE_UPDATEUSERS: ${response.users.usersUpdated}');
+      for (var user in response.users.usersUpdated) {
         print(
             "deleted date is empty? ${user.deletedDate} ${user.deletedDate.isEmpty}");
-        if (user.deletedDate.isNotEmpty) {
-          const String deletedUserAvatar =
-              """https://www.iconsdb.com/icons/preview/red/cancel-xxl.png""";
-          await _usersServices.updateUser(
-              newValues: '''name = "${user.name}",
+        String userAvatar = (user.deletedDate == "" || user.deletedDate.isEmpty)
+            ? user.picture
+            : """https://www.iconsdb.com/icons/preview/red/cancel-xxl.png""";
+        await _usersServices.updateUser(
+            newValues: '''name = "${user.name}",
                           email = "${user.email}",
                           created_date = "${user.createdDate}",
                           updated_date = "${user.updateDate}",
                           deleted_date = "${user.deletedDate}",
-                          profile_pic_link = "$deletedUserAvatar"''',
-              condition: 'user_id = ${user.userId}');
-        } else
-        //парсим всех юзеров и записываем их в локальное дб
-        {
-          await _usersServices.updateUser(
-              newValues: '''name = "${user.name}",
-                          email = "${user.email}",
-                          created_date = "${user.createdDate}",
-                          updated_date = "${user.updateDate}",
-                          deleted_date = "${user.deletedDate}",
-                          profile_pic_link = "${user.picture}"''',
-              condition: 'user_id = ${user.userId}');
-        }
+                          profile_pic_link = "$userAvatar"''',
+            condition: 'user_id = ${user.userId}');
       }
-      print("RESPONSE_MESSAGES: ${response.messages}");
-      for (var message in response.messages) {
+
+      ///
+      ///ДОБАВЛЯЕМ НОВЫЕ СООБЩЕНИЯ
+      ///
+      print("RESPONSE_MESSAGES NEW: ${response.messages.messagesNew}");
+      for (var message in response.messages.messagesNew) {
         var type = ContentType.isText.name == message.contentType.name
             ? ContentType.isText
             : ContentType.isMedia.name == message.contentType.name
@@ -194,6 +218,40 @@ class UserNotifier extends StateNotifier<UserStateRef> {
             chatId: message.chatId, dateUpdated: message.updatedDate);
       }
 
+      ///
+      ///ОБНОВЛЯЕМ ЧАТЫ
+      ///
+      print("RESPONSE_UPDATED_CHATS: ${response.chats.chatsUpdated}");
+      for (var chats in response.chats.chatsUpdated) {}
+
+      ///
+      ///ОБНОВЛЯЕМ СООБЩЕНИЯ
+      ///
+      print("RESPONSE_UPDATED_MESSAGE: ${response.messages.messagesUpdated}");
+      for (var message in response.messages.messagesUpdated) {
+        var type = ContentType.isText.name == message.contentType.name
+            ? ContentType.isText
+            : ContentType.isMedia.name == message.contentType.name
+                ? ContentType.isMedia
+                : ContentType.isMediaText.name == message.contentType.name
+                    ? ContentType.isMediaText
+                    : ContentType.isText;
+        var msg = MessageDto(
+          messageId: message.messageId,
+          chatId: message.chatId,
+          senderId: message.senderId,
+          content: message.content,
+          createdDate: message.createdDate,
+          updatedDate: message.updatedDate,
+          deletedDate: message.deletedDate,
+          contentType: type,
+          attachId: message.attachmentId,
+          isRead: message.isRead,
+        );
+        print("UPDATEMESSAGE START");
+        await _messagesServices.updateMessageSynh(msg: msg);
+        print("UPDATEMESSAGE END");
+      }
       users = await _usersServices.getAllUsers();
     }
     for (var userServ in users) {

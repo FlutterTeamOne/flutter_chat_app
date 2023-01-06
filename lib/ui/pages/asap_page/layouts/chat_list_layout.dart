@@ -139,6 +139,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                         //FriendId Validation
                         GetUserResponse userFromServerDb;
                         try {
+
                           userFromServerDb =
                               await grpcClient.getUser(userId: value);
                           print("UserFromServer: $userFromServerDb");

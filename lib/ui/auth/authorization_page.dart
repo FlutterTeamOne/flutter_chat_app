@@ -1,5 +1,6 @@
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/ui/pages/main_layout.dart';
+import 'package:chat_app/ui/pages/registration_page/registration_page.dart';
 
 import '../../modules/signal_service/river/river.dart';
 import '../../src/libraries/library_all.dart';
@@ -40,7 +41,8 @@ class AuthPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20.0),
                         ))),
                         onPressed: () {
-                          Navigator.of(context).pushNamed('/registration page');
+                          Navigator.of(context)
+                              .pushNamed(RegistrationPage.routeName);
                         },
                         child: const Text('Create new user')),
                   ],
