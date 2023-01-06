@@ -1,28 +1,20 @@
-// import 'dart:js_util';
-
-import 'package:chat_app/modules/style_manager/bloc/change_theme_bloc/change_theme_event.dart';
-import 'package:chat_app/modules/style_manager/themes/custom_themes.dart';
+import 'package:chat_app/main.dart';
+import 'package:chat_app/modules/style_manager/riverpod/theme_models.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../modules/style_manager/bloc/change_theme_bloc/change_theme_bloc.dart';
-import '../../../modules/style_manager/bloc/change_theme_bloc/change_theme_state.dart';
 import '../../widgets/custom_theme/color_indicator.dart';
 import '../../widgets/custom_theme/color_tools.dart';
 import '../../widgets/custom_theme/flex_color_picker.dart';
 
-class ColorPickerPage extends StatefulWidget {
-  const ColorPickerPage({
-    super.key,
-    // required this.themeMode
-  });
-  // final ValueChanged<ThemeMode> themeMode;
+class ColorPickerPage extends ConsumerStatefulWidget {
+  const ColorPickerPage({Key? key}) : super(key: key);
 
   @override
-  _ColorPickerPageState createState() => _ColorPickerPageState();
+  ConsumerState<ColorPickerPage> createState() => _ColorPickerPageState();
 }
 
-class _ColorPickerPageState extends State<ColorPickerPage> {
+class _ColorPickerPageState extends ConsumerState<ColorPickerPage> {
   late Color screenPickerColor; // Color for picker shown in Card on the screen.
   late Color dialogPickerColor; // Color for picker in dialog using onChanged
   late Color dialogSelectColor; // Color for picker using color select dialog.
@@ -58,339 +50,270 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
 
   @override
   void initState() {
-    screenPickerColor = context.read<ChangeThemeBloc>().state.primaryColor!;
-    dialogPickerColor = context.read<ChangeThemeBloc>().state.primaryColor!;
+    screenPickerColor = ref.read(changeCustomThemeStateProvider).primaryColor!;
+    dialogPickerColor = ref.read(changeCustomThemeStateProvider).primaryColor!;
     dialogSelectColor = const Color(0xFFA239CA);
-    isDark = context.read<ChangeThemeBloc>().state.brightness == Brightness.dark
-        ? true
-        : false;
+    isDark =
+        ref.read(changeCustomThemeStateProvider).brightness == Brightness.dark
+            ? true
+            : false;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
-      builder: (context, state) {
-        String? fontFamilyValue = state.fontFamily;
-        return Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: const Text('Custom theme'),
+    final state = ref.watch(changeCustomThemeStateProvider);
+    String? fontFamilyValue = state.fontFamily;
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text('Custom theme'),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+        children: <Widget>[
+          const SizedBox(height: 16),
+          // Pick color in a dialog.
+          ListTile(
+            title: const Text('Click this color to modify it in a dialog. '
+                'The color is modified while dialog is open, but returns '
+                'to previous value if dialog is cancelled'),
+            subtitle: Text(
+              // ignore: lines_longer_than_80_chars
+              '${ColorTools.materialNameAndCode(dialogPickerColor, colorSwatchNameMap: colorsNameMap)} '
+              'aka ${ColorTools.nameThatColor(dialogPickerColor)}',
+            ),
+            trailing: ColorIndicator(
+              width: 44,
+              height: 44,
+              borderRadius: 4,
+              color: dialogPickerColor,
+              onSelectFocus: false,
+              onSelect: () async {
+                // Store current color before we open the dialog.
+                final Color colorBeforeDialog = dialogPickerColor;
+                // Wait for the picker to close, if dialog was dismissed,
+                // then restore the color we had before it was opened.
+                if (!(await colorPickerDialog(state, context, ref))) {
+                  setState(() {
+                    dialogPickerColor = colorBeforeDialog;
+                  });
+                }
+              },
+            ),
           ),
-          body: ListView(
-            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-            children: <Widget>[
-              const SizedBox(height: 16),
-              // Pick color in a dialog.
-              ListTile(
-                title: const Text('Click this color to modify it in a dialog. '
-                    'The color is modified while dialog is open, but returns '
-                    'to previous value if dialog is cancelled'),
-                subtitle: Text(
-                  // ignore: lines_longer_than_80_chars
-                  '${ColorTools.materialNameAndCode(dialogPickerColor, colorSwatchNameMap: colorsNameMap)} '
-                  'aka ${ColorTools.nameThatColor(dialogPickerColor)}',
-                ),
-                trailing: ColorIndicator(
-                  width: 44,
-                  height: 44,
-                  borderRadius: 4,
-                  color: dialogPickerColor,
-                  onSelectFocus: false,
-                  onSelect: () async {
-                    // Store current color before we open the dialog.
-                    final Color colorBeforeDialog = dialogPickerColor;
-                    // Wait for the picker to close, if dialog was dismissed,
-                    // then restore the color we had before it was opened.
-                    if (!(await colorPickerDialog(state))) {
-                      setState(() {
-                        dialogPickerColor = colorBeforeDialog;
-                      });
-                    }
-                  },
-                ),
-              ),
-              // ListTile(
-              //   title: const Text('Click to select a new color from a dialog '
-              //       'that uses custom open/close animation. The color is only '
-              //       'modified after dialog is closed with OK'),
-              //   subtitle: Text(
-              //     // ignore: lines_longer_than_80_chars
-              //     '${ColorTools.materialNameAndCode(dialogSelectColor, colorSwatchNameMap: colorsNameMap)} '
-              //     'aka ${ColorTools.nameThatColor(dialogSelectColor)}',
-              //   ),
-              //   trailing: ColorIndicator(
-              //       width: 40,
-              //       height: 40,
-              //       borderRadius: 0,
-              //       color: dialogSelectColor,
-              //       elevation: 1,
-              //       onSelectFocus: false,
-              //       onSelect: () async {
-              //         // Wait for the dialog to return color selection result.
-              //         final Color newColor = await showColorPickerDialog(
-              //           // The dialog needs a context, we pass it in.
-              //           context,
-              //           // We use the dialogSelectColor, as its starting color.
-              //           dialogSelectColor,
-              //           title: Text('ColorPicker',
-              //               style: Theme.of(context).textTheme.titleLarge),
-              //           width: 40,
-              //           height: 40,
-              //           spacing: 0,
-              //           runSpacing: 0,
-              //           borderRadius: 0,
-              //           wheelDiameter: 165,
-              //           enableOpacity: true,
-              //           showColorCode: true,
-              //           colorCodeHasColor: true,
-              //           pickersEnabled: <ColorPickerType, bool>{
-              //             ColorPickerType.wheel: true,
-              //           },
-              //           copyPasteBehavior: const ColorPickerCopyPasteBehavior(
-              //             copyButton: true,
-              //             pasteButton: true,
-              //             longPressMenu: true,
-              //           ),
-              //           actionButtons: const ColorPickerActionButtons(
-              //             okButton: true,
-              //             closeButton: true,
-              //             dialogActionButtons: false,
-              //           ),
-              //           transitionBuilder: (BuildContext context,
-              //               Animation<double> a1,
-              //               Animation<double> a2,
-              //               Widget widget) {
-              //             final double curvedValue =
-              //                 Curves.easeInOutBack.transform(a1.value) - 1.0;
-              //             return Transform(
-              //               transform: Matrix4.translationValues(
-              //                   0.0, curvedValue * 200, 0.0),
-              //               child: Opacity(
-              //                 opacity: a1.value,
-              //                 child: widget,
-              //               ),
-              //             );
-              //           },
-              //           transitionDuration: const Duration(milliseconds: 400),
-              //           constraints: const BoxConstraints(
-              //               minHeight: 480, minWidth: 320, maxWidth: 320),
-              //         );
-              //         // We update the dialogSelectColor, to the returned result
-              //         // color. If the dialog was dismissed it actually returns
-              //         // the color we started with. The extra update for that
-              //         // below does not really matter, but if you want you can
-              //         // check if they are equal and skip the update below.
-              //         setState(() {
-              //           dialogSelectColor = newColor;
-              //         });
-              //       }),
-              // ),
 
-              // Show the selected color.
-              ListTile(
-                title: const Text('Select color below to change this color'),
-                subtitle:
-                    Text('${ColorTools.materialNameAndCode(screenPickerColor)} '
-                        'aka ${ColorTools.nameThatColor(screenPickerColor)}'),
-                trailing: ColorIndicator(
+          // Show the selected color.
+          ListTile(
+            title: const Text('Select color below to change this color'),
+            subtitle:
+                Text('${ColorTools.materialNameAndCode(screenPickerColor)} '
+                    'aka ${ColorTools.nameThatColor(screenPickerColor)}'),
+            trailing: ColorIndicator(
+              width: 44,
+              height: 44,
+              borderRadius: 22,
+              color: screenPickerColor,
+            ),
+          ),
+
+          // Show the color picker in sized box in a raised card.
+          SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.all(6),
+              child: Card(
+                elevation: 2,
+                child: ColorPicker(
+                  // Use the screenPickerColor as start color.
+                  color: screenPickerColor,
+
+                  /// Update the screenPickerColor using the callback.
+                  onColorChanged: (Color color) {
+                    setState(() => screenPickerColor = color);
+                    ref
+                        .read(changeCustomThemeStateProvider.notifier)
+                        .update((state) => UserThemeData(
+                              brightness: state.brightness,
+                              borderRadius: state.borderRadius,
+                              fontSizeFactor: state.fontSizeFactor,
+                              fontFamily: state.fontFamily,
+                              textColor: state.textColor,
+                              primaryColor: color,
+                            ));
+                    print(color);
+                  },
                   width: 44,
                   height: 44,
                   borderRadius: 22,
-                  color: screenPickerColor,
-                ),
-              ),
-
-              // Show the color picker in sized box in a raised card.
-              SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.all(6),
-                  child: Card(
-                    elevation: 2,
-                    child: ColorPicker(
-                      // Use the screenPickerColor as start color.
-                      color: screenPickerColor,
-
-                      /// Update the screenPickerColor using the callback.
-                      onColorChanged: (Color color) {
-                        setState(() => screenPickerColor = color);
-                        context.read<ChangeThemeBloc>().add(
-                            SetCustomThemesEvent(
-                                index: 6,
-                                primaryColor: color,
-                                textColor: state.textColor,
-                                brightness: state.brightness!,
-                                borderRadius: state.borderRadius,
-                                fontSizeFactor: state.fontSizeFactor,
-                                fontFamily: state.fontFamily));
-                        print(color);
-                      },
-                      width: 44,
-                      height: 44,
-                      borderRadius: 22,
-                      heading: Text(
-                        'Select color',
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                      subheading: Text(
-                        'Select color shade',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
+                  heading: Text(
+                    'Select color',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  subheading: Text(
+                    'Select color shade',
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
               ),
+            ),
+          ),
 
-              /// Theme mode toggle
-              SwitchListTile(
-                title: const Text('Turn ON for dark mode'),
-                subtitle: const Text('Turn OFF for light mode'),
-                value: isDark,
-                onChanged: (bool value) {
-                  setState(() {
-                    isDark = value;
-                    // widget.themeMode(isDark ? ThemeMode.dark : ThemeMode.light);
-                  });
-                  late var brightness =
-                      value ? Brightness.dark : Brightness.light;
-                  // context.read<ChangeThemeBloc>().add(SetThemeEvent(index: 6));
-                  context.read<ChangeThemeBloc>().add(SetCustomThemesEvent(
-                      index: 6,
-                      brightness: brightness,
-                      primaryColor: state.primaryColor!,
-                      textColor: value == true ? Colors.white : Colors.black87,
-                      borderRadius: state.borderRadius,
-                      fontSizeFactor: state.fontSizeFactor,
-                      fontFamily: state.fontFamily));
-                },
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  /// Rounded border button
-                  ElevatedButton(
-                      onPressed: () {
-                        context.read<ChangeThemeBloc>().add(
-                            SetCustomThemesEvent(
-                                index: 6,
-                                brightness: state.brightness!,
-                                primaryColor: state.primaryColor!,
-                                textColor: state.textColor,
-                                borderRadius: 20,
-                                fontSizeFactor: state.fontSizeFactor,
-                                fontFamily: state.fontFamily));
-                      },
-                      child: const Text('Rounded border')),
-                  const SizedBox(
-                    width: 8,
-                  ),
-
-                  /// Squared border button
-                  ElevatedButton(
-                      onPressed: () {
-                        context.read<ChangeThemeBloc>().add(
-                            SetCustomThemesEvent(
-                                index: 6,
-                                brightness: state.brightness!,
-                                primaryColor: state.primaryColor!,
-                                textColor: state.textColor,
-                                borderRadius: 0,
-                                fontSizeFactor: state.fontSizeFactor,
-                                fontFamily: state.fontFamily));
-                      },
-                      child: const Text('Squared border')),
-                  const SizedBox(
-                    width: 8,
-                  ),
-
-                  /// Normal text size button
-                  ElevatedButton(
-                      onPressed: () {
-                        context.read<ChangeThemeBloc>().add(
-                            SetCustomThemesEvent(
-                                index: 6,
-                                brightness: state.brightness!,
-                                primaryColor: state.primaryColor!,
-                                textColor: state.textColor,
-                                borderRadius: state.borderRadius,
-                                fontSizeFactor: 1,
-                                fontFamily: state.fontFamily));
-                      },
-                      child: const Text('Normal text size')),
-                  const SizedBox(
-                    width: 8,
-                  ),
-
-                  /// Big text size button
-                  ElevatedButton(
-                      onPressed: () {
-                        context.read<ChangeThemeBloc>().add(
-                            SetCustomThemesEvent(
-                                index: 6,
-                                brightness: state.brightness!,
-                                primaryColor: state.primaryColor!,
-                                textColor: state.textColor,
-                                borderRadius: state.borderRadius,
-                                fontSizeFactor: 1.15,
-                                fontFamily: state.fontFamily));
-                      },
-                      child: const Text('Big text size')),
-
-                  /// Font family change
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: DropdownButton<String>(
-                        value: fontFamilyValue,
-                        items: fontFamilyList
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text('$value font'),
-                          );
-                        }).toList(),
-                        onChanged: (String? value) {
-                          setState(() {
-                            fontFamilyValue = value!;
-                          });
-                          context
-                              .read<ChangeThemeBloc>()
-                              .add(SetCustomThemesEvent(
-                              index: 6,
-                              brightness: state.brightness!,
-                              primaryColor: state.primaryColor!,
+          /// Theme mode toggle
+          SwitchListTile(
+            title: const Text('Turn ON for dark mode'),
+            subtitle: const Text('Turn OFF for light mode'),
+            value: isDark,
+            onChanged: (bool value) {
+              setState(() {
+                isDark = value;
+              });
+              late var brightness = value ? Brightness.dark : Brightness.light;
+              ref
+                  .read(changeCustomThemeStateProvider.notifier)
+                  .update((state) => UserThemeData(
+                        brightness: brightness,
+                        borderRadius: state.borderRadius,
+                        fontSizeFactor: state.fontSizeFactor,
+                        fontFamily: state.fontFamily,
+                        textColor: brightness == Brightness.light
+                            ? Colors.black87
+                            : Colors.white,
+                        primaryColor: state.primaryColor,
+                      ));
+              // initState();
+            },
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              /// Rounded border button
+              ElevatedButton(
+                  onPressed: () {
+                    ref
+                        .read(changeCustomThemeStateProvider.notifier)
+                        .update((state) => UserThemeData(
+                              brightness: state.brightness,
+                              borderRadius: 20,
+                              fontSizeFactor: state.fontSizeFactor,
+                              fontFamily: state.fontFamily,
                               textColor: state.textColor,
+                              primaryColor: state.primaryColor,
+                            ));
+                  },
+                  child: const Text('Rounded border')),
+              const SizedBox(
+                width: 8,
+              ),
+
+              /// Squared border button
+              ElevatedButton(
+                  onPressed: () {
+                    ref
+                        .read(changeCustomThemeStateProvider.notifier)
+                        .update((state) => UserThemeData(
+                              brightness: state.brightness,
+                              borderRadius: 0,
+                              fontSizeFactor: state.fontSizeFactor,
+                              fontFamily: state.fontFamily,
+                              textColor: state.textColor,
+                              primaryColor: state.primaryColor,
+                            ));
+                  },
+                  child: const Text('Squared border')),
+              const SizedBox(
+                width: 8,
+              ),
+
+              /// Normal text size button
+              ElevatedButton(
+                  onPressed: () {
+                    ref
+                        .read(changeCustomThemeStateProvider.notifier)
+                        .update((state) => UserThemeData(
+                              brightness: state.brightness,
                               borderRadius: state.borderRadius,
                               fontSizeFactor: 1,
-                              fontFamily: fontFamilyValue,
-                          ));
-                        }),
-                  ),
-                ],
+                              fontFamily: state.fontFamily,
+                              textColor: state.textColor,
+                              primaryColor: state.primaryColor,
+                            ));
+                  },
+                  child: const Text('Normal text size')),
+              const SizedBox(
+                width: 8,
+              ),
+
+              /// Big text size button
+              ElevatedButton(
+                  onPressed: () {
+                    ref
+                        .read(changeCustomThemeStateProvider.notifier)
+                        .update((state) => UserThemeData(
+                              brightness: state.brightness,
+                              borderRadius: state.borderRadius,
+                              fontSizeFactor: 1.1,
+                              fontFamily: state.fontFamily,
+                              textColor: state.textColor,
+                              primaryColor: state.primaryColor,
+                            ));
+                  },
+                  child: const Text('Big text size')),
+
+              /// Font family change
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DropdownButton<String>(
+                    value: fontFamilyValue,
+                    items: fontFamilyList
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text('$value font'),
+                      );
+                    }).toList(),
+                    onChanged: (String? value) {
+                      setState(() {
+                        fontFamilyValue = value!;
+                      });
+                      ref
+                          .read(changeCustomThemeStateProvider.notifier)
+                          .update((state) => UserThemeData(
+                                brightness: state.brightness,
+                                borderRadius: state.borderRadius,
+                                fontSizeFactor: state.fontSizeFactor,
+                                fontFamily: value,
+                                textColor: state.textColor,
+                                primaryColor: state.primaryColor,
+                              ));
+                    }),
               ),
             ],
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 
-  Future<bool> colorPickerDialog(state) async {
+  /// Color picker dialog
+  Future<bool> colorPickerDialog(state, context, ref) async {
     return ColorPicker(
       color: dialogPickerColor,
       onColorChanged: (Color color) {
         setState(() => dialogPickerColor = color);
-        context.read<ChangeThemeBloc>().add(SetCustomThemesEvent(
-            index: 6,
-            primaryColor: color,
-            textColor: state.textColor,
-            brightness: state.brightness!,
-            borderRadius: state.borderRadius,
-            fontSizeFactor: state.fontSizeFactor,
-            fontFamily: state.fontFamily));
+        ref
+            .read(changeCustomThemeStateProvider.notifier)
+            .update((state) => UserThemeData(
+                  brightness: state.brightness,
+                  borderRadius: state.borderRadius,
+                  fontSizeFactor: state.fontSizeFactor,
+                  fontFamily: state.fontFamily,
+                  textColor: state.textColor,
+                  primaryColor: color,
+                ));
         print(color);
       },
       width: 40,

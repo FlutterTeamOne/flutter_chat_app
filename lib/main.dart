@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:chat_app/modules/style_manager/riverpod/models.dart';
+import 'package:chat_app/modules/style_manager/riverpod/theme_models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:chat_app/modules/signal_service/bloc/grpc_connection_bloc/grpc_connection_bloc.dart';
@@ -102,10 +102,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
 Consumer buildMaterialApp(BuildContext context) {
-
-
   return Consumer(
     builder: (context, ref, child) {
       final theme = ref.watch(changeCustomThemeStateProvider);
