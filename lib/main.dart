@@ -68,120 +68,37 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        // BlocProvider<ConnectionBloc>(
-        //   create: (context) => ConnectionBloc(),
-        //   // lazy: false,
-        // ),
-        // BlocProvider(
-        //   create: (_) => GrpcConnectionBloc(grpcClient, ConnectionBloc())
-        //     ..add(
-        //       const GrpcConnectionStarted(),
-        //     ),
-        //   // lazy: false,
-        // ),
-        // BlocProvider<UserBloc>(
-        //   create: (context) =>
-        //       UserBloc()..add(ReadUsersEvent(userDb: UserPref.getUserDbPref)),
-        // ),
-        // BlocProvider<ChatBloc>(
+    return MultiBlocProvider(providers: [
+      // BlocProvider<ConnectionBloc>(
+      //   create: (context) => ConnectionBloc(),
+      //   // lazy: false,
+      // ),
+      // BlocProvider(
+      //   create: (_) => GrpcConnectionBloc(grpcClient, ConnectionBloc())
+      //     ..add(
+      //       const GrpcConnectionStarted(),
+      //     ),
+      //   // lazy: false,
+      // ),
+      // BlocProvider<UserBloc>(
+      //   create: (context) =>
+      //       UserBloc()..add(ReadUsersEvent(userDb: UserPref.getUserDbPref)),
+      // ),
+      // BlocProvider<ChatBloc>(
 
-        //   create: (context) => ChatBloc(userBloc: UserBloc()),
+      //   create: (context) => ChatBloc(userBloc: UserBloc()),
 
-        // ),
-        // BlocProvider<MessageBloc>(
-        //   create: (context) => MessageBloc(
-        //       grpcClient: grpcClient,
-        //       grpcConnection: context.read<GrpcConnectionBloc>()),
-        // ),
-        BlocProvider(
-          create: (context) => ChangeThemeBloc(),
-        ),
-        BlocProvider(create: (context) => NewUserBloc()),
-      ],
-      child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
-        builder: (context, state) {
-          if (state.index == 6) {
-            final ThemeData theme = ThemeData(
-              // colorScheme: ColorScheme(
-              //     brightness: state.brightness!,
-              //     primary: state.primaryColor!,
-              //     onPrimary: Colors.white,
-              //     secondary: Colors.white,
-              //     onSecondary: Colors.white,
-              //     error: Colors.redAccent,
-              //     onError: Colors.white,
-              //     background: Colors.black54,
-              //     onBackground: Colors.white,
-              //     surface: Colors.black54,
-              //     onSurface: Colors.black54),
-              textTheme: Theme.of(context).textTheme.apply(
-                  displayColor: state.textColor,
-                  bodyColor: state.textColor,
-                  fontSizeFactor: state.fontSizeFactor!),
-              // iconTheme: IconThemeData(color: Colors.white),
-              useMaterial3: true,
-              listTileTheme: ListTileThemeData(
-                  shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(state.borderRadius!))),
-              cardTheme: CardTheme(
-                  shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(state.borderRadius!))),
-              elevatedButtonTheme: ElevatedButtonThemeData(
-                  style: ButtonStyle(
-                      shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(state.borderRadius!))))),
-              buttonTheme: ButtonThemeData(
-                  shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(state.borderRadius!))),
-              brightness: state.brightness,
-              primarySwatch: createMaterialColor(state.primaryColor!),
-              // primarySwatch: createMaterialColor(state.primaryColor!),
-              primaryColor: createMaterialColor(state.primaryColor!),
-              errorColor: Colors.redAccent.shade200,
-              // backgroundColor: Colors.black45,
-              textSelectionTheme: TextSelectionThemeData(
-                cursorColor: state.textColor,
-                selectionColor: state.textColor,
-                selectionHandleColor: state.textColor,
-              ),
-              //стиль для scroll down button
-              floatingActionButtonTheme: const FloatingActionButtonThemeData(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black54,
-              ),
-            );
-            return buildMaterialApp(theme);
-          } else {
-            final ThemeData? theme = state.theme;
-            return buildMaterialApp(theme!);
-          }
-        },
+      // ),
+      // BlocProvider<MessageBloc>(
+      //   create: (context) => MessageBloc(
+      //       grpcClient: grpcClient,
+      //       grpcConnection: context.read<GrpcConnectionBloc>()),
+      // ),
+      BlocProvider(
+        create: (context) => ChangeThemeBloc(),
       ),
-    );
-  }
-
-  //
-  MaterialApp buildMaterialApp(ThemeData theme) {
-    return MaterialApp(
-      theme: theme,
-      title: 'Flutter chat app',
-      debugShowCheckedModeBanner: false,
-      initialRoute:
-          UserPref.getUserDbPref ? AuthPage.routeName : MainLayout.routeName,
-      routes: {
-        RegistrationPage.routeName: (context) => const RegistrationPage(),
-        AuthPage.routeName: (context) => const AuthPage(),
-        MainLayout.routeName: (context) => const MainLayout(),
-        '/settings_page': (context) => const SettingsPage(),
-        '/color_picker_page': (context) => const ColorPickerPage(),
-      },
-    );
+      BlocProvider(create: (context) => NewUserBloc()),
+    ], child: buildMaterialApp(context));
   }
 }
 
