@@ -21,11 +21,13 @@ class SetCustomThemesEvent extends ChangeThemeEvent {
   final Color? textColor;
   final double? borderRadius;
   final double? fontSizeFactor;
+  final String? fontFamily;
   SetCustomThemesEvent(
       {required this.index,
       required this.brightness,
       required this.primaryColor,
       this.textColor,
       this.borderRadius,
-      this.fontSizeFactor});
+      this.fontSizeFactor,
+      this.fontFamily});
 }
