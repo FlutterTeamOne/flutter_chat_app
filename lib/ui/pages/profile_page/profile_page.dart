@@ -10,10 +10,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 part 'widgets/change_user_pic.dart';
 part 'widgets/load_method.dart';
 part 'widgets/app_blured_image.dart';
-part 'widgets/_user_picture.dart';
+part 'widgets/user_picture.dart';
 part 'widgets/app_dialog.dart';
 part 'widgets/layout/profile_layout.dart';
 part 'widgets/exit_button.dart';
+part 'widgets/change_email_button.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({
