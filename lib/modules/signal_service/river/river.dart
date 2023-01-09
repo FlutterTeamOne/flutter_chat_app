@@ -16,7 +16,7 @@ class River {
   static final userPod = StateNotifierProvider<UserNotifier, UserStateRef>(
       (ref) => UserNotifier());
   static final futureUserPod = FutureProvider<UserStateRef>(
-      (ref) => ref.read(userPod.notifier).readUser());
+      (ref) async => await ref.read(userPod.notifier).readUser());
 
   static final chatPod = StateNotifierProvider<ChatNotifier, ChatStateRef>(
       (ref) => ChatNotifier());

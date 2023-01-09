@@ -10,9 +10,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 part '../auth/widgets/user_card.dart';
 
-class AuthPage extends StatelessWidget {
+class AuthPage extends ConsumerStatefulWidget {
   const AuthPage({super.key});
   static const routeName = '/';
+
+  @override
+  ConsumerState<AuthPage> createState() => _AuthPageState();
+}
+
+class _AuthPageState extends ConsumerState<AuthPage> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(River.futureUserPod);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +33,13 @@ class AuthPage extends StatelessWidget {
             (previous, next) {
           print("HEY NEW USERS");
         });
-        return ref.watch(River.futureUserPod).when(
-              data: (data) => Column(
+        List<UserDto>? users;
+        users = ref.watch(River.userPod).users;
+        return users==null
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Column(
                 children: [
                   const SizedBox(
                     height: 100,
@@ -34,9 +50,9 @@ class AuthPage extends StatelessWidget {
                       child: ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
-                        itemCount: data.users?.length,
+                        itemCount: users?.length,
                         itemBuilder: ((context, index) =>
-                            UserCard(user: data.users![index])),
+                            UserCard(user: users![index])),
                       ),
                     ),
                   ),
@@ -53,12 +69,7 @@ class AuthPage extends StatelessWidget {
                       },
                       child: const Text('Create new user')),
                 ],
-              ),
-              error: (e, s) => Text(e.toString()),
-              loading: () => const Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
+              );
       }),
     );
   }

@@ -1,4 +1,3 @@
-import 'package:chat_app/modules/client/grpc_client.dart';
 import 'package:chat_app/modules/signal_service/river/user_ref/user_state_ref.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
@@ -8,9 +7,7 @@ import 'package:chat_app/src/generated/grpc_lib/grpc_sync_lib.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../domain/data/library/library_data.dart';
 import '../../../../src/generated/grpc_lib/grpc_user_lib.dart';
-import '../../../sending_manager/library/library_sending_manager.dart';
 
 class UserNotifier extends StateNotifier<UserStateRef> {
   late MainUserServices _mainUserServices;
