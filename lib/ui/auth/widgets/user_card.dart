@@ -22,10 +22,8 @@ class UserCard extends StatelessWidget {
                 //await DBHelperStart.instanse.close();
                 var db = await DBHelper.instanse.initDB();
                 print("db open? ${db.path},${db.isOpen}");
-                Future.delayed(
-                    Duration(seconds: 1),
-                    () =>
-                        Navigator.of(context).pushNamed(MainLayout.routeName));
+
+                Navigator.of(context).pushNamed(MainLayout.routeName);
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
