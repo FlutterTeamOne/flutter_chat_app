@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:chat_app/src/constants/db_constants.dart';
-import 'package:chat_app/src/generated/messages/messages.pbgrpc.dart';
+import '../../../../src/constants/db_constants.dart';
+import '../../../../src/generated/messages/messages.pbgrpc.dart';
 
 import '../model_dto.dart';
 
@@ -68,7 +68,7 @@ class MessageDto extends ModelDto {
       DatabaseConst.messagesColumnDeletedDate: deletedDate,
       DatabaseConst.messagesColumnAttachmentId: attachId,
       DatabaseConst.messagesColumnIsRead: isRead,
-      DatabaseConst.messagesColumnContentType: contentType
+      DatabaseConst.messagesColumnContentType: contentType.name
     };
   }
 

@@ -1,4 +1,4 @@
-import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
+import '../../../storage_manager/db_helper/db_helper_start.dart';
 
 import '../../../../src/constants/db_constants.dart';
 import '../../../../domain/data/library/library_data.dart';
@@ -105,6 +105,16 @@ class LocalUsersServices implements ILocalUsersServices {
               WHERE ${DatabaseConst.mainUserColumnUserId} = $localId
               ''');
     return user[0]['user_id'] as int;
+  }
+
+  @override
+  Future<int> getMainUserId() async {
+    var db = await DBHelper.instanse.database;
+    var user = await db.rawQuery('''
+              SELECT ${DatabaseConst.mainUserColumnUserId}
+              FROM ${DatabaseConst.mainUserTable}
+              ''');
+    return user[0][DatabaseConst.mainUserColumnUserId] as int;
   }
 
   @override

@@ -117,4 +117,23 @@ class ChatsServices implements IChatsServices {
     return await db.rawQuery('''SELECT * FROM chats 
 	    WHERE ((friend1_id = $userId) OR (friend2_id = $userId)) AND (chat_id > $chatId)''');
   }
+
+  @override
+  getUpdatedChats({required List<ChatRequest> chats}) async {
+    List<Map<String, Object?>> chatsUpdated = [];
+    Database db = await DbServerServices.instanse.database;
+    print("Start take chats from base");
+    print(chats);
+    for (var chat in chats) {
+      var chatUpdated = await db.rawQuery('''SELECT *
+          FROM chats
+          WHERE (chat_id = ${chat.chatId} AND 
+                updated_date NOT LIKE "${chat.updatedDate}")''');
+      if (chatUpdated.isNotEmpty) {
+        chatsUpdated.add(chatUpdated[0]);
+      }
+    }
+    print("End take chats from base: $chatsUpdated");
+    return chatsUpdated;
+  }
 }

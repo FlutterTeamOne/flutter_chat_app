@@ -1,12 +1,16 @@
-﻿import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+﻿import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
+
+import '../../../../modules/signal_service/river/message_ref/message_state_ref.dart';
+import '../../../../modules/signal_service/river/river.dart';
+import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../src/libraries/library_all.dart';
 import '../floating_window.dart';
 import 'list_tile_widget.dart';
 import 'message_cards/app_card_widget.dart';
 
-class PopupMenuCardWidget extends StatefulWidget {
+class PopupMenuCardWidget extends ConsumerStatefulWidget {
   const PopupMenuCardWidget({
     Key? key,
     this.message,
@@ -18,26 +22,41 @@ class PopupMenuCardWidget extends StatefulWidget {
   final double marginIndex;
   final TextEditingController? textController;
   @override
-  State<PopupMenuCardWidget> createState() => _PopupMenuCardWidgetState();
+  ConsumerState<PopupMenuCardWidget> createState() =>
+      _PopupMenuCardWidgetState();
 }
 
-class _PopupMenuCardWidgetState extends State<PopupMenuCardWidget> {
+class _PopupMenuCardWidgetState extends ConsumerState<PopupMenuCardWidget> {
   final CustomPopupMenuController popupmenuController =
       CustomPopupMenuController();
   @override
   Widget build(BuildContext context) {
+    var messagePod = ref.read(River.messagePod.notifier);
     final items = [
       // Тут находится то чо отображается в плавающем окне
       ListTileWidget(
         icon: Icons.edit,
         text: 'Edit',
         onTap: () {
-          widget.textController?.text = widget.message!.content;
-          context.read<MessageBloc>().add(
-                UpdateMessageEvent(
-                    messageId: widget.message?.localMessageId,
-                    isEditing: EditState.isPreparation),
-              );
+          if (widget.message?.contentType == ContentType.isText) {
+            widget.textController?.text = widget.message!.content;
+          } else if (widget.message?.contentType == ContentType.isMedia) {
+            // List<String>? data = widget.message?.content.split(',');
+            // var msg = data![0].split(' message: ')[1];
+            // print('msg popup: $msg');
+            widget.textController?.text = '';
+          } else {
+            List<String>? data = widget.message?.content.split(',');
+            var msg = data![0].split('message: ')[1];
+            // image = data[4].split('url: ')[1];
+            // print('image: $image');
+            print('msg: $msg');
+            widget.textController?.text = msg;
+          }
+          messagePod.updateMessage(
+            messageId: widget.message?.localMessageId,
+            isEditing: EditState.isPreparation,
+          );
           popupmenuController.hideMenu();
         },
       ),
@@ -46,9 +65,7 @@ class _PopupMenuCardWidgetState extends State<PopupMenuCardWidget> {
         icon: Icons.delete,
         text: 'Delete',
         onTap: () {
-          context.read<MessageBloc>().add(
-                DeleteMessageEvent(messageId: widget.message!.messageId!),
-              );
+          messagePod.deleteMessage(messageId: widget.message!.messageId!);
           popupmenuController.hideMenu();
         },
       ),

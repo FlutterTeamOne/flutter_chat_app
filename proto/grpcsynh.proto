@@ -1,7 +1,7 @@
 syntax ="proto3";
 
 service GrpcSynchronization{
-    rpc getUsersSynh (SynhMainUser) returns (DataDBResponse) {};
+    rpc getUsersSynh (MainUserRequest) returns (DataDBResponse) {};
     rpc Sync(UsersRequest) returns (UsersResponse);
     // rpc getChats (MainUser) returns (GetChatsResponse) {};
     // rpc getAllMessage (MainUser) returns (GetMessageRequest) {};
@@ -9,35 +9,53 @@ service GrpcSynchronization{
 
 }
 
+
+//Контент в сообщении
 enum ContentTypeSynch{
     isText = 0;
     isMedia = 1;
     isMediaText=2;
 }
 
-
+//Структуры отправки на сервер
 message UserRequest{
     int32 userId = 1;
     string updatedDate = 2;
 }
 
+message ChatRequest {
+    int32 chatId = 1;
+    string updatedDate = 2;
+}
+
+message MessageRequest {
+    int32 messageId = 1;
+    string updatedDate = 2;
+}
+
 message UsersRequest {
-    repeated UserRequest users = 1;
+    int32 mainUser = 1;
+    repeated UserRequest usersForUpdate = 2;
+}
+
+message ChatsRequest {
+    int32 maxChatId = 1;
+    repeated ChatRequest chatsForUpdate = 2;
+}
+
+message MessagesRequest {
+    int32 maxMessageId = 1;
+    repeated MessageRequest messageForUpdate = 2;
+}
+
+message MainUserRequest{
+    UsersRequest users = 1;
+    ChatsRequest chats = 2;
+    MessagesRequest messages = 3;
 }
 
 
-message UsersResponse{ 
-    repeated SynhUser usersNew = 1;
-    repeated SynhUser usersUpdated = 2;
-}
-
-
-message SynhMainUser{
-    int32 mainUserId = 1;
-    int32 chatId = 2;
-    int32 messageId = 3;
-    UsersRequest users = 4;
-}
+//Структуры ответа с сервера
 
 message SynhUser{
     string name = 1;
@@ -71,9 +89,24 @@ message SynhMessage{
     ContentTypeSynch contentType = 11;
 }
 
+message UsersResponse{ 
+    repeated SynhUser usersNew = 1;
+    repeated SynhUser usersUpdated = 2;
+}
+
+message ChatsResponse {
+    repeated SynhChat chatsNew = 1;
+    repeated SynhChat chatsUpdated = 2;
+}
+
+message MessagesResponse {
+    repeated SynhMessage messagesNew = 1;
+    repeated SynhMessage messagesUpdated = 2;
+}
+
 message DataDBResponse{
-    repeated SynhUser newUsers = 1;
-    repeated SynhUser updatedUsers = 4; 
-    repeated SynhChat chats = 2;
-    repeated SynhMessage messages = 3;
+    UsersResponse users = 1;
+    ChatsResponse chats = 2;
+    MessagesResponse messages = 3;
+
 }

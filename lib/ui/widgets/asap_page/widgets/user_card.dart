@@ -52,7 +52,7 @@ class UserCardWidget extends StatelessWidget {
         ],
       ),
       subtitle: Text(
-        '$sender: $message',
+        sender == "" ? '$message' : '$sender: $message',
         // style: AppTextStyle.s14AbelGrey,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,

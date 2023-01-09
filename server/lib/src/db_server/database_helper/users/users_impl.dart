@@ -186,7 +186,7 @@ class UsersServices implements IUsersServices {
           FROM users
           WHERE (user_id = ${user.userId} AND 
                 updated_date NOT LIKE "${user.updatedDate}")''');
-      if (userUpdated.length > 0) {
+      if (userUpdated.isNotEmpty) {
         usersUpdated.add(userUpdated[0]);
       }
     }

@@ -18,6 +18,8 @@ abstract class IChatsServices {
 
   getAllChats();
   getChatsByUserIdMoreChatId({required int userId, required int chatId});
+
+  getUpdatedChats({required List<ChatRequest> chats});
 }
 
 // final chatsServices = IChatsServices();

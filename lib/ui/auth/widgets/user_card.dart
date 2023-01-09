@@ -7,28 +7,32 @@ class UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var userBloc = context.read<UserBloc>();
-
     return Column(
       children: [
-        InkWell(
-          hoverColor: Colors.transparent,
-          focusColor: Colors.transparent,
-          onTap: () async {
-            userBloc.add(ChangeUserEvent(user: user, isStartDB: false));
-            UserPref.setUserId = user.userId!;
-            UserPath.user = user;
-            var db = await DBHelper.instanse.initDB();
-            print("db open? ${db.path},${db.isOpen}");
-            // Future.delayed(const Duration(seconds: 1),
-            //     () => Navigator.of(context).pushNamed(MainLayout.routeName));
-            Navigator.of(context).pushNamed(MainLayout.routeName);
+        Consumer(
+          builder: (context, ref, _) {
+            var userPod = ref.read(River.userPod.notifier);
+            return InkWell(
+              hoverColor: Colors.transparent,
+              focusColor: Colors.transparent,
+              onTap: () async {
+                userPod.changeUser(false);
+                UserPref.setUserId = user.userId!;
+                UserPath.user = user;
+                var db = await DBHelper.instanse.initDB();
+                print("db open? ${db.path},${db.isOpen}");
+                Future.delayed(
+                    Duration(seconds: 1),
+                    () =>
+                        Navigator.of(context).pushNamed(MainLayout.routeName));
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Image.network(user.profilePicLink,
+                    fit: BoxFit.cover, width: 150, height: 150),
+              ),
+            );
           },
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: Image.network(user.profilePicLink,
-                fit: BoxFit.cover, width: 150, height: 150),
-          ),
         ),
         Text(
           user.email,

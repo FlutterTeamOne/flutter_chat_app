@@ -132,4 +132,20 @@ class MessagesDBServices implements IMessagesDBServices {
           (message_id > $messageId)''');
     return messages;
   }
+
+ @override
+  Future getUpdatedMessages({required List<MessageRequest> messages}) async {
+    List<Map<String, Object?>> messagesUpdated = [];
+    Database db = await DbServerServices.instanse.database;
+    for (var message in messages) {
+      var messageUpdated = await db.rawQuery('''SELECT *
+          FROM messages
+          WHERE (message_id = ${message.messageId} AND 
+                updated_date NOT LIKE "${message.updatedDate}")''');
+      if (messageUpdated.isNotEmpty) {
+        messagesUpdated.add(messageUpdated[0]);
+      }
+    }
+    return messagesUpdated;
+  }
 }
