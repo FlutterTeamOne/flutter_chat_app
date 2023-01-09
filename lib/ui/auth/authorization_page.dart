@@ -35,7 +35,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
         });
         List<UserDto>? users;
         users = ref.watch(River.userPod).users;
-        return users==null
+        return users == null
             ? Center(
                 child: CircularProgressIndicator(),
               )
@@ -50,7 +50,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                       child: ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
-                        itemCount: users?.length,
+                        itemCount: users.length,
                         itemBuilder: ((context, index) =>
                             UserCard(user: users![index])),
                       ),

@@ -218,8 +218,8 @@ class GrpcUsers extends GrpcUsersServiceBase {
           .getUserByField(field: 'user_id', fieldValue: '${request.id}');
       print('OK: $src');
       if (src.toString().contains('user_id')) {
-        print(src.toString().contains('deleted_date'));
-        if (src.toString().contains('deleted_date')) {
+        print(src[0]['deleted_date']);
+        if (src[0]['deleted_date'] != "" && src[0]['deleted_date'] != null) {
           throw errors[3];
         }
         print('src contains user_id');
