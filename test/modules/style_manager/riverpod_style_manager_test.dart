@@ -63,22 +63,54 @@ void main() {
               borderRadius: 20);
 
       verify(listener(
-        UserThemeData(
-            fontFamily: 'Roboto',
-            fontSizeFactor: 1,
-            textColor: Colors.black87,
-            brightness: Brightness.light,
-            primaryColor: MyApp().createMaterialColor(const Color(0xFFFF9800)),
-            borderRadius: 20),
-        UserThemeData(
-            fontFamily: 'Roboto',
-            fontSizeFactor: 1,
-            textColor: Colors.black87,
-            brightness: Brightness.light,
-            primaryColor: MyApp().createMaterialColor(const Color(0xFFFF9800)),
-            borderRadius: 20),
-      )).called(1);
+              UserThemeData(
+                  fontFamily: 'Roboto',
+                  fontSizeFactor: 1,
+                  textColor: Colors.black87,
+                  brightness: Brightness.light,
+                  primaryColor:
+                      MyApp().createMaterialColor(const Color(0xFFFF9800)),
+                  borderRadius: 20),
+              UserThemeData(
+                  fontFamily: 'Roboto',
+                  fontSizeFactor: 1,
+                  textColor: Colors.black87,
+                  brightness: Brightness.light,
+                  primaryColor:
+                      MyApp().createMaterialColor(const Color(0xFFFF9800)),
+                  borderRadius: 20)))
+          .called(1);
       verifyNoMoreInteractions(listener);
     });
+  });
+
+  test('state is not shared between tests', () {
+    final container = ProviderContainer();
+    addTearDown(container.dispose);
+    final listener = Listener();
+
+    container.listen<UserThemeData>(
+      changeCustomThemeStateProvider,
+      listener,
+      fireImmediately: true,
+    );
+
+    verify(listener(
+      UserThemeData(
+          fontFamily: 'Roboto',
+          fontSizeFactor: 1,
+          textColor: Colors.black87,
+          brightness: Brightness.light,
+          primaryColor: MyApp().createMaterialColor(const Color(0xFFFF9800)),
+          borderRadius: 20),
+      UserThemeData(
+          fontFamily: 'Roboto',
+          fontSizeFactor: 1,
+          textColor: Colors.black87,
+          brightness: Brightness.light,
+          primaryColor: MyApp().createMaterialColor(const Color(0xFFFF9800)),
+          borderRadius: 20),
+    )).called(1);
+    verifyNoMoreInteractions(listener);
   });
 }
