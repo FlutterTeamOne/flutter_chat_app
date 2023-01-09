@@ -181,9 +181,9 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
     if (messageRef.editState == EditState.isPreparation &&
         controller.text.isNotEmpty) {
       print("EDITING");
-      var messageId = messageRef.messageId;
+      var localMessageId = messageRef.messageId;
       var message = messageRef.messages
-          ?.firstWhere((element) => element.localMessageId == messageId);
+          ?.firstWhere((element) => element.localMessageId == localMessageId);
       if (message?.contentType == ContentType.isText) {
         print('EDIT  TEXT');
         messageNotif.updateMessage(
@@ -191,7 +191,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                 chatId: widget.chatId,
                 senderId: await MainUserServices().getUserID(),
                 content: controller.text,
-                messageId: messageId,
+                messageId: message?.messageId,
                 createdDate: message?.createdDate,
                 updatedDate: DateTime.now().toIso8601String()),
             isEditing: EditState.isEditing);
@@ -205,7 +205,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                 chatId: widget.chatId,
                 senderId: await MainUserServices().getUserID(),
                 content: {'message': controller.text, 'media': msg}.toString(),
-                messageId: messageId,
+                messageId: localMessageId,
                 createdDate: message?.createdDate,
                 updatedDate: DateTime.now().toIso8601String()),
             isEditing: EditState.isEditing);

@@ -32,9 +32,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
         List<UserDto>? users;
         users = ref.watch(River.userPod).users;
         return users == null
-
-
-            ? Center(
+            ? const Center(
                 child: CircularProgressIndicator(),
               )
             : Column(
