@@ -45,8 +45,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
   Widget build(BuildContext context) {
     var grpcClient = GrpcClient();
     return Drawer(
-      shape: Border(
-          right: BorderSide(width: 1, color: Theme.of(context).dividerColor)),
+      width: 300,
       elevation: 0,
       child: Consumer(builder: (context, ref, child) {
         var userPod = ref.read(River.userPod);
