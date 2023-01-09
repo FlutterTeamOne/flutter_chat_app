@@ -16,6 +16,7 @@ part 'widgets/layout/profile_layout.dart';
 part 'widgets/exit_button.dart';
 part 'widgets/change_email_button.dart';
 part 'widgets/change_name_button.dart';
+part 'widgets/delete_dialog_widget.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({
