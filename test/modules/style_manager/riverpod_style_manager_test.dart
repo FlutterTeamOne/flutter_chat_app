@@ -3,7 +3,7 @@ import 'package:chat_app/modules/style_manager/riverpod/theme_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
+import 'package:mockito/mockito.dart';
 
 final changeCustomThemeStateProvider = StateProvider<UserThemeData>((ref) {
   return UserThemeData(
