@@ -71,15 +71,16 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                               separatorBuilder: (context, index) =>
                                   const SizedBox(height: 25),
                               itemBuilder: (context, index) {
-                                var friend;
-                                for (var user in userPod.users!) {
-                                  if (user.userId ==
-                                      widget.chatModel[index].userIdChat) {
-                                    friend = user;
-                                    break;
-                                  }
-                                }
-
+                                // for (var user in userPod.users!) {
+                                //   if (user.userId ==
+                                //       widget.chatModel[index].userIdChat) {
+                                //     friend = user;
+                                //     break;
+                                //   }
+                                // }
+                              var  friend = userPod.users?.firstWhere((user) =>
+                                    widget.chatModel[index].userIdChat ==
+                                    user.userId);
                                 var lastMessage = MessageDto(
                                     chatId: 0, senderId: 0, content: '');
                                 for (var i in widget.messageModel) {
@@ -94,7 +95,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                     sender: lastMessage.chatId == 0
                                         ? ""
                                         : !checkSender(lastMessage.senderId)
-                                            ? friend.name
+                                            ? friend!.name
                                             : 'You',
                                     // checkSender(widget.messageModel[lastMessageId].senderId),
                                     // ? userBloc.state.users[index].name:'You'),
@@ -106,8 +107,8 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                           .getChatId(
                                               widget.chatModel[index].chatId!);
                                     },
-                                    name: friend.name,
-                                    image: friend.profilePicLink,
+                                    name: friend?.name,
+                                    image: friend?.profilePicLink,
                                     updatedDate: getUpdateDate(
                                         widget.chatModel[index].updatedDate),
                                     message: lastMessage.chatId != 0

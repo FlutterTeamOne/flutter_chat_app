@@ -10,13 +10,14 @@ class _ProfileLayout extends StatelessWidget {
       var userPod = ref.read(River.userPod.notifier);
       var chatPod = ref.read(River.chatPod.notifier);
       var users = ref.watch(River.userPod).users;
-      var userMain;
-      for (var user in users!) {
-        if (user.userId == UserPref.getUserId) {
-          userMain = user;
-          break;
-        }
-      }
+      var userMain =
+          users?.firstWhere((user) => user.userId == UserPref.getUserId);
+      // for (var user in users!) {
+      //   if (user.userId == UserPref.getUserId) {
+      //     userMain = user;
+      //     break;
+      //   }
+      // }
       return userMain == null
           ? const Center(
               widthFactor: 100,
@@ -50,7 +51,7 @@ class _ProfileLayout extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            userMain.name ?? 'unknow',
+                            userMain.name,
                             style: Theme.of(context).textTheme.bodyText2,
                           ),
                           // Кнопка смены имени
@@ -66,7 +67,7 @@ class _ProfileLayout extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            userMain.email ?? '???',
+                            userMain.email,
                             style: Theme.of(context).textTheme.bodyText2,
                           ),
                           ButtonChangeEmail(userMain: userMain)
@@ -85,7 +86,7 @@ class _ProfileLayout extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20.0),
                               ))),
                               onPressed: () {
-                                userPod.deleteUser(userMain.userId);
+                                userPod.deleteUser(userMain.userId!);
 
                                 print(userMain.userId);
                                 showDialog(
@@ -129,4 +130,3 @@ class _ProfileLayout extends StatelessWidget {
     });
   }
 }
-
