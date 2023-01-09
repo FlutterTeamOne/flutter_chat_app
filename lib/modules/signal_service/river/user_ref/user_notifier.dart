@@ -269,7 +269,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
         );
         print("UPDATEMESSAGE START");
         await _messagesServices.updateMessageSynh(msg: msg);
-        if (msg.deletedDate != null) {
+        if (msg.deletedDate != null && msg.deletedDate != '') {
           await _messagesServices.deleteMessage(id: msg.messageId!);
         }
         print("UPDATEMESSAGE END");
