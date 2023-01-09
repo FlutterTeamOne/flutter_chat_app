@@ -139,7 +139,6 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                         //FriendId Validation
                         GetUserResponse userFromServerDb;
                         try {
-
                           userFromServerDb =
                               await grpcClient.getUser(userId: value);
                           print("UserFromServer: $userFromServerDb");
@@ -169,28 +168,30 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                 );
                               });
                         }
-                      }).whenComplete(() async {
-                        await showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                              backgroundColor:
-                                  Theme.of(context).backgroundColor,
-                              child: const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              ),
-                            );
-                          },
-                        ).timeout(const Duration(seconds: 2),
-                            onTimeout: () => Navigator.pop(context, 'OK'));
+                        
+                    });
+                    // .whenComplete(() async {
+                    //     await showDialog(
+                    //       barrierDismissible: false,
+                    //       context: context,
+                    //       builder: (context) {
+                    //         return Dialog(
+                    //           backgroundColor:
+                    //               Theme.of(context).backgroundColor,
+                    //           child: const Padding(
+                    //             padding: EdgeInsets.all(8.0),
+                    //             child: Center(
+                    //               child: CircularProgressIndicator(),
+                    //             ),
+                    //           ),
+                    //         );
+                    //       },
+                    //     ).timeout(const Duration(seconds: 2),
+                    //         onTimeout: () => Navigator.pop(context, 'OK'));
 
                         // await Future.delayed(const Duration(seconds: 2));
                         // Navigator.pop(context, 'OK');
-                      });
+                      // });
                     },
                     icon: const Icon(Icons.add),
                     label: const Text('Add Chat'),
