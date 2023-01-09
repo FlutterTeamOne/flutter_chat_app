@@ -133,6 +133,7 @@ class LocalUsersServices implements ILocalUsersServices {
   Future<int> updateUser(
       {required String newValues, required String condition}) async {
     var db = await DBHelper.instanse.database;
+    DBHelper.instanse.updateListenController.add(true);
     return await db.rawUpdate(
         'UPDATE ${DatabaseConst.userTable} SET $newValues WHERE $condition');
   }
@@ -140,6 +141,7 @@ class LocalUsersServices implements ILocalUsersServices {
   Future<int> updateUserStart(
       {required String newValues, required String condition}) async {
     var db = await DBHelperStart.instanse.database;
+    DBHelperStart.instanse.updateListenController.add(true);
     return await db.rawUpdate(
         'UPDATE ${DatabaseConst.userTable} SET $newValues WHERE $condition');
   }

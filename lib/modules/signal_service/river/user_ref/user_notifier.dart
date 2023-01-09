@@ -1,9 +1,11 @@
 import 'package:chat_app/modules/client/grpc_client.dart';
 import 'package:chat_app/modules/signal_service/river/user_ref/user_state_ref.dart';
+import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/src/constants/db_constants.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_sync_lib.dart';
+import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../domain/data/library/library_data.dart';
@@ -21,6 +23,26 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     _mainUserServices = MainUserServices();
     _messagesServices = LocalMessagesServices();
     _chatServices = LocalChatServices();
+    DBHelper.instanse.updateListenController.stream.listen((event) {
+      if (event) {
+        localReadUser();
+      }
+    });
+    DBHelperStart.instanse.updateListenController.stream.listen((event) {
+      if (event) {
+        localReadUser();
+      }
+    });
+  }
+
+  Future<UserStateRef> localReadUser() async {
+    var users;
+    if (state.userDbthis) {
+      users = await _usersServices.getAllUsersStart();
+    } else {
+      users = await _usersServices.getAllUsers();
+    }
+    return state = state.copyWith(users: users);
   }
 
   Future<UserStateRef> readUser() async {
@@ -255,7 +277,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       users = await _usersServices.getAllUsers();
     }
     for (var userServ in users) {
-      print('USERS BLOCK: $userServ');
+      print('USERS IN Base: $userServ');
     }
     //Добавляем всех юзеров в state
     return state = state.copyWith(users: users);
