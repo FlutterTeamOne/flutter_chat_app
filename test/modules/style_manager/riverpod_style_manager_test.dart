@@ -30,10 +30,10 @@ void main() {
       final newThemeData = UserThemeData(
           fontFamily: 'Roboto',
           fontSizeFactor: 2,
-          textColor: Colors.black87,
-          brightness: Brightness.light,
-          primaryColor: MyApp().createMaterialColor(const Color(0xFFFF9800)),
-          borderRadius: 20);
+          textColor: Colors.white,
+          brightness: Brightness.dark,
+          primaryColor: MyApp().createMaterialColor(const Color(0xFFFF9700)),
+          borderRadius: 0);
 
       container.listen<UserThemeData>(
         changeCustomThemeStateProvider,
@@ -50,6 +50,8 @@ void main() {
 
       verify(listener(defaultThemeData, newThemeData)).called(1);
       verifyNoMoreInteractions(listener);
+      expect(container
+          .read(changeCustomThemeStateProvider.notifier).state, newThemeData);
     });
   });
 
