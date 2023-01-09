@@ -12,14 +12,16 @@ class _AppDialog extends ConsumerStatefulWidget {
 class _AppDialogState extends ConsumerState<_AppDialog> {
   @override
   Widget build(BuildContext context) {
-    var userMain;
+    // var userMain;
     var userPod = ref.read(River.userPod);
-    for (var user in userPod.users!) {
-      if (user.userId == UserPref.getUserId) {
-        userMain = user;
-        break;
-      }
-    }
+    // for (var user in userPod.users!) {
+    //   if (user.userId == UserPref.getUserId) {
+    //     userMain = user;
+    //     break;
+    //   }
+    // }
+    var userMain =
+        userPod.users?.firstWhere((user) => user.userId == UserPref.getUserId);
     return Center(
       child: Container(
         width: 350,
@@ -115,7 +117,7 @@ class _AppDialogState extends ConsumerState<_AppDialog> {
                                                         ],
                                                       ));
                                             } else {
-                                              UserDto user = userMain;
+                                              UserDto user = userMain!;
                                               var updatedUser = UserDto(
                                                   userId: user.userId,
                                                   name: user.name,
