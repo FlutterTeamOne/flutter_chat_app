@@ -153,7 +153,7 @@ class ExitButton extends StatelessWidget {
             userPod.readUser();
             chatPod.getChatId(-1);
             await DBHelper.instanse.close();
-            await DBHelperStart.instanse.initDB();
+            //await DBHelperStart.instanse.initDB();
             Future.delayed(const Duration(seconds: 1),
                 () => Navigator.of(context).pushNamed('/'));
           },
@@ -351,7 +351,7 @@ class DeleteDialogWidget extends ConsumerWidget {
           userPod.changeUser(true);
           userPod.readUser();
           chatPod.getChatId(-1);
-          await DBHelperStart.instanse.initDB();
+          //await DBHelperStart.instanse.initDB();
           await DBHelper.instanse.deleteDB();
           Future.delayed(const Duration(seconds: 1),
               () => Navigator.of(context).pushNamed('/'));
