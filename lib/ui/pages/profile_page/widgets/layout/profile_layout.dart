@@ -92,8 +92,7 @@ class _ProfileLayout extends StatelessWidget {
                                     context: context,
                                     builder: (BuildContext context) {
                                       final userIsDeleted =
-                                          userPod.state.isDeleted;
-                                      ;
+                                          ref.read(River.userPod).isDeleted;
                                       return Dialog(
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
