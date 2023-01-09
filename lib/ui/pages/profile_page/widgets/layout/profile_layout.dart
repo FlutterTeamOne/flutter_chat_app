@@ -155,7 +155,7 @@ class ExitButton extends StatelessWidget {
             await DBHelper.instanse.close();
             //await DBHelperStart.instanse.initDB();
             Future.delayed(const Duration(seconds: 1),
-                () => Navigator.of(context).pushNamed('/'));
+                () => Navigator.of(context).pushNamed(AuthPage.routeName));
           },
           icon: const Icon(Icons.exit_to_app),
           style: const ButtonStyle(

@@ -49,7 +49,7 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
     return state;
   }
 
-  createChat(ChatDto chat) async {
+  Future createChat(ChatDto chat) async {
     ChatDto chatFromRest;
     try {
       chatFromRest = await RestClient().createChatRest(

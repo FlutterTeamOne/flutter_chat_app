@@ -29,14 +29,10 @@ class _AuthPageState extends ConsumerState<AuthPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Consumer(builder: (context, ref, _) {
-        ref.listen<AsyncValue<UserStateRef>>(River.futureUserPod,
-            (previous, next) {
-          print("HEY NEW USERS");
-        });
         List<UserDto>? users;
         users = ref.watch(River.userPod).users;
-        return users==null
-            ? Center(
+        return users == null
+            ? const Center(
                 child: CircularProgressIndicator(),
               )
             : Column(
@@ -50,7 +46,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                       child: ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
-                        itemCount: users?.length,
+                        itemCount: users.length,
                         itemBuilder: ((context, index) =>
                             UserCard(user: users![index])),
                       ),
