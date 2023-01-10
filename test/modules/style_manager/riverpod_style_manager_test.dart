@@ -1,5 +1,5 @@
-import 'package:chat_app/main.dart';
 import 'package:chat_app/modules/style_manager/riverpod/theme_models.dart';
+import 'package:chat_app/modules/style_manager/utils/style_manager_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,7 +10,7 @@ final defaultThemeData = UserThemeData(
     fontSizeFactor: 1,
     textColor: Colors.black87,
     brightness: Brightness.light,
-    primaryColor: MyApp().createMaterialColor(const Color(0xFFFF9800)),
+    primaryColor: StyleManagerUtils().createMaterialColor(const Color(0xFFFF9800)),
     borderRadius: 20);
 
 final changeCustomThemeStateProvider = StateProvider<UserThemeData>((ref) {
@@ -32,7 +32,7 @@ void main() {
           fontSizeFactor: 2,
           textColor: Colors.white,
           brightness: Brightness.dark,
-          primaryColor: MyApp().createMaterialColor(const Color(0xFFFF9700)),
+          primaryColor: StyleManagerUtils().createMaterialColor(const Color(0xFFFF9700)),
           borderRadius: 0);
 
       container.listen<UserThemeData>(

@@ -7,7 +7,7 @@ final changeCustomThemeStateProvider =
       fontSizeFactor: 1,
       textColor: Colors.black87,
       brightness: Brightness.light,
-      primaryColor: MyApp().createMaterialColor(const Color(0xFFFF9800)),
+      primaryColor: StyleManagerUtils().createMaterialColor(const Color(0xFFFF9800)),
       borderRadius: 20);
 });
 

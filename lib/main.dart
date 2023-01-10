@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:chat_app/modules/style_manager/riverpod/theme_models.dart';
+import 'package:chat_app/modules/style_manager/utils/style_manager_utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:chat_app/ui/pages/custom_theme/color_picker_page.dart';
@@ -9,7 +10,6 @@ import 'src/constants/app_data_constants.dart';
 import 'ui/auth/authorization_page.dart';
 import 'ui/pages/registration_page/registration_page.dart';
 import 'ui/widgets/registration_page/bloc/new_user_bloc.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'modules/storage_manager/db_helper/db_helper_start.dart';
 
 import 'ui/pages/library/library_pages.dart';
@@ -46,57 +46,12 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
   final GrpcClient grpcClient = GrpcClient();
-  MaterialColor createMaterialColor(Color color) {
-    List strengths = <double>[.05];
-    Map<int, Color> swatch = {};
-    final int r = color.red, g = color.green, b = color.blue;
 
-    for (int i = 1; i < 10; i++) {
-      strengths.add(0.1 * i);
-    }
-    for (var strength in strengths) {
-      final double ds = 0.5 - strength;
-      swatch[(strength * 1000).round()] = Color.fromRGBO(
-        r + ((ds < 0 ? r : (255 - r)) * ds).round(),
-        g + ((ds < 0 ? g : (255 - g)) * ds).round(),
-        b + ((ds < 0 ? b : (255 - b)) * ds).round(),
-        1,
-      );
-    }
-    return MaterialColor(color.value, swatch);
-  }
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(providers: [
-      // BlocProvider<ConnectionBloc>(
-      //   create: (context) => ConnectionBloc(),
-      //   // lazy: false,
-      // ),
-      // BlocProvider(
-      //   create: (_) => GrpcConnectionBloc(grpcClient, ConnectionBloc())
-      //     ..add(
-      //       const GrpcConnectionStarted(),
-      //     ),
-      //   // lazy: false,
-      // ),
-      // BlocProvider<UserBloc>(
-      //   create: (context) =>
-      //       UserBloc()..add(ReadUsersEvent(userDb: UserPref.getUserDbPref)),
-      // ),
-      // BlocProvider<ChatBloc>(
 
-      //   create: (context) => ChatBloc(userBloc: UserBloc()),
-
-      // ),
-      // BlocProvider<MessageBloc>(
-      //   create: (context) => MessageBloc(
-      //       grpcClient: grpcClient,
-      //       grpcConnection: context.read<GrpcConnectionBloc>()),
-      // ),
-      BlocProvider(
-        create: (context) => ChangeThemeBloc(),
-      ),
       BlocProvider(create: (context) => NewUserBloc()),
     ], child: buildMaterialApp(context));
   }
@@ -129,11 +84,11 @@ Consumer buildMaterialApp(BuildContext context) {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(theme.borderRadius!))),
           brightness: theme.brightness,
-          primarySwatch: MyApp().createMaterialColor(theme.primaryColor!),
-          // primarySwatch: createMaterialColor(state.primaryColor!),
-          primaryColor: MyApp().createMaterialColor(theme.primaryColor!),
+          primarySwatch: StyleManagerUtils().createMaterialColor(theme.primaryColor!),
+
+          primaryColor: StyleManagerUtils().createMaterialColor(theme.primaryColor!),
           errorColor: Colors.redAccent.shade200,
-          // backgroundColor: Colors.black45,
+
           textSelectionTheme: TextSelectionThemeData(
             cursorColor: theme.textColor,
             selectionColor: theme.textColor,
