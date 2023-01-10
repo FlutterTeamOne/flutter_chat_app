@@ -25,7 +25,7 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
     ref.read(River.chatPod.notifier).readChat();
     ref.read(River.messagePod.notifier).readMessages();
     final currentWidth = MediaQuery.of(context).size.width;
-    var isConnected = false;
+    bool isConnected = false;
     ref.watch(River.connectPod.select((status) {
       if (status == ConnectionStatus.isDisconnected) {
         showDialogBox(

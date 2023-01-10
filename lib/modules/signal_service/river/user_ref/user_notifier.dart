@@ -39,6 +39,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
   Future<UserStateRef> localReadUser() async {
     var users;
     if (state.userDbthis) {
+      //TODO: Брать юзеров без dateDelete
       users = await _usersServices.getAllUsersStart();
     } else {
       users = await _usersServices.getAllUsers();

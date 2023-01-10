@@ -1,12 +1,14 @@
 ﻿part of '../profile_page.dart';
 
-class ButtonChangeName extends ConsumerWidget {
-  const ButtonChangeName({
+class ButtonChangeUser extends ConsumerWidget {
+  const ButtonChangeUser({
     Key? key,
     required this.userMain,
+    required this.isEmail,
   }) : super(key: key);
 
   final UserDto userMain;
+  final bool isEmail;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,27 +19,32 @@ class ButtonChangeName extends ConsumerWidget {
         showDialog(
             context: context,
             builder: (BuildContext context) {
-              TextEditingController newNameController = TextEditingController();
+              TextEditingController newEmailController =
+                  TextEditingController();
+              newEmailController.text =
+                  isEmail ? userMain.email : userMain.name;
+              final text = isEmail ? 'Insert new email' : 'Insert new name';
               return TextFieldDialog(
-                controller: newNameController,
+                controller: newEmailController,
+                text: text,
                 userMain: userMain,
                 userPod: userPod,
-                text: 'Insert new name',
                 onPressed: () {
-                  if (newNameController.text.isNotEmpty) {
+                  if (newEmailController.text.isNotEmpty &&
+                      !EmailValidator.validate(newEmailController.text)) {
                     String updatedDate = DateTime.now().toIso8601String();
-                    late String newName = newNameController.text;
-                    var updatedUser = UserDto(
+                    late String newValue = newEmailController.text;
+                    final updatedUser = UserDto(
                         userId: userMain.userId,
-                        name: newName,
-                        email: userMain.email,
+                        name: isEmail ? userMain.name : newValue,
+                        email: isEmail ? newValue : userMain.email,
                         createdDate: userMain.createdDate,
                         profilePicLink: userMain.profilePicLink,
                         updatedDate: updatedDate);
                     userPod.updateUser(updatedUser);
-                    userPod.readUser();
 
-                    print(newName);
+                    userPod.readUser();
+                    print(newValue);
                     Navigator.pop(context);
                   }
                 },
