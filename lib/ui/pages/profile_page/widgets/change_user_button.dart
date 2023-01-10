@@ -31,7 +31,8 @@ class ButtonChangeUser extends ConsumerWidget {
                 userPod: userPod,
                 onPressed: () {
                   if (newEmailController.text.isNotEmpty &&
-                      !EmailValidator.validate(newEmailController.text)) {
+                      isEmail ==
+                          EmailValidator.validate(newEmailController.text)) {
                     String updatedDate = DateTime.now().toIso8601String();
                     late String newValue = newEmailController.text;
                     final updatedUser = UserDto(
