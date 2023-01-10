@@ -9,7 +9,6 @@ import 'src/constants/app_data_constants.dart';
 import 'ui/auth/authorization_page.dart';
 import 'ui/pages/registration_page/registration_page.dart';
 import 'ui/widgets/registration_page/bloc/new_user_bloc.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'modules/storage_manager/db_helper/db_helper_start.dart';
 
 import 'ui/pages/library/library_pages.dart';
@@ -69,31 +68,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(providers: [
-      // BlocProvider<ConnectionBloc>(
-      //   create: (context) => ConnectionBloc(),
-      //   // lazy: false,
-      // ),
-      // BlocProvider(
-      //   create: (_) => GrpcConnectionBloc(grpcClient, ConnectionBloc())
-      //     ..add(
-      //       const GrpcConnectionStarted(),
-      //     ),
-      //   // lazy: false,
-      // ),
-      // BlocProvider<UserBloc>(
-      //   create: (context) =>
-      //       UserBloc()..add(ReadUsersEvent(userDb: UserPref.getUserDbPref)),
-      // ),
-      // BlocProvider<ChatBloc>(
-
-      //   create: (context) => ChatBloc(userBloc: UserBloc()),
-
-      // ),
-      // BlocProvider<MessageBloc>(
-      //   create: (context) => MessageBloc(
-      //       grpcClient: grpcClient,
-      //       grpcConnection: context.read<GrpcConnectionBloc>()),
-      // ),
+     
       BlocProvider(
         create: (context) => ChangeThemeBloc(),
       ),

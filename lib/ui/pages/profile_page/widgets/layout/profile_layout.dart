@@ -7,10 +7,10 @@ class ProfileLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
-      var userPod = ref.read(River.userPod.notifier);
-      var chatPod = ref.read(River.chatPod.notifier);
-      var users = ref.watch(River.userPod).users;
-      var userMain =
+      final userPod = ref.read(River.userPod.notifier);
+      final chatPod = ref.read(River.chatPod.notifier);
+      final users = ref.watch(River.userPod).users;
+      final userMain =
           users?.firstWhere((user) => user.userId == UserPref.getUserId);
       // for (var user in users!) {
       //   if (user.userId == UserPref.getUserId) {
