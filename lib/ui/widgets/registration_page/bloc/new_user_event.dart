@@ -1,4 +1,4 @@
-import 'package:chat_app/ui/widgets/registration_page/models/new_user_model.dart';
+import '../models/new_user_model.dart';
 
 abstract class NewUserEvent {}
 

@@ -1,13 +1,15 @@
 ﻿import 'dart:io';
 
-import 'package:chat_app/domain/data/dto/message_dto/message_dto.dart';
-import 'package:chat_app/modules/signal_service/library/library_signal_service.dart';
-import 'package:chat_app/ui/widgets/asap_page/widgets/app_circle_button.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../modules/signal_service/river/message_ref/message_state_ref.dart';
+import '../../../../modules/signal_service/river/river.dart';
+import 'app_circle_button.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TextInputWidget extends StatefulWidget {
+class TextInputWidget extends ConsumerStatefulWidget {
   const TextInputWidget({
     Key? key,
     required this.controller,
@@ -26,10 +28,10 @@ class TextInputWidget extends StatefulWidget {
   final EditState editState;
 
   @override
-  State<TextInputWidget> createState() => TextInputWidgetState();
+  ConsumerState<TextInputWidget> createState() => TextInputWidgetState();
 }
 
-class TextInputWidgetState extends State<TextInputWidget> {
+class TextInputWidgetState extends ConsumerState<TextInputWidget> {
   String filePath = '';
   @override
   Widget build(BuildContext context) {
@@ -50,8 +52,9 @@ class TextInputWidgetState extends State<TextInputWidget> {
               const SizedBox(width: 10),
               AppCircleButtonWidget(
                   onTap: () async {
-                    context.read<MessageBloc>().add(
-                        CreateMessageEvent(mediaState: MediaState.isCanceled));
+                    ref
+                        .read(River.messagePod.notifier)
+                        .createMessage(mediaState: MediaState.isCanceled);
                     var result = await FilePicker.platform.pickFiles();
                     if (result == null) {
                       return;
@@ -67,7 +70,7 @@ class TextInputWidgetState extends State<TextInputWidget> {
                 flex: 9,
                 child: Column(
                   children: [
-                    if (context.watch<MessageBloc>().state.mediaState ==
+                    if (ref.read(River.messagePod).mediaState ==
                         MediaState.isPreparation) ...[
                       Align(
                         alignment: Alignment.centerLeft,
@@ -78,7 +81,7 @@ class TextInputWidgetState extends State<TextInputWidget> {
                         ),
                       )
                     ],
-                    if (widget.editState == EditState.isPreparation)
+                    if (widget.editState == EditState.isPreparation) ...[
                       Card(
                         child: ListTile(
                           leading: const Icon(Icons.edit),
@@ -90,6 +93,7 @@ class TextInputWidgetState extends State<TextInputWidget> {
                           ),
                         ),
                       ),
+                    ],
                     TextField(
                       cursorWidth: 1,
                       maxLength: 350,
@@ -140,7 +144,8 @@ class TextInputWidgetState extends State<TextInputWidget> {
   }
 
   _sendPath(String path) {
-    context.read<MessageBloc>().add(CreateMessageEvent(
-        mediaState: MediaState.isPreparation, mediaPath: path));
+    ref
+        .read(River.messagePod.notifier)
+        .createMessage(mediaState: MediaState.isPreparation, mediaPath: path);
   }
 }

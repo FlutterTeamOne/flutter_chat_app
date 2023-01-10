@@ -106,9 +106,12 @@ class UsersServices implements IUsersServices {
   }
 
   @override
-  getUserByField({required String field, required Object fieldValue}) {
-    // TODO: implement getUserByField
-    throw UnimplementedError();
+  getUserByField({required String field, required String fieldValue}) async {
+    //user by id
+    Database db = await DbServerServices.instanse.database;
+
+    return await db
+        .rawQuery('''SELECT * FROM users WHERE (user_id = $fieldValue)''');
   }
 
   @override
@@ -183,7 +186,7 @@ class UsersServices implements IUsersServices {
           FROM users
           WHERE (user_id = ${user.userId} AND 
                 updated_date NOT LIKE "${user.updatedDate}")''');
-      if (userUpdated.length > 0) {
+      if (userUpdated.isNotEmpty) {
         usersUpdated.add(userUpdated[0]);
       }
     }

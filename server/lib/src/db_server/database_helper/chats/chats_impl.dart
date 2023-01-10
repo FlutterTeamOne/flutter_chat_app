@@ -21,7 +21,7 @@ class ChatsServices implements IChatsServices {
     );
 
     return await db.rawQuery('''
-      SELECT chat_id FROM chats 
+      SELECT * FROM chats 
       WHERE (
         (friend1_id = ?) 
         AND 
@@ -50,7 +50,6 @@ class ChatsServices implements IChatsServices {
   @override
   Future<Map<String, Object?>> getChatById({required int id}) async {
     Database db = await DbServerServices.instanse.database;
-
     var chats = await db.rawQuery('''
       SELECT * FROM chats 
         WHERE (chat_id = $id)
@@ -94,12 +93,12 @@ class ChatsServices implements IChatsServices {
     Database db = await DbServerServices.instanse.database;
 
     var id_chat = await db.rawQuery('''
-      SELECT f.main_friends_chat_id FROM chats f 
+      SELECT f.chat_id FROM chats f 
 	      WHERE 
         (((f.friend1_id = $friend1_id) AND (f.friend2_id = $friend2_id)) 
         OR 
         ((f.friend1_id = $friend2_id) AND (f.friend2_id = $friend1_id)))''');
-    return id_chat[0]['main_friends_chat_id'];
+    return id_chat;
   }
 
   @override
@@ -117,5 +116,24 @@ class ChatsServices implements IChatsServices {
 
     return await db.rawQuery('''SELECT * FROM chats 
 	    WHERE ((friend1_id = $userId) OR (friend2_id = $userId)) AND (chat_id > $chatId)''');
+  }
+
+  @override
+  getUpdatedChats({required List<ChatRequest> chats}) async {
+    List<Map<String, Object?>> chatsUpdated = [];
+    Database db = await DbServerServices.instanse.database;
+    print("Start take chats from base");
+    print(chats);
+    for (var chat in chats) {
+      var chatUpdated = await db.rawQuery('''SELECT *
+          FROM chats
+          WHERE (chat_id = ${chat.chatId} AND 
+                updated_date NOT LIKE "${chat.updatedDate}")''');
+      if (chatUpdated.isNotEmpty) {
+        chatsUpdated.add(chatUpdated[0]);
+      }
+    }
+    print("End take chats from base: $chatsUpdated");
+    return chatsUpdated;
   }
 }

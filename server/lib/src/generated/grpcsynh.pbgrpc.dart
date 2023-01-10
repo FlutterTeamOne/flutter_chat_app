@@ -15,9 +15,9 @@ export 'grpcsynh.pb.dart';
 
 class GrpcSynchronizationClient extends $grpc.Client {
   static final _$getUsersSynh =
-      $grpc.ClientMethod<$0.SynhMainUser, $0.DataDBResponse>(
+      $grpc.ClientMethod<$0.MainUserRequest, $0.DataDBResponse>(
           '/GrpcSynchronization/getUsersSynh',
-          ($0.SynhMainUser value) => value.writeToBuffer(),
+          ($0.MainUserRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $0.DataDBResponse.fromBuffer(value));
   static final _$sync = $grpc.ClientMethod<$0.UsersRequest, $0.UsersResponse>(
       '/GrpcSynchronization/Sync',
@@ -29,7 +29,8 @@ class GrpcSynchronizationClient extends $grpc.Client {
       $core.Iterable<$grpc.ClientInterceptor>? interceptors})
       : super(channel, options: options, interceptors: interceptors);
 
-  $grpc.ResponseFuture<$0.DataDBResponse> getUsersSynh($0.SynhMainUser request,
+  $grpc.ResponseFuture<$0.DataDBResponse> getUsersSynh(
+      $0.MainUserRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$getUsersSynh, request, options: options);
   }
@@ -44,12 +45,12 @@ abstract class GrpcSynchronizationServiceBase extends $grpc.Service {
   $core.String get $name => 'GrpcSynchronization';
 
   GrpcSynchronizationServiceBase() {
-    $addMethod($grpc.ServiceMethod<$0.SynhMainUser, $0.DataDBResponse>(
+    $addMethod($grpc.ServiceMethod<$0.MainUserRequest, $0.DataDBResponse>(
         'getUsersSynh',
         getUsersSynh_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $0.SynhMainUser.fromBuffer(value),
+        ($core.List<$core.int> value) => $0.MainUserRequest.fromBuffer(value),
         ($0.DataDBResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.UsersRequest, $0.UsersResponse>(
         'Sync',
@@ -61,7 +62,7 @@ abstract class GrpcSynchronizationServiceBase extends $grpc.Service {
   }
 
   $async.Future<$0.DataDBResponse> getUsersSynh_Pre(
-      $grpc.ServiceCall call, $async.Future<$0.SynhMainUser> request) async {
+      $grpc.ServiceCall call, $async.Future<$0.MainUserRequest> request) async {
     return getUsersSynh(call, await request);
   }
 
@@ -71,7 +72,7 @@ abstract class GrpcSynchronizationServiceBase extends $grpc.Service {
   }
 
   $async.Future<$0.DataDBResponse> getUsersSynh(
-      $grpc.ServiceCall call, $0.SynhMainUser request);
+      $grpc.ServiceCall call, $0.MainUserRequest request);
   $async.Future<$0.UsersResponse> sync(
       $grpc.ServiceCall call, $0.UsersRequest request);
 }

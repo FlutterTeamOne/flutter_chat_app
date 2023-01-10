@@ -1,4 +1,4 @@
-import 'package:chat_app/modules/storage_manager/library/library_storage_manager.dart';
+import '../../storage_manager/library/library_storage_manager.dart';
 
 class SavedTheme {
   late int _initThemeIndex;
@@ -16,7 +16,7 @@ class SavedTheme {
   }
 
   getPreferences() async {
-    _initThemeIndex = await _preferences.getTheme();
+    _initThemeIndex = (await _preferences.getTheme())!;
     return _initThemeIndex as int;
   }
 }

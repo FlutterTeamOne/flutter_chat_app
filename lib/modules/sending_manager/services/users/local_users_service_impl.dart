@@ -1,4 +1,4 @@
-import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
+import '../../../storage_manager/db_helper/db_helper_start.dart';
 
 import '../../../../src/constants/db_constants.dart';
 import '../../../../domain/data/library/library_data.dart';
@@ -122,6 +122,7 @@ class LocalUsersServices implements ILocalUsersServices {
   Future<int> updateUser(
       {required String newValues, required String condition}) async {
     var db = await DBHelper.instanse.database;
+    DBHelper.instanse.updateListenController.add(true);
     return await db.rawUpdate(
         'UPDATE ${DatabaseConst.userTable} SET $newValues WHERE $condition');
   }
@@ -129,6 +130,7 @@ class LocalUsersServices implements ILocalUsersServices {
   Future<int> updateUserStart(
       {required String newValues, required String condition}) async {
     var db = await DBHelperStart.instanse.database;
+    DBHelperStart.instanse.updateListenController.add(true);
     return await db.rawUpdate(
         'UPDATE ${DatabaseConst.userTable} SET $newValues WHERE $condition');
   }

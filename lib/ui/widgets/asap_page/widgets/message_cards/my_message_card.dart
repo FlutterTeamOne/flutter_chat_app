@@ -1,4 +1,6 @@
-﻿import 'package:chat_app/src/libraries/library_all.dart';
+import 'package:chat_app/modules/signal_service/river/river.dart';
+import 'package:chat_app/src/generated/messages/messages.pbgrpc.dart';
+import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../library/library_widgets.dart';
 import 'package:flutter/material.dart';
@@ -31,11 +33,11 @@ class MyMessageCardWidget extends StatelessWidget {
                 marginIndex: 15)
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
+                children: <Widget>[
                   currentWidth > 888.8
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
+                          children: <Widget>[
                             PopupMenuCardWidget(
                                 marginIndex: 5,
                                 textController: textController,
@@ -52,9 +54,8 @@ class MyMessageCardWidget extends StatelessWidget {
                           message: message,
                         ),
                   InkWell(
-                    onTap: () => context
-                        .read<MessageBloc>()
-                        .add(CreateMessageEvent(message: message)),
+                    onTap: () => River.messagePod.notifier.select(
+                        (value) => value.createMessage(message: message)),
                     child: const Text(
                       'Not Delivered',
                     ),

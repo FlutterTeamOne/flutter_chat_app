@@ -4,7 +4,7 @@ abstract class IMessagesDBServices {
   factory IMessagesDBServices() => MessagesDBServices();
 
   addNewMessage({
-     required int chatId,
+    required int chatId,
     required int senderId,
     required String content,
     int? attachmentId,
@@ -22,7 +22,7 @@ abstract class IMessagesDBServices {
   getMessagesByChatId({required int chatId});
 
   getAllMessages();
-
+  Future getUpdatedMessages({required List<MessageRequest> messages});
   // getRecentMessages({required LastMessage message});
 }
 

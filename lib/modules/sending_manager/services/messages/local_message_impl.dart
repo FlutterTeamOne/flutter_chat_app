@@ -1,5 +1,7 @@
-import 'package:chat_app/domain/data/dto/attach_dto/attach_dto.dart';
-import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
+import 'package:chat_app/src/generated/sync/grpcsynh.pbgrpc.dart';
+
+import '../../../../domain/data/dto/attach_dto/attach_dto.dart';
+import '../../../../src/generated/grpc_lib/grpc_message_lib.dart';
 
 import '../../../../src/constants/db_constants.dart';
 import '../../../../domain/data/library/library_data.dart';
@@ -171,13 +173,14 @@ class LocalMessagesServices implements ILocalMessagesServices {
   }
 
   @override
-  Future updateMessage(
+  Future 
+  updateMessage(
       {required MessageDto message, required int localMessageId}) async {
     await DBHelper.instanse.onUpdate(
         tableName: 'messages',
         column: DatabaseConst.messagesColumnLocalMessagesId,
         model: {
-          DatabaseConst.messagesColumnLocalMessagesId: localMessageId,
+          // DatabaseConst.messagesColumnLocalMessagesId:message.localMessageId,
           DatabaseConst.messagesColumnChatId: message.chatId,
           DatabaseConst.messagesColumnSenderId: message.senderId,
           DatabaseConst.messagesColumnCreatedDate: message.createdDate,
@@ -185,7 +188,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
           DatabaseConst.messagesColumnDeletedDate: message.deletedDate,
           DatabaseConst.messagesColumnIsRead: message.isRead,
           DatabaseConst.messagesColumnContent: message.content,
-          DatabaseConst.messagesColumnMessageId: message.messageId
+          DatabaseConst.messagesColumnMessageId:message.messageId
         },
         id: localMessageId);
   }
@@ -203,6 +206,19 @@ class LocalMessagesServices implements ILocalMessagesServices {
     ${DatabaseConst.messagesColumnContent}=?
     WHERE (${DatabaseConst.messagesColumnMessageId} = $messageId);''',
         [messageId, updateDate, content]);
+    DBHelper.instanse.updateListenController.add(true);
+  }
+
+  updateMessageSynh({required MessageDto msg}) async {
+    var db = await DBHelper.instanse.database;
+    await db.rawUpdate('''UPDATE ${DatabaseConst.messageTable}
+    SET 
+    ${DatabaseConst.messagesColumnUpdatedDate}=?,
+    ${DatabaseConst.messagesColumnContent}=?,
+    ${DatabaseConst.messagesColumnDeletedDate}=?      
+    WHERE ${DatabaseConst.messagesColumnMessageId} = ${msg.messageId}''',
+        [msg.updatedDate, msg.content, msg.deletedDate]);
+    DBHelper.instanse.updateListenController.add(true);
   }
 
   updateWrittenToServer(

@@ -1,11 +1,15 @@
-﻿import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
+﻿import 'package:chat_app/modules/signal_service/river/message_ref/message_notifier.dart';
+
+import '../../../../modules/signal_service/river/message_ref/message_state_ref.dart';
+import '../../../../modules/signal_service/river/river.dart';
+import '../../../../src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../src/libraries/library_all.dart';
 import '../../../widgets/library/library_widgets.dart';
 
-class UserChatLayout extends StatefulWidget {
+class UserChatLayout extends ConsumerStatefulWidget {
   const UserChatLayout({
     Key? key,
     required this.chatId,
@@ -13,10 +17,10 @@ class UserChatLayout extends StatefulWidget {
   final int chatId;
 
   @override
-  State<UserChatLayout> createState() => UserChatLayoutState();
+  ConsumerState<UserChatLayout> createState() => UserChatLayoutState();
 }
 
-class UserChatLayoutState extends State<UserChatLayout> {
+class UserChatLayoutState extends ConsumerState<UserChatLayout> {
   TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -25,7 +29,7 @@ class UserChatLayoutState extends State<UserChatLayout> {
     // var chat = context.read<ChatBloc>().state.chats?.firstWhere(
     //       (chats) => chats.chatId == widget.chatId,
     //     );
-    for (var c in context.read<ChatBloc>().state.chats!) {
+    for (var c in ref.read(River.chatPod).chats!) {
       if (c.chatId == widget.chatId) {
         chat = c;
       }
@@ -36,7 +40,7 @@ class UserChatLayoutState extends State<UserChatLayout> {
     //     .state
     //     .users
     //     ?.firstWhere((user) => user.userId == chat?.userIdChat);
-    for (var u in context.read<UserBloc>().state.users!) {
+    for (var u in ref.read(River.userPod).users!) {
       if (chat?.userIdChat == null) {
         break;
       }
@@ -44,56 +48,64 @@ class UserChatLayoutState extends State<UserChatLayout> {
         user = u;
       }
     }
-    var messageBloc = context.read<MessageBloc>();
+    var messageNotif = ref.read(River.messagePod.notifier);
+    var messageRead = ref.read(River.messagePod);
+    var messageWatch = ref.watch(River.messagePod);
     return chat == null
         ? Container()
         : Column(
-            children: [
+            children: <Widget>[
               //Top bar of the user_chat_layout screen part, that contains the friend's name and pic
               Container(
-                color: Colors.transparent.withOpacity(0.5),
+                height: 60,
+                color: Colors.transparent.withOpacity(0.1),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ChatAppBarWidget(
-                      image: user!.deletedDate!.isEmpty
-                          ? user.profilePicLink
-                          : 'https://www.iconsdb.com/icons/preview/red/cancel-xxl.png',
-                      // user.profilePicLink,
-                      name: user.name,
+                  children: <Widget>[
+                    Flexible(
+                      child: ChatAppBarWidget(
+                        image: user!.deletedDate!.isEmpty
+                            ? user.profilePicLink
+                            : 'https://www.iconsdb.com/icons/preview/red/cancel-xxl.png',
+                        // user.profilePicLink,
+                        name: user.name,
+                      ),
                     ),
-                    PopupMenuButton<int>(
-                        itemBuilder: (context) => [
-                              PopupMenuItem(
-                                value: 1,
-                                child: Row(
-                                  children: const [
-                                    Icon(Icons.delete),
-                                    SizedBox(
-                                      width: 10,
+                    Flexible(
+                      child: PopupMenuButton<int>(
+                          itemBuilder: (context) => [
+                                PopupMenuItem(
+                                    value: 1,
+                                    child: Row(
+                                      children: const [
+                                        Icon(Icons.delete),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text("Delete Chat")
+                                      ],
                                     ),
-                                    Text("Delete Chat")
-                                  ],
-                                ),
-                                onTap: () => context
-                                    .read<ChatBloc>()
-                                    .add(DeleteChatEvent(widget.chatId)),
-                              ),
-                            ]),
+                                    onTap: () => ref
+                                        .read(River.chatPod.notifier)
+                                        .deleteChat(widget.chatId)),
+                              ]),
+                    ),
                   ],
                 ),
               ),
               Expanded(
-                child: context.watch<MessageBloc>().state.messages != null
+                flex: 10,
+                child: messageWatch.messages != null
                     ? ChatWidget(
                         textController: controller,
-                        messages: context.watch<MessageBloc>().state.messages!,
+                        messages: messageWatch.messages!,
                         chatId: widget.chatId,
                       )
                     : const Center(child: CircularProgressIndicator()),
               ),
               TextInputWidget(
-                onSubmitted: (text) => _sendAndChange(messageBloc),
+                onSubmitted: (text) =>
+                    _sendAndChange(messageRead, messageNotif),
                 controller: controller,
                 onTap: () => user.deletedDate!.isNotEmpty
                     ? showDialog(
@@ -131,12 +143,11 @@ class UserChatLayoutState extends State<UserChatLayout> {
                             ),
                           );
                         })
-                    : _sendAndChange(messageBloc),
-                editState: messageBloc.state.editState,
+                    : _sendAndChange(messageRead, messageNotif),
+                editState: messageRead.editState,
                 editText: controller.text,
                 cancelEdit: () {
-                  messageBloc.add(
-                      UpdateMessageEvent(isEditing: EditState.isNotEditing));
+                  messageNotif.updateMessage(isEditing: EditState.isNotEditing);
                   controller.clear();
                 },
               ),
@@ -144,79 +155,94 @@ class UserChatLayoutState extends State<UserChatLayout> {
           );
   }
 
-  _sendAndChange(MessageBloc messageBloc) async {
-    if (messageBloc.state.editState == EditState.isNotEditing &&
+  _sendAndChange(
+      MessageStateRef messageRef, MessageNotifier messageNotif) async {
+    if (messageRef.editState == EditState.isNotEditing &&
         controller.text.isNotEmpty &&
-        messageBloc.state.mediaState != MediaState.isPreparation) {
-      messageBloc.add(
-        CreateMessageEvent(
-            message: MessageDto(
-                chatId: widget.chatId,
-                senderId: await MainUserServices().getUserID(),
-                content: controller.text,
-                createdDate: DateTime.now().toIso8601String(),
-                updatedDate: DateTime.now().toIso8601String(),
-                contentType: ContentType.isText),
-            contentType: ContentType.isText),
-      );
-      context.read<ChatBloc>().add(ReadChatEvent());
+        messageRef.mediaState != MediaState.isPreparation) {
+      messageNotif.createMessage(
+          message: MessageDto(
+              chatId: widget.chatId,
+              senderId: await MainUserServices().getUserID(),
+              content: controller.text,
+              createdDate: DateTime.now().toIso8601String(),
+              updatedDate: DateTime.now().toIso8601String(),
+              contentType: ContentType.isText),
+          contentType: ContentType.isText);
+      // context.read<ChatBloc>().add(ReadChatEvent());
       FocusScope.of(context).unfocus();
       controller.clear();
+      return;
     }
     // print('IS EDIT F:${context.read<MessageBloc>().isEditing}');
-    if (messageBloc.state.editState == EditState.isPreparation &&
+    if (messageRef.editState == EditState.isPreparation &&
         controller.text.isNotEmpty) {
       print("EDITING");
-      var messageId = messageBloc.state.messageId;
-      var message = messageBloc.state.messages
-          ?.where((element) => element.localMessageId == messageId)
-          .toList();
-      messageBloc.add(
-        UpdateMessageEvent(
+      var localMessageId = messageRef.messageId;
+      var message = messageRef.messages
+          ?.firstWhere((element) => element.localMessageId == localMessageId);
+      if (message?.contentType == ContentType.isText) {
+        print('EDIT  TEXT');
+        messageNotif.updateMessage(
             message: MessageDto(
                 chatId: widget.chatId,
                 senderId: await MainUserServices().getUserID(),
                 content: controller.text,
-                messageId: messageId,
-                createdDate: message?[0].createdDate,
+                messageId: message?.messageId,
+                createdDate: message?.createdDate,
                 updatedDate: DateTime.now().toIso8601String()),
-            isEditing: EditState.isEditing),
-      );
+            isEditing: EditState.isEditing);
+      } else if (message?.contentType == ContentType.isMediaText) {
+        print('EDIT MEDIA TEXT');
+        List<String>? data = message?.content.split('media: ');
+        var msg = data![1];
+        print('MSG UPD: $msg');
+        messageNotif.updateMessage(
+            message: MessageDto(
+                chatId: widget.chatId,
+                senderId: await MainUserServices().getUserID(),
+                content: {'message': controller.text, 'media': msg}.toString(),
+                messageId: localMessageId,
+                createdDate: message?.createdDate,
+                updatedDate: DateTime.now().toIso8601String()),
+            isEditing: EditState.isEditing);
+      } else {
+        print('EDIT MEDIA ');
+        return;
+      }
       controller.clear();
+      return;
     }
 
-    if (messageBloc.state.mediaState == MediaState.isPreparation &&
+    if (messageRef.mediaState == MediaState.isPreparation &&
         controller.text.isNotEmpty) {
-      messageBloc.add(
-        CreateMessageEvent(
-            message: MessageDto(
-                chatId: widget.chatId,
-                senderId: await MainUserServices().getUserID(),
-                content: controller.text,
-                createdDate: DateTime.now().toIso8601String(),
-                updatedDate: DateTime.now().toIso8601String(),
-                contentType: ContentType.isMediaText),
-            contentType: ContentType.isMediaText,
-            mediaState: MediaState.isSending),
-      );
+      messageNotif.createMessage(
+          message: MessageDto(
+              chatId: widget.chatId,
+              senderId: await MainUserServices().getUserID(),
+              content: controller.text,
+              createdDate: DateTime.now().toIso8601String(),
+              updatedDate: DateTime.now().toIso8601String(),
+              contentType: ContentType.isMediaText),
+          contentType: ContentType.isMediaText,
+          mediaState: MediaState.isSending);
       FocusScope.of(context).unfocus();
       controller.clear();
-    } else if (messageBloc.state.mediaState == MediaState.isPreparation &&
+    } else if (messageRef.mediaState == MediaState.isPreparation &&
         controller.text.isEmpty) {
-      messageBloc.add(
-        CreateMessageEvent(
-            message: MessageDto(
-                chatId: widget.chatId,
-                senderId: await MainUserServices().getUserID(),
-                content: controller.text,
-                createdDate: DateTime.now().toIso8601String(),
-                updatedDate: DateTime.now().toIso8601String(),
-                contentType: ContentType.isMedia),
-            contentType: ContentType.isMedia,
-            mediaState: MediaState.isSending),
-      );
+      messageNotif.createMessage(
+          message: MessageDto(
+              chatId: widget.chatId,
+              senderId: await MainUserServices().getUserID(),
+              content: controller.text,
+              createdDate: DateTime.now().toIso8601String(),
+              updatedDate: DateTime.now().toIso8601String(),
+              contentType: ContentType.isMedia),
+          contentType: ContentType.isMedia,
+          mediaState: MediaState.isSending);
       FocusScope.of(context).unfocus();
       controller.clear();
+      return;
     } else {
       return null;
     }

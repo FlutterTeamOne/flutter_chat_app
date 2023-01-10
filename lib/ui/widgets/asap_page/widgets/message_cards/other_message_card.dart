@@ -1,4 +1,4 @@
-﻿import 'package:chat_app/domain/data/dto/message_dto/message_dto.dart';
+﻿import '../../../../../domain/data/dto/message_dto/message_dto.dart';
 import 'package:flutter/material.dart';
 import 'app_card_widget.dart';
 

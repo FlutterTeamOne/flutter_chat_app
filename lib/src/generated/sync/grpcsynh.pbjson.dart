@@ -31,40 +31,73 @@ const UserRequest$json = const {
 
 /// Descriptor for `UserRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List userRequestDescriptor = $convert.base64Decode('CgtVc2VyUmVxdWVzdBIWCgZ1c2VySWQYASABKAVSBnVzZXJJZBIgCgt1cGRhdGVkRGF0ZRgCIAEoCVILdXBkYXRlZERhdGU=');
+@$core.Deprecated('Use chatRequestDescriptor instead')
+const ChatRequest$json = const {
+  '1': 'ChatRequest',
+  '2': const [
+    const {'1': 'chatId', '3': 1, '4': 1, '5': 5, '10': 'chatId'},
+    const {'1': 'updatedDate', '3': 2, '4': 1, '5': 9, '10': 'updatedDate'},
+  ],
+};
+
+/// Descriptor for `ChatRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List chatRequestDescriptor = $convert.base64Decode('CgtDaGF0UmVxdWVzdBIWCgZjaGF0SWQYASABKAVSBmNoYXRJZBIgCgt1cGRhdGVkRGF0ZRgCIAEoCVILdXBkYXRlZERhdGU=');
+@$core.Deprecated('Use messageRequestDescriptor instead')
+const MessageRequest$json = const {
+  '1': 'MessageRequest',
+  '2': const [
+    const {'1': 'messageId', '3': 1, '4': 1, '5': 5, '10': 'messageId'},
+    const {'1': 'updatedDate', '3': 2, '4': 1, '5': 9, '10': 'updatedDate'},
+  ],
+};
+
+/// Descriptor for `MessageRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List messageRequestDescriptor = $convert.base64Decode('Cg5NZXNzYWdlUmVxdWVzdBIcCgltZXNzYWdlSWQYASABKAVSCW1lc3NhZ2VJZBIgCgt1cGRhdGVkRGF0ZRgCIAEoCVILdXBkYXRlZERhdGU=');
 @$core.Deprecated('Use usersRequestDescriptor instead')
 const UsersRequest$json = const {
   '1': 'UsersRequest',
   '2': const [
-    const {'1': 'users', '3': 1, '4': 3, '5': 11, '6': '.UserRequest', '10': 'users'},
+    const {'1': 'mainUser', '3': 1, '4': 1, '5': 5, '10': 'mainUser'},
+    const {'1': 'usersForUpdate', '3': 2, '4': 3, '5': 11, '6': '.UserRequest', '10': 'usersForUpdate'},
   ],
 };
 
 /// Descriptor for `UsersRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List usersRequestDescriptor = $convert.base64Decode('CgxVc2Vyc1JlcXVlc3QSIgoFdXNlcnMYASADKAsyDC5Vc2VyUmVxdWVzdFIFdXNlcnM=');
-@$core.Deprecated('Use usersResponseDescriptor instead')
-const UsersResponse$json = const {
-  '1': 'UsersResponse',
+final $typed_data.Uint8List usersRequestDescriptor = $convert.base64Decode('CgxVc2Vyc1JlcXVlc3QSGgoIbWFpblVzZXIYASABKAVSCG1haW5Vc2VyEjQKDnVzZXJzRm9yVXBkYXRlGAIgAygLMgwuVXNlclJlcXVlc3RSDnVzZXJzRm9yVXBkYXRl');
+@$core.Deprecated('Use chatsRequestDescriptor instead')
+const ChatsRequest$json = const {
+  '1': 'ChatsRequest',
   '2': const [
-    const {'1': 'usersNew', '3': 1, '4': 3, '5': 11, '6': '.SynhUser', '10': 'usersNew'},
-    const {'1': 'usersUpdated', '3': 2, '4': 3, '5': 11, '6': '.SynhUser', '10': 'usersUpdated'},
+    const {'1': 'maxChatId', '3': 1, '4': 1, '5': 5, '10': 'maxChatId'},
+    const {'1': 'chatsForUpdate', '3': 2, '4': 3, '5': 11, '6': '.ChatRequest', '10': 'chatsForUpdate'},
   ],
 };
 
-/// Descriptor for `UsersResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List usersResponseDescriptor = $convert.base64Decode('Cg1Vc2Vyc1Jlc3BvbnNlEiUKCHVzZXJzTmV3GAEgAygLMgkuU3luaFVzZXJSCHVzZXJzTmV3Ei0KDHVzZXJzVXBkYXRlZBgCIAMoCzIJLlN5bmhVc2VyUgx1c2Vyc1VwZGF0ZWQ=');
-@$core.Deprecated('Use synhMainUserDescriptor instead')
-const SynhMainUser$json = const {
-  '1': 'SynhMainUser',
+/// Descriptor for `ChatsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List chatsRequestDescriptor = $convert.base64Decode('CgxDaGF0c1JlcXVlc3QSHAoJbWF4Q2hhdElkGAEgASgFUgltYXhDaGF0SWQSNAoOY2hhdHNGb3JVcGRhdGUYAiADKAsyDC5DaGF0UmVxdWVzdFIOY2hhdHNGb3JVcGRhdGU=');
+@$core.Deprecated('Use messagesRequestDescriptor instead')
+const MessagesRequest$json = const {
+  '1': 'MessagesRequest',
   '2': const [
-    const {'1': 'mainUserId', '3': 1, '4': 1, '5': 5, '10': 'mainUserId'},
-    const {'1': 'chatId', '3': 2, '4': 1, '5': 5, '10': 'chatId'},
-    const {'1': 'messageId', '3': 3, '4': 1, '5': 5, '10': 'messageId'},
-    const {'1': 'users', '3': 4, '4': 1, '5': 11, '6': '.UsersRequest', '10': 'users'},
+    const {'1': 'maxMessageId', '3': 1, '4': 1, '5': 5, '10': 'maxMessageId'},
+    const {'1': 'messageForUpdate', '3': 2, '4': 3, '5': 11, '6': '.MessageRequest', '10': 'messageForUpdate'},
   ],
 };
 
-/// Descriptor for `SynhMainUser`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List synhMainUserDescriptor = $convert.base64Decode('CgxTeW5oTWFpblVzZXISHgoKbWFpblVzZXJJZBgBIAEoBVIKbWFpblVzZXJJZBIWCgZjaGF0SWQYAiABKAVSBmNoYXRJZBIcCgltZXNzYWdlSWQYAyABKAVSCW1lc3NhZ2VJZBIjCgV1c2VycxgEIAEoCzINLlVzZXJzUmVxdWVzdFIFdXNlcnM=');
+/// Descriptor for `MessagesRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List messagesRequestDescriptor = $convert.base64Decode('Cg9NZXNzYWdlc1JlcXVlc3QSIgoMbWF4TWVzc2FnZUlkGAEgASgFUgxtYXhNZXNzYWdlSWQSOwoQbWVzc2FnZUZvclVwZGF0ZRgCIAMoCzIPLk1lc3NhZ2VSZXF1ZXN0UhBtZXNzYWdlRm9yVXBkYXRl');
+@$core.Deprecated('Use mainUserRequestDescriptor instead')
+const MainUserRequest$json = const {
+  '1': 'MainUserRequest',
+  '2': const [
+    const {'1': 'users', '3': 1, '4': 1, '5': 11, '6': '.UsersRequest', '10': 'users'},
+    const {'1': 'chats', '3': 2, '4': 1, '5': 11, '6': '.ChatsRequest', '10': 'chats'},
+    const {'1': 'messages', '3': 3, '4': 1, '5': 11, '6': '.MessagesRequest', '10': 'messages'},
+  ],
+};
+
+/// Descriptor for `MainUserRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List mainUserRequestDescriptor = $convert.base64Decode('Cg9NYWluVXNlclJlcXVlc3QSIwoFdXNlcnMYASABKAsyDS5Vc2Vyc1JlcXVlc3RSBXVzZXJzEiMKBWNoYXRzGAIgASgLMg0uQ2hhdHNSZXF1ZXN0UgVjaGF0cxIsCghtZXNzYWdlcxgDIAEoCzIQLk1lc3NhZ2VzUmVxdWVzdFIIbWVzc2FnZXM=');
 @$core.Deprecated('Use synhUserDescriptor instead')
 const SynhUser$json = const {
   '1': 'SynhUser',
@@ -115,16 +148,48 @@ const SynhMessage$json = const {
 
 /// Descriptor for `SynhMessage`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List synhMessageDescriptor = $convert.base64Decode('CgtTeW5oTWVzc2FnZRIoChBsb2NhbF9tZXNzYWdlX2lkGAEgASgFUg5sb2NhbE1lc3NhZ2VJZBIbCglzZW5kZXJfaWQYAiABKAVSCHNlbmRlcklkEhcKB2NoYXRfaWQYAyABKAVSBmNoYXRJZBIhCgxjcmVhdGVkX2RhdGUYBCABKAlSC2NyZWF0ZWREYXRlEh0KCm1lc3NhZ2VfaWQYBSABKAVSCW1lc3NhZ2VJZBIYCgdjb250ZW50GAYgASgJUgdjb250ZW50EiEKDHVwZGF0ZWRfZGF0ZRgHIAEoCVILdXBkYXRlZERhdGUSIQoMZGVsZXRlZF9kYXRlGAggASgJUgtkZWxldGVkRGF0ZRIXCgdpc19yZWFkGAkgASgFUgZpc1JlYWQSIgoMYXR0YWNobWVudElkGAogASgFUgxhdHRhY2htZW50SWQSMwoLY29udGVudFR5cGUYCyABKA4yES5Db250ZW50VHlwZVN5bmNoUgtjb250ZW50VHlwZQ==');
+@$core.Deprecated('Use usersResponseDescriptor instead')
+const UsersResponse$json = const {
+  '1': 'UsersResponse',
+  '2': const [
+    const {'1': 'usersNew', '3': 1, '4': 3, '5': 11, '6': '.SynhUser', '10': 'usersNew'},
+    const {'1': 'usersUpdated', '3': 2, '4': 3, '5': 11, '6': '.SynhUser', '10': 'usersUpdated'},
+  ],
+};
+
+/// Descriptor for `UsersResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List usersResponseDescriptor = $convert.base64Decode('Cg1Vc2Vyc1Jlc3BvbnNlEiUKCHVzZXJzTmV3GAEgAygLMgkuU3luaFVzZXJSCHVzZXJzTmV3Ei0KDHVzZXJzVXBkYXRlZBgCIAMoCzIJLlN5bmhVc2VyUgx1c2Vyc1VwZGF0ZWQ=');
+@$core.Deprecated('Use chatsResponseDescriptor instead')
+const ChatsResponse$json = const {
+  '1': 'ChatsResponse',
+  '2': const [
+    const {'1': 'chatsNew', '3': 1, '4': 3, '5': 11, '6': '.SynhChat', '10': 'chatsNew'},
+    const {'1': 'chatsUpdated', '3': 2, '4': 3, '5': 11, '6': '.SynhChat', '10': 'chatsUpdated'},
+  ],
+};
+
+/// Descriptor for `ChatsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List chatsResponseDescriptor = $convert.base64Decode('Cg1DaGF0c1Jlc3BvbnNlEiUKCGNoYXRzTmV3GAEgAygLMgkuU3luaENoYXRSCGNoYXRzTmV3Ei0KDGNoYXRzVXBkYXRlZBgCIAMoCzIJLlN5bmhDaGF0UgxjaGF0c1VwZGF0ZWQ=');
+@$core.Deprecated('Use messagesResponseDescriptor instead')
+const MessagesResponse$json = const {
+  '1': 'MessagesResponse',
+  '2': const [
+    const {'1': 'messagesNew', '3': 1, '4': 3, '5': 11, '6': '.SynhMessage', '10': 'messagesNew'},
+    const {'1': 'messagesUpdated', '3': 2, '4': 3, '5': 11, '6': '.SynhMessage', '10': 'messagesUpdated'},
+  ],
+};
+
+/// Descriptor for `MessagesResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List messagesResponseDescriptor = $convert.base64Decode('ChBNZXNzYWdlc1Jlc3BvbnNlEi4KC21lc3NhZ2VzTmV3GAEgAygLMgwuU3luaE1lc3NhZ2VSC21lc3NhZ2VzTmV3EjYKD21lc3NhZ2VzVXBkYXRlZBgCIAMoCzIMLlN5bmhNZXNzYWdlUg9tZXNzYWdlc1VwZGF0ZWQ=');
 @$core.Deprecated('Use dataDBResponseDescriptor instead')
 const DataDBResponse$json = const {
   '1': 'DataDBResponse',
   '2': const [
-    const {'1': 'newUsers', '3': 1, '4': 3, '5': 11, '6': '.SynhUser', '10': 'newUsers'},
-    const {'1': 'updatedUsers', '3': 4, '4': 3, '5': 11, '6': '.SynhUser', '10': 'updatedUsers'},
-    const {'1': 'chats', '3': 2, '4': 3, '5': 11, '6': '.SynhChat', '10': 'chats'},
-    const {'1': 'messages', '3': 3, '4': 3, '5': 11, '6': '.SynhMessage', '10': 'messages'},
+    const {'1': 'users', '3': 1, '4': 1, '5': 11, '6': '.UsersResponse', '10': 'users'},
+    const {'1': 'chats', '3': 2, '4': 1, '5': 11, '6': '.ChatsResponse', '10': 'chats'},
+    const {'1': 'messages', '3': 3, '4': 1, '5': 11, '6': '.MessagesResponse', '10': 'messages'},
   ],
 };
 
 /// Descriptor for `DataDBResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List dataDBResponseDescriptor = $convert.base64Decode('Cg5EYXRhREJSZXNwb25zZRIlCghuZXdVc2VycxgBIAMoCzIJLlN5bmhVc2VyUghuZXdVc2VycxItCgx1cGRhdGVkVXNlcnMYBCADKAsyCS5TeW5oVXNlclIMdXBkYXRlZFVzZXJzEh8KBWNoYXRzGAIgAygLMgkuU3luaENoYXRSBWNoYXRzEigKCG1lc3NhZ2VzGAMgAygLMgwuU3luaE1lc3NhZ2VSCG1lc3NhZ2Vz');
+final $typed_data.Uint8List dataDBResponseDescriptor = $convert.base64Decode('Cg5EYXRhREJSZXNwb25zZRIkCgV1c2VycxgBIAEoCzIOLlVzZXJzUmVzcG9uc2VSBXVzZXJzEiQKBWNoYXRzGAIgASgLMg4uQ2hhdHNSZXNwb25zZVIFY2hhdHMSLQoIbWVzc2FnZXMYAyABKAsyES5NZXNzYWdlc1Jlc3BvbnNlUghtZXNzYWdlcw==');

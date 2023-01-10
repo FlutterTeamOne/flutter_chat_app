@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:chat_app/domain/data/dto/user_dto/user_dto.dart';
-import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
-import 'package:chat_app/src/constants/app_data_constants.dart';
+import '../../../domain/data/dto/user_dto/user_dto.dart';
+import 'user_path.dart';
+import '../../../src/constants/app_data_constants.dart';
 
 import '../../../src/constants/db_constants.dart';
 import 'package:path/path.dart';
@@ -38,8 +38,8 @@ class DBHelper {
     print('USER DB:  $user');
     // String path = join(dbPath.path,
     //     user.name + user.userId.toString() + DatabaseConst.dbFileName);
-    String path = join(
-        dbPath, user.name + user.userId.toString() + DatabaseConst.dbFileName);
+    String path =
+        join(dbPath, user.userId.toString() + DatabaseConst.dbFileName);
     print('PATH_ABSOLUTE: $path');
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(
@@ -54,7 +54,7 @@ class DBHelper {
       //Таблица User
       await txn.execute('''
 CREATE TABLE ${DatabaseConst.userTable} (
-  ${DatabaseConst.usersColumnUserId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
+  ${DatabaseConst.usersColumnUserId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey},
   ${DatabaseConst.usersColumnName} ${DatabaseConst.char50} ${DatabaseConst.notNull},
   ${DatabaseConst.usersColumnEmail} ${DatabaseConst.char50} ${DatabaseConst.notNull},
   ${DatabaseConst.usersColumnProfilePicLink} ${DatabaseConst.char50} ${DatabaseConst.notNull},
@@ -74,7 +74,7 @@ CREATE TABLE ${DatabaseConst.mainUserTable}(
 //Таблица Chats
       await txn.execute('''
 CREATE TABLE ${DatabaseConst.chatsTable}(
- ${DatabaseConst.chatsColumnChatId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
+ ${DatabaseConst.chatsColumnChatId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey},
  ${DatabaseConst.chatsColumnUserId} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique},
  ${DatabaseConst.chatsColumnCreatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
  ${DatabaseConst.chatsColumnUpdatedDate} ${DatabaseConst.char26},
@@ -90,7 +90,7 @@ CREATE TABLE ${DatabaseConst.messageTable} (
  ${DatabaseConst.messagesColumnChatId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
  ${DatabaseConst.messagesColumnCreatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
  ${DatabaseConst.messagesColumnSenderId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
- ${DatabaseConst.messagesColumnMessageId} ${DatabaseConst.integer},
+ ${DatabaseConst.messagesColumnMessageId} ${DatabaseConst.integer} ${DatabaseConst.unique},
  ${DatabaseConst.messagesColumnIsRead} ${DatabaseConst.integer} ${DatabaseConst.notNull} DEFAULT 0,
  ${DatabaseConst.messagesColumnContent} ${DatabaseConst.char50} ${DatabaseConst.notNull},
  ${DatabaseConst.messagesColumnUpdatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
