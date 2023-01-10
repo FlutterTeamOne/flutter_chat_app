@@ -1,4 +1,3 @@
-
 import 'package:chat_app/modules/signal_service/river/chat_ref/chat_notifier.dart';
 import 'package:chat_app/modules/signal_service/river/connection_ref/connection_notifier.dart';
 import 'package:chat_app/modules/signal_service/river/message_ref/message_notifier.dart';
@@ -9,8 +8,6 @@ import 'user_ref/user_notifier.dart';
 import 'user_ref/user_state_ref.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
-
 class River {
   static final connectPod =
       StateNotifierProvider<ConnectionNotifier, ConnectionStatus>(
@@ -19,7 +16,7 @@ class River {
   static final userPod = StateNotifierProvider<UserNotifier, UserStateRef>(
       (ref) => UserNotifier());
   static final futureUserPod = FutureProvider<UserStateRef>(
-      (ref) => ref.read(userPod.notifier).readUser());
+      (ref) async => await ref.read(userPod.notifier).readUser());
 
   static final chatPod = StateNotifierProvider<ChatNotifier, ChatStateRef>(
       (ref) => ChatNotifier());
@@ -31,5 +28,3 @@ class River {
   static final futureMessagePod = FutureProvider<MessageStateRef>(
       (ref) => ref.read(messagePod.notifier).readMessages());
 }
-
-

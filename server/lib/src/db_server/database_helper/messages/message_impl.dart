@@ -82,8 +82,7 @@ class MessagesDBServices implements IMessagesDBServices {
       {required String newValues, required String condition}) async {
     Database db = await DbServerServices.instanse.database;
     return await db
-            .rawUpdate('''UPDATE messages SET $newValues WHERE ($condition)''')
-        as int;
+        .rawUpdate('UPDATE messages SET $newValues WHERE ($condition)');
   }
 
   // @override
@@ -133,7 +132,7 @@ class MessagesDBServices implements IMessagesDBServices {
     return messages;
   }
 
- @override
+  @override
   Future getUpdatedMessages({required List<MessageRequest> messages}) async {
     List<Map<String, Object?>> messagesUpdated = [];
     Database db = await DbServerServices.instanse.database;

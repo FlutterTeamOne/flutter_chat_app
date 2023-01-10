@@ -13,7 +13,7 @@ class RegistrationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<NewUserBloc, NewUserState>(
       builder: (context, state) {
-        return Scaffold(
+        return const Scaffold(
           body: NewUserWidget(),
         );
       },

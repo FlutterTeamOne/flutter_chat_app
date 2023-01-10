@@ -203,7 +203,8 @@ class GrpcUsers extends GrpcUsersServiceBase {
   List<GrpcError> errors = [
     GrpcError.custom(15, "Нет пользователя с таким ID"),
     GrpcError.custom(16, "Нет пользователя с таким Name"),
-    GrpcError.custom(17, "Нет пользователя с таким Email")
+    GrpcError.custom(17, "Нет пользователя с таким Email"),
+    GrpcError.custom(18, "Пользователь удален")
   ];
 
   @override
@@ -217,6 +218,10 @@ class GrpcUsers extends GrpcUsersServiceBase {
           .getUserByField(field: 'user_id', fieldValue: '${request.id}');
       print('OK: $src');
       if (src.toString().contains('user_id')) {
+        print(src[0]['deleted_date']);
+        if (src[0]['deleted_date'] != "" && src[0]['deleted_date'] != null) {
+          throw errors[3];
+        }
         print('src contains user_id');
         return GetUserResponse(id: request.id);
       } else {

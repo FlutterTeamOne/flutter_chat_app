@@ -112,6 +112,15 @@ CREATE TABLE ${DatabaseConst.userTable} (
     _updateListen();
   }
 
+  Future deleteDB([String? testPath]) async {
+    var db = await instanse.database;
+    var databaseFactory = databaseFactoryFfi;
+    
+    _database = null;
+    await db.close();
+    await databaseFactory.deleteDatabase(db.path);
+  }
+
 // ///Функция создания временной таблицы
 // Future onCreateTemp() async {
 //   var db = await instanse.database;

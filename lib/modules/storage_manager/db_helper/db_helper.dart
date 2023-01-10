@@ -38,8 +38,8 @@ class DBHelper {
     print('USER DB:  $user');
     // String path = join(dbPath.path,
     //     user.name + user.userId.toString() + DatabaseConst.dbFileName);
-    String path = join(
-        dbPath, user.name + user.userId.toString() + DatabaseConst.dbFileName);
+    String path =
+        join(dbPath, user.userId.toString() + DatabaseConst.dbFileName);
     print('PATH_ABSOLUTE: $path');
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(
@@ -137,24 +137,24 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
 ''');
 
       // //Первичная запись юзера в таблицу
-      await txn.insert(
-        DatabaseConst.userTable,
-        {
-          DatabaseConst.usersColumnUserId: user.userId,
-          DatabaseConst.usersColumnName: user.name,
-          DatabaseConst.usersColumnEmail: user.email,
-          DatabaseConst.usersColumnProfilePicLink: user.profilePicLink,
-          DatabaseConst.usersColumnCreatedDate: user.createdDate,
-          DatabaseConst.usersColumnUpdatedDate: user.updatedDate,
-          DatabaseConst.usersColumnDeletedDate: user.deletedDate
-        },
-      );
+      // await txn.insert(
+      //   DatabaseConst.userTable,
+      //   {
+      //     DatabaseConst.usersColumnUserId: user.userId,
+      //     DatabaseConst.usersColumnName: user.name,
+      //     DatabaseConst.usersColumnEmail: user.email,
+      //     DatabaseConst.usersColumnProfilePicLink: user.profilePicLink,
+      //     DatabaseConst.usersColumnCreatedDate: user.createdDate,
+      //     DatabaseConst.usersColumnUpdatedDate: user.updatedDate,
+      //     DatabaseConst.usersColumnDeletedDate: user.deletedDate
+      //   },
+      // );
 
-      await txn.insert(DatabaseConst.mainUserTable, {
-        DatabaseConst.mainUserColumnKey: '',
-        DatabaseConst.mainUserColumnUserId: user.userId,
-        DatabaseConst.mainUserColumnDataSync: '',
-      });
+      // await txn.insert(DatabaseConst.mainUserTable, {
+      //   DatabaseConst.mainUserColumnKey: '',
+      //   DatabaseConst.mainUserColumnUserId: user.userId,
+      //   DatabaseConst.mainUserColumnDataSync: '',
+      // });
       // await txn.insert(
       //   DatabaseConst.userTable,
       //   {
@@ -264,13 +264,13 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
     await db.close();
   }
 
-  Future deleteDB() async {
+  Future deleteDB([String? testPath]) async {
     var db = await instanse.database;
     var databaseFactory = databaseFactoryFfi;
-    // var dbPath = await getTemporaryDirectory();
+    
     var dbPath = '.dart_tool/sqflite_common_ffi/databases/';
     var user = UserPath.getUser;
-    String path = join(
+    String path = testPath ?? join(
         dbPath
         // .path
         ,

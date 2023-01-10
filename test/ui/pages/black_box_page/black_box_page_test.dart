@@ -1,22 +1,19 @@
-import 'package:chat_app/ui/pages/black_box_page/black_box_page.dart';
+import 'package:chat_app/ui/pages/library/library_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(home: BlackBoxPage());
+  }
+}
+
 void main() {
-  testWidgets('Отрисовка Center в Black Box page', (tester) async {
-    await tester.pumpWidget(const MaterialApp(
-      home: BlackBoxPage(),
-    ));
-    expect(
-        find.byKey(const ValueKey('center in black_box_page')), findsOneWidget);
+  group("Отрисовка виджетов на BlackBoxPage", () {
+    testWidgets('Отрисовка Текста на странице BlackBoxPage', (tester) async {
+      await tester.pumpWidget(MyApp());
+      expect(find.text('Black box'), findsOneWidget);
+    });
   });
-  testWidgets(
-    'Отрисовка текста в Black Box page',
-    (tester) async {
-      await tester.pumpWidget(const MaterialApp(
-        home: BlackBoxPage(),
-      ));
-      expect(find.byKey(const Key('black_box_page text')), findsOneWidget);
-    },
-  );
 }

@@ -1,15 +1,22 @@
 ﻿import 'package:flutter/material.dart';
 
 class BlackBoxPage extends StatelessWidget {
-  const BlackBoxPage({super.key});
+  const BlackBoxPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      key: Key('center in black_box_page'),
-      child: Text(
-        key: ValueKey('black_box_page text'),
-        'Black box',
+    return Container(
+      child: Center(
+        key: const Key("Center BlackBoxPage"),
+        child: Container(
+          // color: AppColor.color7E57C2,
+          child: const Text(
+            'Black box',
+            // style: AppTextStyle.s36Abel,
+          ),
+        ),
       ),
     );
   }

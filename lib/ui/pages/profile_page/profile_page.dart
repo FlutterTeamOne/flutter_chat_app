@@ -1,6 +1,9 @@
 import 'package:blur/blur.dart';
 import 'package:chat_app/modules/signal_service/river/chat_ref/chat_notifier.dart';
 import 'package:chat_app/modules/signal_service/river/user_ref/user_notifier.dart';
+import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
+import 'package:dio/dio.dart';
+import '../../../modules/signal_service/library/library_signal_service.dart';
 import '../../../modules/signal_service/river/river.dart';
 import '../../../modules/storage_manager/db_helper/user_path.dart';
 import '../../../src/libraries/library_all.dart';
@@ -26,12 +29,12 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(
-      builder: (context, ref, _) =>
-          ref.read(River.userPod).users?[0].name != null
-              ? const _ProfileLayout()
-              : const Center(
-                  child: CircularProgressIndicator(),
-                ),
+      builder: (context, ref, _) => ref.read(River.userPod).users?[0].name !=
+              null
+          ? const ProfileLayout(key: Key('ProfileLayout'))
+          : const Center(
+              child: CircularProgressIndicator(key: Key('CircularProfilePage')),
+            ),
     );
   }
 }
