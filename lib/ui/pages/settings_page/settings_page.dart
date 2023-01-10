@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
@@ -14,26 +13,11 @@ class SettingsPage extends StatelessWidget {
         child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // SizedBox(
-        //   height: 200,
-        //   width: 100,
-        //   child: ListView.builder(
-        //       itemCount: 3,
-        //       itemBuilder: (BuildContext context, int index) {
-        //         return CardWidget(context, index);
-        //       }),
-        // ),
         ElevatedButton(
-            // style: ButtonStyle(
-            //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            //         RoundedRectangleBorder(
-            //   borderRadius: BorderRadius.circular(20.0),
-            // ))),
             onPressed: () {
-              // context.read<ChangeThemeBloc>().add(SetThemeEvent(index: 6));
               Navigator.of(context).pushNamed('/color_picker_page');
             },
-            child: Text('Custom theme'))
+            child: const Text('Custom theme'))
       ],
     ));
   }

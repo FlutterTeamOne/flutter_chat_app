@@ -8,27 +8,28 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../storage_manager/db_helper/db_helper.dart';
 
+final defaultThemeData = UserThemeData(
+    fontFamily: 'Roboto',
+    fontSizeFactor: 1,
+    textColor: Colors.black87,
+    brightness: Brightness.light,
+    primaryColor: StyleManagerUtils().createMaterialColor(const Color(0xFFFF9800)),
+    borderRadius: 20);
+
 final changeCustomThemeStateProvider = StateProvider<UserThemeData>((ref) {
   const String color = 'Colors.black87';
-  const String tableName = 'user_theme';
-  Map<String, dynamic> model = {
-    'primaryColor':
-        'StyleManagerUtils().createMaterialColor(const Color(0xFFFF9800))',
-    'brightness': 'brightness',
-    'fontFamily': 'fontFamily',
-    'fontSizeFactor': 'fontSizeFactor',
-    'borderRadius': 20,
-    'textColor': 'Colors.black87'
-  };
-  DBHelper.instanse.onAdd(tableName: tableName, model: model);
-  return UserThemeData(
-      fontFamily: 'Roboto',
-      fontSizeFactor: 1,
-      textColor: color.toColor,
-      brightness: Brightness.light,
-      primaryColor:
-          StyleManagerUtils().createMaterialColor(const Color(0xFFFF9800)),
-      borderRadius: 20);
+  // const String tableName = 'user_theme';
+  // Map<String, dynamic> model = {
+  //   'primaryColor':
+  //       'StyleManagerUtils().createMaterialColor(const Color(0xFFFF9800))',
+  //   'brightness': 'brightness',
+  //   'fontFamily': 'fontFamily',
+  //   'fontSizeFactor': 'fontSizeFactor',
+  //   'borderRadius': 20,
+  //   'textColor': 'Colors.black87'
+  // };
+  // DBHelper.instanse.onAdd(tableName: tableName, model: model);
+  return defaultThemeData;
 });
 
 // class UserThemeDataNotifier extends StateNotifier<UserThemeData> {

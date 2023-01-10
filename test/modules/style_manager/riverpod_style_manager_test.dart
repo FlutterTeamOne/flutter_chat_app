@@ -1,4 +1,5 @@
 import 'package:chat_app/main.dart';
+import 'package:chat_app/modules/style_manager/riverpod/riverpod_providers.dart';
 import 'package:chat_app/modules/style_manager/riverpod/theme_models.dart';
 import 'package:chat_app/modules/style_manager/utils/style_manager_utils.dart';
 import 'package:flutter/material.dart';
@@ -6,18 +7,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-final defaultThemeData = UserThemeData(
-    fontFamily: 'Roboto',
-    fontSizeFactor: 1,
-    textColor: Colors.black87,
-    brightness: Brightness.light,
-    primaryColor: StyleManagerUtils().createMaterialColor(const Color(0xFFFF9800)),
-    borderRadius: 20);
+// final defaultThemeData = UserThemeData(
+//     fontFamily: 'Roboto',
+//     fontSizeFactor: 1,
+//     textColor: Colors.black87,
+//     brightness: Brightness.light,
+//     primaryColor: StyleManagerUtils().createMaterialColor(const Color(0xFFFF9800)),
+//     borderRadius: 20);
 
-final changeCustomThemeStateProvider = StateProvider<UserThemeData>((ref) {
-  return defaultThemeData;
-});
+// final changeCustomThemeStateProvider = StateProvider<UserThemeData>((ref) {
+//   return defaultThemeData;
+// });
 
+final n = changeCustomThemeStateProvider;
 class Listener extends Mock {
   void call(UserThemeData? previous, UserThemeData value);
 }

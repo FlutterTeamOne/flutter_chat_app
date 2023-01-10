@@ -250,6 +250,7 @@ class _ColorPickerPageState extends ConsumerState<ColorPickerPage> {
 
               /// Big text size button
               ElevatedButton(
+                key: Key('Big text size button key'),
                   onPressed: () {
                     ref
                         .read(changeCustomThemeStateProvider.notifier)

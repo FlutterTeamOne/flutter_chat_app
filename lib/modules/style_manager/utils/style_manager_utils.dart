@@ -1,3 +1,5 @@
+import 'package:chat_app/modules/storage_manager/db_helper/db_helper.dart';
+import 'package:chat_app/modules/style_manager/riverpod/theme_models.dart';
 import 'package:flutter/material.dart';
 
 class StyleManagerUtils {
@@ -22,4 +24,22 @@ class StyleManagerUtils {
     }
     return MaterialColor(color.value, swatch);
   }
+
+  Brightness createBrightness(String value) {
+    if (value == 'Brightness.dark') {
+      return Brightness.dark;
+    }
+    else {
+      return Brightness.light;
+    }
+  }
+
+  // void saveTheme({required UserThemeData userThemeData}) {
+  //   DBHelper.instanse.onUpdate(tableName: 'user_theme', column: column, model: model, id: id)
+  // }
+  //
+  // void loadTheme() {
+  //   /// TODO
+  //   /// add load from userDB
+  // }
 }
