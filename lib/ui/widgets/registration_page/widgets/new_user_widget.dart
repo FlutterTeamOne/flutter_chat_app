@@ -1,5 +1,6 @@
 import 'package:chat_app/modules/signal_service/river/river.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../bloc/new_user_bloc.dart';
@@ -87,7 +88,12 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                 inputFormatters: RegExp(r"^[a-z0-9.a-z@]+"),
                 maxLength: 36,
                 controller: newUserEmailText,
-                validator: (value) {},
+                validator: (email) {
+                  if (email != null && !EmailValidator.validate(email)) {
+                    return 'Enter a valid email';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 10),
               ValueListenableBuilder(
