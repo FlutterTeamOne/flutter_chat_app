@@ -5,7 +5,6 @@ void main() {
   //Для теста необходимо запустить rest server
   Dio dio = Dio();
   var url = 'http://localhost:8080';
-  int latestChatId = 1;
 
   group('GET rest api tests', () {
     //1
