@@ -16,10 +16,15 @@ class _UserPic extends StatelessWidget {
         height: 125,
         width: 125,
         decoration: BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: NetworkImage(userPic),
-          ),
+          image: userPic.isEmpty
+              ? DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(
+                      'assets/images/user_images/defaultUserAvatar.png'))
+              : DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(userPic),
+                ),
           borderRadius: BorderRadius.circular(10),
           // Цвет
           // color: AppColor.color9E9E9E,

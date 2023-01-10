@@ -17,10 +17,16 @@ class _AppBluredImage extends StatelessWidget {
         width: double.infinity,
         height: 175,
         decoration: BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: NetworkImage(image),
-          ),
+          image: image.isEmpty
+              ? DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(
+                      'assets/images/user_images/defaultUserAvatar.png'),
+                )
+              : DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(image),
+                ),
         ),
       ),
     );

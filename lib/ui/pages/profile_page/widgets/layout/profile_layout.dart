@@ -1,7 +1,7 @@
 ﻿part of '../../profile_page.dart';
 
-class _ProfileLayout extends StatelessWidget {
-  const _ProfileLayout({
+class ProfileLayout extends StatelessWidget {
+  const ProfileLayout({
     Key? key,
   }) : super(key: key);
   @override
