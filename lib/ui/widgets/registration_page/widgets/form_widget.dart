@@ -8,8 +8,8 @@ class FormWidget extends StatelessWidget {
     required this.controller,
     this.obscureText = false,
     this.inputFormatters,
-    required this.maxLength,
-    this.icons,
+    this.maxLength = 16,
+    this.suffix,
     this.suffixOnTap,
   });
 
@@ -17,11 +17,11 @@ class FormWidget extends StatelessWidget {
   final String? Function(String?) validator;
   final bool? obscureText;
   final RegExp? inputFormatters;
-  final int maxLength;
-  final IconData? icons;
+  final int? maxLength;
+  final IconData? suffix;
   final Function()? suffixOnTap;
-
   final TextEditingController? controller;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -33,6 +33,7 @@ class FormWidget extends StatelessWidget {
       ],
       maxLength: maxLength,
       decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
         isDense: true,
         labelText: text,
         labelStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -40,13 +41,16 @@ class FormWidget extends StatelessWidget {
               fontSize: 14,
             ),
         counterText: '',
-        suffixIcon: IconButton(icon: Icon(icons), onPressed: suffixOnTap),
+        suffixIcon: IconButton(
+          icon: Icon(suffix),
+          onPressed: suffixOnTap,
+        ),
         border: OutlineInputBorder(
           borderSide: BorderSide(color: Theme.of(context).primaryColor),
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(12),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(color: Theme.of(context).errorColor),
         ),
       ),

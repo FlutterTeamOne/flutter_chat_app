@@ -19,9 +19,6 @@ class NewUserWidget extends StatefulWidget {
 }
 
 class _NewUserWidgetState extends State<NewUserWidget> {
-  static const double textFieldWidth = 200;
-  static const double textPadding = 15;
-
   static const String newUserPictureUrl =
       """https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg?w=2000""";
   static String newUserCreateDate = DateTime.now().toIso8601String();
@@ -29,8 +26,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
   late TextEditingController newUserEmailText;
   late TextEditingController newUserPasswordText;
   late TextEditingController newUserPictureUrlText;
-  final GlobalKey<FormState> _formKey = GlobalKey();
-
+  final _formKey = GlobalKey<FormState>();
   final _nameKey = GlobalKey<FormState>();
 
   final _emailKey = GlobalKey<FormState>();
@@ -59,201 +55,96 @@ class _NewUserWidgetState extends State<NewUserWidget> {
   Widget build(BuildContext context) {
     final _isActive = ValueNotifier<bool>(true);
     return Center(
-      child: SizedBox(
-        width: 250,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Create new user',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 20),
-            FormWidget(
-              text: 'Name',
-              maxLength: 20,
-              inputFormatters: RegExp(r'[A-Za-z]+'),
-              validator: (value) {},
-              controller: newUserNameText,
-            ),
-            const SizedBox(height: 10),
-            FormWidget(
-              text: 'Email',
-              inputFormatters: RegExp(r"^[a-z0-9.a-z@]+"),
-              maxLength: 36,
-              validator: (value) {},
-              controller: newUserEmailText,
-            ),
-            const SizedBox(height: 10),
-            ValueListenableBuilder(
-              valueListenable: _isActive,
-              builder: (context, value, child) => FormWidget(
-                text: 'Password',
-                inputFormatters: RegExp(r"^[a-z0-9a-zA-Z]+"),
-                maxLength: 16,
-                controller: newUserPasswordText,
-                obscureText: _isActive.value,
-                icons: _isActive.value == true
-                    ? Icons.visibility_off_rounded
-                    : Icons.visibility_rounded,
-                validator: (value) {},
-                suffixOnTap: () {
-                  if (_isActive.value == true) {
-                    _isActive.value = false;
-                  } else {
-                    _isActive.value = true;
+      child: Form(
+        key: _formKey,
+        child: SizedBox(
+          width: 250,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Create new user',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              const SizedBox(height: 20),
+              FormWidget(
+                text: 'Name',
+                maxLength: 20,
+                inputFormatters: RegExp(r'[A-Za-z]+'),
+                controller: newUserNameText,
+                validator: (name) {
+                  if (name!.length < 3) {
+                    return 'Name must contain at least 3 characters';
+                  }
+                  {
+                    return null;
                   }
                 },
               ),
-            ),
-            const SizedBox(height: 10),
-            buildCreateNewUserButton(context, newUserNameText, newUserEmailText,
-                newUserPasswordText),
-          ],
+              const SizedBox(height: 10),
+              FormWidget(
+                text: 'Email',
+                inputFormatters: RegExp(r"^[a-z0-9.a-z@]+"),
+                maxLength: 36,
+                controller: newUserEmailText,
+                validator: (value) {},
+              ),
+              const SizedBox(height: 10),
+              ValueListenableBuilder(
+                valueListenable: _isActive,
+                builder: (context, value, child) => FormWidget(
+                  text: 'Password',
+                  inputFormatters: RegExp(r"^[a-z0-9_A-Z]+"),
+                  controller: newUserPasswordText,
+                  obscureText: _isActive.value,
+                  suffix: _isActive.value == true
+                      ? Icons.visibility_off_rounded
+                      : Icons.visibility_rounded,
+                  validator: (value) {},
+                  suffixOnTap: () {
+                    if (_isActive.value == true) {
+                      _isActive.value = false;
+                    } else {
+                      _isActive.value = true;
+                    }
+                  },
+                ),
+              ),
+              const SizedBox(height: 10),
+              buildCreateNewUserButton(context, newUserNameText,
+                  newUserEmailText, newUserPasswordText, _formKey),
+            ],
+          ),
         ),
       ),
     );
-    // Row(
-    //   mainAxisAlignment: MainAxisAlignment.center,
-    //   children: [
-    //     Column(
-    //       children: [
-    //         const SizedBox(
-    //           height: 200,
-    //         ),
-    //         Row(
-    //           children: [
-    //             Form(
-    //               key: _formKey,
-    //               child: Column(
-    //                 children: [
-    //                   buildNameRow(),
-    //                   buildEmailRow(),
-    //                   buildPasswordRow(),
-    //                   const SizedBox(
-    //                     height: 20,
-    //                   ),
-    //                   buildCreateNewUserButton(context, newUserNameText,
-    //                       newUserEmailText, newUserPasswordText),
-    //                 ],
-    //               ),
-    //             ),
-    //           ],
-    //         )
-    //       ],
-    //     ),
-    //   ],
-    // );
   }
 
-  SizedBox buildPasswordRow() {
-    return SizedBox(
-      width: 300,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(right: textPadding),
-            child: Text('Password'),
-          ),
-          SizedBox(
-            width: textFieldWidth,
-            child: TextFormField(
-              key: _passwordKey,
-              controller: newUserPasswordText,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Enter password';
-                }
-                return null;
-              },
-              obscureText: true,
-              onSaved: (value) {},
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  SizedBox buildEmailRow() {
-    return SizedBox(
-      width: 300,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(right: textPadding),
-            child: Text('Email'),
-          ),
-          SizedBox(
-              width: textFieldWidth,
-              child: TextFormField(
-                key: _emailKey,
-                controller: newUserEmailText,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Enter email';
-                  }
-                  return null;
-                },
-              )),
-        ],
-      ),
-    );
-  }
-
-  SizedBox buildNameRow() {
-    return SizedBox(
-      width: 300,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(right: textPadding),
-            child: Text('Name'),
-          ),
-          SizedBox(
-              width: textFieldWidth,
-              child: TextFormField(
-                key: _nameKey,
-                controller: newUserNameText,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Enter name';
-                  }
-                  return null;
-                },
-              )),
-        ],
-      ),
-    );
-  }
-
-  Padding buildCreateNewUserButton(BuildContext context, newUserNameText,
-      newUserEmailText, newUserPasswordText) {
+  buildCreateNewUserButton(BuildContext context, newUserNameText,
+      newUserEmailText, newUserPasswordText, _formKey) {
     late String newUserName;
-    return Padding(
-      padding: const EdgeInsets.only(left: 0.0),
-      child: Row(
-        children: [
-          BlocConsumer<NewUserBloc, NewUserState>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              return ElevatedButton(
-                  // style: ButtonStyle(
-                  //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  //         RoundedRectangleBorder(
-                  //   borderRadius: BorderRadius.circular(20.0),
-                  // ))),
-                  onPressed: () {
-                    // if (_nameKey.currentState!.validate() &&
-                    //     _emailKey.currentState!.validate() &&
-                    //     _passwordKey.currentState!.validate()) {
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //     const SnackBar(content: Text('Creating new user')),
-                    //   );
-                    // }
+    return Row(
+      children: [
+        BlocConsumer<NewUserBloc, NewUserState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            return ElevatedButton(
+                child: const Text('Create'),
+                // style: ButtonStyle(
+                //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                //         RoundedRectangleBorder(
+                //   borderRadius: BorderRadius.circular(20.0),
+                // ))),
+                onPressed: () {
+                  // if (_nameKey.currentState!.validate() &&
+                  //     _emailKey.currentState!.validate() &&
+                  //     _passwordKey.currentState!.validate()) {
+                  //   ScaffoldMessenger.of(context).showSnackBar(
+                  //     const SnackBar(content: Text('Creating new user')),
+                  //   );
+                  // }
+                  final isValid = _formKey.currentState!.validate();
+                  if (isValid) {
                     late NewUserModel newUser = NewUserModel(
                         name: newUserNameText.text,
                         email: newUserEmailText.text,
@@ -314,18 +205,133 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                           );
                         });
                     // print(
-                    //     '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , ');
-                  },
-                  child: const Text('Create new user'));
+                    //     '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , ');}
+                  }
+                });
+          },
+        ),
+        IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed('/');
             },
-          ),
-          IconButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed('/');
-              },
-              icon: const Icon(Icons.close_rounded)),
-        ],
-      ),
+            icon: const Icon(Icons.close_rounded)),
+      ],
     );
   }
+  // Row(
+  //   mainAxisAlignment: MainAxisAlignment.center,
+  //   children: [
+  //     Column(
+  //       children: [
+  //         const SizedBox(
+  //           height: 200,
+  //         ),
+  //         Row(
+  //           children: [
+  //             Form(
+  //               key: _formKey,
+  //               child: Column(
+  //                 children: [
+  //                   buildNameRow(),
+  //                   buildEmailRow(),
+  //                   buildPasswordRow(),
+  //                   const SizedBox(
+  //                     height: 20,
+  //                   ),
+  //                   buildCreateNewUserButton(context, newUserNameText,
+  //                       newUserEmailText, newUserPasswordText),
+  //                 ],
+  //               ),
+  //             ),
+  //           ],
+  //         )
+  //       ],
+  //     ),
+  //   ],
+  // );
+
+  // SizedBox buildPasswordRow() {
+  //   return SizedBox(
+  //     width: 300,
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.end,
+  //       children: [
+  //         const Padding(
+  //           padding: EdgeInsets.only(right: textPadding),
+  //           child: Text('Password'),
+  //         ),
+  //         SizedBox(
+  //           width: textFieldWidth,
+  //           child: TextFormField(
+  //             key: _passwordKey,
+  //             controller: newUserPasswordText,
+  //             validator: (value) {
+  //               if (value == null || value.isEmpty) {
+  //                 return 'Enter password';
+  //               }
+  //               return null;
+  //             },
+  //             obscureText: true,
+  //             onSaved: (value) {},
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  // SizedBox buildEmailRow() {
+  //   return SizedBox(
+  //     width: 300,
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.end,
+  //       children: [
+  //         const Padding(
+  //           padding: EdgeInsets.only(right: textPadding),
+  //           child: Text('Email'),
+  //         ),
+  //         SizedBox(
+  //             width: textFieldWidth,
+  //             child: TextFormField(
+  //               key: _emailKey,
+  //               controller: newUserEmailText,
+  //               validator: (value) {
+  //                 if (value == null || value.isEmpty) {
+  //                   return 'Enter email';
+  //                 }
+  //                 return null;
+  //               },
+  //             )),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  // SizedBox buildNameRow() {
+  //   return SizedBox(
+  //     width: 300,
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.end,
+  //       children: [
+  //         const Padding(
+  //           padding: EdgeInsets.only(right: textPadding),
+  //           child: Text('Name'),
+  //         ),
+  //         SizedBox(
+  //             width: textFieldWidth,
+  //             child: TextFormField(
+  //               key: _nameKey,
+  //               controller: newUserNameText,
+  //               validator: (value) {
+  //                 if (value == null || value.isEmpty) {
+  //                   return 'Enter name';
+  //                 }
+  //                 return null;
+  //               },
+  //             )),
+  //       ],
+  //     ),
+  //   );
+  // }
+
 }
