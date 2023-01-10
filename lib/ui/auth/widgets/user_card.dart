@@ -27,8 +27,11 @@ class UserCard extends StatelessWidget {
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: Image.network(user.profilePicLink,
-                    fit: BoxFit.cover, width: 150, height: 150),
+                child: user.profilePicLink.isEmpty
+                    ? Image.asset(
+                        'assets/images/user_images/defaultUserAvatar.png')
+                    : Image.network(user.profilePicLink,
+                        fit: BoxFit.cover, width: 150, height: 150),
               ),
             );
           },

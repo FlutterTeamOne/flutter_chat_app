@@ -30,47 +30,26 @@ void main() async {
       var progress = find.byType(CircularProgressIndicator);
       expect(progress, findsOneWidget);
     });
-    testWidgets('Column', (tester) async {
-      final mockUserPod = MockUserNotifier();
-      // mockUserPod.readUser().then((value) => UserStateRef(users: [
-      //       UserDto(
-      //           name: 'name',
-      //           email: 'email',
-      //           createdDate: 'createdDate',
-      //           profilePicLink: 'profilePicLink',
-      //           updatedDate: 'updatedDate')
-      //     ]));
+    testWidgets('Find Text: Create new user', (tester) async {
+
       await tester.pumpWidget(ProviderScope(
         overrides: [
-          River.futureUserPod.overrideWith((ref) => ref.watch(River.userPod)),
           River.userPod.overrideWith((ref) {
-            // UserNotifier().readUser();
-            // ref.container.debugChildren;
-            return MockUserNotifier()
-              ..readUser()
-                  .then((value) => UserStateRef(users: [
-                        UserDto(
-                            name: 'name',
-                            email: 'email',
-                            createdDate: 'createdDate',
-                            profilePicLink: 'profilePicLink',
-                            updatedDate: 'updatedDate')
-                      ]))
-                  .onError((error, stackTrace) => UserStateRef(users: [
-                        UserDto(
-                            name: 'name',
-                            email: 'email',
-                            createdDate: 'createdDate',
-                            profilePicLink: 'profilePicLink',
-                            updatedDate: 'updatedDate')
-                      ]));
+            return UserNotifier()
+              ..setUsers([
+                UserDto(
+                    name: 'name',
+                    email: 'email',
+                    createdDate: 'createdDate',
+                    profilePicLink: '',
+                    updatedDate: 'updatedDate')
+              ]);
           })
         ],
         child: const MyApp(),
       ));
-      var progress = find.byType(Column);
-      await tester.pump();
-      expect(progress, findsOneWidget);
+      var text = find.text('Create new user');
+      expect(text, findsOneWidget);
     });
   });
 }
