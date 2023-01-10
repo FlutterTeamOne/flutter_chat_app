@@ -32,6 +32,10 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     });
   }
 
+  Future<UserStateRef> setUsers(List<UserDto>? users) async {
+    return state = state.copyWith(users: users);
+  }
+
   Future<UserStateRef> localReadUser() async {
     var users;
     if (state.userDbthis) {
