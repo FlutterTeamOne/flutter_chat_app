@@ -11,7 +11,7 @@ void main() {
         find.byKey(const ValueKey('center in black_box_page')), findsOneWidget);
   });
   testWidgets(
-    'Отрисока текста в Black Box page',
+    'Отрисовка текста в Black Box page',
     (tester) async {
       await tester.pumpWidget(const MaterialApp(
         home: BlackBoxPage(),

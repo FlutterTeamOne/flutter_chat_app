@@ -1,22 +1,16 @@
 ﻿import 'package:flutter/material.dart';
 
 class ChoosePage extends StatelessWidget {
-  const ChoosePage({
-    Key? key,
-  }) : super(key: key);
+  const ChoosePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-
-      child: Center(
-        child: Container(
-          // color: AppColor.color7E57C2,
-          child: Text(
-            'Choose',
-            // style: AppTextStyle.s36Abel,
-          ),
-        ),
+    return const Center(
+      key: Key('center in choose_page'),
+      child: Text(
+        key: Key('choose_page text'),
+        'Choose',
+        // style: AppTextStyle.s36Abel,
       ),
     );
   }
