@@ -1,23 +1,13 @@
 ﻿import 'package:flutter/material.dart';
 
 class MeetNetPage extends StatelessWidget {
-  const MeetNetPage({
-    Key? key,
-  }) : super(key: key);
+  const MeetNetPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-
-      child: Center(
-        child: Container(
-          // color: AppColor.color7E57C2,
-          child: Text(
-            'MeetNet',
-            // style: AppTextStyle.s36Abel,
-          ),
-        ),
-      ),
+    return const Center(
+      key: Key('center in meet_net_page'),
+      child: Text('MeetNet', key: Key('meet_net_page text')),
     );
   }
 }
