@@ -43,11 +43,11 @@ class UsersServices implements IUsersServices {
   }
 
   @override
-  deleteUser({required int newValues, required String condition}) async {
+  deleteUser({required int id}) async {
     Database db = await DbServerServices.instanse.database;
 
     return await db
-        .rawDelete('''SELECT FROM users WHERE (main_users_id = id)''');
+        .rawDelete('''DELETE FROM users WHERE (user_id = $id)''');
   }
 
   @override
@@ -143,8 +143,8 @@ class UsersServices implements IUsersServices {
 
     for (var idF in idChatsFriends) {
       var idFriend = (idF['friend1_id'] == userId
-          ? idF['friend2_id']
-          : idF['friend1_id']) as int;
+        ? idF['friend2_id']
+        : idF['friend1_id']) as int;
       idFriends.add(idFriend);
     }
     var users = await db.rawQuery('''SELECT *

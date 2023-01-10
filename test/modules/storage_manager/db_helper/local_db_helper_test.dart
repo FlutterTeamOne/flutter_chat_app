@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:chat_app/modules/signal_service/service_locator/locator.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper.dart';
@@ -6,12 +7,14 @@ import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart'
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/src/constants/db_constants.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqflite/sqflite.dart';
 
 Future main() async {
-
+  WidgetsFlutterBinding.ensureInitialized();
 
   group("Local db: creating tables:", () {   
       var user = UserDto(name: 'name', email: 'email', createdDate: 'createdDate', profilePicLink: 'profilePicLink', updatedDate: 'updatedDate');
@@ -40,6 +43,7 @@ Future main() async {
       
       expect(r, [{'name': 'chats'}]);
     });
+    
     test('"main_user" table created', () async {
       await DBHelper.instanse.initDB();
       var db = await DBHelper.instanse.database;
@@ -47,6 +51,7 @@ Future main() async {
       
       expect(r, [{'name': 'main_user'}]);
     });
+    
     test('"attachments" table created', () async {
       await DBHelper.instanse.initDB();
       var db = await DBHelper.instanse.database;
@@ -423,7 +428,7 @@ Future main() async {
       databaseFactory = databaseFactoryFfi;
     });
     test('CHATS_FK_3 ON chats id', () async {
-      databaseFactory.deleteDatabase('test');
+      await databaseFactory.deleteDatabase('test');
       var db = await databaseFactory.openDatabase('test');
       await db.transaction((txn) async {
         await txn.execute('''
