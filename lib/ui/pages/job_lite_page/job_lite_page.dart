@@ -1,23 +1,13 @@
 ﻿import 'package:flutter/material.dart';
 
 class JobLitePage extends StatelessWidget {
-  const JobLitePage({
-    Key? key,
-  }) : super(key: key);
+  const JobLitePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-
-      child: Center(
-        child: Container(
-          // color: AppColor.color7E57C2,
-          child: Text(
-            'Job lite',
-            // style: AppTextStyle.s36Abel,
-          ),
-        ),
-      ),
+    return const Center(
+      key: Key('center in job_lite_page'),
+      child: Text('Job lite', key: Key('job_lite_page text')),
     );
   }
 }
