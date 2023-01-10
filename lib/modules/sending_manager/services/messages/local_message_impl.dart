@@ -110,9 +110,11 @@ class LocalMessagesServices implements ILocalMessagesServices {
   Future<int> deleteMessage({required int id}) async {
     var db = await DBHelper.instanse.database;
 
-    return await db.rawDelete(
-        '''DELETE FROM ${DatabaseConst.messageTable}  WHERE ${DatabaseConst.messagesColumnMessageId}=?''',
+    var deleted = await db.rawDelete(
+        '''DELETE FROM ${DatabaseConst.messageTable}  WHERE ${DatabaseConst.messagesColumnLocalMessagesId}=?''',
         [id]);
+    return deleted;
+    
   }
 
   Future<int> deleteMessageFromBase(
@@ -196,9 +198,13 @@ class LocalMessagesServices implements ILocalMessagesServices {
       required String content,
       required String updateDate}) async {
     var db = await DBHelper.instanse.database;
-    await db.rawUpdate('''UPDATE ${DatabaseConst.messageTable}
-    SET ${DatabaseConst.messagesColumnMessageId}=?,${DatabaseConst.messagesColumnUpdatedDate}=?,${DatabaseConst.messagesColumnContent}=?
-    WHERE ${DatabaseConst.messagesColumnMessageId} = $messageId''',
+    await db.rawUpdate('''
+    UPDATE ${DatabaseConst.messageTable}
+    SET 
+    ${DatabaseConst.messagesColumnMessageId}=?,
+    ${DatabaseConst.messagesColumnUpdatedDate}=?,
+    ${DatabaseConst.messagesColumnContent}=?
+    WHERE (${DatabaseConst.messagesColumnMessageId} = $messageId);''',
         [messageId, updateDate, content]);
     DBHelper.instanse.updateListenController.add(true);
   }
@@ -222,9 +228,9 @@ class LocalMessagesServices implements ILocalMessagesServices {
     var db = await DBHelper.instanse.database;
 
     await db.rawUpdate(''' UPDATE ${DatabaseConst.messageTable}
-          SET ${DatabaseConst.messagesColumnMessageId}=?, ${DatabaseConst.messagesColumnUpdatedDate}=?
-          WHERE ${DatabaseConst.messagesColumnLocalMessagesId} = $localMessageId
-                ''', [messagesId, updatedDate]);
+          SET ${DatabaseConst.messagesColumnMessageId}=$messagesId, ${DatabaseConst.messagesColumnUpdatedDate}="$updatedDate"
+          WHERE (${DatabaseConst.messagesColumnLocalMessagesId} = $localMessageId)
+    ''');
   }
 
   deleteWrittenToServer(
@@ -250,11 +256,10 @@ class LocalMessagesServices implements ILocalMessagesServices {
   Future<int> getMaxMessageId() async {
     var db = await DBHelper.instanse.database;
     var messageId = await db.rawQuery('''
-                SELECT MAX(${DatabaseConst.messagesColumnMessageId})
-                as ${DatabaseConst.messagesColumnMessageId}
+                SELECT MAX(${DatabaseConst.messagesColumnLocalMessagesId})
                 FROM ${DatabaseConst.messageTable}
                 ''');
-    return (messageId[0][DatabaseConst.messagesColumnMessageId] ?? 0) as int;
+    return (messageId[0]['MAX(local_messages_id)'] ?? 0) as int;
   }
 
   Future addAttach(AttachModel model) async {
