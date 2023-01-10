@@ -9,6 +9,8 @@ class FormWidget extends StatelessWidget {
     this.obscureText = false,
     this.inputFormatters,
     required this.maxLength,
+    this.icons,
+    this.suffixOnTap,
   });
 
   final String text;
@@ -16,6 +18,8 @@ class FormWidget extends StatelessWidget {
   final bool? obscureText;
   final RegExp? inputFormatters;
   final int maxLength;
+  final IconData? icons;
+  final Function()? suffixOnTap;
 
   final TextEditingController? controller;
   @override
@@ -31,11 +35,12 @@ class FormWidget extends StatelessWidget {
       decoration: InputDecoration(
         isDense: true,
         labelText: text,
-        labelStyle: Theme.of(context)
-            .textTheme
-            .titleMedium
-            ?.copyWith(color: Theme.of(context).hintColor),
+        labelStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: Theme.of(context).hintColor,
+              fontSize: 14,
+            ),
         counterText: '',
+        suffixIcon: IconButton(icon: Icon(icons), onPressed: suffixOnTap),
         border: OutlineInputBorder(
           borderSide: BorderSide(color: Theme.of(context).primaryColor),
           borderRadius: BorderRadius.circular(15),

@@ -57,12 +57,18 @@ class _NewUserWidgetState extends State<NewUserWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final _isActive = ValueNotifier<bool>(true);
     return Center(
       child: SizedBox(
         width: 250,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text(
+              'Create new user',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 20),
             FormWidget(
               text: 'Name',
               maxLength: 20,
@@ -79,13 +85,26 @@ class _NewUserWidgetState extends State<NewUserWidget> {
               controller: newUserEmailText,
             ),
             const SizedBox(height: 10),
-            FormWidget(
-              text: 'Password',
-              inputFormatters: RegExp(r"^[a-z0-9a-zA-Z]+"),
-              maxLength: 16,
-              validator: (value) {},
-              controller: newUserPasswordText,
-              obscureText: true,
+            ValueListenableBuilder(
+              valueListenable: _isActive,
+              builder: (context, value, child) => FormWidget(
+                text: 'Password',
+                inputFormatters: RegExp(r"^[a-z0-9a-zA-Z]+"),
+                maxLength: 16,
+                controller: newUserPasswordText,
+                obscureText: _isActive.value,
+                icons: _isActive.value == true
+                    ? Icons.visibility_off_rounded
+                    : Icons.visibility_rounded,
+                validator: (value) {},
+                suffixOnTap: () {
+                  if (_isActive.value == true) {
+                    _isActive.value = false;
+                  } else {
+                    _isActive.value = true;
+                  }
+                },
+              ),
             ),
             const SizedBox(height: 10),
             buildCreateNewUserButton(context, newUserNameText, newUserEmailText,
