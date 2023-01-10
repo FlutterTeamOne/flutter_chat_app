@@ -1,7 +1,7 @@
 import 'package:chat_app/modules/signal_service/river/river.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../bloc/new_user_bloc.dart';
 import '../bloc/new_user_event.dart';
 import '../models/new_user_model.dart';
@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/new_user_state.dart';
+part 'form_widget.dart';
 
 class NewUserWidget extends StatefulWidget {
   const NewUserWidget({Key? key}) : super(key: key);
@@ -56,37 +57,74 @@ class _NewUserWidgetState extends State<NewUserWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Column(
+    return Center(
+      child: SizedBox(
+        width: 250,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(
-              height: 200,
+            FormWidget(
+              text: 'Name',
+              maxLength: 20,
+              inputFormatters: RegExp(r'[A-Za-z]+'),
+              validator: (value) {},
+              controller: newUserNameText,
             ),
-            Row(
-              children: [
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      buildNameRow(),
-                      buildEmailRow(),
-                      buildPasswordRow(),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      buildCreateNewUserButton(context, newUserNameText,
-                          newUserEmailText, newUserPasswordText),
-                    ],
-                  ),
-                ),
-              ],
-            )
+            const SizedBox(height: 10),
+            FormWidget(
+              text: 'Email',
+              inputFormatters: RegExp(r"^[a-z0-9.a-z@]+"),
+              maxLength: 36,
+              validator: (value) {},
+              controller: newUserEmailText,
+            ),
+            const SizedBox(height: 10),
+            FormWidget(
+              text: 'Password',
+              inputFormatters: RegExp(r"^[a-z0-9a-zA-Z]+"),
+              maxLength: 16,
+              validator: (value) {},
+              controller: newUserPasswordText,
+              obscureText: true,
+            ),
+            const SizedBox(height: 10),
+            buildCreateNewUserButton(context, newUserNameText, newUserEmailText,
+                newUserPasswordText),
           ],
         ),
-      ],
+      ),
     );
+    // Row(
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   children: [
+    //     Column(
+    //       children: [
+    //         const SizedBox(
+    //           height: 200,
+    //         ),
+    //         Row(
+    //           children: [
+    //             Form(
+    //               key: _formKey,
+    //               child: Column(
+    //                 children: [
+    //                   buildNameRow(),
+    //                   buildEmailRow(),
+    //                   buildPasswordRow(),
+    //                   const SizedBox(
+    //                     height: 20,
+    //                   ),
+    //                   buildCreateNewUserButton(context, newUserNameText,
+    //                       newUserEmailText, newUserPasswordText),
+    //                 ],
+    //               ),
+    //             ),
+    //           ],
+    //         )
+    //       ],
+    //     ),
+    //   ],
+    // );
   }
 
   SizedBox buildPasswordRow() {
@@ -177,7 +215,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
       newUserEmailText, newUserPasswordText) {
     late String newUserName;
     return Padding(
-      padding: const EdgeInsets.only(left: 100.0),
+      padding: const EdgeInsets.only(left: 0.0),
       child: Row(
         children: [
           BlocConsumer<NewUserBloc, NewUserState>(
