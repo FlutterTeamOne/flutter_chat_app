@@ -55,3 +55,19 @@ app.*.map.json
 
 todo.md 
 coverage/lcov.info
+server/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+server/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+server/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+server/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+server/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+server/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+server/android/local.properties
+server/coverage/lcov.info
+server/linux/flutter/generated_plugin_registrant.cc
+server/linux/flutter/generated_plugin_registrant.cc
+server/linux/flutter/generated_plugin_registrant.h
+server/linux/flutter/generated_plugins.cmake
+server/macos/Flutter/GeneratedPluginRegistrant.swift
+server/windows/flutter/generated_plugin_registrant.cc
+server/windows/flutter/generated_plugin_registrant.h
+server/windows/flutter/generated_plugins.cmake
