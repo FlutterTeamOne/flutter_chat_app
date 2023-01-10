@@ -3,6 +3,7 @@ import 'package:chat_app/modules/style_manager/riverpod/theme_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../modules/style_manager/riverpod/riverpod_providers.dart';
 import '../../widgets/custom_theme/color_indicator.dart';
 import '../../widgets/custom_theme/color_tools.dart';
 import '../../widgets/custom_theme/flex_color_picker.dart';

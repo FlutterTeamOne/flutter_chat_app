@@ -107,6 +107,19 @@ CREATE TABLE ${DatabaseConst.messageTable} (
  CHECK (LENGTH(${DatabaseConst.messagesColumnCreatedDate}) = 26)
 )
 ''');
+
+// Theme data table
+      await txn.execute('''
+CREATE TABLE ${DatabaseConst.userThemeTable}(
+ ${DatabaseConst.primaryColor} ${DatabaseConst.char26} ${DatabaseConst.notNull},
+ ${DatabaseConst.brightness} ${DatabaseConst.char26} ${DatabaseConst.notNull},
+ ${DatabaseConst.borderRadius} ${DatabaseConst.integer} ${DatabaseConst.notNull},
+ ${DatabaseConst.fontFamily} ${DatabaseConst.char50} ${DatabaseConst.notNull},
+ ${DatabaseConst.fontSizeFactor} ${DatabaseConst.integer} ${DatabaseConst.notNull},
+ ${DatabaseConst.textColor} ${DatabaseConst.char26} ${DatabaseConst.notNull}
+)
+''');
+
 // Attachments table
       await txn.execute('''
           CREATE TABLE ${DatabaseConst.attachmentsTable} 

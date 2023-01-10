@@ -1,13 +1,33 @@
-part of 'package:chat_app/main.dart';
+import 'package:chat_app/main.dart';
+import 'package:chat_app/modules/style_manager/riverpod/theme_models.dart';
 
-final changeCustomThemeStateProvider =
-    StateProvider<UserThemeData>((ref) {
+import 'package:chat_app/modules/style_manager/utils/style_manager_utils.dart';
+import 'package:chat_app/ui/widgets/custom_theme/color_picker_extensions.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../storage_manager/db_helper/db_helper.dart';
+
+final changeCustomThemeStateProvider = StateProvider<UserThemeData>((ref) {
+  const String color = 'Colors.black87';
+  const String tableName = 'user_theme';
+  Map<String, dynamic> model = {
+    'primaryColor':
+        'StyleManagerUtils().createMaterialColor(const Color(0xFFFF9800))',
+    'brightness': 'brightness',
+    'fontFamily': 'fontFamily',
+    'fontSizeFactor': 'fontSizeFactor',
+    'borderRadius': 20,
+    'textColor': 'Colors.black87'
+  };
+  DBHelper.instanse.onAdd(tableName: tableName, model: model);
   return UserThemeData(
       fontFamily: 'Roboto',
       fontSizeFactor: 1,
-      textColor: Colors.black87,
+      textColor: color.toColor,
       brightness: Brightness.light,
-      primaryColor: MyApp().createMaterialColor(const Color(0xFFFF9800)),
+      primaryColor:
+          StyleManagerUtils().createMaterialColor(const Color(0xFFFF9800)),
       borderRadius: 20);
 });
 

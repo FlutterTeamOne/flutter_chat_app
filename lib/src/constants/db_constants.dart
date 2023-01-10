@@ -11,6 +11,7 @@ class DatabaseConst {
   static const mainUserTable = 'main_user';
   static const userLastTimeOnlineTable = 'user_last_time_online';
   static const attachmentsTable = 'attachments';
+  static const userThemeTable = 'user_theme';
 
   //название колонок таблиц
   //users
@@ -55,6 +56,14 @@ class DatabaseConst {
   static const userLastTimeOnlineColumnId = 'user_last_time_online_id';
   static const userLastTimeOnlineColumnisOnline = 'is_online';
   static const userLastTimeOnlineColumnLastTimeOnline = 'last_time_online';
+
+  // user_theme
+  static const primaryColor = 'primary_color';
+  static const brightness = 'brightness';
+  static const fontFamily = 'fontFamily';
+  static const fontSizeFactor = 'fontSizeFactor';
+  static const borderRadius = 'border_radius';
+  static const textColor = 'text_color';
 
   //ключи
   static const integer = 'INTEGER';
