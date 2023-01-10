@@ -23,7 +23,7 @@ void main() {
 
       var date = '2023-01-08T00:41:21.267124';
 
-      var r = await LocalChatServices().createChat(createDate: date, userId: 1);
+      var r = await LocalChatServices().createChat(createDate: date, userId: 1, chatId: 1);
 
       var id = (await db.rawQuery('''SELECT last_insert_rowid()'''))[0]['last_insert_rowid()'] as int;
 
