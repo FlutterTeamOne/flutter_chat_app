@@ -15,27 +15,28 @@ void main() {
       UserPath.user = user;
 
     test('createUser - takes user\'s parameters, returns the id of the inserted row', () async {
-      await DBHelperStart.instanse.initDB();
-      var db = await DBHelperStart.instanse.database;
-      var deleted = await db.delete('users');
-      var r = await LocalUsersServices().createUserStart(userId: 1, name: 'name', email: 'email', createdDate: '2022-13-45T34:11:11.123456', updatedDate: '2022-13-45T34:11:11.123456', profilePicUrl: 'profilePicUrl');
-      
-      var lastID = await db.rawQuery('''SELECT last_insert_rowid()''');
-      var matcher = [];
-      expect(r, matcher);
-      await DBHelper.instanse.deleteDB(db.path);
-    });
 
-    test('createUserStart - takes user\'s parameters, inserts the user into startDB and returns the number of inserted rows', () async {
       await DBHelper.instanse.initDB();
       var db = await DBHelper.instanse.database;
       await db.delete('users');
       var r = await LocalUsersServices().createUser(userId: 1, name: 'name', email: 'email', createdDate: '2022-13-45T34:11:11.123456', updatedDate: '2022-13-45T34:11:11.123456', profilePicUrl: 'profilePicUrl');
       
       var lastID = await db.rawQuery('''SELECT last_insert_rowid()''');
-      var matcher = [];
+      var matcher = 1;
       expect(r, matcher);
       await DBHelper.instanse.deleteDB(db.path);
+    });
+
+    test('createUserStart - takes user\'s parameters, inserts the user into startDB and returns the number of inserted rows', () async {
+      await DBHelperStart.instanse.initDB();
+      var db = await DBHelperStart.instanse.database;
+      var deleted = await db.delete('users');
+      var r = await LocalUsersServices().createUserStart(userId: 1, name: 'name', email: 'email', createdDate: '2022-13-45T34:11:11.123456', updatedDate: '2022-13-45T34:11:11.123456', profilePicUrl: 'profilePicUrl');
+      
+      var lastID = await db.rawQuery('''SELECT last_insert_rowid()''');
+      var matcher = 1;
+      expect(r, matcher);
+      await DBHelperStart.instanse.deleteDB(db.path);
     });
   
     test('deleteUser - returns the number of deleted rows', () async {
@@ -105,7 +106,7 @@ void main() {
 
       var matcher = UserDto(userId: addedUserId[0]['last_insert_rowid()'] as int, name: query[0]['name'] as String, email: query[0]['email'] as String, createdDate: query[0]['created_date'] as String, profilePicLink: query[0]['profile_pic_link'] as String, updatedDate: query[0]['updated_date'] as String, deletedDate: '');
       expect(r[0], matcher);
-      await DBHelper.instanse.deleteDB(db.path);
+      await DBHelperStart.instanse.deleteDB(db.path);
     });
 
     test('getUserByField - returns list of Users in where one of the fields id equal to the passed value', () async {
@@ -250,7 +251,7 @@ void main() {
 
       expect(r, matcher);
 
-      await DBHelper.instanse.deleteDB(db.path);
+      await DBHelperStart.instanse.deleteDB(db.path);
     });
 
     test('updateUserStart - updates user data', () async {
@@ -271,7 +272,7 @@ void main() {
 
       expect(r[0]['name'], matcher);
 
-      await DBHelper.instanse.deleteDB(db.path);
+      await DBHelperStart.instanse.deleteDB(db.path);
     });
 
     test('getAllUserIdAndUpdatedStarted - gets user_id and updated_date for all users in the table', () async {
@@ -292,7 +293,7 @@ void main() {
 
       expect(r, matcher);
 
-      await DBHelper.instanse.deleteDB(db.path);
+      await DBHelperStart.instanse.deleteDB(db.path);
     });
 
     test('getAllUserIdAndUpdated - gets user_id and updated_date for all users in the table', () async {
@@ -335,7 +336,7 @@ void main() {
 
       expect(r, matcher);
 
-      await DBHelper.instanse.deleteDB(db.path);
+      await DBHelperStart.instanse.deleteDB(db.path);
     });
 
     test('getLastUserId - gets the biggest user_id', () async {
@@ -359,7 +360,7 @@ void main() {
 
       expect(r, matcher);
 
-      await DBHelper.instanse.deleteDB(db.path);
+      await DBHelperStart.instanse.deleteDB(db.path);
     });
 
     test('getMaxUserId - gets the biggest user_id', () async {
