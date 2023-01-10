@@ -1,23 +1,13 @@
 ﻿import 'package:flutter/material.dart';
 
 class FindFriendsPage extends StatelessWidget {
-  const FindFriendsPage({
-    Key? key,
-  }) : super(key: key);
+  const FindFriendsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-
-      child: Center(
-        child: Container(
-          // color: AppColor.color7E57C2,
-          child: Text(
-            'Find friends',
-            // style: AppTextStyle.s36Abel,
-          ),
-        ),
-      ),
+    return const Center(
+      key: Key('center in find_friend_page'),
+      child: Text(key: Key('find_friend_page text'), 'Find friends'),
     );
   }
 }
