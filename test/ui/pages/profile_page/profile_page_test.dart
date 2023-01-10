@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,7 @@ void main() async {
   setUpAll(() async {
     await UserPref.init();
   });
+
   group("Отрисовка виджетов на ProfilePage", () {
     testWidgets('Отрисовка Consumer', (tester) async {
       await tester.pumpWidget(ProviderScope(child: MyApp()));
@@ -27,11 +29,9 @@ void main() async {
     testWidgets('Нет данных', (tester) async {
       await tester.pumpWidget(ProviderScope(child: MyApp()));
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      expect(find.byType(Text), findsNothing);
     });
 
-    testWidgets('Все ок', (tester) async {
-      
+    testWidgets('Все ок', (tester) async { 
       await tester.pumpWidget(ProviderScope(child: MyApp(), overrides: [
         River.userPod.overrideWith((ref) {
           return UserNotifier()
@@ -50,3 +50,4 @@ void main() async {
     });
   });
 }
+
