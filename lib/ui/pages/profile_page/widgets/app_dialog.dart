@@ -12,14 +12,16 @@ class _AppDialog extends ConsumerStatefulWidget {
 class _AppDialogState extends ConsumerState<_AppDialog> {
   @override
   Widget build(BuildContext context) {
-    var userMain;
+    // var userMain;
     var userPod = ref.read(River.userPod);
-    for (var user in userPod.users!) {
-      if (user.userId == UserPref.getUserId) {
-        userMain = user;
-        break;
-      }
-    }
+    // for (var user in userPod.users!) {
+    //   if (user.userId == UserPref.getUserId) {
+    //     userMain = user;
+    //     break;
+    //   }
+    // }
+    var userMain =
+        userPod.users?.firstWhere((user) => user.userId == UserPref.getUserId);
     return Center(
       child: Container(
         width: 350,
@@ -88,29 +90,52 @@ class _AppDialogState extends ConsumerState<_AppDialog> {
                                             borderRadius:
                                                 BorderRadius.circular(20.0),
                                           ))),
-                                          onPressed: () {
+                                          onPressed: () async {
                                             String updatedDate = DateTime.now()
                                                 .toIso8601String();
                                             late String newUrl =
                                                 newUrlController.text;
-                                            UserDto user = userMain;
-                                            var updatedUser = UserDto(
-                                                userId: user.userId,
-                                                name: user.name,
-                                                email: user.email,
-                                                createdDate: user.createdDate,
-                                                profilePicLink: newUrl,
-                                                updatedDate: updatedDate);
-                                            ref
-                                                .read(River.userPod.notifier)
-                                                .updateUser(updatedUser);
+                                            if (!(await validateImage(
+                                                newUrl))) {
+                                              Navigator.pop(context);
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      AlertDialog(
+                                                        title: const Text(
+                                                            'Ошибка'),
+                                                        content: const Text(
+                                                            "Кривая ссылка"),
+                                                        actions: [
+                                                          TextButton(
+                                                              onPressed: () =>
+                                                                  Navigator.pop(
+                                                                      context,
+                                                                      'OK'),
+                                                              child: const Text(
+                                                                  'OK'))
+                                                        ],
+                                                      ));
+                                            } else {
+                                              UserDto user = userMain!;
+                                              var updatedUser = UserDto(
+                                                  userId: user.userId,
+                                                  name: user.name,
+                                                  email: user.email,
+                                                  createdDate: user.createdDate,
+                                                  profilePicLink: newUrl,
+                                                  updatedDate: updatedDate);
+                                              ref
+                                                  .read(River.userPod.notifier)
+                                                  .updateUser(updatedUser);
 
-                                            ref
-                                                .read(River.userPod.notifier)
-                                                .readUser();
+                                              ref
+                                                  .read(River.userPod.notifier)
+                                                  .readUser();
 
-                                            print(newUrl);
-                                            Navigator.pop(context);
+                                              print(newUrl);
+                                              Navigator.pop(context);
+                                            }
                                           },
                                           child: const Icon(Icons.check)),
                                     )
@@ -143,4 +168,29 @@ class _AppDialogState extends ConsumerState<_AppDialog> {
       ),
     );
   }
+}
+
+Future<bool> validateImage(String imageUrl) async {
+  var res;
+  try {
+    res = await Dio().get(imageUrl);
+  } catch (e) {
+    return false;
+  }
+
+  if (res.statusCode != 200) return false;
+  var data = res.headers;
+  print("IMAGE $data");
+  print(data['content-type'][0]);
+  return checkIfImage(data['content-type'][0]);
+}
+
+bool checkIfImage(String param) {
+  if (param == 'image/jpeg' ||
+      param == 'image/png' ||
+      param == 'image/gif' ||
+      param == 'image/webp') {
+    return true;
+  }
+  return false;
 }

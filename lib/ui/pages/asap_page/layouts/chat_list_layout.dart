@@ -45,8 +45,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
   Widget build(BuildContext context) {
     var grpcClient = GrpcClient();
     return Drawer(
-      shape: Border(
-          right: BorderSide(width: 1, color: Theme.of(context).dividerColor)),
+      width: 300,
       elevation: 0,
       child: Consumer(builder: (context, ref, child) {
         var userPod = ref.read(River.userPod);
@@ -72,15 +71,16 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                               separatorBuilder: (context, index) =>
                                   const SizedBox(height: 25),
                               itemBuilder: (context, index) {
-                                var friend;
-                                for (var user in userPod.users!) {
-                                  if (user.userId ==
-                                      widget.chatModel[index].userIdChat) {
-                                    friend = user;
-                                    break;
-                                  }
-                                }
-
+                                // for (var user in userPod.users!) {
+                                //   if (user.userId ==
+                                //       widget.chatModel[index].userIdChat) {
+                                //     friend = user;
+                                //     break;
+                                //   }
+                                // }
+                              var  friend = userPod.users?.firstWhere((user) =>
+                                    widget.chatModel[index].userIdChat ==
+                                    user.userId);
                                 var lastMessage = MessageDto(
                                     chatId: 0, senderId: 0, content: '');
                                 for (var i in widget.messageModel) {
@@ -95,7 +95,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                     sender: lastMessage.chatId == 0
                                         ? ""
                                         : !checkSender(lastMessage.senderId)
-                                            ? friend.name
+                                            ? friend!.name
                                             : 'You',
                                     // checkSender(widget.messageModel[lastMessageId].senderId),
                                     // ? userBloc.state.users[index].name:'You'),
@@ -107,8 +107,8 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                           .getChatId(
                                               widget.chatModel[index].chatId!);
                                     },
-                                    name: friend.name,
-                                    image: friend.profilePicLink,
+                                    name: friend?.name,
+                                    image: friend?.profilePicLink,
                                     updatedDate: getUpdateDate(
                                         widget.chatModel[index].updatedDate),
                                     message: lastMessage.chatId != 0
@@ -168,29 +168,28 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                 );
                               });
                         }
-                        
-                    });
-                    // .whenComplete(() async {
-                    //     await showDialog(
-                    //       barrierDismissible: false,
-                    //       context: context,
-                    //       builder: (context) {
-                    //         return Dialog(
-                    //           backgroundColor:
-                    //               Theme.of(context).backgroundColor,
-                    //           child: const Padding(
-                    //             padding: EdgeInsets.all(8.0),
-                    //             child: Center(
-                    //               child: CircularProgressIndicator(),
-                    //             ),
-                    //           ),
-                    //         );
-                    //       },
-                    //     ).timeout(const Duration(seconds: 2),
-                    //         onTimeout: () => Navigator.pop(context, 'OK'));
+                      });
+                      // .whenComplete(() async {
+                      //     await showDialog(
+                      //       barrierDismissible: false,
+                      //       context: context,
+                      //       builder: (context) {
+                      //         return Dialog(
+                      //           backgroundColor:
+                      //               Theme.of(context).backgroundColor,
+                      //           child: const Padding(
+                      //             padding: EdgeInsets.all(8.0),
+                      //             child: Center(
+                      //               child: CircularProgressIndicator(),
+                      //             ),
+                      //           ),
+                      //         );
+                      //       },
+                      //     ).timeout(const Duration(seconds: 2),
+                      //         onTimeout: () => Navigator.pop(context, 'OK'));
 
-                        // await Future.delayed(const Duration(seconds: 2));
-                        // Navigator.pop(context, 'OK');
+                      // await Future.delayed(const Duration(seconds: 2));
+                      // Navigator.pop(context, 'OK');
                       // });
                     },
                     icon: const Icon(Icons.add),

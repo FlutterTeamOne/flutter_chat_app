@@ -20,7 +20,7 @@ class _ChangeUserPic extends StatelessWidget {
               color: Theme.of(context).primaryColor,
               borderRadius: BorderRadius.circular(50),
             ),
-            child: Center(
+            child: const Center(
               child: Icon(
                 Icons.add_photo_alternate_rounded,
                 color: Colors.white,
