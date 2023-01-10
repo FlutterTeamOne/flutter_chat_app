@@ -13,7 +13,6 @@ message GetUserRequest {
     string name = 2;
     string email = 3;
     string dateCreation = 4;
-   
 }
 
 message GetUserResponse {

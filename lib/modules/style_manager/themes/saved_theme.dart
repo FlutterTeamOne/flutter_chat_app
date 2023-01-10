@@ -1,4 +1,4 @@
-import 'package:chat_app/modules/storage_manager/library/library_storage_manager.dart';
+import '../../storage_manager/library/library_storage_manager.dart';
 
 class SavedTheme {
   late int _initThemeIndex;

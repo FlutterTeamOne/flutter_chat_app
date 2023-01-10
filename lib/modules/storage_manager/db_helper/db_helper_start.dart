@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:chat_app/src/constants/app_data_constants.dart';
+import '../../../src/constants/app_data_constants.dart';
 
 import '../../../src/constants/db_constants.dart';
 import 'package:path/path.dart';
@@ -112,6 +112,11 @@ CREATE TABLE ${DatabaseConst.userTable} (
     _updateListen();
   }
 
+  Future close() async {
+    var db = await instanse.database;
+    _database = null;
+    await db.close();
+  }
 // ///Функция создания временной таблицы
 // Future onCreateTemp() async {
 //   var db = await instanse.database;

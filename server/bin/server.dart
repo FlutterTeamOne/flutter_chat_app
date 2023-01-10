@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:grpc/grpc.dart';
 import 'package:grpc/grpc.dart';
 import 'package:server/src/db_server/services/message_service.dart';
 import 'package:server/src/library/library_server.dart';
+import 'package:server/src/synh_helper/synh_helper.dart';
 
 ///
 ///Заполняем все методы как и в Protoc файле
@@ -11,165 +14,15 @@ class GrpcMessage extends GrpcMessagesServiceBase {
   var messagesService = MessagesDBServices();
   var chatsService = ChatsServices();
   var usersService = UsersServices();
-  // var _controller = <int, StreamController<MessageFromBase>>{};
-
-  //   @override
-  // Future<ConnectResponse> connecting(
-  //     ServiceCall call, ConnectRequest request) async {
-  //   //save to db
-  //   print('Connect: id: ${request.id}  hashcode: ${request.hashCode}');
-
-  //   return ConnectResponse(id: request.id, hashConnect: request.hashCode);
-  // }
-
-  // @override
-  // Future<CreateMessageResponse> createMessage(
-  //     ServiceCall call, CreateMessageRequest request) async {
-  //   var src = await messagesService.addNewMessage(
-  //     chatId: request.chatIdMain,
-  //     senderId: request.senderMainId,
-  //     content: request.content,
-  //   );
-  //   print('SRC: $src');
-  //   var message = CreateMessageResponse();
-
-  //   if (src['message_id'] != 0) {
-  //     message.dateCreate = src['created_date'] as String;
-  //     message.mainMessagesId = src['message_id'] as int;
-  //   } else {
-  //     message.mainMessagesId = 555; // message.ok = false;
-  //   }
-  //   print('SERVER MESSAGE: $message');
-  //   var mes =
-  //       await messagesService.getMessageById(id: src['message_id'] as int);
-  //   print('MES: $mes');
-  //   var messageFromBase = MessageFromBase(
-  //       chatIdMain: mes[0]['chat_id'],
-  //       senderMainId: mes[0]['sender_id'],
-  //       content: mes[0]['content'],
-  //       date: mes[0]['created_date'],
-  //       mainIdMessage: mes[0]['message_id']);
-  //   print('MESfrom: $messageFromBase');
-  //   var receiverId = await usersService.getUserIdByChat(
-  //       senderId: request.senderMainId, chatId: request.chatIdMain);
-  //   print('receiverId: $receiverId');
-  //   var hashConnect;
-  //   try {
-  //     hashConnect = await usersService.getHashCodeById(id: receiverId);
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //   print("HASH: $hashConnect");
-  //   hashConnect != null
-  //       ? _controller[hashConnect]?.sink.add(messageFromBase)
-  //       : print("user $receiverId not connecting");
-  //   return message;
-  // }
-
-  // @override
-  // Stream<MessageFromBase> synchronization(
-  //     ServiceCall call, LastMessage request) async* {
-  //   var messages = await messagesService.getRecentMessages(message: request);
-  //   MessageFromBase lastMessage = MessageFromBase();
-  //   if (messages.length == 0) {
-  //     yield lastMessage;
-  //   } else {
-  //     for (int i = 0; i < messages.length; i++) {
-  //       MessageFromBase lastMessage = MessageFromBase();
-  //       lastMessage.mainIdMessage = messages[i]['message_id'];
-  //       lastMessage.chatIdMain = messages[i]['chat_id'];
-  //       lastMessage.senderMainId = messages[i]['sender_id'];
-  //       lastMessage.content = messages[i]['content'];
-  //       lastMessage.date = messages[i]['created_date'];
-  //       yield lastMessage;
-  //     }
-  //   }
-  // }
-
-  // @override
-  // Future<UpdateMessageResponse> updateMessage(
-  //     ServiceCall call, UpdateMessageRequest request) async {
-  //   var timeUpdate = DateTime.now().toIso8601String();
-  //   var src = await messagesServices.updateMessage(
-  //       newValues:
-  //           "content = '${request.content}', updated_date = '$timeUpdate'",
-  //       condition: "message_id = ${request.idMessageMain}");
-  //   print('UPD SRC:$src');
-  //   var message = UpdateMessageResponse();
-  //   if (src != 0) {
-  //     message.idMessageMain = request.idMessageMain;
-  //     message.dateUpdate = timeUpdate;
-  //   }
-  //   print('UPD MSG: $message');
-  //   return message;
-  // }
-
-  // @override
-  // Future<DeleteMessageResponse> deleteMessage(
-  //     ServiceCall call, DeleteMessageRequest request) async {
-  //   var timeDelete = DateTime.now().toIso8601String();
-  //   var src = await messagesService.updateMessage(
-  //       newValues: "deleted_date = '$timeDelete', updated_date = '$timeDelete'",
-  //       condition: "message_id = ${request.idMessageMain}");
-  //   var message = DeleteMessageResponse();
-  //   if (src != 0) {
-  //     message.dateDelete = timeDelete;
-  //     message.idMessageMain = request.idMessageMain;
-  //   }
-  //   return message;
-  // }
-
-  // @override
-  // Stream<MessageFromBase> connectings(
-  //     ServiceCall call, Stream<ConnectRequest> request) async* {
-  //   var connectController = StreamController<MessageFromBase>();
-
-  //   late int id;
-  //   request.listen((mes) async {
-  //     print('listening...${mes.hashCode}');
-  //     id = mes.id;
-  //     _controller[mes.hashCode] = connectController;
-  //     await usersService.updateUser(
-  //         newValues: 'hash_connect = ${mes.hashCode}',
-  //         condition: 'user_id = ${mes.id}');
-  //   }).onError((dynamic e) async {
-  //     print(e);
-  //     _controller.remove(await usersService.getHashCodeById(id: id));
-  //     connectController.close();
-  //     await usersService.updateUser(
-  //         newValues: 'hash_connect = null', condition: 'user_id = $id');
-  //     print('Disconnected: #${request.hashCode}');
-  //   });
-  //   try {
-  //     await for (final message in connectController.stream) {
-  //       print('yield');
-  //       yield message;
-  //     }
-  //   } on GrpcError catch (e) {
-  //     print(e);
-  //   } finally {
-  //     _controller.remove(await usersService.getHashCodeById(id: id));
-  //     connectController.close();
-  //     await usersService.updateUser(
-  //         newValues: 'hash_connect = null', condition: 'user_id = $id');
-  //     print('Disconnected: #${request.hashCode}');
-  //   }
-  // }
-
-  // @override
-  // Future<Empty> connecting(ServiceCall call, Empty request) {
-  //   // TODO: implement connecting
-  //   throw UnimplementedError();
-  // }
-  // var messages = <Message>[];
-  // var streamController = StreamController<Message>.broadcast();
 
   final _controllers = <StreamController<DynamicResponse>, void>{};
-// print('stream: ${streamController.hasListener}');
 
   @override
   Stream<DynamicResponse> streamMessage(
       ServiceCall call, Stream<DynamicRequest> request) async* {
+    print('MSG CALL META: ${call.clientMetadata}');
+    print('MSG CL HEADER: ${call.headers}');
+    print('MSG CL STATUS: ${call.isCanceled}');
     var clientController = StreamController<DynamicResponse>();
     _controllers[clientController] = null;
 
@@ -227,61 +80,10 @@ class GrpcMessage extends GrpcMessagesServiceBase {
       print('Disconnected: #${request.hashCode}');
     });
 
-    // await for (var req in request) {
-    //   if (req.messageState == MessageState.connecting) {
-    //     print(
-    //         'Request from ${req.createMessage.message.senderId} (#${request.hashCode}) message: ${req.createMessage.message.content}');
-    //     await usersService.updateUser(
-    //         newValues: 'hash_connect = ${request.hashCode}',
-    //         condition: 'user_id = ${req.createMessage.message.senderId}');
-    //     print('Sender Id');
-    //     // } else if (req.messageState == MessageState.isCreateMessage) {
-    //     print(
-    //         'Request from ${req.createMessage.message.senderId} (#${request.hashCode}) message: ${req.createMessage.message.content}');
-
-    //     //         var receiverId = await usersService.getUserIdByChat(
-    //     //           senderId: req.createMessage.message.senderId,
-    //     //            chatId: req.createMessage.message.chatId);
-    //     //         var hashConnect;
-    //     //         try {
-    //     //           hashConnect = await usersService.getHashCodeById(id: receiverId);
-    //     //         } catch (e) {
-    //     //         print(e);
-    //     //       }
-    //     //       print("HASH: $hashConnect");
-    //     //       hashConnect != null
-    //     //     ? _controllers[hashConnect]?.sink.add(req.createMessage.message)
-    //     //     : print("user $receiverId not connecting");
-    //     // if (controller != clientController) {
-    //     //   print('REQ message: ${req.createMessage.message}');
-    //     //   // messages.add(req.message);
-    //     //   controller[request.hashCode].sink.add(req.createMessage.message);
-    //     // }
-
-    //     // request.listen((req) {
-    //     //   _controllers.forEach((userId, controller) {
-    //     //     if (controller != clientController) {
-    //     //       print('REQ message: ${req.message}');
-    //     //       // messages.add(req.message);
-    //     //       controller.sink.add(req.message);
-    //     //     }
-    //     //   });
-    //     // }).onError((dynamic e) {
-    //     //   print(e);
-    //     //   _controllers.remove(clientController);
-
-    //     //   clientController.close();
-    //     //   print('Disconnected: #${request.hashCode}');
-    //     // });
-
     await for (final req in clientController.stream) {
       print('  -> piped to #${request.hashCode}');
       yield req;
     }
-
-    //   if (req.messageState == MessageState.isDelteMesage) {}
-    //   if (req.messageState == MessageState.isUpdateMessage) {}
-    // }
   }
 
   _onCreateMessage(
@@ -305,16 +107,6 @@ class GrpcMessage extends GrpcMessagesServiceBase {
       print(message.messageState);
       controller.sink.add(message);
     }
-
-    ///ТУТ
-    // } else {
-    //   controller.sink.add(
-    //     Dynamic(
-    //         updateMessage: UpdateMessageRequest(
-    //             idMessageMain: req.readMessageRequest.message.messageId),
-    //         messageState: MessageStateEnum.isUpdateMessage),
-    //   );
-    // }
   }
 
   _onUpdateMessage(
@@ -368,80 +160,6 @@ class GrpcMessage extends GrpcMessagesServiceBase {
   }
 }
 
-class GrpcChats extends GrpcChatsServiceBase {
-  @override
-  // Future<CreateChatResponse> createChat(
-  //     ServiceCall call, CreateChatRequest request) async {
-  //   var src = await ChatsServices().createChat(friend1Id: null, friend2Id: null, date: '');
-  //   var createChatResponse = CreateChatResponse();
-  //   if (src[0]['chat_id'] != 0) {
-  //     createChatResponse.id = src[0]['chat_id'];
-  //     createChatResponse.createdDate = DateTime.now().toIso8601String();
-  //   }
-  //   return createChatResponse;
-  // }
-
-//   @override
-//   Future<DeleteChatResponse> deleteChat(
-//       ServiceCall call, DeleteChatRequest request) async {
-//     var deleteResponse = DeleteChatResponse();
-//     var src = await ChatsServices().deleteChat(id: request.id);
-//     if (src != 0) {
-//       deleteResponse.dateDeleted = DateTime.now().toIso8601String();
-//     }
-//     return deleteResponse;
-//   }
-
-  // @override
-  // Future<GetChatResponse> getChat(
-  //     ServiceCall call, GetChatRequest request) async {
-  //   var getChatResp = GetChatResponse();
-  //   var src = await ChatsServices().getChatById(id: request.id);
-
-  //   if (src[0]['user_id'] != 0 && src[0]['user_id'] != null) {
-  //     getChatResp.friend1Id = src[0]['friend1_id'];
-  //     getChatResp.friend2Id = src[0]['friend2_id'];
-  //     getChatResp.createdDate = DateTime.now().toIso8601String();
-  //   }
-  //   return getChatResp;
-  // }
-
-//   @override
-//   Future<UpdateChatResponse> updateChat(
-//       ServiceCall call, UpdateChatRequest request) async {
-//     var updateChatResp = UpdateChatResponse();
-
-  //   return updateChatResp;
-  // }
-
-  @override
-  Future<CreateChatResponse> createChat(
-      ServiceCall call, CreateChatRequest request) {
-    // TODO: implement createChat
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<GetChatResponse> getChat(ServiceCall call, GetChatRequest request) {
-    // TODO: implement getChat
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<DeleteChatResponse> deleteChat(
-      ServiceCall call, DeleteChatRequest request) {
-    // TODO: implement deleteChat
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<UpdateChatResponse> updateChat(
-      ServiceCall call, UpdateChatRequest request) {
-    // TODO: implement updateChat
-    throw UnimplementedError();
-  }
-}
-
 class GrpcUsers extends GrpcUsersServiceBase {
   @override
   Future<CreateUserResponse> createUser(
@@ -481,6 +199,14 @@ class GrpcUsers extends GrpcUsersServiceBase {
     return deleteUserResponse;
   }
 
+  //TODO: Расписать ошибки и вынести в отдельный класс
+  List<GrpcError> errors = [
+    GrpcError.custom(15, "Нет пользователя с таким ID"),
+    GrpcError.custom(16, "Нет пользователя с таким Name"),
+    GrpcError.custom(17, "Нет пользователя с таким Email"),
+    GrpcError.custom(18, "Пользователь удален")
+  ];
+
   @override
   Future<GetUserResponse> getUser(
       ServiceCall call, GetUserRequest request) async {
@@ -492,8 +218,14 @@ class GrpcUsers extends GrpcUsersServiceBase {
           .getUserByField(field: 'user_id', fieldValue: '${request.id}');
       print('OK: $src');
       if (src.toString().contains('user_id')) {
+        print(src[0]['deleted_date']);
+        if (src[0]['deleted_date'] != "" && src[0]['deleted_date'] != null) {
+          throw errors[3];
+        }
         print('src contains user_id');
         return GetUserResponse(id: request.id);
+      } else {
+        throw errors[0];
       }
     } else if (request.name.isNotEmpty) {
       src = await UsersServices()
@@ -505,7 +237,7 @@ class GrpcUsers extends GrpcUsersServiceBase {
       src = await UsersServices().getUserByField(
           field: 'created_date', fieldValue: request.dateCreation);
     } else {
-      // // return GrpcError.invalidArgument()
+      throw GrpcError.invalidArgument();
     }
     return GetUserResponse();
   }
@@ -539,147 +271,115 @@ class GrpcUsers extends GrpcUsersServiceBase {
 class GrpcSynh extends GrpcSynchronizationServiceBase {
   @override
   Future<DataDBResponse> getUsersSynh(
-      ServiceCall call, SynhMainUser request) async {
-    var chats;
+      ServiceCall call, MainUserRequest request) async {
+    var newChats;
     var newUsers;
-    var updateUsers;
-    var messages;
-    if (request.chatId == 0) {
-      chats =
-          await ChatsServices().getChatsByUserId(userId: request.mainUserId);
+    var newMessages;
+    var updatedUsers;
+    var updatedChats;
+    var updatedMessages;
+
+    print(
+        '/////////////////ЗАШЛИ НА ЮЗЕРА ${request.users.mainUser}//////////////////');
+
+    ///
+    ///Юзеры и чаты
+    ///
+    if (request.chats.maxChatId == 0) {
+      print('new chats started');
+      newChats = await ChatsServices()
+          .getChatsByUserId(userId: request.users.mainUser);
+      print('new chats ended');
+      print('new users started');
       newUsers = await UsersServices()
-          .getAllUsersByIDfriend(userId: request.mainUserId);
-      updateUsers = [];
+          .getAllUsersByIDfriend(userId: request.users.mainUser);
+      print('new users ended');
+      updatedUsers = [];
+      updatedChats = [];
+      print('REQUEST CHATS MAX CHAT ID OK');
     } else {
-      chats = await ChatsServices().getChatsByUserIdMoreChatId(
-          userId: request.mainUserId, chatId: request.chatId);
-      updateUsers =
-          await UsersServices().getUpdatedUsers(users: request.users.users);
+      print(
+          'else new chats started: mainUser:${request.users.mainUser} :maxChatID ${request.chats.maxChatId} ');
+      newChats = await ChatsServices().getChatsByUserIdMoreChatId(
+          userId: request.users.mainUser, chatId: request.chats.maxChatId);
+      print('else updated chats started ${request.chats.chatsForUpdate}');
+      updatedChats = await ChatsServices()
+          .getUpdatedChats(chats: request.chats.chatsForUpdate);
+      print('else updated users started ${request.users.usersForUpdate}');
+      updatedUsers = await UsersServices()
+          .getUpdatedUsers(users: request.users.usersForUpdate);
+      print('else  newusers started');
       newUsers = await UsersServices().getAllUsersByIDfriendMoreChatId(
-          id: request.mainUserId, chatId: request.chatId);
+          id: request.users.mainUser, chatId: request.chats.maxChatId);
+      print('ELSE REQUEST CHATS MAX CHAT ID OK');
     }
-    if (request.messageId == 0) {
-      messages = await MessagesDBServices()
-          .getMessageByUserId(userId: request.mainUserId);
+    print("ВЫШЛИ ИЗ ЮЗЕРОВ И ЧАТОВ");
+
+    ///
+    ///Сообщения
+    ///
+    if (request.messages.maxMessageId == 0) {
+      print("Нет сообщений совсем");
+      newMessages = await MessagesDBServices()
+          .getMessageByUserId(userId: request.users.mainUser);
+      updatedMessages = [];
     } else {
-      messages = await MessagesDBServices().getMessageByUserIdMoreMessageId(
-          userId: request.mainUserId, messageId: request.messageId);
+      print("Есть ли сообщения больше ${request.messages.maxMessageId}?");
+      print("MainUserId: ${request.users.mainUser}");
+      newMessages = await MessagesDBServices().getMessageByUserIdMoreMessageId(
+          userId: request.users.mainUser,
+          messageId: request.messages.maxMessageId);
+      updatedMessages = await MessagesDBServices()
+          .getUpdatedMessages(messages: request.messages.messageForUpdate);
     }
 
     print('USERSNEW: $newUsers');
-    print('UPDATEDUSERS: $updateUsers');
-    print('CHATS: $chats');
-    print('MESSAGES: $messages');
-    List<SynhUser> userList = [];
-    List<SynhUser> updateUserList = [];
-    List<SynhChat> chatList = [];
-    List<SynhMessage> messageList = [];
+    print('CHATSNEW: $newChats');
+    print('MESSAGESNEW: $newMessages');
+    print('UPDATEDUSERS: $updatedUsers');
+    print('UPDATE CHATS: $updatedChats');
+    print('UPDATE MESSAGES: $updatedMessages');
 
-    for (int i = 0; i < chats.length; i++) {
-      var chatForList = SynhChat();
-      chatForList.chatId = chats[i]['chat_id'] as int;
-      chatForList.userId = (chats[i]['friend1_id'] == request.mainUserId
-          ? chats[i]['friend2_id']
-          : chats[i]['friend1_id']) as int;
-      chatForList.createdDate = chats[i]['created_date'] as String;
-      chatForList.updateDate = chats[i]['updated_date'] as String;
-      chatForList.deletedDate = chats[i]['deleted_date'] ?? '';
-      chatList.add(chatForList);
-    }
-
-    for (int i = 0; i < newUsers.length; i++) {
-      var userForList = SynhUser();
-      userForList.userId = newUsers[i]['user_id'] as int;
-      userForList.name = newUsers[i]['name'] as String;
-      userForList.email = newUsers[i]['email'] as String;
-      userForList.picture = newUsers[i]['profile_pic_url'] as String;
-      userForList.createdDate = newUsers[i]['created_date'] as String;
-      userForList.updateDate = newUsers[i]['updated_date'] as String;
-      userForList.deletedDate = newUsers[i]['deleted_date'] ?? '';
-      userList.add(userForList);
-    }
-
-    for (var user in updateUsers) {
-      var userForList = SynhUser();
-      userForList.userId = user['user_id'] as int;
-      userForList.name = user['name'] as String;
-      userForList.email = user['email'] as String;
-      userForList.picture = user['profile_pic_url'] as String;
-      userForList.createdDate = user['created_date'] as String;
-      userForList.updateDate = user['updated_date'] as String;
-      userForList.deletedDate = user['deleted_date'] ?? '';
-      updateUserList.add(userForList);
-    }
-
-    for (int i = 0; i < messages.length; i++) {
-      var type = messages[i]['content_type'] == null
-          ? ContentTypeSynch.isText
-          : messages[i]['content_type'] == ContentTypeSynch.isMedia.name
-              ? ContentTypeSynch.isMedia
-              : messages[i]['content_type'] == ContentTypeSynch.isMediaText.name
-                  ? ContentTypeSynch.isMediaText
-                  : ContentTypeSynch.isText;
-      var messageForList = SynhMessage();
-      messageForList.senderId = messages[i]['sender_id'] as int;
-      messageForList.chatId = messages[i]['chat_id'] as int;
-      messageForList.createdDate = messages[i]['created_date'] as String;
-      messageForList.messageId = messages[i]['message_id'] as int;
-      messageForList.content = messages[i]['content'] as String;
-      messageForList.updatedDate = messages[i]['updated_date'] as String;
-      messageForList.deletedDate = messages[i]['deleted_date'] ?? '';
-      messageForList.contentType = type;
-      messageForList.attachmentId = messages[i]['attachment_id'] ?? 0;
-      //Параметра нету в базе
-      //messageForList.isRead = messages[i]['is_read'].toInt() ?? 0;
-      messageList.add(messageForList);
-    }
-
+    //Заполняем ответ
     var dbRequest = DataDBResponse(
-        newUsers: userList,
-        chats: chatList,
-        messages: messageList,
-        updatedUsers: updateUserList);
+      users: UsersResponse(
+          usersNew: SynhHelper.synhUsersResponse(users: newUsers),
+          usersUpdated: SynhHelper.synhUsersResponse(users: updatedUsers)),
+      chats: ChatsResponse(
+          chatsNew: SynhHelper.synhChatsResponse(
+              chats: newChats, mainUserId: request.users.mainUser),
+          chatsUpdated: SynhHelper.synhChatsResponse(
+              chats: updatedChats, mainUserId: request.users.mainUser)),
+      messages: MessagesResponse(
+          messagesNew: SynhHelper.synhMessagesResponse(messages: newMessages),
+          messagesUpdated:
+              SynhHelper.synhMessagesResponse(messages: updatedMessages)),
+    );
     return dbRequest;
   }
 
   @override
   Future<UsersResponse> sync(ServiceCall call, UsersRequest request) async {
-    // TODO: implement sync
-    var newUsersList = <SynhUser>[];
-    var usersUpdatedList = <SynhUser>[];
+    var usersUpdated;
     var lastId = 0;
-    if (request.users.length > 0) {
-      var usersUpdated =
-          await usersServices.getUpdatedUsers(users: request.users);
-      lastId = request.users.last.userId;
-      for (int i = 0; i < usersUpdated.length; i++) {
-        var userForList = SynhUser();
-        userForList.userId = usersUpdated[i]['user_id'] as int;
-        userForList.name = usersUpdated[i]['name'] as String;
-        userForList.email = usersUpdated[i]['email'] as String;
-        userForList.picture = usersUpdated[i]['profile_pic_url'] as String;
-        userForList.createdDate = usersUpdated[i]['created_date'] as String;
-        userForList.updateDate = usersUpdated[i]['updated_date'] as String;
-        userForList.deletedDate =
-            (usersUpdated[i]['deleted_date'] ?? '') as String;
-        usersUpdatedList.add(userForList);
-      }
+    if (request.usersForUpdate.isNotEmpty) {
+      usersUpdated =
+          await usersServices.getUpdatedUsers(users: request.usersForUpdate);
+      lastId = request.usersForUpdate.last.userId;
     }
     var newUsers = await usersServices.getAllUsersMoreId(id: lastId);
 
-    for (int i = 0; i < newUsers.length; i++) {
-      var userForList = SynhUser();
-      userForList.userId = newUsers[i]['user_id'] as int;
-      userForList.name = newUsers[i]['name'] as String;
-      userForList.email = newUsers[i]['email'] as String;
-      userForList.picture = newUsers[i]['profile_pic_url'] as String;
-      userForList.createdDate = newUsers[i]['created_date'] as String;
-      userForList.updateDate = newUsers[i]['updated_date'] as String;
-      userForList.deletedDate = (newUsers[i]['deleted_date'] ?? '') as String;
-      newUsersList.add(userForList);
-    }
+    print("NEWUSERS START $newUsers");
+    print("UPDATEDUSERS START $usersUpdated");
+
+    var newUserResponse = SynhHelper.synhUsersResponse(users: newUsers);
+    print('NEW USERS RESP START: $newUserResponse');
+    var updatedUserResponse = SynhHelper.synhUsersResponse(users: usersUpdated);
+
+    print('UPDATED USERS RESP START: $updatedUserResponse');
+
     return UsersResponse(
-        usersNew: newUsersList, usersUpdated: usersUpdatedList);
+        usersNew: newUserResponse, usersUpdated: updatedUserResponse);
   }
 }
 
@@ -689,21 +389,124 @@ class GrpcSynh extends GrpcSynchronizationServiceBase {
 Future<void> main() async {
   final server = Server(
     [GrpcMessage(), GrpcUsers(), GrpcSynh()],
-    const <Interceptor>[], //Перехватчик
+    // const <Interceptor>[],
+    [
+      Inter().intes(
+          CallService(),
+          MethodService(
+            'check',
+            () {},
+            true,
+            true,
+            (request) {
+              print('SERVER REQUEST: $request');
+              return null;
+            },
+            (response) {
+              print('SERVER RESPONSE: $response');
+              return [];
+            },
+          )),
+    ], //Перехватчик
 
     //Реестр кодеков, отслеживает чем будем пользоваться
     CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
   );
-
   await server.serve(port: 6000);
   await DbServerServices.instanse.openDatabase();
   print('✅ Server listening on port ${server.port}...');
 }
 
-Future<void> measureInterceptor(ServiceCall call, ServiceMethod method,
-    Future<void> Function(ServiceCall call, ServiceMethod method) next) async {
+class MethodService extends ServiceMethod {
+  MethodService(
+      super.name,
+      super.handler,
+      super.streamingRequest,
+      super.streamingResponse,
+      super.requestDeserializer,
+      super.responseSerializer);
+}
+
+class CallService extends ServiceCall {
+  @override
+  // TODO: implement clientCertificate
+  X509Certificate? get clientCertificate => throw UnimplementedError();
+
+  @override
+  // TODO: implement clientMetadata
+  Map<String, String>? get clientMetadata => {'CL': 'metadata'};
+
+  @override
+  // TODO: implement deadline
+  DateTime? get deadline => throw UnimplementedError();
+
+  @override
+  // TODO: implement headers
+  Map<String, String>? get headers => throw UnimplementedError();
+
+  @override
+  // TODO: implement isCanceled
+  bool get isCanceled => throw UnimplementedError();
+
+  @override
+  // TODO: implement isTimedOut
+  bool get isTimedOut => throw UnimplementedError();
+
+  @override
+  void sendHeaders() {
+    // TODO: implement sendHeaders
+  }
+
+  @override
+  void sendTrailers({int? status, String? message}) {
+    // TODO: implement sendTrailers
+  }
+
+  @override
+  // TODO: implement trailers
+  Map<String, String>? get trailers => throw UnimplementedError();
+}
+
+class Inter {
+  FutureOr<GrpcError?> Function(ServiceCall, ServiceMethod<dynamic, dynamic>)
+      intes(ServiceCall call, ServiceMethod method) {
+    // final Stopwatch stopwatch = Stopwatch()..start();
+    print('CL MEDATA: ${call.clientMetadata}');
+    print('Handler: ${method.handler}');
+    var measure = measureInterceptor(call, method, (call, method) async {
+      print(
+          'MEASURE META: ${call.clientMetadata} \n: METHOD ${method.handler}');
+      return null;
+    });
+    // stopwatch.stop();
+    // print("method ${method.name} took ${stopwatch.elapsedMilliseconds} ms");
+    return measure;
+  }
+}
+
+FutureOr<GrpcError?> Function(ServiceCall, ServiceMethod<dynamic, dynamic>)
+    measureInterceptor(
+        ServiceCall call,
+        ServiceMethod method,
+        FutureOr<GrpcError?> Function(ServiceCall call, ServiceMethod method)
+            next) {
   final Stopwatch stopwatch = Stopwatch()..start();
-  await next(call, method);
+  next(call, method);
+
   stopwatch.stop();
   print("method: ${method.name}, took ${stopwatch.elapsedMilliseconds} ms");
+  //(ServiceCall, ServiceMethod<dynamic, dynamic>) => Future<GrpcError?>
+  return next;
+}
+
+class ClInter extends ClientInterceptor {
+  @override
+  ResponseFuture<R> interceptUnary<Q, R>(
+      ClientMethod<Q, R> method, Q request, CallOptions options, invoker) {
+    var newOptions = options.mergedWith(CallOptions(metadata: <String, String>{
+      'token': 'Some-Token',
+    }));
+
+    return invoker(method, request, newOptions);
+  }
 }

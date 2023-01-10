@@ -1,68 +1,41 @@
 ﻿import 'dart:async';
-
+import 'package:chat_app/modules/client/custom_exception.dart';
+import 'package:chat_app/modules/signal_service/river/river.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
 import 'package:chat_app/src/generated/chats/chats.pbgrpc.dart';
+import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/generated/users/users.pbgrpc.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/add_chat_dialog_widget.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/search_field.dart';
-
+import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../modules/storage_manager/db_helper/user_path.dart';
 import '../../../widgets/library/library_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../src/libraries/library_all.dart';
 
-// class LoadingOverlay {
-//   OverlayEntry? _overlay;
-
-//   LoadingOverlay();
-
-//   void show(BuildContext context) {
-//     if (_overlay == null) {
-//       _overlay = OverlayEntry(
-//         // replace with your own layout
-//         builder: (context) => const ColoredBox(
-//           color: Color(0x80000000),
-//           child: Center(
-//             child: CircularProgressIndicator.adaptive(),
-//           ),
-//         ),
-//       );
-//       Overlay.of(context)?.insert(_overlay!);
-//     }
-//   }
-
-//   void hide() {
-//     if (_overlay != null) {
-//       _overlay?.remove();
-//       _overlay = null;
-//     }
-//   }
-// }
-
 class ChatListLayout extends StatefulWidget {
-  const ChatListLayout({
-    Key? key,
-    required this.chatModel,
-    required this.messageModel,
-  }) : super(key: key);
-
   final List<ChatDto> chatModel;
   final List<MessageDto> messageModel;
+
+  ChatListLayout(
+      {super.key, required this.chatModel, required this.messageModel});
+
   @override
   State<ChatListLayout> createState() => _ChatListLayoutState();
 }
 
 class _ChatListLayoutState extends State<ChatListLayout> {
   final _searchController = TextEditingController();
+
   bool _isLoading = false;
 
   void _loadScreen() async {
     setState(() {
       _isLoading = true;
     });
-    await Future.delayed(const Duration(milliseconds: 300));
+    await Future.delayed(const Duration(milliseconds: 1000));
     setState(() {
       _isLoading = false;
     });
@@ -70,87 +43,86 @@ class _ChatListLayoutState extends State<ChatListLayout> {
 
   @override
   Widget build(BuildContext context) {
-    final chatBloc = context.watch<ChatBloc>();
-    final userBloc = context.watch<UserBloc>();
-    final grpcClient = GrpcClient();
-    final localUserServices = LocalUsersServices();
+    var grpcClient = GrpcClient();
     return Drawer(
-      // shape: Border(
-      //     right: BorderSide(width: 1, color: Theme.of(context).dividerColor)),
+      width: 300,
       elevation: 0,
-      child: Flexible(
-        flex: 1,
-        child: Column(
+      child: Consumer(builder: (context, ref, child) {
+        var userPod = ref.read(River.userPod);
+        return Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               widget.chatModel.isEmpty || widget.chatModel == []
-                  ? const Center(child: Text('Oops, no chats...'))
-                  : _isLoading
-                      ? const Center(
-                          child: CircularProgressIndicator.adaptive(),
-                        )
-                      : Expanded(
-                          flex: 1,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                SearchFieldWidget(
-                                    controller: _searchController),
-                                const SizedBox(height: 5),
-                                ListView.separated(
-                                  itemCount: widget.chatModel.length,
-                                  physics: const BouncingScrollPhysics(),
-                                  shrinkWrap: true,
-                                  separatorBuilder: (context, index) =>
-                                      const SizedBox(height: 25),
-                                  itemBuilder: (context, index) {
-                                    var friend;
-                                    friend = context
-                                        .read<UserBloc>()
-                                        .state
-                                        .users!
-                                        .firstWhere((user) {
-                                      return user.userId ==
-                                          widget.chatModel[index].userIdChat;
-                                    });
-                                    var lastMessage = MessageDto(
-                                        chatId: 0, senderId: 0, content: '');
-                                    for (var i in widget.messageModel) {
-                                      if (i.chatId ==
-                                          widget.chatModel[index].chatId) {
-                                        lastMessage = i;
-                                      }
-                                    }
-                                    // var lastMessageId = widget.chatModel.
-                                    // : widget.messageModel.length - 1;
-                                    return UserCardWidget(
-                                      updatedDate: getUpdateDate(
-                                          widget.chatModel[index].updatedDate),
-                                      sender: !checkSender(lastMessage.senderId)
-                                          ? userBloc.state.users![index].name
-                                          : 'You',
-                                      // checkSender(widget.messageModel[lastMessageId].senderId),
-                                      // ? userBloc.state.users[index].name:'You'),
-                                      selected: false,
-                                      onTap: () {
-                                        context.read<ChatBloc>().add(
-                                            GetChatIdEvent(widget
-                                                .chatModel[index].chatId!));
-                                      },
-                                      name: friend.name,
-                                      image: friend.profilePicLink,
-
-                                      message: lastMessage.chatId != 0
-                                          ? lastMessage.content
-                                          : 'Start chating',
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
+                  ? const Center(
+                      child: Text('Oops...\nno chats'),
+                    )
+                  : Expanded(
+                      flex: 1,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            SearchFieldWidget(controller: _searchController),
+                            const SizedBox(height: 5),
+                            ListView.separated(
+                              itemCount: widget.chatModel.length,
+                              physics: const BouncingScrollPhysics(),
+                              shrinkWrap: true,
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(height: 25),
+                              itemBuilder: (context, index) {
+                                // for (var user in userPod.users!) {
+                                //   if (user.userId ==
+                                //       widget.chatModel[index].userIdChat) {
+                                //     friend = user;
+                                //     break;
+                                //   }
+                                // }
+                              var  friend = userPod.users?.firstWhere((user) =>
+                                    widget.chatModel[index].userIdChat ==
+                                    user.userId);
+                                var lastMessage = MessageDto(
+                                    chatId: 0, senderId: 0, content: '');
+                                for (var i in widget.messageModel) {
+                                  if (i.chatId ==
+                                      widget.chatModel[index].chatId) {
+                                    lastMessage = i;
+                                  }
+                                }
+                                // var lastMessageId = widget.chatModel.
+                                // : widget.messageModel.length - 1;
+                                return UserCardWidget(
+                                    sender: lastMessage.chatId == 0
+                                        ? ""
+                                        : !checkSender(lastMessage.senderId)
+                                            ? friend!.name
+                                            : 'You',
+                                    // checkSender(widget.messageModel[lastMessageId].senderId),
+                                    // ? userBloc.state.users[index].name:'You'),
+                                    selected: false,
+                                    onTap: () {
+                                      //TODO: GetChatId => SetChatId
+                                      ref
+                                          .watch(River.chatPod.notifier)
+                                          .getChatId(
+                                              widget.chatModel[index].chatId!);
+                                    },
+                                    name: friend?.name,
+                                    image: friend?.profilePicLink,
+                                    updatedDate: getUpdateDate(
+                                        widget.chatModel[index].updatedDate),
+                                    message: lastMessage.chatId != 0
+                                        ? lastMessage.contentType ==
+                                                ContentType.isText
+                                            ? lastMessage.content
+                                            : 'Image msg'
+                                        : 'Start chating');
+                              },
+                            )
+                          ],
                         ),
+                      ),
+                    ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
@@ -169,65 +141,64 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                         try {
                           userFromServerDb =
                               await grpcClient.getUser(userId: value);
-                          if (userFromServerDb.toString().isEmpty) {
-                            await showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text('Ошибка'),
-                                    content: const Text('Нет юзера с таким Id'),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, 'OK'),
-                                          child: const Text('OK'))
-                                    ],
-                                  );
-                                });
-                          } else {
-                            try {
-                              if (!mounted) return;
-                              context.read<ChatBloc>().add(
-                                    CreateChatEvent(
-                                      chat: ChatDto(
-                                        userIdChat: value,
-                                        createdDate:
-                                            DateTime.now().toIso8601String(),
-                                        updatedDate:
-                                            DateTime.now().toIso8601String(),
-                                      ),
-                                    ),
-                                  );
-                            } catch (e) {
-                              await showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Ошибка'),
-                                      content:
-                                          const Text('Не удалось создать чат'),
-                                      actions: [
-                                        TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context, 'OK'),
-                                            child: const Text('OK'))
-                                      ],
-                                    );
-                                  });
-                            }
-                          }
-                        } catch (e) {
+                          print("UserFromServer: $userFromServerDb");
+                          if (!mounted) return;
+                          print("BEFORE REST");
+                          await ref.read(River.chatPod.notifier).createChat(
+                                ChatDto(
+                                  userIdChat: value,
+                                  createdDate: DateTime.now().toIso8601String(),
+                                  updatedDate: DateTime.now().toIso8601String(),
+                                ),
+                              );
+                        } on CustomException catch (e) {
                           print('GET USER RESPONSE ERROR: $e');
+                          await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Ошибка'),
+                                  content: Text("$e"),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'OK'),
+                                        child: const Text('OK'))
+                                  ],
+                                );
+                              });
                         }
-                      }).whenComplete(() => _loadScreen());
+                      });
+                      // .whenComplete(() async {
+                      //     await showDialog(
+                      //       barrierDismissible: false,
+                      //       context: context,
+                      //       builder: (context) {
+                      //         return Dialog(
+                      //           backgroundColor:
+                      //               Theme.of(context).backgroundColor,
+                      //           child: const Padding(
+                      //             padding: EdgeInsets.all(8.0),
+                      //             child: Center(
+                      //               child: CircularProgressIndicator(),
+                      //             ),
+                      //           ),
+                      //         );
+                      //       },
+                      //     ).timeout(const Duration(seconds: 2),
+                      //         onTimeout: () => Navigator.pop(context, 'OK'));
+
+                      // await Future.delayed(const Duration(seconds: 2));
+                      // Navigator.pop(context, 'OK');
+                      // });
                     },
                     icon: const Icon(Icons.add),
                     label: const Text('Add Chat'),
                   ),
                 ),
               ),
-            ]),
-      ),
+            ]);
+      }),
     );
   }
 

@@ -1,12 +1,12 @@
-part of 'connection_bloc.dart';
+// part of 'connection_bloc.dart';
 
-abstract class ConnectionEvent extends Equatable {
-  const ConnectionEvent();
+// abstract class ConnectionEvent extends Equatable {
+//   const ConnectionEvent();
 
-  @override
-  List<Object> get props => [];
-}
+//   @override
+//   List<Object> get props => [];
+// }
 
 
-class ActiveConnectionEvent extends ConnectionEvent{}
-class InActiveConnectionEvent extends ConnectionEvent{}
+// class ActiveConnectionEvent extends ConnectionEvent{}
+// class InActiveConnectionEvent extends ConnectionEvent{}

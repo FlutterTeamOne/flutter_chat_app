@@ -1,10 +1,8 @@
-
 import 'dart:convert';
 
-import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
-import 'package:chat_app/src/libraries/library_all.dart';
+import '../../../../../src/generated/grpc_lib/grpc_message_lib.dart';
+import '../../../../../src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
-
 
 class AppCardWidget extends StatelessWidget {
   const AppCardWidget({
@@ -25,7 +23,6 @@ class AppCardWidget extends StatelessWidget {
   final String edited;
   @override
   Widget build(BuildContext context) {
-
     // final dateTime = DateTime.parse(message?.createdDate ?? '');
     // final timeNow = '${dateTime.hour} : ${dateTime.minute}';
     var image;
@@ -106,7 +103,6 @@ class AppCardWidget extends StatelessWidget {
                     ),
                   ]
                 ],
-
               ),
             ),
             Text(

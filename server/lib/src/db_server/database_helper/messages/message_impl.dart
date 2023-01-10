@@ -82,8 +82,7 @@ class MessagesDBServices implements IMessagesDBServices {
       {required String newValues, required String condition}) async {
     Database db = await DbServerServices.instanse.database;
     return await db
-            .rawUpdate('''UPDATE messages SET $newValues WHERE ($condition)''')
-        as int;
+        .rawUpdate('UPDATE messages SET $newValues WHERE ($condition)');
   }
 
   // @override
@@ -131,5 +130,21 @@ class MessagesDBServices implements IMessagesDBServices {
           WHERE (chat_id IN (${idChats.join(",")})) AND 
           (message_id > $messageId)''');
     return messages;
+  }
+
+  @override
+  Future getUpdatedMessages({required List<MessageRequest> messages}) async {
+    List<Map<String, Object?>> messagesUpdated = [];
+    Database db = await DbServerServices.instanse.database;
+    for (var message in messages) {
+      var messageUpdated = await db.rawQuery('''SELECT *
+          FROM messages
+          WHERE (message_id = ${message.messageId} AND 
+                updated_date NOT LIKE "${message.updatedDate}")''');
+      if (messageUpdated.isNotEmpty) {
+        messagesUpdated.add(messageUpdated[0]);
+      }
+    }
+    return messagesUpdated;
   }
 }
