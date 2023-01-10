@@ -28,11 +28,6 @@ class _NewUserWidgetState extends State<NewUserWidget> {
   late TextEditingController newUserPasswordText;
   late TextEditingController newUserPictureUrlText;
   final _formKey = GlobalKey<FormState>();
-  final _nameKey = GlobalKey<FormState>();
-
-  final _emailKey = GlobalKey<FormState>();
-
-  final _passwordKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -106,7 +101,13 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                   suffix: _isActive.value == true
                       ? Icons.visibility_off_rounded
                       : Icons.visibility_rounded,
-                  validator: (value) {},
+                  validator: (password) {
+                    if (password != null && password.length < 6) {
+                      return 'Password must contain at least 6 characters';
+                    } else {
+                      return null;
+                    }
+                  },
                   suffixOnTap: () {
                     if (_isActive.value == true) {
                       _isActive.value = false;
@@ -116,9 +117,21 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                   },
                 ),
               ),
-              const SizedBox(height: 10),
-              buildCreateNewUserButton(context, newUserNameText,
-                  newUserEmailText, newUserPasswordText, _formKey),
+              const SizedBox(height: 20),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  buildCreateNewUserButton(context, newUserNameText,
+                      newUserEmailText, newUserPasswordText, _formKey),
+                  CloseButton(
+                    color: Theme.of(context).errorColor,
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/');
+                    },
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -129,215 +142,81 @@ class _NewUserWidgetState extends State<NewUserWidget> {
   buildCreateNewUserButton(BuildContext context, newUserNameText,
       newUserEmailText, newUserPasswordText, _formKey) {
     late String newUserName;
-    return Row(
-      children: [
-        BlocConsumer<NewUserBloc, NewUserState>(
-          listener: (context, state) {},
-          builder: (context, state) {
-            return ElevatedButton(
-                child: const Text('Create'),
-                // style: ButtonStyle(
-                //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                //         RoundedRectangleBorder(
-                //   borderRadius: BorderRadius.circular(20.0),
-                // ))),
-                onPressed: () {
-                  // if (_nameKey.currentState!.validate() &&
-                  //     _emailKey.currentState!.validate() &&
-                  //     _passwordKey.currentState!.validate()) {
-                  //   ScaffoldMessenger.of(context).showSnackBar(
-                  //     const SnackBar(content: Text('Creating new user')),
-                  //   );
-                  // }
-                  final isValid = _formKey.currentState!.validate();
-                  if (isValid) {
-                    late NewUserModel newUser = NewUserModel(
-                        name: newUserNameText.text,
-                        email: newUserEmailText.text,
-                        password: newUserPasswordText.text,
-                        registrationDate: newUserCreateDate,
-                        profilePicLink: newUserPictureUrl);
-                    context
-                        .read<NewUserBloc>()
-                        .add(SetNewUserEvent(user: newUser));
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          newUserName =
-                              context.watch<NewUserBloc>().state.newUser.name;
-                          return Dialog(
-                            // shape: RoundedRectangleBorder(
-                            //   borderRadius: BorderRadius.circular(20.0),
-                            // ),
-                            child: SizedBox(
-                              height: 80,
-                              width: 50,
-                              child: Column(
-                                children: [
-                                  Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: context
-                                                  .read<NewUserBloc>()
-                                                  .state
-                                                  .newUser
-                                                  .name ==
-                                              newUserNameText.text
-                                          ? Text('User $newUserName created')
-                                          : const Text('Error')),
-                                  Consumer(
-                                    builder: (context, ref, _) {
-                                      return ElevatedButton(
-                                          // style: ButtonStyle(
-                                          //     shape: MaterialStateProperty.all<
-                                          //             RoundedRectangleBorder>(
-                                          //         RoundedRectangleBorder(
-                                          //   borderRadius:
-                                          //       BorderRadius.circular(20.0),
-                                          // ))),
-                                          onPressed: () {
-                                            ref
-                                                .read(River.userPod.notifier)
-                                                .readUser();
-
-                                            Navigator.of(context)
-                                                .pushNamed(AuthPage.routeName);
-                                          },
-                                          child: const Icon(Icons.check));
-                                    },
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        });
-                    // print(
-                    //     '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , ');}
-                  }
-                });
-          },
-        ),
-        IconButton(
+    return BlocConsumer<NewUserBloc, NewUserState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return ElevatedButton(
+            child: const Text('Create'),
+            // style: ButtonStyle(
+            //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            //         RoundedRectangleBorder(
+            //   borderRadius: BorderRadius.circular(20.0),
+            // ))),
             onPressed: () {
-              Navigator.of(context).pushNamed('/');
-            },
-            icon: const Icon(Icons.close_rounded)),
-      ],
+              final isValid = _formKey.currentState!.validate();
+              if (isValid) {
+                late NewUserModel newUser = NewUserModel(
+                    name: newUserNameText.text,
+                    email: newUserEmailText.text,
+                    password: newUserPasswordText.text,
+                    registrationDate: newUserCreateDate,
+                    profilePicLink: newUserPictureUrl);
+                context.read<NewUserBloc>().add(SetNewUserEvent(user: newUser));
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      newUserName =
+                          context.watch<NewUserBloc>().state.newUser.name;
+                      return Dialog(
+                        // shape: RoundedRectangleBorder(
+                        //   borderRadius: BorderRadius.circular(20.0),
+                        // ),
+                        child: SizedBox(
+                          height: 80,
+                          width: 50,
+                          child: Column(
+                            children: [
+                              Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: context
+                                              .read<NewUserBloc>()
+                                              .state
+                                              .newUser
+                                              .name ==
+                                          newUserNameText.text
+                                      ? Text('User $newUserName created')
+                                      : const Text('Error')),
+                              Consumer(
+                                builder: (context, ref, _) {
+                                  return ElevatedButton(
+                                      // style: ButtonStyle(
+                                      //     shape: MaterialStateProperty.all<
+                                      //             RoundedRectangleBorder>(
+                                      //         RoundedRectangleBorder(
+                                      //   borderRadius:
+                                      //       BorderRadius.circular(20.0),
+                                      // ))),
+                                      onPressed: () {
+                                        ref
+                                            .read(River.userPod.notifier)
+                                            .readUser();
+
+                                        Navigator.of(context)
+                                            .pushNamed(AuthPage.routeName);
+                                      },
+                                      child: const Icon(Icons.check));
+                                },
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    });
+                // print(
+                //     '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , ');}
+              }
+            });
+      },
     );
   }
-  // Row(
-  //   mainAxisAlignment: MainAxisAlignment.center,
-  //   children: [
-  //     Column(
-  //       children: [
-  //         const SizedBox(
-  //           height: 200,
-  //         ),
-  //         Row(
-  //           children: [
-  //             Form(
-  //               key: _formKey,
-  //               child: Column(
-  //                 children: [
-  //                   buildNameRow(),
-  //                   buildEmailRow(),
-  //                   buildPasswordRow(),
-  //                   const SizedBox(
-  //                     height: 20,
-  //                   ),
-  //                   buildCreateNewUserButton(context, newUserNameText,
-  //                       newUserEmailText, newUserPasswordText),
-  //                 ],
-  //               ),
-  //             ),
-  //           ],
-  //         )
-  //       ],
-  //     ),
-  //   ],
-  // );
-
-  // SizedBox buildPasswordRow() {
-  //   return SizedBox(
-  //     width: 300,
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.end,
-  //       children: [
-  //         const Padding(
-  //           padding: EdgeInsets.only(right: textPadding),
-  //           child: Text('Password'),
-  //         ),
-  //         SizedBox(
-  //           width: textFieldWidth,
-  //           child: TextFormField(
-  //             key: _passwordKey,
-  //             controller: newUserPasswordText,
-  //             validator: (value) {
-  //               if (value == null || value.isEmpty) {
-  //                 return 'Enter password';
-  //               }
-  //               return null;
-  //             },
-  //             obscureText: true,
-  //             onSaved: (value) {},
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  // SizedBox buildEmailRow() {
-  //   return SizedBox(
-  //     width: 300,
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.end,
-  //       children: [
-  //         const Padding(
-  //           padding: EdgeInsets.only(right: textPadding),
-  //           child: Text('Email'),
-  //         ),
-  //         SizedBox(
-  //             width: textFieldWidth,
-  //             child: TextFormField(
-  //               key: _emailKey,
-  //               controller: newUserEmailText,
-  //               validator: (value) {
-  //                 if (value == null || value.isEmpty) {
-  //                   return 'Enter email';
-  //                 }
-  //                 return null;
-  //               },
-  //             )),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  // SizedBox buildNameRow() {
-  //   return SizedBox(
-  //     width: 300,
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.end,
-  //       children: [
-  //         const Padding(
-  //           padding: EdgeInsets.only(right: textPadding),
-  //           child: Text('Name'),
-  //         ),
-  //         SizedBox(
-  //             width: textFieldWidth,
-  //             child: TextFormField(
-  //               key: _nameKey,
-  //               controller: newUserNameText,
-  //               validator: (value) {
-  //                 if (value == null || value.isEmpty) {
-  //                   return 'Enter name';
-  //                 }
-  //                 return null;
-  //               },
-  //             )),
-  //       ],
-  //     ),
-  //   );
-  // }
-
 }
