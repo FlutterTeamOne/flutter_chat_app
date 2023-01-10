@@ -14,10 +14,12 @@ class UserStateRef extends Equatable {
 
   UserStateRef copyWith({
     List<UserDto>? users,
+    bool? userDb,
     bool? isDeleted,
   }) {
     return UserStateRef(
       users: users ?? this.users,
+      userDb: userDb ?? this.userDb,
       isDeleted: isDeleted,
     );
   }
@@ -25,5 +27,5 @@ class UserStateRef extends Equatable {
   bool get userDbthis => UserPref.getUserDbPref;
 
   @override
-  List<Object?> get props => [users, isDeleted];
+  List<Object?> get props => [users, userDb, isDeleted];
 }

@@ -112,6 +112,11 @@ CREATE TABLE ${DatabaseConst.userTable} (
     _updateListen();
   }
 
+  Future close() async {
+    var db = await instanse.database;
+    _database = null;
+    await db.close();
+  }
 // ///Функция создания временной таблицы
 // Future onCreateTemp() async {
 //   var db = await instanse.database;
