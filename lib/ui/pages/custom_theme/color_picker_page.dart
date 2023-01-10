@@ -3,11 +3,10 @@ import 'package:chat_app/modules/style_manager/riverpod/theme_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../widgets/custom_theme/color_indicator.dart';
-import '../../widgets/custom_theme/color_tools.dart';
 import '../../widgets/custom_theme/flex_color_picker.dart';
 
 class ColorPickerPage extends ConsumerStatefulWidget {
+  static const routeName = '/color_picker_page';
   const ColorPickerPage({Key? key}) : super(key: key);
 
   @override

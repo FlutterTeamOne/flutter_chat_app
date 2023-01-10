@@ -19,78 +19,38 @@ part 'modules/style_manager/riverpod/riverpod_providers.dart';
 
 Future<void> main() async {
   await AppInit.init();
-  runApp(ProviderScope(child: MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
-  final GrpcClient grpcClient = GrpcClient();
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(providers: [
-      BlocProvider(create: (context) => NewUserBloc()),
-    ], child: buildMaterialApp(context));
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => NewUserBloc()),
+        ],
+        child: Consumer(
+          builder: (context, ref, child) {
+            final theme = ref.watch(changeCustomThemeStateProvider);
+            return MaterialApp(
+              theme: Themes.myTheme(context, theme),
+              title: 'Flutter chat app',
+              debugShowCheckedModeBanner: false,
+              initialRoute: !UserPref.getUserDbPref
+                  ? MainLayout.routeName
+                  : AuthPage.routeName,
+              routes: {
+                RegistrationPage.routeName: (context) =>
+                    const RegistrationPage(),
+                AuthPage.routeName: (context) => const AuthPage(),
+                MainLayout.routeName: (context) => const MainLayout(),
+                SettingsPage.routeName: (context) => const SettingsPage(),
+                ColorPickerPage.routeName: (context) => const ColorPickerPage(),
+              },
+            );
+          },
+        ));
   }
-}
-
-Consumer buildMaterialApp(BuildContext context) {
-  return Consumer(
-    builder: (context, ref, child) {
-      final theme = ref.watch(changeCustomThemeStateProvider);
-      return MaterialApp(
-        theme: ThemeData(
-          textTheme: Theme.of(context).textTheme.apply(
-              fontFamily: theme.fontFamily!,
-              displayColor: theme.textColor,
-              bodyColor: theme.textColor,
-              fontSizeFactor: theme.fontSizeFactor!),
-          useMaterial3: true,
-          listTileTheme: ListTileThemeData(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(theme.borderRadius!))),
-          cardTheme: CardTheme(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(theme.borderRadius!))),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ButtonStyle(
-                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(theme.borderRadius!))))),
-          buttonTheme: ButtonThemeData(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(theme.borderRadius!))),
-          brightness: theme.brightness,
-          primarySwatch:
-              StyleManagerUtils().createMaterialColor(theme.primaryColor!),
-
-          primaryColor:
-              StyleManagerUtils().createMaterialColor(theme.primaryColor!),
-          errorColor: Colors.redAccent.shade200,
-
-          textSelectionTheme: TextSelectionThemeData(
-            cursorColor: theme.textColor,
-            selectionColor: theme.textColor,
-            selectionHandleColor: theme.textColor,
-          ),
-          //стиль для scroll down button
-          floatingActionButtonTheme: const FloatingActionButtonThemeData(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.black54,
-          ),
-        ),
-        title: 'Flutter chat app',
-        debugShowCheckedModeBanner: false,
-        initialRoute:
-            !UserPref.getUserDbPref ? MainLayout.routeName : AuthPage.routeName,
-        routes: {
-          RegistrationPage.routeName: (context) => const RegistrationPage(),
-          AuthPage.routeName: (context) => const AuthPage(),
-          MainLayout.routeName: (context) => const MainLayout(),
-          '/settings_page': (context) => const SettingsPage(),
-          '/color_picker_page': (context) => const ColorPickerPage(),
-        },
-      );
-    },
-  );
 }
