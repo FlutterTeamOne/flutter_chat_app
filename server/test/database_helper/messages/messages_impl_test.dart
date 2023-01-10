@@ -25,7 +25,7 @@ void main() {
         var matcher = id;
         
         expect(r, matcher);
-        await db.close();
+        
       });
 
       test('deleteMessage - returns the number of deleted rows', () async {
@@ -43,7 +43,7 @@ void main() {
         
         expect(r, matcher);
 
-        await db.close();
+        
       });
 
       test('deleteMessage - deletes the rows', () async {
@@ -62,7 +62,7 @@ void main() {
         
         expect(r, matcher);
 
-        await db.close();
+        
       });
 
       test('getAllMessages', () async {
@@ -92,7 +92,7 @@ void main() {
         
         expect(r, matcher);
 
-        await db.close();
+        
       });
 
       test('getMessageById', () async {
@@ -122,7 +122,7 @@ void main() {
         
         expect(r, matcher);
 
-        await db.close();
+        
       });
 
       test('getMessagesByChatId', () async {
@@ -152,7 +152,7 @@ void main() {
         
         expect(r, matcher);
 
-        await db.close();
+        
       });
 
       test('getMessagesBySenderId', () async {
@@ -182,7 +182,7 @@ void main() {
         
         expect(r, matcher);
 
-        await db.close();
+        
       });
 
       test('updateMessage - returns the number of updated rows', () async {
@@ -200,7 +200,7 @@ void main() {
         
         expect(r, matcher);
 
-        await db.close();
+        
       });
 
   });
