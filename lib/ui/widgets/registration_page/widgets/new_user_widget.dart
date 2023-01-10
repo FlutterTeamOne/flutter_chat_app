@@ -1,4 +1,5 @@
 import 'package:chat_app/modules/signal_service/river/river.dart';
+import 'package:chat_app/ui/auth/authorization_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../bloc/new_user_bloc.dart';
@@ -245,7 +246,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                                                 .readUser();
 
                                             Navigator.of(context)
-                                                .pushNamed('/');
+                                                .pushNamed(AuthPage.routeName);
                                           },
                                           child: const Icon(Icons.check));
                                     },

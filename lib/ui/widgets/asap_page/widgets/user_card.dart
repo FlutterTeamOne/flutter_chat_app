@@ -22,10 +22,8 @@ class UserCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-      // selected: true,
-      // selectedTileColor: Theme.of(context).colorScheme.secondary,
-      // selectedColor: Theme.of(context).colorScheme.secondary,
+      horizontalTitleGap: 4,
+      contentPadding: const EdgeInsets.only(right: 8),
       onTap: onTap,
       leading: CircleAvatar(
         radius: 45,
@@ -40,14 +38,18 @@ class UserCardWidget extends StatelessWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            name ?? '',
-            // style: AppTextStyle.s17Abel,
+          SizedBox(
+            width: 120,
+            child: Text(
+              name ?? '',
+              // style: AppTextStyle.s17Abel,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
           Text(
             updatedDate,
             style:
-                Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 11.5),
+                Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 11),
           )
         ],
       ),

@@ -56,44 +56,41 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
         : Column(
             children: <Widget>[
               //Top bar of the user_chat_layout screen part, that contains the friend's name and pic
-              Flexible(
-                flex: 1,
-                child: Container(
-                  height: 60,
-                  color: Colors.transparent.withOpacity(0.1),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Flexible(
-                        child: ChatAppBarWidget(
-                          image: user!.deletedDate!.isEmpty
-                              ? user.profilePicLink
-                              : 'https://www.iconsdb.com/icons/preview/red/cancel-xxl.png',
-                          // user.profilePicLink,
-                          name: user.name,
-                        ),
+              Container(
+                height: 60,
+                color: Colors.transparent.withOpacity(0.1),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Flexible(
+                      child: ChatAppBarWidget(
+                        image: user!.deletedDate!.isEmpty
+                            ? user.profilePicLink
+                            : 'https://www.iconsdb.com/icons/preview/red/cancel-xxl.png',
+                        // user.profilePicLink,
+                        name: user.name,
                       ),
-                      Flexible(
-                        child: PopupMenuButton<int>(
-                            itemBuilder: (context) => [
-                                  PopupMenuItem(
-                                      value: 1,
-                                      child: Row(
-                                        children: const [
-                                          Icon(Icons.delete),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text("Delete Chat")
-                                        ],
-                                      ),
-                                      onTap: () => ref
-                                          .read(River.chatPod.notifier)
-                                          .deleteChat(widget.chatId)),
-                                ]),
-                      ),
-                    ],
-                  ),
+                    ),
+                    Flexible(
+                      child: PopupMenuButton<int>(
+                          itemBuilder: (context) => [
+                                PopupMenuItem(
+                                    value: 1,
+                                    child: Row(
+                                      children: const [
+                                        Icon(Icons.delete),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text("Delete Chat")
+                                      ],
+                                    ),
+                                    onTap: () => ref
+                                        .read(River.chatPod.notifier)
+                                        .deleteChat(widget.chatId)),
+                              ]),
+                    ),
+                  ],
                 ),
               ),
               Expanded(
@@ -181,9 +178,9 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
     if (messageRef.editState == EditState.isPreparation &&
         controller.text.isNotEmpty) {
       print("EDITING");
-      var messageId = messageRef.messageId;
+      var localMessageId = messageRef.messageId;
       var message = messageRef.messages
-          ?.firstWhere((element) => element.localMessageId == messageId);
+          ?.firstWhere((element) => element.localMessageId == localMessageId);
       if (message?.contentType == ContentType.isText) {
         print('EDIT  TEXT');
         messageNotif.updateMessage(
@@ -191,7 +188,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                 chatId: widget.chatId,
                 senderId: await MainUserServices().getUserID(),
                 content: controller.text,
-                messageId: messageId,
+                messageId: message?.messageId,
                 createdDate: message?.createdDate,
                 updatedDate: DateTime.now().toIso8601String()),
             isEditing: EditState.isEditing);
@@ -205,7 +202,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                 chatId: widget.chatId,
                 senderId: await MainUserServices().getUserID(),
                 content: {'message': controller.text, 'media': msg}.toString(),
-                messageId: messageId,
+                messageId: localMessageId,
                 createdDate: message?.createdDate,
                 updatedDate: DateTime.now().toIso8601String()),
             isEditing: EditState.isEditing);

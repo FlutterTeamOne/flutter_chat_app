@@ -38,8 +38,8 @@ class DBHelper {
     print('USER DB:  $user');
     // String path = join(dbPath.path,
     //     user.name + user.userId.toString() + DatabaseConst.dbFileName);
-    String path = join(
-        dbPath, user.name + user.userId.toString() + DatabaseConst.dbFileName);
+    String path =
+        join(dbPath, user.userId.toString() + DatabaseConst.dbFileName);
     print('PATH_ABSOLUTE: $path');
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(
