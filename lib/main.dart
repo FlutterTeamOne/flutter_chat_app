@@ -13,7 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'modules/style_manager/riverpod/riverpod_providers.dart';
 
 Future<void> main() async {
-  
   //Инициализация
   await AppInit.init();
 
@@ -31,6 +30,7 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (context) => NewUserBloc()),
         ],
+
         ///Инициализация Стилей Riverpod
         child: Consumer(
           builder: (context, ref, child) {
