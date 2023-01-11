@@ -25,7 +25,7 @@ class ExitButton extends StatelessWidget {
             Future.delayed(const Duration(seconds: 1),
                 () => Navigator.of(context).pushNamed('/'));
           },
-          icon: const Icon(Icons.exit_to_app),
+          icon: const Icon(Icons.exit_to_app, color: Colors.black87,),
           style: const ButtonStyle(
             backgroundColor: MaterialStatePropertyAll(Colors.white),
             padding: MaterialStatePropertyAll(EdgeInsets.all(10)),
