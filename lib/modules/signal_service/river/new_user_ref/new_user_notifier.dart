@@ -20,6 +20,7 @@ class NewUserNotifier extends StateNotifier<NewUserStateRef> {
     print('event user ${state.newUser.name}');
     UserDto newCreatedUser = await GrpcClient().createUser(user: newUser);
     print('response: $newCreatedUser');
-    state = state.copyWith(newUser: newCreatedUser);
+    state = NewUserStateRef(newUser: UserDto(name: newCreatedUser.name, email: newCreatedUser.email, createdDate: newCreatedUser.createdDate, profilePicLink: newCreatedUser.profilePicLink, updatedDate: newCreatedUser.updatedDate));
+    print ('state - create new user: $state');
   }
 }

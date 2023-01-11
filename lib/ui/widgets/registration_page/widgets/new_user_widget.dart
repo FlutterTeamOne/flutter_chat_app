@@ -1,16 +1,13 @@
-import 'package:chat_app/modules/signal_service/river/new_user_ref/new_user_notifier.dart';
+
 import 'package:chat_app/modules/signal_service/river/river.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../bloc/new_user_bloc.dart';
-import '../bloc/new_user_event.dart';
+
 import '../models/new_user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/new_user_state.dart';
 part 'form_widget.dart';
 
 class NewUserWidget extends ConsumerStatefulWidget {
@@ -25,7 +22,7 @@ class NewUserWidget extends ConsumerStatefulWidget {
   // State<NewUserWidget> createState() => _NewUserWidgetState();
 }
 
-class _NewUserWidgetState extends State<NewUserWidget> {
+class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
   static const String newUserPictureUrl =
       """https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg?w=2000""";
   static String newUserCreateDate = DateTime.now().toIso8601String();
@@ -90,10 +87,10 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                 maxLength: 36,
                 controller: newUserEmailText,
                 validator: (email) {
-                  if (email != null && !EmailValidator.validate(email)) {
-                    return 'Enter a valid email';
-                  }
-                  return null;
+                  // if (email != null && !EmailValidator.validate(email)) {
+                  //   return 'Enter a valid email';
+                  // }
+                  // return null;
                 },
               ),
               const SizedBox(height: 10),
@@ -146,16 +143,14 @@ class _NewUserWidgetState extends State<NewUserWidget> {
   }
 
   Padding buildCreateNewUserButton(BuildContext context, newUserNameText,
-      newUserEmailText, newUserPasswordText) {
+      newUserEmailText, newUserPasswordText, GlobalKey<FormState> formKey) {
     late String newUserName;
+    final newUserPod = ref.watch(River.newUserPod);
     return Padding(
       padding: const EdgeInsets.only(left: 100.0),
       child: Row(
         children: [
-          BlocConsumer<NewUserBloc, NewUserState>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              return ElevatedButton(
+          ElevatedButton(
                   // style: ButtonStyle(
                   //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   //         RoundedRectangleBorder(
@@ -175,14 +170,12 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                         password: newUserPasswordText.text,
                         registrationDate: newUserCreateDate,
                         profilePicLink: newUserPictureUrl);
-                    context
-                        .read<NewUserBloc>()
-                        .add(SetNewUserEvent(user: newUser));
+                    ref.read(River.newUserPod.notifier).newUser(newUser: newUser);
                     showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           newUserName =
-                              context.watch<NewUserBloc>().state.newUser.name;
+                             newUserPod.newUser.name;
                           return Dialog(
                             // shape: RoundedRectangleBorder(
                             //   borderRadius: BorderRadius.circular(20.0),
@@ -194,11 +187,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                                 children: [
                                   Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: context
-                                                  .read<NewUserBloc>()
-                                                  .state
-                                                  .newUser
-                                                  .name ==
+                                      child:  ref.watch(River.newUserPod).newUser.name ==
                                               newUserNameText.text
                                           ? Text('User $newUserName created')
                                           : const Text('Error')),
@@ -231,9 +220,9 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                     // print(
                     //     '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , ');
                   },
-                  child: const Text('Create new user'));
-            },
-          ),
+        
+                  child: const Text('Create new user')),
+
           IconButton(
               onPressed: () {
                 Navigator.of(context).pushNamed('/');
