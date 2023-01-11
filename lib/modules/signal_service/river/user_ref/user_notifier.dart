@@ -207,7 +207,6 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       ///
       print("RESPONSE_MESSAGES NEW: ${response.messages.messagesNew}");
       for (var message in response.messages.messagesNew) {
-      
         await ValidatorService.validMessage(message: message);
         // await _messagesServices.addNewMessageFromBase(message: msg);
         await _chatServices.updateChatDateUpdated(
@@ -245,9 +244,10 @@ class UserNotifier extends StateNotifier<UserStateRef> {
           isRead: message.isRead,
         );
         print("UPDATEMESSAGE START");
-        await _messagesServices.updateMessageSynh(msg: msg);
         if (msg.deletedDate != null && msg.deletedDate != '') {
           await _messagesServices.deleteMessage(id: msg.messageId!);
+        } else {
+          await _messagesServices.updateMessageSynh(msg: msg);
         }
         print("UPDATEMESSAGE END");
       }

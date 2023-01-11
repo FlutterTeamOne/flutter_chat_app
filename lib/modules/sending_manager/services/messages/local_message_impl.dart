@@ -111,7 +111,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
     var db = await DBHelper.instanse.database;
 
     var deleted = await db.rawDelete(
-        '''DELETE FROM ${DatabaseConst.messageTable}  WHERE ${DatabaseConst.messagesColumnLocalMessagesId}=?''',
+        '''DELETE FROM ${DatabaseConst.messageTable}  WHERE ${DatabaseConst.messagesColumnMessageId}=?''',
         [id]);
     DBHelper.instanse.updateListenController.add(DbListener.isMessage);
 

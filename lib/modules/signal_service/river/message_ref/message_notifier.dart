@@ -272,7 +272,6 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
 
   deleteMessage({required int messageId}) async {
     await _messagesServices.deleteMessage(id: messageId);
-    DBHelper.instanse.updateListenController.add(DbListener.isMessage);
     // add(ReadMessageEvent());
     print('message ID: $messageId');
     state = state.copyWith(

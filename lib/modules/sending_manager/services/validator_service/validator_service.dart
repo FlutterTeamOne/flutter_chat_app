@@ -36,7 +36,7 @@ class ValidatorService {
 
   static Future validUser({required SynhUser user}) async {
     final ok =
-        await LocalUsersServices().getUserByLocalId(localId: user.userId);
+        await LocalUsersServices().getUserById(id: user.userId);
     if (ok.isEmpty) {
       print(
           "deleted date is empty? ${user.deletedDate} ${user.deletedDate.isNotEmpty}");
