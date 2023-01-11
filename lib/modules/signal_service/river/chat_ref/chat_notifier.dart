@@ -15,7 +15,7 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
   ChatNotifier() : super(const ChatStateRef()) {
     _chatServices = LocalChatServices();
     DBHelper.instanse.updateListenController.stream.listen((event) {
-      if (event) {
+      if (event == DbListener.isChat) {
         readChat();
       }
     });

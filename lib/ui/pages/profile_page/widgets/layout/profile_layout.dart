@@ -67,9 +67,7 @@ class ProfileLayout extends StatelessWidget {
                           ButtonChangeUser(userMain: userMain, isEmail: true)
                         ],
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      const SizedBox(height: 20),
                       Row(
                         children: [
                           ElevatedButton(

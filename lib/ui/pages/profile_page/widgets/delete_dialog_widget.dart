@@ -23,7 +23,7 @@ class DeleteDialogWidget extends ConsumerWidget {
           chatPod.getChatId(-1);
           await DBHelper.instanse.deleteDB();
           Future.delayed(const Duration(seconds: 1),
-              () => Navigator.of(context).pushNamed('/'));
+              () => Navigator.of(context).pushNamed(AuthPage.routeName));
         },
         child: const Icon(Icons.check));
   }

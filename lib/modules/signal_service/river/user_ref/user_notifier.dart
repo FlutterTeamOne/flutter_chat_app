@@ -1,3 +1,4 @@
+import 'package:chat_app/modules/sending_manager/services/validator_service/validator_service.dart';
 import 'package:chat_app/modules/signal_service/river/user_ref/user_state_ref.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
@@ -21,7 +22,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     _messagesServices = LocalMessagesServices();
     _chatServices = LocalChatServices();
     DBHelper.instanse.updateListenController.stream.listen((event) {
-      if (event) {
+      if (event == DbListener.isUser) {
         localReadUser();
       }
     });
@@ -167,19 +168,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       ///ДОБАВЛЯЕМ НОВЫХ ЮЗЕРОВ
       ///
       for (var user in response.users.usersNew) {
-        print(
-            "deleted date is empty? ${user.deletedDate} ${user.deletedDate.isNotEmpty}");
-        String userAvatar = (user.deletedDate == "" || user.deletedDate.isEmpty)
-            ? user.picture
-            : """https://www.iconsdb.com/icons/preview/red/cancel-xxl.png""";
-        await _usersServices.createUser(
-            name: user.name,
-            email: user.email,
-            createdDate: user.createdDate,
-            updatedDate: user.updateDate,
-            deletedDate: user.deletedDate,
-            profilePicUrl: userAvatar,
-            userId: user.userId);
+        await ValidatorService.validUser(user: user);
       }
 
       ///
@@ -218,26 +207,9 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       ///
       print("RESPONSE_MESSAGES NEW: ${response.messages.messagesNew}");
       for (var message in response.messages.messagesNew) {
-        var type = ContentType.isText.name == message.contentType.name
-            ? ContentType.isText
-            : ContentType.isMedia.name == message.contentType.name
-                ? ContentType.isMedia
-                : ContentType.isMediaText.name == message.contentType.name
-                    ? ContentType.isMediaText
-                    : ContentType.isText;
-        var msg = Message(
-          messageId: message.messageId,
-          chatId: message.chatId,
-          senderId: message.senderId,
-          content: message.content,
-          dateCreate: message.createdDate,
-          dateUpdate: message.updatedDate,
-          dateDelete: message.deletedDate,
-          contentType: type,
-          attachmentId: message.attachmentId,
-          isRead: message.isRead,
-        );
-        await _messagesServices.addNewMessageFromBase(message: msg);
+      
+        await ValidatorService.validMessage(message: message);
+        // await _messagesServices.addNewMessageFromBase(message: msg);
         await _chatServices.updateChatDateUpdated(
             chatId: message.chatId, dateUpdated: message.updatedDate);
       }
