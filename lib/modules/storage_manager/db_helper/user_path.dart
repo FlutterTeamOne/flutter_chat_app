@@ -15,8 +15,7 @@ class UserPath {
 
   Future<String> getDbPath() async {
     var dbPath = await getTemporaryDirectory();
-    print('PATH: ${dbPath.path}');
-    // var _dbFileName = 'sfera';
+
     return dbPath.path;
   }
 

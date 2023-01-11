@@ -19,7 +19,7 @@ class ChatAppBarWidget extends StatelessWidget {
             radius: 45,
             child: ClipOval(
                 child: Image.network(
-              image ?? '',
+              image,
               fit: BoxFit.cover,
               width: 52,
               height: 52,

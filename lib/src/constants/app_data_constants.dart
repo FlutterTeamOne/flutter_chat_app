@@ -1,3 +1,5 @@
+// ignore_for_file: body_might_complete_normally_nullable
+
 import 'dart:io';
 
 class AppDataConstants {
@@ -9,8 +11,8 @@ class AppDataConstants {
   // ignore: prefer_function_declarations_over_variables
   static final userDirectory = AppData().userDir(envVars: envVars);
 
-  static final dbDirectory = '$userDirectory/AppData/Local/FlutterChatApp/databases/';
-
+  static final dbDirectory =
+      '$userDirectory/AppData/Local/FlutterChatApp/databases/';
 }
 
 class AppData {
@@ -19,7 +21,7 @@ class AppData {
   String? userDir({required Map<String, String> envVars}) {
     {
       if (Platform.isMacOS) {
-        return envVars['HOME']; 
+        return envVars['HOME'];
       } else if (Platform.isLinux) {
         return envVars['HOME'];
       } else if (Platform.isWindows) {

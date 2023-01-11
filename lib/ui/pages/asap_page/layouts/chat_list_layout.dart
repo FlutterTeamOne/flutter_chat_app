@@ -1,25 +1,26 @@
-﻿import 'dart:async';
+﻿// ignore_for_file: unused_element
+
+import 'dart:async';
 import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/modules/signal_service/river/river.dart';
-import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
-import 'package:chat_app/src/generated/chats/chats.pbgrpc.dart';
+
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/generated/users/users.pbgrpc.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/add_chat_dialog_widget.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/search_field.dart';
-import 'package:dio/dio.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../modules/storage_manager/db_helper/user_path.dart';
 import '../../../widgets/library/library_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../src/libraries/library_all.dart';
 
 class ChatListLayout extends StatefulWidget {
   final List<ChatDto> chatModel;
   final List<MessageDto> messageModel;
 
-  ChatListLayout(
+  const ChatListLayout(
       {super.key, required this.chatModel, required this.messageModel});
 
   @override
@@ -29,6 +30,7 @@ class ChatListLayout extends StatefulWidget {
 class _ChatListLayoutState extends State<ChatListLayout> {
   final _searchController = TextEditingController();
 
+  // ignore: unused_field
   bool _isLoading = false;
 
   void _loadScreen() async {
@@ -78,7 +80,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                 //     break;
                                 //   }
                                 // }
-                              var  friend = userPod.users?.firstWhere((user) =>
+                                var friend = userPod.users?.firstWhere((user) =>
                                     widget.chatModel[index].userIdChat ==
                                     user.userId);
                                 var lastMessage = MessageDto(
@@ -134,8 +136,8 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                               builder: (BuildContext context) =>
                                   (AddChatDialogWidget(val: value)))
                           .then((value) async {
-
                         //FriendId Validation
+                        // ignore: unused_local_variable
                         GetUserResponse userFromServerDb;
                         try {
                           userFromServerDb =
@@ -151,7 +153,6 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                 ),
                               );
                         } on CustomException catch (e) {
-                          print('GET USER RESPONSE ERROR: $e');
                           await showDialog(
                               context: context,
                               builder: (BuildContext context) {

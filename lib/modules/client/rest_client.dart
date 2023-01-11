@@ -1,3 +1,5 @@
+// ignore_for_file: empty_catches, prefer_typing_uninitialized_variables, unnecessary_string_interpolations, non_constant_identifier_names
+
 import 'dart:async';
 import 'dart:convert';
 
@@ -20,9 +22,7 @@ class RestClient {
         var respChats = resp.data.map((el) => ChatDto.fromMap(el)).toList();
         chats.add(respChats);
       }
-    } catch (e) {
-
-    }
+    } catch (e) {}
     return chats;
   }
 
@@ -31,8 +31,6 @@ class RestClient {
     var chatUrl = '$_url/chats/';
     var restChat;
     var chatId;
-    // var date = DateTime.now().toIso8601String();
-    // try {
     //возвращает один созданный элемент
     var resp = await _dio.put(chatUrl, data: {
       "friend1_id": creatorUserId,
@@ -50,7 +48,6 @@ class RestClient {
       String userCreatedDate = responseFromRest[3].split(' created_date: ')[1];
       String profilePicUrl = responseFromRest[4].split(' profile_pic_url: ')[1];
       String userUpdatedDate = responseFromRest[5].split(' updated_date: ')[1];
-      String? userDeletedDate = responseFromRest[6].split(' deleted_date: ')[1];
 
       await LocalUsersServices().createUser(
           userId: userId,
@@ -76,12 +73,6 @@ class RestClient {
       int friend2_id =
           int.tryParse('${responseFromRest[11].split(' friend2_id: ')[1]}')!;
 
-      String updatedDate =
-          '"${updatedDateInput.substring(0, updatedDateInput.length - 3)}"';
-
-      String createdDate = '"${createdDateInput}"';
-
-
       restChat = {
         'chat_id': chatId,
         'friend1_id': friend1_id,
@@ -90,7 +81,6 @@ class RestClient {
         'deleted_date': "",
         'updated_date': updatedDateInput
       };
-
     } else if (resp.statusCode == 404) {
       throw Exception(resp.data);
     }
@@ -112,8 +102,8 @@ class RestClient {
       var resp = await _dio.delete('$chatUrl$id');
 
       if (resp.statusCode == 200) {
+        // ignore: unused_local_variable
         var data = json.decode(resp.data);
-
       }
     } catch (e) {}
   }
@@ -130,13 +120,9 @@ class RestClient {
             .replaceAll('attachment_id', '"attachment_id"')
             .replaceAll('attachment_meta', '"attachment_meta"');
 
-
         attach = AttachModel.fromJson(source);
-
       }
-    } catch (e) {
-
-    }
+    } catch (e) {}
     return attach;
   }
 
@@ -147,9 +133,7 @@ class RestClient {
       if (resp.statusCode == 200) {
         return resp;
       }
-    } catch (e) {
-
-    }
+    } catch (e) {}
   }
 
   Future deleteImageRest({required int imageId}) async {
@@ -159,8 +143,6 @@ class RestClient {
       if (resp.statusCode == 200) {
         return resp;
       }
-    } catch (e) {
-
-    }
+    } catch (e) {}
   }
 }

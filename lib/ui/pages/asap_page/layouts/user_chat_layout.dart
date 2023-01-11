@@ -1,4 +1,6 @@
-﻿import 'package:chat_app/modules/signal_service/river/message_ref/message_notifier.dart';
+﻿// ignore_for_file: unused_local_variable, prefer_typing_uninitialized_variables, use_build_context_synchronously
+
+import 'package:chat_app/modules/signal_service/river/message_ref/message_notifier.dart';
 
 import '../../../../modules/signal_service/river/message_ref/message_state_ref.dart';
 import '../../../../modules/signal_service/river/river.dart';
@@ -26,20 +28,14 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
   Widget build(BuildContext context) {
     var badState;
     ChatDto? chat;
-    // var chat = context.read<ChatBloc>().state.chats?.firstWhere(
-    //       (chats) => chats.chatId == widget.chatId,
-    //     );
+
     for (var c in ref.read(River.chatPod).chats!) {
       if (c.chatId == widget.chatId) {
         chat = c;
       }
     }
     var user;
-    // = context
-    //     .read<UserBloc>()
-    //     .state
-    //     .users
-    //     ?.firstWhere((user) => user.userId == chat?.userIdChat);
+
     for (var u in ref.read(River.userPod).users!) {
       if (chat?.userIdChat == null) {
         break;
@@ -169,20 +165,18 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
               updatedDate: DateTime.now().toIso8601String(),
               contentType: ContentType.isText),
           contentType: ContentType.isText);
-      // context.read<ChatBloc>().add(ReadChatEvent());
+
       FocusScope.of(context).unfocus();
       controller.clear();
       return;
     }
-    // print('IS EDIT F:${context.read<MessageBloc>().isEditing}');
+
     if (messageRef.editState == EditState.isPreparation &&
         controller.text.isNotEmpty) {
-      print("EDITING");
       var localMessageId = messageRef.messageId;
       var message = messageRef.messages
           ?.firstWhere((element) => element.localMessageId == localMessageId);
       if (message?.contentType == ContentType.isText) {
-        print('EDIT  TEXT');
         messageNotif.updateMessage(
             message: MessageDto(
                 chatId: widget.chatId,
@@ -193,10 +187,9 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                 updatedDate: DateTime.now().toIso8601String()),
             isEditing: EditState.isEditing);
       } else if (message?.contentType == ContentType.isMediaText) {
-        print('EDIT MEDIA TEXT');
         List<String>? data = message?.content.split('media: ');
         var msg = data![1];
-        print('MSG UPD: $msg');
+
         messageNotif.updateMessage(
             message: MessageDto(
                 chatId: widget.chatId,
@@ -207,7 +200,6 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                 updatedDate: DateTime.now().toIso8601String()),
             isEditing: EditState.isEditing);
       } else {
-        print('EDIT MEDIA ');
         return;
       }
       controller.clear();

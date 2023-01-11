@@ -5,7 +5,7 @@ import '../../../src/constants/app_data_constants.dart';
 
 import '../../../src/constants/db_constants.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
+
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -30,17 +30,14 @@ class DBHelper {
   Future<Database> initDB() async {
     sqfliteFfiInit();
     var dbFactory = databaseFactoryFfi;
-    // var dbPath = await dbFactory.getDatabasesPath();
-    // var dbPath = await getTemporaryDirectory();
+
     var dbPath = AppDataConstants.dbDirectory;
-    // print('PATH: ${dbPath.path}');
+
     var user = UserPath.getUser;
-    print('USER DB:  $user');
-    // String path = join(dbPath.path,
-    //     user.name + user.userId.toString() + DatabaseConst.dbFileName);
+
     String path =
         join(dbPath, user.userId.toString() + DatabaseConst.dbFileName);
-    print('PATH_ABSOLUTE: $path');
+
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(
           version: DatabaseConst.dbVersion,

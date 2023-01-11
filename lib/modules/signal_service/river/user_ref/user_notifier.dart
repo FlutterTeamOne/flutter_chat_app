@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field, empty_catches, unused_local_variable
+
 import 'package:chat_app/modules/signal_service/river/user_ref/user_state_ref.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
@@ -37,7 +39,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
   }
 
   Future<UserStateRef> localReadUser() async {
-    var users;
+    List<UserDto> users;
     if (state.userDbthis) {
       users = await _usersServices.getAllUsersStart();
     } else {
@@ -55,7 +57,6 @@ class UserNotifier extends StateNotifier<UserStateRef> {
           await _usersServices.getAllUserIdAndUpdatedStarted();
       List<UserRequest> usersRequest = [];
       if (usersForUpdate.isNotEmpty) {
-        print("lastID ${usersForUpdate.last['user_id']}");
         for (var user in usersForUpdate) {
           usersRequest.add(UserRequest(
               userId: user['user_id'] as int,
@@ -69,11 +70,8 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       try {
         usersResponse = await stub.sync(UsersRequest(
             mainUser: UserPref.getUserId, usersForUpdate: usersRequest));
-      } catch (e) {
-        print(e);
-      }
-      print("UsersServ NEW ${usersResponse.usersNew}");
-      print("UsersServ UPDATED ${usersResponse.usersUpdated}");
+      } catch (e) {}
+
       for (var user in usersResponse.usersNew) {
         //парсим всех юзеров и записываем их в локальное дб
         await _usersServices.createUserStart(
@@ -107,7 +105,6 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       var usersUp = await _usersServices.getAllUserIdAndUpdated();
       var usersRequest = <UserRequest>[];
       if (usersUp.isNotEmpty) {
-        print("lastID ${usersUp.last['user_id']}");
         for (var user in usersUp) {
           usersRequest.add(UserRequest(
               userId: user['user_id'] as int,
@@ -145,9 +142,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
 
       //запрос на сервер
       var response = DataDBResponse();
-      print('maxUserId: $mainUserId');
-      print('chatId: $maxChatId');
-      print('messageId: $maxMessageId');
+
       try {
         response = await stub.getUsersSynh(MainUserRequest(
           users:
@@ -157,17 +152,12 @@ class UserNotifier extends StateNotifier<UserStateRef> {
           messages: MessagesRequest(
               maxMessageId: maxMessageId, messageForUpdate: messagesRequest),
         ));
-      } catch (e) {
-        print(e);
-      }
-      print("NEWUSERS: ${response.users.usersNew}");
+      } catch (e) {}
 
       ///
       ///ДОБАВЛЯЕМ НОВЫХ ЮЗЕРОВ
       ///
       for (var user in response.users.usersNew) {
-        print(
-            "deleted date is empty? ${user.deletedDate} ${user.deletedDate.isNotEmpty}");
         String userAvatar = (user.deletedDate == "" || user.deletedDate.isEmpty)
             ? user.picture
             : """https://www.iconsdb.com/icons/preview/red/cancel-xxl.png""";
@@ -184,7 +174,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       ///
       ///ДОБАВЛЯЕМ НОВЫЕ ЧАТЫ
       ///
-      print('NEW_CHATS: ${response.chats.chatsNew}');
+
       for (var chat in response.chats.chatsNew) {
         await _chatServices.createChat(
             createDate: chat.createdDate,
@@ -195,10 +185,8 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       ///
       ///ОБНОВЛЯЕМ СТАРЫХ ЮЗЕРОВ
       ///
-      print('REPSONSE_UPDATEUSERS: ${response.users.usersUpdated}');
+
       for (var user in response.users.usersUpdated) {
-        print(
-            "deleted date is empty? ${user.deletedDate} ${user.deletedDate.isEmpty}");
         String userAvatar = (user.deletedDate == "" || user.deletedDate.isEmpty)
             ? user.picture
             : """https://www.iconsdb.com/icons/preview/red/cancel-xxl.png""";
@@ -215,7 +203,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       ///
       ///ДОБАВЛЯЕМ НОВЫЕ СООБЩЕНИЯ
       ///
-      print("RESPONSE_MESSAGES NEW: ${response.messages.messagesNew}");
+
       for (var message in response.messages.messagesNew) {
         var type = ContentType.isText.name == message.contentType.name
             ? ContentType.isText
@@ -244,13 +232,11 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       ///
       ///ОБНОВЛЯЕМ ЧАТЫ
       ///
-      print("RESPONSE_UPDATED_CHATS: ${response.chats.chatsUpdated}");
-      for (var chats in response.chats.chatsUpdated) {}
 
       ///
       ///ОБНОВЛЯЕМ СООБЩЕНИЯ
       ///
-      print("RESPONSE_UPDATED_MESSAGE: ${response.messages.messagesUpdated}");
+
       for (var message in response.messages.messagesUpdated) {
         var type = ContentType.isText.name == message.contentType.name
             ? ContentType.isText
@@ -271,24 +257,17 @@ class UserNotifier extends StateNotifier<UserStateRef> {
           attachId: message.attachmentId,
           isRead: message.isRead,
         );
-        print("UPDATEMESSAGE START");
+
         await _messagesServices.updateMessageSynh(msg: msg);
         if (msg.deletedDate != null && msg.deletedDate != '') {
           await _messagesServices.deleteMessage(id: msg.messageId!);
         }
-        print("UPDATEMESSAGE END");
       }
       users = await _usersServices.getAllUsers();
     }
-    for (var userServ in users) {
-      print('USERS IN Base: $userServ');
-    }
+    for (var userServ in users) {}
     //Добавляем всех юзеров в state
     return state = state.copyWith(users: users);
-
-    // emit(state.copyWith(users: users));
-    // print(users);
-    // }
   }
 
   Future<void> createUser(UserDto user) async {
@@ -313,20 +292,15 @@ class UserNotifier extends StateNotifier<UserStateRef> {
   }
 
   void changeUser(bool isStartDB) {
-    print('GET USER PREF: ${UserPref.getUserDbPref} ');
     UserPref.setUserDbPref = isStartDB;
-    print('GET USER PREF: ${UserPref.getUserDbPref} ');
   }
 
   void deleteUser(int userId) async {
-    var result;
+    dynamic result;
     try {
       result = await GrpcClient().deleteUser(userId: userId);
-    } catch (e) {
-      print(e);
-    }
-    print('event: $userId');
-    print(result.isDeleted);
+    } catch (e) {}
+
     state = state.copyWith(isDeleted: result.isDeleted);
   }
 
@@ -334,10 +308,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     var result = UpdateUserResponse();
     try {
       result = await GrpcClient().updateUser(updatedUser: user);
-      print('RESULT: $result');
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
     await _usersServices.updateUser(
         newValues: '''${DatabaseConst.usersColumnName} = "${result.name}",
             ${DatabaseConst.usersColumnEmail} = "${result.email}",

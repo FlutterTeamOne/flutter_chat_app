@@ -52,9 +52,6 @@ class LocalChatServices implements ILocalChatsServices {
         await db.rawQuery('''SELECT * FROM chats ORDER BY update_date DESC''');
 
     var res = chats.map((item) => ChatDto.fromMap(item)).toList();
-    print('getAllChatsSortedByUpdatedDate chats: $chats');
-    print('getAllChatsSortedByUpdatedDate res: $res');
-
     return res;
   }
 

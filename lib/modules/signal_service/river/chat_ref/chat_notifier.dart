@@ -26,8 +26,6 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
     var chats = await _chatServices.getAllChatsSortedByUpdatedDate();
     //
     var restChats = await RestClient().getChats();
-    print('IF CHATS is NULL - ADD CHAT FROM LOCAL DB: $restChats');
-    print('IF CHATS is NULL - ADD CHAT FROM LOCAL DB: $chats');
     //сравниваем два листа и в зависимости от этого меняем стейт на нужный лист
     listEquals(chats, restChats)
         ? state = state.copyWith(chats: restChats)
@@ -43,7 +41,6 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
             chatId: chat.chatId!);
       }
     } else {
-      print('ADD CHAT FROM EVENT: $chats');
       state = state.copyWith(chats: chats);
     }
     return state;
@@ -60,7 +57,6 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
       throw CustomException(e.response.toString());
     }
 
-    print("JAJAJ");
     var chats = await _chatServices.createChat(
         createDate: chatFromRest.createdDate,
         userId: chatFromRest.userIdChat,
@@ -70,9 +66,7 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
   }
 
   void getChatId(int chatId) {
-    print('HEY');
     state = state.copyWith(chatId: chatId);
-    // return state;
   }
 
   deleteChat(int chatId) async {
@@ -80,7 +74,7 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
     await _chatServices.deleteChat(id: chatId);
     //запрос на удаление к рест серверу
     await RestClient().deleteChatRest(id: chatId);
-    print('CHAT ID: $chatId');
+
     state = state.copyWith(chatId: null);
   }
 }

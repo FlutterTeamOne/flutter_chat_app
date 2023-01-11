@@ -135,6 +135,7 @@ class CustomThemes {
     ),
   );
 
+  // ignore: non_constant_identifier_names
   static final ThemeData CustomTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,

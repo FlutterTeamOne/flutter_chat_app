@@ -17,6 +17,7 @@ class SavedTheme {
 
   getPreferences() async {
     _initThemeIndex = (await _preferences.getTheme())!;
+    // ignore: unnecessary_cast
     return _initThemeIndex as int;
   }
 }

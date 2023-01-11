@@ -14,14 +14,12 @@ class DefaultUserChatLayout extends StatelessWidget {
           top: BorderSide.none,
         ),
       ),
+      // ignore: avoid_unnecessary_containers
       child: Container(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Text(
-              //   'Sfera'.toUpperCase(),
-              // ),
+            children: const [
               Text(
                 'Send and receive messages. Choose a chat to write a message.',
               ),

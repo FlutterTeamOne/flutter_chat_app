@@ -1,3 +1,5 @@
+// ignore_for_file: empty_catches
+
 import 'dart:async';
 
 import 'package:chat_app/modules/client/grpc_client.dart';
@@ -13,8 +15,10 @@ import '../../../sending_manager/library/library_sending_manager.dart';
 
 class MessageNotifier extends StateNotifier<MessageStateRef> {
   late LocalMessagesServices _messagesServices;
+  // ignore: unused_field
   late LocalUsersServices _userServices;
   late MainUserServices _mainUserServices;
+  // ignore: unused_field
   late StreamSubscription _subscription;
   StreamController<DynamicRequest> messageController =
       StreamController.broadcast();
@@ -30,10 +34,7 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
 
     _subscription =
         stub.streamMessage(messageController.stream).listen((value) async {
-      print("MESSAGE!!!!!!!!!!!!!!!");
-      print(value.messageState);
       if (value.messageState == MessageStateEnum.isReadMessage) {
-        print("READMESSAGE: ${value}");
         var messages = <MessageDto>[];
         var msg = value.readMessage.message;
         await _messagesServices.addNewMessageFromBase(message: msg);
@@ -57,15 +58,6 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
             content: updMsg.content,
             messageId: updMsg.idMessageMain,
             updateDate: updMsg.dateUpdate);
-
-        print('id Message Main: ${updMsg.idMessageMain}');
-        print('date update: ${updMsg.idMessageMain}');
-
-        // var messages = await _messagesServices.getAllMessages();
-
-        // print('IsUpdate message:$messages');
-
-        // readMessages(messages);
       } else if (value.messageState == MessageStateEnum.isDeleteMesage) {
         var del = value.deleteMessage;
 
@@ -73,11 +65,8 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
             id: del.idMessageMain, dateDelete: del.dateDelete);
         var messages = await _messagesServices.getAllMessages();
 
-        print('IsDelete message:$messages');
-
         readMessages(messages);
       } else if (value.messageState == MessageStateEnum.isCreateMessage) {
-        print("IsCreate: ${value.createMessage.message}");
         var msg = value.createMessage.message;
         var newMsg = MessageDto(
             localMessageId: msg.localMessgaeId,
@@ -100,12 +89,7 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
       if (event == true) {
         var messages = await _messagesServices.getAllMessages();
 
-        // messages.sort((a, b) => a.localMessageId!.compareTo(b.localMessageId!));
-
-        print('sortListen message:$messages');
-
         readMessages(messages);
-        // state.copyWith(messages: messages);
       }
     });
   }
@@ -113,12 +97,8 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
     if (messageList == null || messageList.length == 1) {
       var messages = await _messagesServices.getAllMessages();
 
-      print("MESSAGES:$messages");
-
       state = state.copyWith(messages: messages);
     } else {
-      print('EVENT MSG: $messageList');
-
       state = state.copyWith(messages: messageList);
     }
     return state;
@@ -138,7 +118,7 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
     if (mediaState == MediaState.isPreparation) {
       state = state.copyWith(mediaState: MediaState.isPreparation);
     }
-    print('MESSAGE: $message');
+
     //отправка текстового сообщения
     if (contentType == ContentType.isText && message != null) {
       // ignore: prefer_conditional_assignment
@@ -273,8 +253,7 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
   deleteMessage({required int messageId}) async {
     await _messagesServices.deleteMessage(id: messageId);
     DBHelper.instanse.updateListenController.add(true);
-    // add(ReadMessageEvent());
-    print('message ID: $messageId');
+
     state = state.copyWith(
         deleteState: DeleteState.isDeleted, editState: EditState.isNotEditing);
     var messageDelete = DynamicRequest(

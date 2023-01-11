@@ -19,9 +19,6 @@ class UserCard extends StatelessWidget {
                 userPod.changeUser(false);
                 UserPref.setUserId = user.userId!;
                 UserPath.user = user;
-                //await DBHelperStart.instanse.close();
-                var db = await DBHelper.instanse.initDB();
-
 
                 Navigator.of(context).pushNamed(MainLayout.routeName);
               },

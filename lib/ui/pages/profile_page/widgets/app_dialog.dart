@@ -37,8 +37,8 @@ class _AppDialogState extends ConsumerState<_AppDialog> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
+              children: const [
+                Text(
                   'Choose image',
                   // Стиль
                   // style: TextStyle(fontSize: 16),
@@ -133,7 +133,6 @@ class _AppDialogState extends ConsumerState<_AppDialog> {
                                                   .read(River.userPod.notifier)
                                                   .readUser();
 
-                                              print(newUrl);
                                               Navigator.pop(context);
                                             }
                                           },
