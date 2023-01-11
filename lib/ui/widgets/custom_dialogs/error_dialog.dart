@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
 class ErrorDialog extends StatelessWidget {
-  const ErrorDialog({
-    Key? key,
-    required this.textTitle,
-    required this.textContent,
-  }) : super(key: key);
+  const ErrorDialog(
+      {Key? key,
+      required this.textTitle,
+      required this.textContent,
+      this.onPressed})
+      : super(key: key);
 
   final String textTitle;
   final String textContent;
+  final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class ErrorDialog extends StatelessWidget {
       content: Text(textContent),
       actions: [
         TextButton(
-            onPressed: () => Navigator.pop(context, 'OK'),
+            onPressed: onPressed ?? () => Navigator.pop(context, 'OK'),
             child: const Text('OK'))
       ],
     );

@@ -67,9 +67,12 @@ class ProfileLayout extends StatelessWidget {
                                 RoundedRectangleBorder>(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
                         ))),
-                        onPressed: () {
-                          _deleteUserLogic(userPod, userMain, context, ref);
-                        },
+                        onPressed: () => _deleteUserLogic(
+                            userPod: userPod,
+                            userMain: userMain,
+                            context: context,
+                            ref: ref,
+                            chatPod: chatPod),
                         child: const Text('Delete user')),
                   ],
                 ),
@@ -81,34 +84,34 @@ class ProfileLayout extends StatelessWidget {
     });
   }
 
-  void _deleteUserLogic(UserNotifier userPod, UserDto userMain,
-      BuildContext context, WidgetRef ref) {
-    userPod.deleteUser(userMain.userId!);
-    Navigator.of(context).pushNamed(AuthPage.routeName);
-    print(userMain.userId);
+  void _deleteUserLogic(
+      {required UserNotifier userPod,
+      required UserDto userMain,
+      required BuildContext context,
+      required WidgetRef ref,
+      required ChatNotifier chatPod}) async {
+    try {
+      userPod.deleteUser(userMain.userId!);
+      Navigator.of(context).pushNamed(AuthPage.routeName);
+    } catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) =>
+              ErrorDialog(textTitle: 'Error', textContent: '$e'));
+    }
     showDialog(
         context: context,
-        builder: (BuildContext context) {
-          final userIsDeleted = ref.read(River.userPod).isDeleted;
-          return Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            child: SizedBox(
-              height: 80,
-              width: 50,
-              child: Column(
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: userIsDeleted == false
-                          ? Text('User ${userMain.name} is not deleted')
-                          : Text('User ${userMain.name} is deleted')),
-                  const DeleteDialogWidget()
-                ],
-              ),
-            ),
-          );
-        });
+        builder: (context) => ErrorDialog(
+              textTitle: 'Success',
+              textContent: 'User ${userMain.name} deleted',
+              onPressed: () async {
+                userPod.changeUser(true);
+                chatPod.getChatId(-1);
+                await DBHelper.instanse.deleteDB();
+                userPod.readUser();
+
+                Navigator.of(context).pushNamed(AuthPage.routeName);
+              },
+            ));
   }
 }
