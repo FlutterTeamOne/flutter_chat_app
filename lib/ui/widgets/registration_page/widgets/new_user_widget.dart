@@ -181,7 +181,7 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
 
   Padding buildCreateNewUserButton(BuildContext context, newUserNameText,
       newUserEmailText, newUserPasswordText) {
-    var newUserPod = ref.read(River.newUserPod.notifier);
+    var newUserPod = ref.read(River.newUserPod);
     late String newUserName;
     return Padding(
       padding: const EdgeInsets.only(left: 100.0),
@@ -207,12 +207,12 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
                   password: newUserPasswordText.text,
                   registrationDate: newUserCreateDate,
                   profilePicLink: newUserPictureUrl);
-                  newUserPod.newUser(newUser: newUser);
+                  ref.read(River.newUserPod.notifier).newUser(newUser: newUser);
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    newUserName =
-                        newUserPod.state.newUser.name;
+                    newUserName = 
+                        newUserPod.newUser.name;
                     return Dialog(
                       // shape: RoundedRectangleBorder(
                       //   borderRadius: BorderRadius.circular(20.0),
@@ -224,10 +224,7 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
                           children: [
                             Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: newUserPod
-                                            .state
-                                            .newUser
-                                            .name ==
+                                child: newUserPod.newUser.name ==
                                         newUserNameText.text
                                     ? Text('User $newUserName created')
                                     : const Text('Error')),

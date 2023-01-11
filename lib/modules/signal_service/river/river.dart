@@ -29,5 +29,5 @@ class River {
           (ref) => MessageNotifier());
   static final futureMessagePod = FutureProvider<MessageStateRef>(
       (ref) => ref.read(messagePod.notifier).readMessages());
-  static final newUserPod = StateNotifierProvider((ref) =>      NewUserNotifier());
+  static final newUserPod = StateNotifierProvider<NewUserNotifier, NewUserStateRef>((ref) =>      NewUserNotifier());
 }
