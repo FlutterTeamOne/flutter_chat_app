@@ -94,10 +94,10 @@ class MyApp extends StatelessWidget {
       //       grpcClient: grpcClient,
       //       grpcConnection: context.read<GrpcConnectionBloc>()),
       // ),
-      BlocProvider(
-        create: (context) => ChangeThemeBloc(),
-      ),
-      BlocProvider(create: (context) => NewUserBloc()),
+      // BlocProvider(
+      //   create: (context) => ChangeThemeBloc(),
+      // ),
+      // BlocProvider(create: (context) => NewUserBloc()),
     ], child: buildMaterialApp(context));
   }
 }
