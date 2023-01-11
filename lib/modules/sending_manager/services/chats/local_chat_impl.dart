@@ -22,13 +22,15 @@ class LocalChatServices implements ILocalChatsServices {
               SELECT *
               FROM ${DatabaseConst.chatsTable}
               ''');
+    DBHelper.instanse.updateListenController.sink.add(DbListener.isChat);
+
     return chats.map((item) => ChatDto.fromMap(item)).toList();
   }
 
   @override
   Future<int> deleteChat({required int id}) async {
     var db = await DBHelper.instanse.database;
-    DBHelper.instanse.updateListenController.sink.add(true);
+    DBHelper.instanse.updateListenController.sink.add(DbListener.isChat);
 
     return await db.rawDelete(
         'DELETE FROM ${DatabaseConst.chatsTable} WHERE ${DatabaseConst.chatsColumnChatId}=?',
@@ -42,6 +44,7 @@ class LocalChatServices implements ILocalChatsServices {
               SELECT *
               FROM ${DatabaseConst.chatsTable}
               ''');
+
     return chats.map((item) => ChatDto.fromMap(item)).toList();
   }
 
@@ -66,6 +69,7 @@ class LocalChatServices implements ILocalChatsServices {
               FROM ${DatabaseConst.chatsTable}
               WHERE ${DatabaseConst.chatsColumnChatId}=?
               ''', [id]);
+
     return chat[0];
   }
 
@@ -75,7 +79,6 @@ class LocalChatServices implements ILocalChatsServices {
     var chat = await db.rawQuery('''SELECT ${DatabaseConst.chatsColumnChatId} 
         FROM ${DatabaseConst.chatsTable} 
         WHERE ${DatabaseConst.chatsColumnChatId}=?''', [localId]);
-
     return chat[0][DatabaseConst.chatsColumnChatId] as int;
   }
 
@@ -88,6 +91,7 @@ class LocalChatServices implements ILocalChatsServices {
       SET update_date = '$dateUpdated'
       WHERE (chat_id = $chatId)
     ''');
+    DBHelper.instanse.updateListenController.sink.add(DbListener.isChat);
   }
 
   @override
@@ -97,6 +101,7 @@ class LocalChatServices implements ILocalChatsServices {
         await db.rawQuery('''SELECT MAX(${DatabaseConst.chatsColumnChatId}) 
                 as ${DatabaseConst.chatsColumnChatId} 
                 FROM ${DatabaseConst.chatsTable}''');
+
     return (chat[0][DatabaseConst.chatsColumnChatId] ?? 0) as int;
   }
 }

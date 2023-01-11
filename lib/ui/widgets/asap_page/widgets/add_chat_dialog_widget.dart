@@ -16,8 +16,8 @@ class AddChatDialogWidget extends StatefulWidget {
 }
 
 class _AddChatDialogWidgetState extends State<AddChatDialogWidget> {
-  var _friendIdFieldController = TextEditingController();
-  var _friendId;
+  final _friendIdFieldController = TextEditingController();
+  String? _friendId;
 
   void _updateText() {
     setState(() {
@@ -67,7 +67,8 @@ class _AddChatDialogWidgetState extends State<AddChatDialogWidget> {
           ),
           ElevatedButton(
               onPressed: () async {
-                widget.val = int.tryParse(_friendId)!;
+                widget.val = int.parse(_friendId!);
+
                 Navigator.pop(context, widget.val);
               },
               child: const Text('Add')),

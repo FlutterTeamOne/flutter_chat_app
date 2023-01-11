@@ -78,7 +78,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                 //     break;
                                 //   }
                                 // }
-                              var  friend = userPod.users?.firstWhere((user) =>
+                                var friend = userPod.users?.firstWhere((user) =>
                                     widget.chatModel[index].userIdChat ==
                                     user.userId);
                                 var lastMessage = MessageDto(
@@ -134,15 +134,14 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                               builder: (BuildContext context) =>
                                   (AddChatDialogWidget(val: value)))
                           .then((value) async {
-                        print('FriendId From Add Dialog: $value');
-                        print('Current UserId: ${UserPref.getUserId}');
                         //FriendId Validation
+                        if (value == null) {
+                          return;
+                        }
                         GetUserResponse userFromServerDb;
                         try {
                           userFromServerDb =
                               await grpcClient.getUser(userId: value);
-                          print("UserFromServer: $userFromServerDb");
-                          if (!mounted) return;
                           print("BEFORE REST");
                           await ref.read(River.chatPod.notifier).createChat(
                                 ChatDto(

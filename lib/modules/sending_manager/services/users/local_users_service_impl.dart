@@ -20,6 +20,7 @@ class LocalUsersServices implements ILocalUsersServices {
     required String profilePicUrl,
   }) async {
     var db = await DBHelper.instanse.database;
+    DBHelper.instanse.updateListenController.add(DbListener.isUser);
 
     return await db.insert(DatabaseConst.userTable, {
       DatabaseConst.usersColumnUserId: userId,
@@ -43,6 +44,7 @@ class LocalUsersServices implements ILocalUsersServices {
     required String profilePicUrl,
   }) async {
     var db = await DBHelperStart.instanse.database;
+    DBHelper.instanse.updateListenController.add(DbListener.isUser);
 
     return await db.insert(DatabaseConst.userTable, {
       DatabaseConst.usersColumnUserId: userId,
@@ -58,6 +60,8 @@ class LocalUsersServices implements ILocalUsersServices {
   @override
   Future<int> deleteUser({required int id}) async {
     var db = await DBHelper.instanse.database;
+    DBHelper.instanse.updateListenController.add(DbListener.isUser);
+
     return await db.rawDelete(
         'DELETE FROM ${DatabaseConst.userTable} WHERE ${DatabaseConst.usersColumnUserId}=?',
         [id]);
@@ -70,6 +74,7 @@ class LocalUsersServices implements ILocalUsersServices {
               SELECT *
               FROM ${DatabaseConst.userTable}
               ''');
+
     return users.map((item) => UserDto.fromMap(item)).toList();
   }
 
@@ -106,6 +111,7 @@ class LocalUsersServices implements ILocalUsersServices {
               WHERE (user_id = $localId);
               ''');
     var id = user[0]['user_id'] as int;
+
     return id;
   }
 
@@ -113,7 +119,8 @@ class LocalUsersServices implements ILocalUsersServices {
   Future<int> getMainUserId() async {
     var db = await DBHelper.instanse.database;
     var user = await db.rawQuery(
-        '''               SELECT ${DatabaseConst.mainUserColumnUserId}               FROM ${DatabaseConst.mainUserTable}               ''');
+        '''SELECT ${DatabaseConst.mainUserColumnUserId} FROM ${DatabaseConst.mainUserTable}''');
+
     return user[0][DatabaseConst.mainUserColumnUserId] as int;
   }
 
@@ -122,16 +129,27 @@ class LocalUsersServices implements ILocalUsersServices {
     var db = await DBHelper.instanse.database;
 
     var user = await db.rawQuery('''
-      SELECT * FROM users WHERE user_id = $localId;
+      SELECT * FROM users WHERE user_id = $localId
       ''');
+
     return user[0];
+  }
+
+  Future<List<Map<String, Object?>>> getUserById({required int id}) async {
+    var db = await DBHelper.instanse.database;
+
+    var user = await db.rawQuery('''
+      SELECT * FROM users WHERE user_id = $id
+      ''');
+
+    return user;
   }
 
   @override
   Future<int> updateUser(
       {required String newValues, required String condition}) async {
     var db = await DBHelper.instanse.database;
-    DBHelper.instanse.updateListenController.add(true);
+    DBHelper.instanse.updateListenController.add(DbListener.isUser);
     return await db.rawUpdate(
         'UPDATE ${DatabaseConst.userTable} SET $newValues WHERE $condition');
   }
@@ -151,6 +169,7 @@ class LocalUsersServices implements ILocalUsersServices {
               FROM users
               ''');
     // var r = (lastUser[0]['MAX(user_id)']);
+
     return lastUser[0]['MAX(user_id)'] ?? 0;
   }
 
@@ -160,6 +179,7 @@ class LocalUsersServices implements ILocalUsersServices {
               SELECT user_id, updated_date
               FROM users
               ''');
+
     return users;
   }
 
@@ -169,6 +189,7 @@ class LocalUsersServices implements ILocalUsersServices {
               SELECT user_id, updated_date
               FROM users
               ''');
+
     return users;
   }
 
