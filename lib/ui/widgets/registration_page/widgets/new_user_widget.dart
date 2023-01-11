@@ -70,6 +70,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 20),
+                // Форма для имени
                 FormWidget(
                   text: 'Name',
                   maxLength: 20,
@@ -87,6 +88,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                   },
                 ),
                 const SizedBox(height: 10),
+                // Форма для мыло
                 FormWidget(
                   text: 'Email',
                   inputFormatters: RegExp(r"^[a-z0-9.a-z@]+"),
@@ -105,6 +107,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                   valueListenable: _isActive,
                   builder: (context, value, child) => Column(
                     children: [
+                      // Форма для пароля
                       FormWidget(
                           text: 'Password',
                           inputFormatters: RegExp(r"^[a-z0-9_A-Z]+"),
@@ -132,6 +135,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                             }
                           }),
                       const SizedBox(height: 10),
+                      // Форма для подтверждения пароля
                       FormWidget(
                         text: 'Сonfirm password',
                         inputFormatters: RegExp(r"^[a-z0-9_A-Z]+"),
@@ -156,8 +160,13 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    buildCreateNewUserButton(context, nameController,
-                        emailController, passwordController, _formKey),
+                    buildCreateNewUserButton(
+                      context,
+                      nameController,
+                      emailController,
+                      passwordController,
+                      _formKey,
+                    ),
                     CloseButton(
                       color: Theme.of(context).errorColor,
                       onPressed: () {
@@ -211,16 +220,14 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                           width: 50,
                           child: Column(
                             children: [
-                              Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: context
-                                              .read<NewUserBloc>()
-                                              .state
-                                              .newUser
-                                              .name ==
-                                          newUserNameText.text
-                                      ? Text('User $newUserName created')
-                                      : const Text('Error')),
+                              const SizedBox(height: 10),
+                              //Не работает создание юзера
+                              context.read<NewUserBloc>().state.newUser.name ==
+                                      newUserNameText.text
+                                  ? Text('User $newUserName created')
+                                  : const Text('Error'),
+                              //
+                              const SizedBox(height: 10),
                               Consumer(
                                 builder: (context, ref, _) {
                                   return ElevatedButton(
