@@ -1,4 +1,3 @@
-
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/ui/pages/main_layout.dart';
 import 'package:chat_app/ui/pages/registration_page/registration_page.dart';
@@ -27,6 +26,17 @@ class _AuthPageState extends ConsumerState<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: ElevatedButton(
+        style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ))),
+        onPressed: () {
+          Navigator.of(context).pushNamed(RegistrationPage.routeName);
+        },
+        child: const Text('Create new user'),
+      ),
       body: Consumer(builder: (context, ref, _) {
         List<UserDto>? users;
         users = ref.watch(River.userPod).users;
@@ -34,36 +44,39 @@ class _AuthPageState extends ConsumerState<AuthPage> {
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : Column(
-                children: [
-                  const SizedBox(
-                    height: 100,
-                  ),
-                  Center(
-                    child: SizedBox(
-                      height: 300,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: users.length,
-                        itemBuilder: ((context, index) =>
-                            UserCard(user: users![index])),
+            : SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 30),
+                      Text(
+                        'Welcome',
+                        style: Theme.of(context).textTheme.displaySmall,
                       ),
-                    ),
+                      Text(
+                        'choose user',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      const SizedBox(height: 50),
+                      GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 8,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                        ),
+                        shrinkWrap: true,
+                        itemCount: users.length,
+                        itemBuilder: (context, index) {
+                          return UserCard(
+                            user: users![index],
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                  ElevatedButton(
-                      style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ))),
-                      onPressed: () {
-                        Navigator.of(context)
-                            .pushNamed(RegistrationPage.routeName);
-                      },
-                      child: const Text('Create new user')),
-                ],
+                ),
               );
       }),
     );

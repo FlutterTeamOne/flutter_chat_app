@@ -7,7 +7,7 @@ class UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Wrap(
       children: [
         Consumer(
           builder: (context, ref, _) {
@@ -22,22 +22,30 @@ class UserCard extends StatelessWidget {
                 //await DBHelperStart.instanse.close();
                 var db = await DBHelper.instanse.initDB();
                 print("db open? ${db.path},${db.isOpen}");
-
                 Navigator.of(context).pushNamed(MainLayout.routeName);
               },
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Image.network(user.profilePicLink,
-                    fit: BoxFit.cover, width: 150, height: 150),
+                borderRadius: BorderRadius.circular(20),
+                child: Image.network(
+                  user.profilePicLink,
+                  fit: BoxFit.cover,
+                  //При уменьшении экрана по горизонтали, карточки смещаются, и отображаются не как надо
+                  //нужно исправить проблему, при использовании cache/Width/Height правильно отображается но
+                  //теряется качество и растягивается фото, а при использовании просто height/width
+                  //качество остается хорошей но при уменьшении экрана не правильно отображается
+                  cacheWidth: 150,
+                  cacheHeight: 150,
+                ),
               ),
             );
           },
         ),
         Text(
           user.email,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: Theme.of(context).textTheme.headline6,
         ),
-        // const SizedBox(height: 10),
       ],
     );
   }
