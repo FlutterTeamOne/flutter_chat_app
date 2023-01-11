@@ -1,6 +1,7 @@
 import 'package:blur/blur.dart';
 import 'package:chat_app/modules/signal_service/river/chat_ref/chat_notifier.dart';
 import 'package:chat_app/modules/signal_service/river/user_ref/user_notifier.dart';
+import 'package:chat_app/ui/auth/authorization_page.dart';
 import 'package:chat_app/ui/widgets/custom_dialogs/textfield_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';

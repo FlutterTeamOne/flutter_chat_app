@@ -111,7 +111,9 @@ class ProfileLayout extends StatelessWidget {
                                           ),
                                         ),
                                       );
-                                    });
+                                    }).whenComplete(() => Navigator.of(
+                                        context)
+                                    .pushNamed(AuthPage.routeName));
                               },
                               child: const Text('Delete user')),
                         ],
