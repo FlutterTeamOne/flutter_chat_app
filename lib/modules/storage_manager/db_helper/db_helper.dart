@@ -30,17 +30,18 @@ class DBHelper {
   Future<Database> initDB() async {
     sqfliteFfiInit();
     var dbFactory = databaseFactoryFfi;
-    // var dbPath = await dbFactory.getDatabasesPath();
-    // var dbPath = await getTemporaryDirectory();
     var dbPath = AppDataConstants.dbDirectory;
-    // print('PATH: ${dbPath.path}');
     var user = UserPath.getUser;
+
+    //TODO: Убрать принт
     print('USER DB:  $user');
-    // String path = join(dbPath.path,
-    //     user.name + user.userId.toString() + DatabaseConst.dbFileName);
+
     String path =
         join(dbPath, user.userId.toString() + DatabaseConst.dbFileName);
+
+    //TODO: Убрать принт
     print('PATH_ABSOLUTE: $path');
+
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(
           version: DatabaseConst.dbVersion,
@@ -268,14 +269,15 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
     var db = await instanse.database;
     var databaseFactory = databaseFactoryFfi;
 
-    var dbPath = '.dart_tool/sqflite_common_ffi/databases/';
+    var dbPath = AppDataConstants.dbDirectory;
     var user = UserPath.getUser;
+
+    //TODO: Убрать принт
+    print('USER DB:  $user');
+
     String path = testPath ??
-        join(
-            dbPath
-            // .path
-            ,
-            user.name + user.userId.toString() + DatabaseConst.dbFileName);
+        join(dbPath, user.userId.toString() + DatabaseConst.dbFileName);
+
     _database = null;
     await db.close();
     await databaseFactory.deleteDatabase(path);

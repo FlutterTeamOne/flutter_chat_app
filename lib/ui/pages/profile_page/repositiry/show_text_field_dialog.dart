@@ -33,8 +33,10 @@ class ShowTextFieldDialog {
             controller: newController,
             text: text,
             onPressed: () async {
+
               String updatedDate = DateTime.now().toIso8601String();
               late String newValue = newController.text;
+              //TODO: Проверка на те же данные которые введены
               if (newController.text.isNotEmpty) {
                 if (enumUserInfo == EnumUserInfo.avatar &&
                     !(await _validateImage(newValue))) {

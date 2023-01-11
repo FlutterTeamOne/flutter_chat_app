@@ -79,7 +79,8 @@ class LocalUsersServices implements ILocalUsersServices {
     var users = await db.rawQuery('''
               SELECT *
               FROM ${DatabaseConst.userTable}
-              ''');
+              WHERE (${DatabaseConst.usersColumnDeletedDate} LIKE '') OR 
+              (${DatabaseConst.usersColumnDeletedDate} IS NULL)''');
     return users.map((item) => UserDto.fromMap(item)).toList();
   }
 

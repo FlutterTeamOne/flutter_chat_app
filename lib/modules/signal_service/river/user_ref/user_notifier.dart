@@ -1,3 +1,4 @@
+import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/modules/signal_service/river/user_ref/user_state_ref.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
@@ -324,7 +325,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     try {
       result = await GrpcClient().deleteUser(userId: userId);
     } catch (e) {
-      print(e);
+      throw CustomException(e.toString());
     }
     print('event: $userId');
     print(result.isDeleted);
