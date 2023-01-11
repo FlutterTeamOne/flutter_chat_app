@@ -183,7 +183,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
       newUserEmailText, newUserPasswordText) {
     late String newUserName;
     return Padding(
-      key: const Key('createUserButton'),
+      key: const Key('createUserWidget'),
       padding: const EdgeInsets.only(left: 100.0),
       child: Row(
         children: [
@@ -191,6 +191,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
             listener: (context, state) {},
             builder: (context, state) {
               return ElevatedButton(
+                  key: const Key('createUserButton'),
                   // style: ButtonStyle(
                   //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   //         RoundedRectangleBorder(
@@ -219,6 +220,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                           newUserName =
                               context.watch<NewUserBloc>().state.newUser.name;
                           return Dialog(
+                            key: const Key('createUserDialog'),
                             // shape: RoundedRectangleBorder(
                             //   borderRadius: BorderRadius.circular(20.0),
                             // ),
@@ -240,6 +242,8 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                                   Consumer(
                                     builder: (context, ref, _) {
                                       return ElevatedButton(
+                                          key: const Key(
+                                              'createUserDialogButton'),
                                           // style: ButtonStyle(
                                           //     shape: MaterialStateProperty.all<
                                           //             RoundedRectangleBorder>(
@@ -270,6 +274,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
             },
           ),
           IconButton(
+              key: const Key('cancelUserCreateButton'),
               onPressed: () {
                 Navigator.of(context).pushNamed('/');
               },
