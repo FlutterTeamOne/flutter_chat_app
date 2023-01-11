@@ -23,116 +23,151 @@ class _NewUserWidgetState extends State<NewUserWidget> {
   static const String newUserPictureUrl =
       """https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg?w=2000""";
   static String newUserCreateDate = DateTime.now().toIso8601String();
-  late TextEditingController newUserNameText;
-  late TextEditingController newUserEmailText;
-  late TextEditingController newUserPasswordText;
-  late TextEditingController newUserPictureUrlText;
+  //Контроллеры
+  late TextEditingController nameController;
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
+  late TextEditingController pictureUrlController;
+  late TextEditingController confirmPasswordController;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    newUserNameText = TextEditingController();
-    newUserEmailText = TextEditingController();
-    newUserPasswordText = TextEditingController();
-    newUserPictureUrlText = TextEditingController();
+    //Инициализируем
+    nameController = TextEditingController();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    pictureUrlController = TextEditingController();
+    confirmPasswordController = TextEditingController();
   }
 
   @override
   void dispose() {
-    newUserNameText.dispose();
-    newUserEmailText.dispose();
-    newUserPasswordText.dispose();
-    newUserPictureUrlText.dispose();
+    //Диспоузим
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    pictureUrlController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // если _isActive будет равен true то пароль скрыт
     final _isActive = ValueNotifier<bool>(true);
     return Center(
-      child: Form(
-        key: _formKey,
-        child: SizedBox(
-          width: 250,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Create new user',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 20),
-              FormWidget(
-                text: 'Name',
-                maxLength: 20,
-                inputFormatters: RegExp(r'[A-Za-z]+'),
-                controller: newUserNameText,
-                validator: (name) {
-                  if (name!.length < 3) {
-                    return 'Name must contain at least 3 characters';
-                  }
-                  {
-                    return null;
-                  }
-                },
-              ),
-              const SizedBox(height: 10),
-              FormWidget(
-                text: 'Email',
-                inputFormatters: RegExp(r"^[a-z0-9.a-z@]+"),
-                maxLength: 36,
-                controller: newUserEmailText,
-                validator: (email) {
-                  if (email != null && !EmailValidator.validate(email)) {
-                    return 'Enter a valid email';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
-              ValueListenableBuilder(
-                valueListenable: _isActive,
-                builder: (context, value, child) => FormWidget(
-                  text: 'Password',
-                  inputFormatters: RegExp(r"^[a-z0-9_A-Z]+"),
-                  controller: newUserPasswordText,
-                  obscureText: _isActive.value,
-                  suffix: _isActive.value == true
-                      ? Icons.visibility_off_rounded
-                      : Icons.visibility_rounded,
-                  validator: (password) {
-                    if (password != null && password.length < 6) {
-                      return 'Password must contain at least 6 characters';
-                    } else {
+      child: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: SizedBox(
+            width: 250,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Create new user',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 20),
+                FormWidget(
+                  text: 'Name',
+                  maxLength: 20,
+                  //используем RegExp для сортировки по символам
+                  inputFormatters: RegExp(r'^[A-Za-z]+'),
+                  controller: nameController,
+                  validator: (name) {
+                    if (name!.length < 3) {
+                      //если длинна имени меньше 3 символов выводиим ошибку
+                      return 'Name must contain at least 3 characters';
+                    }
+                    {
                       return null;
                     }
                   },
-                  suffixOnTap: () {
-                    if (_isActive.value == true) {
-                      _isActive.value = false;
-                    } else {
-                      _isActive.value = true;
+                ),
+                const SizedBox(height: 10),
+                FormWidget(
+                  text: 'Email',
+                  inputFormatters: RegExp(r"^[a-z0-9.a-z@]+"),
+                  maxLength: 36,
+                  controller: emailController,
+                  validator: (email) {
+                    if (email != null && !EmailValidator.validate(email)) {
+                      // Валидация сделана при помощи пакета email_validator
+                      return 'Enter a valid email';
                     }
+                    return null;
                   },
                 ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  buildCreateNewUserButton(context, newUserNameText,
-                      newUserEmailText, newUserPasswordText, _formKey),
-                  CloseButton(
-                    color: Theme.of(context).errorColor,
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/');
-                    },
+                const SizedBox(height: 10),
+                ValueListenableBuilder(
+                  valueListenable: _isActive,
+                  builder: (context, value, child) => Column(
+                    children: [
+                      FormWidget(
+                          text: 'Password',
+                          inputFormatters: RegExp(r"^[a-z0-9_A-Z]+"),
+                          controller: passwordController,
+                          obscureText: _isActive.value,
+                          suffix: _isActive.value == true
+                              ? Icons.visibility_off_rounded
+                              : Icons.visibility_rounded,
+                          validator: (password) {
+                            if (password!.length < 6) {
+                              //если длинна пароля меньше 6 символов выводиим ошибку
+                              return 'Password must contain at least 6 characters';
+                            } else if (!password.contains(RegExp(r'[A-Z]'))) {
+                              //если пароль не содержит хотя бы одну заглавную буквку выводим ошибку
+                              return 'Password must contain at least one capital\nletter';
+                            } else {
+                              return null;
+                            }
+                          },
+                          suffixOnTap: () {
+                            if (_isActive.value == true) {
+                              _isActive.value = false;
+                            } else {
+                              _isActive.value = true;
+                            }
+                          }),
+                      const SizedBox(height: 10),
+                      FormWidget(
+                        text: 'Сonfirm password',
+                        inputFormatters: RegExp(r"^[a-z0-9_A-Z]+"),
+                        controller: confirmPasswordController,
+                        obscureText: _isActive.value,
+                        validator: (confirm) {
+                          if (passwordController.text !=
+                                  confirmPasswordController.text ||
+                              passwordController.text.isEmpty) {
+                            //если значение confirmPasswordController пустое или не совпадает с passwordController выводим ошибку
+                            return 'Passwords do not match. Try again.';
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    buildCreateNewUserButton(context, nameController,
+                        emailController, passwordController, _formKey),
+                    CloseButton(
+                      color: Theme.of(context).errorColor,
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('/');
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -140,7 +175,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
   }
 
   buildCreateNewUserButton(BuildContext context, newUserNameText,
-      newUserEmailText, newUserPasswordText, _formKey) {
+      newUserEmailText, newUserPasswordText, formKey) {
     late String newUserName;
     return BlocConsumer<NewUserBloc, NewUserState>(
       listener: (context, state) {},
@@ -153,7 +188,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
             //   borderRadius: BorderRadius.circular(20.0),
             // ))),
             onPressed: () {
-              final isValid = _formKey.currentState!.validate();
+              final isValid = formKey.currentState!.validate();
               if (isValid) {
                 late NewUserModel newUser = NewUserModel(
                     name: newUserNameText.text,
