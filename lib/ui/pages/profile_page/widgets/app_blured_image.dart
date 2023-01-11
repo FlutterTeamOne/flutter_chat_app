@@ -18,7 +18,7 @@ class _AppBluredImage extends StatelessWidget {
         height: 175,
         decoration: BoxDecoration(
           image: image.isEmpty
-              ? DecorationImage(
+              ? const DecorationImage(
                   fit: BoxFit.cover,
                   image: AssetImage(
                       'assets/images/user_images/defaultUserAvatar.png'),

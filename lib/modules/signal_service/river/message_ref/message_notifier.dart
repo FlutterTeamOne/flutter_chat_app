@@ -97,7 +97,7 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
       }
     });
     DBHelper.instanse.updateListenController.stream.listen((event) async {
-      if (event == true) {
+      if (event ==DbListener.isMessage) {
         var messages = await _messagesServices.getAllMessages();
 
         // messages.sort((a, b) => a.localMessageId!.compareTo(b.localMessageId!));
@@ -272,7 +272,6 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
 
   deleteMessage({required int messageId}) async {
     await _messagesServices.deleteMessage(id: messageId);
-    DBHelper.instanse.updateListenController.add(true);
     // add(ReadMessageEvent());
     print('message ID: $messageId');
     state = state.copyWith(

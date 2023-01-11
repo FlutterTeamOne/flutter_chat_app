@@ -5,9 +5,10 @@ import '../../../src/constants/app_data_constants.dart';
 
 import '../../../src/constants/db_constants.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
+enum DbListener {isUnknown, isUser, isChat, isMessage }
 
 class DBHelper {
   //Singleton
@@ -20,10 +21,10 @@ class DBHelper {
   Future<Database> get database async => _database ??= await initDB();
 
   ///Стрим контроллер, чтоб слушать изменения в БД
-  final _updateListenController = StreamController<bool>.broadcast();
-  StreamController<bool> get updateListenController => _updateListenController;
+  final _updateListenController = StreamController<DbListener>.broadcast();
+  StreamController<DbListener> get updateListenController => _updateListenController;
 
-  void _updateListen() => _updateListenController.sink.add(true);
+  void _updateListen() => _updateListenController.sink.add(DbListener.isUnknown);
 
   ///Инициализация локальной БД. Если ее нет,
   ///то создается новая БД
