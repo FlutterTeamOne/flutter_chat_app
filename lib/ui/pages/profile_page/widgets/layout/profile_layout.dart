@@ -13,6 +13,7 @@ class ProfileLayout extends StatelessWidget {
       List<UserDto>? users = ref.watch(River.userPod).users;
       UserDto? userMain =
           users?.firstWhere((user) => user.userId == UserPref.getUserId);
+
       ///TODO: Добавить проверку на userMain == null
       ///Если нулл, выйти из аккаунта
 
@@ -20,20 +21,24 @@ class ProfileLayout extends StatelessWidget {
       final List<Map<String, dynamic>> userInfo = [
         {
           'nameField': 'Name',
-          'contentField': userMain!.name,
-          'buttonChange': ButtonChangeUser(userMain: userMain, enumUserInfo: EnumUserInfo.name, insertText: 'name',),
+          'userPod': userPod,
+          'enumUserInfo': EnumUserInfo.name,
+          'userMain': userMain,
+          'insertText': 'name',
         },
         {
           'nameField': 'Email',
-          'contentField': userMain.email,
-          'buttonChange': ButtonChangeUser(userMain: userMain, enumUserInfo: EnumUserInfo.email, insertText: 'email',),
+          'userPod': userPod,
+          'enumUserInfo': EnumUserInfo.email,
+          'userMain': userMain,
+          'insertText': 'email',
         },
       ];
       return ListView(
         children: [
           // Фон и аватарка
           AvatarProfilePage(
-              userMain: userMain, userPod: userPod, chatPod: chatPod),
+              userMain: userMain!, userPod: userPod, chatPod: chatPod),
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(
@@ -49,9 +54,7 @@ class ProfileLayout extends StatelessWidget {
                     separatorBuilder: (context, index) =>
                         const SizedBox(height: 5),
                     itemBuilder: (context, index) => FieldWithChange(
-                          nameField: userInfo[index]['nameField'],
-                          contentField: userInfo[index]['contentField'],
-                          buttonChange: userInfo[index]['buttonChange'],
+                          info: userInfo[index],
                         )),
                 const SizedBox(
                   height: 20,
@@ -66,7 +69,6 @@ class ProfileLayout extends StatelessWidget {
                         ))),
                         onPressed: () {
                           userPod.deleteUser(userMain.userId!);
-
                           print(userMain.userId);
                           showDialog(
                               context: context,
@@ -107,42 +109,5 @@ class ProfileLayout extends StatelessWidget {
         ],
       );
     });
-  }
-}
-
-class FieldWithChange extends StatelessWidget {
-  const FieldWithChange({
-    Key? key,
-    required this.contentField,
-    required this.nameField,
-    required this.buttonChange,
-  }) : super(key: key);
-
-  final String contentField;
-  final String nameField;
-  final ButtonChangeUser buttonChange;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          nameField,
-          style: Theme.of(context).textTheme.headline6,
-        ),
-        const SizedBox(height: 2),
-        Row(
-          children: [
-            Text(
-              contentField,
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-            // Кнопка смены имени
-            buttonChange
-          ],
-        ),
-      ],
-    );
   }
 }
