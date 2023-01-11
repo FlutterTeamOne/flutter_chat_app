@@ -13,6 +13,7 @@ class UserCard extends StatelessWidget {
           builder: (context, ref, _) {
             var userPod = ref.read(River.userPod.notifier);
             return InkWell(
+              key: Key('UserButton ${user.userId}'),
               hoverColor: Colors.transparent,
               focusColor: Colors.transparent,
               onTap: () async {

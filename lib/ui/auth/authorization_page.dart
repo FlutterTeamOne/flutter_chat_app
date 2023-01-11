@@ -47,11 +47,12 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         scrollDirection: Axis.horizontal,
                         itemCount: users.length,
                         itemBuilder: ((context, index) =>
-                            UserCard(user: users![index])),
+                            UserCard(user: users![index], key: Key('UserCard $index'),)),
                       ),
                     ),
                   ),
                   ElevatedButton(
+                    key: const Key('1'),
                       style: ButtonStyle(
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(

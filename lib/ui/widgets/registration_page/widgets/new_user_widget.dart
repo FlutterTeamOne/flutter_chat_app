@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/new_user_state.dart';
 
 class NewUserWidget extends StatefulWidget {
-  const NewUserWidget({Key? key}) : super(key: key);
+  const NewUserWidget({Key? key}) : super(key: const Key('newUserWidget'));
 
   @override
   State<NewUserWidget> createState() => _NewUserWidgetState();
@@ -57,9 +57,11 @@ class _NewUserWidgetState extends State<NewUserWidget> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      key: const Key('newUserWidgetRow'),
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Column(
+          key: const Key('newUserWidgetColumn'),
           children: [
             const SizedBox(
               height: 200,
@@ -69,6 +71,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                 Form(
                   key: _formKey,
                   child: Column(
+                    key: const Key('newUserWidgetBodyColumn'),
                     children: [
                       buildNameRow(),
                       buildEmailRow(),
@@ -91,6 +94,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
 
   SizedBox buildPasswordRow() {
     return SizedBox(
+      key: const Key('password'),
       width: 300,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -121,6 +125,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
 
   SizedBox buildEmailRow() {
     return SizedBox(
+      key: const Key('email'),
       width: 300,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -148,6 +153,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
 
   SizedBox buildNameRow() {
     return SizedBox(
+      key: const Key('name'),
       width: 300,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -177,6 +183,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
       newUserEmailText, newUserPasswordText) {
     late String newUserName;
     return Padding(
+      key: const Key('createUserButton'),
       padding: const EdgeInsets.only(left: 100.0),
       child: Row(
         children: [
