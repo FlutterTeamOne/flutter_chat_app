@@ -20,18 +20,8 @@ class ProfileLayout extends StatelessWidget {
           : ListView(
               children: [
                 // Фон и аватарка
-                Stack(
-                  children: [
-                    const SizedBox(height: 205),
-                    // Фон
-                    _AppBluredImage(image: userMain.profilePicLink),
-                    // Аватарка
-                    _UserPic(userPic: userMain.profilePicLink),
-                    // Кнопка изменение аву
-                    const _ChangeUserPic(),
-                    ExitButton(userPod: userPod, chatPod: chatPod),
-                  ],
-                ),
+                AvatarProfilePage(
+                    userMain: userMain, userPod: userPod, chatPod: chatPod),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Column(
@@ -126,3 +116,5 @@ class ProfileLayout extends StatelessWidget {
     });
   }
 }
+
+

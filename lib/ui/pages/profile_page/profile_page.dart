@@ -21,6 +21,7 @@ part 'widgets/exit_button.dart';
 part 'widgets/change_user_button.dart';
 part 'widgets/change_name_button.dart';
 part 'widgets/delete_dialog_widget.dart';
+part 'widgets/avatar_profile_page.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({
@@ -32,7 +33,8 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       body: Consumer(
         builder: (context, ref, _) =>
-            ref.read(River.userPod).users?[0].name != null && ref.read(River.userPod).users?[0].name != ''
+            ref.read(River.userPod).users?[0].name != null &&
+                    ref.read(River.userPod).users?[0].name != ''
                 ? const ProfileLayout(key: Key("ProfileLayout"))
                 : const Center(
                     child: CircularProgressIndicator(),
