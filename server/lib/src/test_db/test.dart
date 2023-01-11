@@ -17,15 +17,17 @@ Future<void> main() async {
   //Обращаемся к методам работы с таблицей юзеров через:
   var usersService = UsersServices();
 
+  print(await usersService.getUserById(userId: 1));
+
   // var result = await chatsHelper.getAllChatsSortedByUpdatedDate();
   // for (var i in result) {
   //   print(i);
   // }
   // print(result);
 
-  var result = await messagesService.getMessageByUserIdMoreMessageId(
-      messageId: 7, userId: 1);
-  print(result);
+  // var result = await messagesService.getMessageByUserIdMoreMessageId(
+  //     messageId: 7, userId: 1);
+  // print(result);
 
   // db.rawUpdate(''' UPDATE messages
   //         SET content = 'Zdarova papasha'

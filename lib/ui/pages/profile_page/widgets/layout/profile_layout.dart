@@ -33,6 +33,13 @@ class ProfileLayout extends StatelessWidget {
           'userMain': userMain,
           'insertText': 'email',
         },
+        {
+          'nameField': 'Password',
+          'userPod': userPod,
+          'enumUserInfo': EnumUserInfo.password,
+          'userMain': userMain,
+          'insertText': 'password',
+        }
       ];
       return ListView(
         children: [
