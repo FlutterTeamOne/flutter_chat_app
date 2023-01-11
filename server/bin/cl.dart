@@ -20,7 +20,7 @@ class Client {
 
   //   try {
   //     response = CreateMessageResponse();
-  //     print('message: $message');
+  //
   //     response = await stub!.createMessage(message);
   //     print('rc: ${response.dateCreate} ');
   //     print('id: ${response.mainMessagesId}');
@@ -119,6 +119,6 @@ class Client {
 void main() async {
   var client = Client();
   var messageEmpty = Empty();
-  print("Обратный ответ:");
+
   // print(await client.getUsers(messageEmpty));
 }

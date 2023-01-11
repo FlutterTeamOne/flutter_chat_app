@@ -60,7 +60,7 @@ class TextInputWidgetState extends ConsumerState<TextInputWidget> {
                       return;
                     }
                     var file = result.files.first;
-                    print('FILE: $file');
+
                     filePath = file.path!;
                     _sendPath(file.path!);
                   },

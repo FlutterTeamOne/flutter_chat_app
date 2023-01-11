@@ -25,7 +25,7 @@ Future<void> main() async {
 
   var result = await messagesService.getMessageByUserIdMoreMessageId(
       messageId: 7, userId: 1);
-  print(result);
+
 
   // db.rawUpdate(''' UPDATE messages
   //         SET content = 'Zdarova papasha'

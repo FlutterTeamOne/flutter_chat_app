@@ -88,7 +88,7 @@ class ProfileLayout extends StatelessWidget {
                               onPressed: () {
                                 userPod.deleteUser(userMain.userId!);
 
-                                print(userMain.userId);
+
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) {

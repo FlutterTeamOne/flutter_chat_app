@@ -21,7 +21,7 @@ class UserCard extends StatelessWidget {
                 UserPath.user = user;
                 //await DBHelperStart.instanse.close();
                 var db = await DBHelper.instanse.initDB();
-                print("db open? ${db.path},${db.isOpen}");
+
 
                 Navigator.of(context).pushNamed(MainLayout.routeName);
               },

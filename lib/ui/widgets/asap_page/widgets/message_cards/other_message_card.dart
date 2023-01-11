@@ -18,11 +18,6 @@ class OtherMessageCardWidget extends StatelessWidget {
         time.minute.toString().length == 1 ? '0${time.minute}' : time.minute;
     String? realTime = '${time.hour}:$correctMinute';
 
-    // print('Message: ${message.content}');
-    // print("MessageCreate: ${message.createdDate}");
-    // print("MessageUpdate: ${message.updatedDate}");
-    // print('==? ${message.createdDate == message.updatedDate}');
-
     return Align(
       alignment: Alignment.centerLeft,
       child: ConstrainedBox(

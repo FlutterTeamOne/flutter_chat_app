@@ -21,7 +21,7 @@ class RestClient {
         chats.add(respChats);
       }
     } catch (e) {
-      print(e);
+
     }
     return chats;
   }
@@ -39,8 +39,7 @@ class RestClient {
       "friend2_id": user2Id,
       "date": date
     });
-    print('HELLO');
-    print('RESP DATA:${resp.data}');
+
     if (resp.statusCode == 200) {
       var responseFromRest = resp.data.toString().split(',');
 
@@ -70,18 +69,18 @@ class RestClient {
 
       chatId =
           int.tryParse('${responseFromRest[9].split('res: [{chat_id: ')[1]}')!;
-      print('CHAT ID: $chatId');
+
       int friend1_id =
           int.tryParse('${responseFromRest[10].split(' friend1_id: ')[1]}')!;
-      print('FRIEND ID: $friend1_id');
+
       int friend2_id =
           int.tryParse('${responseFromRest[11].split(' friend2_id: ')[1]}')!;
-      print('FRIEND 2: $friend2_id');
+
       String updatedDate =
           '"${updatedDateInput.substring(0, updatedDateInput.length - 3)}"';
-      print('UPDATEDDATE: $updatedDate');
+
       String createdDate = '"${createdDateInput}"';
-      print('CREATE DATE: $createdDate');
+
 
       restChat = {
         'chat_id': chatId,
@@ -91,8 +90,7 @@ class RestClient {
         'deleted_date': "",
         'updated_date': updatedDateInput
       };
-      // print(source.);
-      print('RESTCHAT CLIENT $restChat');
+
     } else if (resp.statusCode == 404) {
       throw Exception(resp.data);
     }
@@ -112,10 +110,10 @@ class RestClient {
     var chatUrl = '$_url/chats/';
     try {
       var resp = await _dio.delete('$chatUrl$id');
-      print('DEL RESP:$resp');
+
       if (resp.statusCode == 200) {
         var data = json.decode(resp.data);
-        print('DEL DATA: $data');
+
       }
     } catch (e) {}
   }
@@ -125,20 +123,19 @@ class RestClient {
     late AttachModel attach;
     try {
       var resp = await _dio.put(imageUrl, data: {"path": path});
-      print("RESP: $resp");
+
       if (resp.statusCode == 200) {
         var source = resp.data
             .toString()
             .replaceAll('attachment_id', '"attachment_id"')
             .replaceAll('attachment_meta', '"attachment_meta"');
-        print('source:$source');
-        // var res = json.decode(source);
+
 
         attach = AttachModel.fromJson(source);
-        print('mod:$attach');
+
       }
     } catch (e) {
-      print(e);
+
     }
     return attach;
   }
@@ -151,7 +148,7 @@ class RestClient {
         return resp;
       }
     } catch (e) {
-      print(e);
+
     }
   }
 
@@ -163,7 +160,7 @@ class RestClient {
         return resp;
       }
     } catch (e) {
-      print(e);
+
     }
   }
 }

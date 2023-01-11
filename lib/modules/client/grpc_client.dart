@@ -32,9 +32,9 @@ class GrpcClient {
     try {
       response = await stub.deleteUser(request);
     } catch (e) {
-      print(e);
+
     }
-    print('User delete: $response');
+
     return response;
   }
 
