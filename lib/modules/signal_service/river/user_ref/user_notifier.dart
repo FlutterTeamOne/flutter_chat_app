@@ -224,14 +224,14 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       ///
       print("RESPONSE_UPDATED_MESSAGE: ${response.messages.messagesUpdated}");
       for (var message in response.messages.messagesUpdated) {
-        var type = ContentType.isText.name == message.contentType.name
+        final type = ContentType.isText.name == message.contentType.name
             ? ContentType.isText
             : ContentType.isMedia.name == message.contentType.name
                 ? ContentType.isMedia
                 : ContentType.isMediaText.name == message.contentType.name
                     ? ContentType.isMediaText
                     : ContentType.isText;
-        var msg = MessageDto(
+        final msg = MessageDto(
           messageId: message.messageId,
           chatId: message.chatId,
           senderId: message.senderId,
