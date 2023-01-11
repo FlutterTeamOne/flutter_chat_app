@@ -34,7 +34,6 @@ class AttachmentServices implements IAttachmentServices {
 
     await db.execute('''SELECT * FROM attachments
             WHERE (attachment_id = $id)
-          );
       ''');
   }
 
@@ -44,7 +43,6 @@ class AttachmentServices implements IAttachmentServices {
 
     await db.execute('''DELETE FROM attachments
             WHERE (attachment_id = $id)
-          );
       ''');
   }
 }
