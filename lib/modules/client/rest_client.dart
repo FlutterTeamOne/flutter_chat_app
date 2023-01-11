@@ -53,13 +53,22 @@ class RestClient {
       String userUpdatedDate = responseFromRest[5].split(' updated_date: ')[1];
       String? userDeletedDate = responseFromRest[6].split(' deleted_date: ')[1];
 
-      await LocalUsersServices().createUser(
-          userId: userId,
-          name: username,
-          email: userEmail,
-          createdDate: userCreatedDate,
-          updatedDate: userUpdatedDate,
-          profilePicUrl: profilePicUrl);
+      bool isNoUser = true;
+      for (var user in await LocalUsersServices().getAllUsers()) {
+        if (user.userId == userId) {
+          isNoUser = false;
+        }
+      }
+
+      if (isNoUser) {
+        await LocalUsersServices().createUser(
+            userId: userId,
+            name: username,
+            email: userEmail,
+            createdDate: userCreatedDate,
+            updatedDate: userUpdatedDate,
+            profilePicUrl: profilePicUrl);
+      }
 
       // name, email, created_date, profile_pic_url, updated_date, deleted_date,
 
