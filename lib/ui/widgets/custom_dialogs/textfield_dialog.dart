@@ -7,15 +7,11 @@ class TextFieldDialog extends StatelessWidget {
   const TextFieldDialog({
     Key? key,
     required this.controller,
-    required this.userMain,
-    required this.userPod,
     required this.text,
     required this.onPressed,
   }) : super(key: key);
 
   final TextEditingController controller;
-  final UserDto userMain;
-  final UserNotifier userPod;
   final String text;
   final Function() onPressed;
   @override
@@ -35,7 +31,7 @@ class TextFieldDialog extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TextField(
+              child: TextFormField(
                 controller: controller,
               ),
             ),

@@ -23,6 +23,16 @@ class UserCard extends StatelessWidget {
                 var db = await DBHelper.instanse.initDB();
                 print("db open? ${db.path},${db.isOpen}");
 
+                ///TODO: Проверка пароля пользователя
+                ///1. Сверить Пароль введенный с паролем на сервере
+                ///Если нет, вывести ошибку "Неверный пароль"
+                ///
+                ///TODO: Проверка что все хорошо в таблице MainUser и юзер такой заполнен
+                ///Если база открыта, то
+                ///1.Проерить Таблицу MainUser на наличие юзера
+                ///2.Проверить поля в таблице User
+                ///Если нет, вывести ошибку "Попробуйте еще раз", удалить базу
+
                 Navigator.of(context).pushNamed(MainLayout.routeName);
               },
               child: ClipRRect(

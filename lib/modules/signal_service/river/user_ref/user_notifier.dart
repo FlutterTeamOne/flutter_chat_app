@@ -345,6 +345,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
             ${DatabaseConst.usersColumnProfilePicLink} = "${result.profilePicUrl}",
             ${DatabaseConst.usersColumnUpdatedDate} = "${result.dateUpdated}"''',
         condition: '${DatabaseConst.usersColumnUserId} = ${result.userId}');
+    //TODO:Артур добавил стрим на изменения состояний при изменении локальной базы у себя в ветке
     var users = await _usersServices.getAllUsers();
     state = state.copyWith(users: users);
   }
