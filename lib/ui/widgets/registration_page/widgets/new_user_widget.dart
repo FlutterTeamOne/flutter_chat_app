@@ -260,9 +260,9 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
               // print(
               //     '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , ');
             },
-            child: const Text('Create new user'));
-        )
+            child: const Text('Create new user'))
+        ])
       );
-    );
-
-})            
+    
+  }
+}          
