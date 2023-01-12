@@ -24,6 +24,14 @@ void main() {
   //кнопка создания юзера на главном экране
   final Finder buttonWidget = find.byKey(const Key('createButton'));
 
+  //кнопка назад со страницы пользователя к выбору юзера
+  final Finder backFromProfilePageButton =
+      find.byKey(const Key('backFromProfilePageButton'));
+
+  //кнопка назад со страницы настроек к выбору юзера
+  final Finder backFromSettinsPageButton =
+      find.byKey(const Key('exitFromSettings'));
+
   //виджет создания юзера и его поля ТекстИнпутФилды
   final Finder newUserWidget = find.byKey(const Key('newUserWidget'));
   final Finder usernameInputWidget = find.byKey(const Key('name'));
@@ -49,8 +57,12 @@ void main() {
       find.byKey(const Key('createUserDialogButton'));
 
   group('Full test app', () {
-    testWidgets('Create user', (tester) async {
+    setUpAll(() {
       app.main();
+    });
+
+    testWidgets('Full test', (tester) async {
+      //TEST 1: CREATE USER TEST
       await tester.pumpAndSettle(const Duration(milliseconds: 100));
 
       //Проверка 1-го и 6го виджетов юзеров
@@ -62,10 +74,8 @@ void main() {
       //Нажатие на создание юзера
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
       expect(buttonWidget, findsOneWidget);
-
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
       await tester.tap(find.byType(ElevatedButton));
-
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
       expect(newUserWidget, findsOneWidget);
       await tester.pumpAndSettle();
@@ -77,85 +87,63 @@ void main() {
       await tester.enterText(emailInputWidget, 'newuser@mail.ru');
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
       await tester.enterText(passwordInputWidget, 'password');
-
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
       await tester.tap(createUserButton);
-
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
       await tester.tap(createUserDialogButton);
-
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
-
       //Проверка 7-го виджета юзера
       await tester.pumpAndSettle();
       expect(seventhUserWidget, findsOneWidget);
-
       await tester.pumpAndSettle();
       await tester.pumpAndSettle(const Duration(seconds: 1));
       //надо почистить базу для повторного запуска или поменять данные...
       //... юзера и проверки для корректности теста
-    });
 
-    testWidgets('Check user 7 info', (tester) async {
-      app.main();
-      await tester.pumpAndSettle(const Duration(milliseconds: 100));
-      await tester.pumpAndSettle();
-
+      //TEST 2: CHECK CREATED USER (7) NAME
       expect(seventhUserWidget, findsOneWidget);
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
-
       await tester.tap(seventhUserButton);
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
       expect(find.text('newuser'), findsOneWidget);
-
+      //назад к выборы юзеров
+      await tester.pumpAndSettle();
+      await tester.tap(backFromProfilePageButton);
       await tester.pumpAndSettle();
       await tester.pumpAndSettle(const Duration(seconds: 1));
-    });
 
-    testWidgets('Cancel create user', (tester) async {
-      app.main();
-      await tester.pumpAndSettle(const Duration(milliseconds: 100));
-      await tester.pumpAndSettle();
-
+      //TEST 3: CANCEL CREAT USER
       //нажатие на кнопку создания юзера
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
       await tester.tap(find.byType(ElevatedButton));
-
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
       expect(newUserWidget, findsOneWidget);
-
       //нажатие на кнопку cancel
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
       await tester.tap(cancelCreateButton);
-
       //проверка возьмого юзера
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
       expect(eighthUserWidget, findsNothing);
-
       await tester.pumpAndSettle();
       await tester.pumpAndSettle(const Duration(seconds: 1));
-    });
 
-    testWidgets('Settings', (tester) async {
-      app.main();
-      await tester.pumpAndSettle(const Duration(milliseconds: 100));
-      await tester.pumpAndSettle();
-
+      //TEST 4: GO TO SETTINGS
       //нажать на первого юзера
-      await tester.pumpAndSettle(const Duration(milliseconds: 500));
       await tester.tap(firstUserButton);
       await tester.pumpAndSettle();
-
       //нажать на настройки
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
       await tester.tap(settingsPageButton);
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
-
       //нажать на смену темы
       await tester.tap(changeThemeButton);
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
-
       expect(roundedBorderButton, findsOneWidget);
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      //Выход из смены темы
+      await tester.tap(backFromSettinsPageButton);
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      expect(firstUserWidget, findsOneWidget);
 
       await tester.pumpAndSettle();
       await tester.pumpAndSettle(const Duration(seconds: 3));

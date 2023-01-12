@@ -1,5 +1,7 @@
 import 'package:chat_app/main.dart';
+import 'package:chat_app/modules/signal_service/river/river.dart';
 import 'package:chat_app/modules/style_manager/riverpod/theme_models.dart';
+import 'package:chat_app/ui/pages/library/library_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -63,11 +65,19 @@ class _ColorPickerPageState extends ConsumerState<ColorPickerPage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(changeCustomThemeStateProvider);
+    var userPod = ref.read(River.userPod.notifier);
+    var chatPod = ref.read(River.chatPod.notifier);
     String? fontFamilyValue = state.fontFamily;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Custom theme'),
+        actions: [
+          ExitButton(
+              key: const Key('exitFromSettings'),
+              userPod: userPod,
+              chatPod: chatPod)
+        ],
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),

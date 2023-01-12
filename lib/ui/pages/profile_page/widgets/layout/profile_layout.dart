@@ -35,7 +35,10 @@ class ProfileLayout extends StatelessWidget {
                     _UserPic(userPic: userMain.profilePicLink),
                     // Кнопка изменение аву
                     const _ChangeUserPic(),
-                    ExitButton(userPod: userPod, chatPod: chatPod),
+                    ExitButton(
+                        key: const Key('backFromProfilePageButton'),
+                        userPod: userPod,
+                        chatPod: chatPod),
                   ],
                 ),
                 Padding(
