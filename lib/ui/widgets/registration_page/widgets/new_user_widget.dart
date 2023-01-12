@@ -16,9 +16,6 @@ class NewUserWidget extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() {
     return _NewUserWidgetState();
   }
-
-  // @override
-  // State<NewUserWidget> createState() => _NewUserWidgetState();
 }
 
 class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
@@ -57,7 +54,8 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
   @override
   Widget build(BuildContext context) {
     // если _isActive будет равен true то пароль скрыт
-    final _isActive = ValueNotifier<bool>(true);
+    final isActivePassword = ValueNotifier<bool>(true);
+    final isActiveConfirm = ValueNotifier<bool>(true);
     return Center(
       child: SingleChildScrollView(
         child: Form(
@@ -77,7 +75,7 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
                   text: 'Name',
                   maxLength: 20,
                   //используем RegExp для сортировки по символам
-                  inputFormatters: RegExp(r'^[A-Za-z]+'),
+                  inputFormatters: RegExp(r'^[A-Za-z0-9]+'),
                   controller: nameController,
                   validator: (name) {
                     if (name!.length < 3) {
@@ -106,57 +104,68 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
                 ),
                 const SizedBox(height: 10),
                 ValueListenableBuilder(
-                  valueListenable: _isActive,
-                  builder: (context, value, child) => Column(
-                    children: [
-                      // Форма для пароля
-                      FormWidget(
-                          text: 'Password',
-                          inputFormatters: RegExp(r"^[a-z0-9_A-Z]+"),
-                          controller: passwordController,
-                          obscureText: _isActive.value,
-                          suffix: _isActive.value == true
-                              ? Icons.visibility_off_rounded
-                              : Icons.visibility_rounded,
-                          validator: (password) {
-                            if (password!.length < 6) {
-                              //если длинна пароля меньше 6 символов выводиим ошибку
-                              return 'Password must contain at least 6 characters';
-                            } else if (!password.contains(RegExp(r'[A-Z]'))) {
-                              //если пароль не содержит хотя бы одну заглавную буквку выводим ошибку
-                              return 'Password must contain at least one capital\nletter';
-                            } else {
-                              return null;
-                            }
-                          },
-                          suffixOnTap: () {
-                            if (_isActive.value == true) {
-                              _isActive.value = false;
-                            } else {
-                              _isActive.value = true;
-                            }
-                          }),
-                      const SizedBox(height: 10),
+                  valueListenable: isActivePassword,
+                  builder: (context, value, child) => FormWidget(
+                    text: 'Password',
+                    inputFormatters: RegExp(r"^[a-z0-9_A-Z]+"),
+                    controller: passwordController,
+                    obscureText: isActivePassword.value,
+                    suffix: isActivePassword.value == true
+                        ? Icons.visibility_off_rounded
+                        : Icons.visibility_rounded,
+                    validator: (password) {
+                      if (password!.length < 6) {
+                        //если длинна пароля меньше 6 символов выводиим ошибку
+                        return 'Password must contain at least 6 characters';
+                      } else if (!password.contains(RegExp(r'[A-Z]'))) {
+                        //если пароль не содержит хотя бы одну заглавную буквку выводим ошибку
+                        return 'Password must contain at least one capital\nletter';
+                      } else {
+                        return null;
+                      }
+                    },
+                    suffixOnTap: () {
+                      if (isActivePassword.value == true) {
+                        isActivePassword.value = false;
+                      } else {
+                        isActivePassword.value = true;
+                      }
+                    },
+                  ),
+                ),
+                const SizedBox(height: 10),
+                ValueListenableBuilder(
+                    valueListenable: isActiveConfirm,
+                    builder: (context, value, child) {
                       // Форма для подтверждения пароля
-                      FormWidget(
+                      return FormWidget(
                         text: 'Сonfirm password',
                         inputFormatters: RegExp(r"^[a-z0-9_A-Z]+"),
                         controller: confirmPasswordController,
-                        obscureText: _isActive.value,
+                        obscureText: isActiveConfirm.value,
+                        suffix: isActiveConfirm.value == true
+                            ? Icons.visibility_off_rounded
+                            : Icons.visibility_rounded,
                         validator: (confirm) {
                           if (passwordController.text !=
                                   confirmPasswordController.text ||
                               passwordController.text.isEmpty) {
-                            //если значение confirmPasswordController пустое или не совпадает с passwordController выводим ошибку
+                            //если значение confirmPasswordController пустое или
+                            //не совпадает с passwordController выводим ошибку
                             return 'Passwords do not match. Try again.';
                           } else {
                             return null;
                           }
                         },
-                      ),
-                    ],
-                  ),
-                ),
+                        suffixOnTap: () {
+                          if (isActiveConfirm.value == true) {
+                            isActiveConfirm.value = false;
+                          } else {
+                            isActiveConfirm.value = true;
+                          }
+                        },
+                      );
+                    }),
                 const SizedBox(height: 20),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -185,40 +194,19 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
     );
   }
 
-// <<<<<<< HEAD
   buildCreateNewUserButton(BuildContext context, newUserNameText,
       newUserEmailText, newUserPasswordText, formKey) {
-    late String newUserName;
-
     return ElevatedButton(
         child: const Text('Create'),
-        // style: ButtonStyle(
-        //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-        //         RoundedRectangleBorder(
-        //   borderRadius: BorderRadius.circular(20.0),
-        // ))),
         onPressed: () {
           final isValid = formKey.currentState!.validate();
           if (isValid) {
-// =======
-//   Padding buildCreateNewUserButton(BuildContext context, newUserNameText,
-//       newUserEmailText, newUserPasswordText, GlobalKey<FormState> formKey) {
-//     // late String newUserName;
-//     // final newUserPod = ref.watch(River.newUserPod);
-//     return Padding(
-//       padding: const EdgeInsets.only(left: 50.0),
-//       child: Row(mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           ElevatedButton(
-//               onPressed: () {
-// >>>>>>> origin/new_user_bloc-to-riverpod
             late NewUserModel newUser = NewUserModel(
                 name: newUserNameText.text,
                 email: newUserEmailText.text,
                 password: newUserPasswordText.text,
                 registrationDate: newUserCreateDate,
                 profilePicLink: newUserPictureUrl);
-
             ref.read(River.newUserPod.notifier).newUser(newUser: newUser);
             ref.read(River.userPod.notifier).readUser();
             Navigator.of(context).pushNamed(AuthPage.routeName);
@@ -228,7 +216,7 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
             //   context: context,
             //   builder: (BuildContext context) {
             //     newUserName =
-            //         context.watch<NewUserBloc>().state.newUser.name;
+            //         ref.watch(River.newUserPod).newUser.name;
             //     return Dialog(
             //       // shape: RoundedRectangleBorder(
             //       //   borderRadius: BorderRadius.circular(20.0),
@@ -240,7 +228,7 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
             //           children: [
             //             const SizedBox(height: 10),
             //             //Не работает создание юзера
-            //             context.read<NewUserBloc>().state.newUser.name ==
+            //             ref.watch(River.newUserPod).newUser.name ==
             //                     newUserNameText.text
             //                 ? Text('User $newUserName created')
             //                 : const Text('Error'),
@@ -260,7 +248,6 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
             //                       ref
             //                           .read(River.userPod.notifier)
             //                           .readUser();
-
             //                       Navigator.of(context)
             //                           .pushNamed(AuthPage.routeName);
             //                     },
