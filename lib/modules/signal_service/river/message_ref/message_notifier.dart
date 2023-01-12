@@ -49,7 +49,7 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
         LocalChatServices().updateChatDateUpdated(
             chatId: messages[0].chatId,
             dateUpdated: '${messages[0].updatedDate}');
-        readMessages(messages);
+        // readMessages(messages);
       } else if (value.messageState == MessageStateEnum.isUpdateMessage) {
         var updMsg = value.updateMessage;
 
@@ -71,11 +71,11 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
 
         await _messagesServices.deleteMessageFromBase(
             id: del.idMessageMain, dateDelete: del.dateDelete);
-        var messages = await _messagesServices.getAllMessages();
+        // var messages = await _messagesServices.getAllMessages();
 
-        print('IsDelete message:$messages');
+        // print('IsDelete message:$messages');
 
-        readMessages(messages);
+        // readMessages(messages);
       } else if (value.messageState == MessageStateEnum.isCreateMessage) {
         print("IsCreate: ${value.createMessage.message}");
         var msg = value.createMessage.message;
@@ -96,22 +96,27 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
             chatId: newMsg.chatId, dateUpdated: '${newMsg.updatedDate}');
       }
     });
-    DBHelper.instanse.updateListenController.stream.listen((event) async {
-      if (event ==DbListener.isMessage) {
-        var messages = await _messagesServices.getAllMessages();
+    DBHelper.instanse.updateListenController.stream.listen((event) {
+      if (event == DbListener.isMessage) {
+        if (!mounted) return;
+        readMessages();
+        // List<MessageDto> messages = [];
+        // _messagesServices.getAllMessages().then((value) => messages = value);
 
-        // messages.sort((a, b) => a.localMessageId!.compareTo(b.localMessageId!));
+        // // messages.sort((a, b) => a.localMessageId!.compareTo(b.localMessageId!));
 
-        print('sortListen message:$messages');
-
-        readMessages(messages);
+        // print('sortListen message:$messages');
+        // if (messages.isNotEmpty) {
+        //   // state.copyWith(messages: messages);
+        //   readMessages(messages);
+        // }
         // state.copyWith(messages: messages);
       }
     });
   }
   Future<MessageStateRef> readMessages([List<MessageDto>? messageList]) async {
     if (messageList == null || messageList.length == 1) {
-      var messages = await _messagesServices.getAllMessages();
+      List<MessageDto> messages = await _messagesServices.getAllMessages();
 
       print("MESSAGES:$messages");
 

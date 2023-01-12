@@ -1,5 +1,6 @@
 import 'package:blur/blur.dart';
 import 'package:chat_app/modules/signal_service/river/chat_ref/chat_notifier.dart';
+import 'package:chat_app/modules/signal_service/river/message_ref/message_notifier.dart';
 import 'package:chat_app/modules/signal_service/river/user_ref/user_notifier.dart';
 import 'package:chat_app/src/constants/user_constants.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';
@@ -31,13 +32,16 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Consumer(
-        builder: (context, ref, _) =>
-            ref.read(River.userPod).users?[0].name != null &&
-                    ref.read(River.userPod).users?[0].name != ''
-                ? const ProfileLayout(key: Key("ProfileLayout"))
-                : const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+        builder: (context, ref, _) {
+          final name = ref.watch(River.userPod).users?[0].name;
+          print('USER POD PROFILE NAME: $name');
+          
+          return name != null && name != ''
+              ? const ProfileLayout(key: Key("ProfileLayout"))
+              : const Center(
+                  child: CircularProgressIndicator(),
+                );
+        },
       ),
     );
   }

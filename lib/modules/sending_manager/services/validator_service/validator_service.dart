@@ -35,8 +35,7 @@ class ValidatorService {
   }
 
   static Future validUser({required SynhUser user}) async {
-    final ok =
-        await LocalUsersServices().getUserById(id: user.userId);
+    final ok = await LocalUsersServices().getUserById(id: user.userId);
     if (ok.isEmpty) {
       print(
           "deleted date is empty? ${user.deletedDate} ${user.deletedDate.isNotEmpty}");
@@ -51,6 +50,23 @@ class ValidatorService {
           deletedDate: user.deletedDate,
           profilePicUrl: userAvatar,
           userId: user.userId);
+    }
+  }
+
+  static Future validChat({required SynhChat chat}) async {
+    // final okAll = await LocalChatServices().getAllChats();
+    // if (okAll.isEmpty) {
+    //   await LocalChatServices().createChat(
+    //       createDate: chat.createdDate,
+    //       userId: chat.userId,
+    //       chatId: chat.chatId);
+    // }
+    final ok = await LocalChatServices().getChatById(id: chat.chatId);
+    if (ok.isEmpty) {
+      await LocalChatServices().createChat(
+          createDate: chat.createdDate,
+          userId: chat.userId,
+          chatId: chat.chatId);
     }
   }
 }

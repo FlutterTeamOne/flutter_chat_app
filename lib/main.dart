@@ -4,6 +4,7 @@ import 'package:chat_app/modules/style_manager/utils/style_manager_utils.dart';
 import 'package:chat_app/ui/pages/change_password_page/change_password_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:chat_app/ui/pages/custom_theme/color_picker_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'modules/storage_manager/db_helper/user_path.dart';
 import 'ui/auth/authorization_page.dart';
 import 'ui/pages/registration_page/registration_page.dart';
@@ -16,7 +17,7 @@ part 'modules/style_manager/riverpod/riverpod_providers.dart';
 Future<void> main() async {
   //Инициализация
   await AppInit.init();
-
+  
   //Запуск приложения
   runApp(const ProviderScope(child: MyApp()));
 }

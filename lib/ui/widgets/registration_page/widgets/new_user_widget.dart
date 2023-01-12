@@ -240,27 +240,17 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                                               newUserNameText.text
                                           ? Text('User $newUserName created')
                                           : const Text('Error')),
-                                  Consumer(
-                                    builder: (context, ref, _) {
-                                      return ElevatedButton(
-                                          // style: ButtonStyle(
-                                          //     shape: MaterialStateProperty.all<
-                                          //             RoundedRectangleBorder>(
-                                          //         RoundedRectangleBorder(
-                                          //   borderRadius:
-                                          //       BorderRadius.circular(20.0),
-                                          // ))),
-                                          onPressed: () {
-                                            ref
-                                                .read(River.userPod.notifier)
-                                                .readUser();
-
-                                            Navigator.of(context)
-                                                .pushNamed(AuthPage.routeName);
-                                          },
-                                          child: const Icon(Icons.check));
-                                    },
-                                  )
+                                  ElevatedButton(
+                                      // style: ButtonStyle(
+                                      //     shape: MaterialStateProperty.all<
+                                      //             RoundedRectangleBorder>(
+                                      //         RoundedRectangleBorder(
+                                      //   borderRadius:
+                                      //       BorderRadius.circular(20.0),
+                                      // ))),
+                                      onPressed: () => Navigator.of(context)
+                                          .pushNamed(AuthPage.routeName),
+                                      child: const Icon(Icons.check))
                                 ],
                               ),
                             ),

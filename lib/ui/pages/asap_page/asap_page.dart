@@ -18,13 +18,13 @@ class AsapPage extends StatelessWidget {
     return Consumer(
       builder: (context, ref, _) {
         var chats;
-        ref.watch(
-            River.futureChatPod.selectAsync((data) => chats = data.chats));
+        // ref.watch(
+        //     River.futureChatPod.selectAsync((data) => chats = data.chats));
         var chatPod = ref.watch(River.chatPod);
         var messagePod = ref.watch(River.messagePod);
         var messages = <MessageDto>[];
-        ref.watch(River.futureMessagePod
-            .selectAsync((data) => messages.addAll(data.messages!)));
+        // ref.watch(River.futureMessagePod
+        //     .selectAsync((data) => messages.addAll(data.messages!)));
 
         // for (var m in messages) {
         //   print("messageState: $m");

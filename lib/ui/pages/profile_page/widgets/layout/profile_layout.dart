@@ -1,4 +1,6 @@
-﻿part of '../../profile_page.dart';
+﻿// ignore_for_file: use_build_context_synchronously
+
+part of '../../profile_page.dart';
 
 class ProfileLayout extends StatelessWidget {
   const ProfileLayout({
@@ -10,9 +12,13 @@ class ProfileLayout extends StatelessWidget {
     return Consumer(builder: (context, ref, _) {
       UserNotifier userPod = ref.read(River.userPod.notifier);
       ChatNotifier chatPod = ref.read(River.chatPod.notifier);
-      List<UserDto>? users = ref.watch(River.userPod).users;
+      List<UserDto>? users = ref.read(River.userPod).users;
       UserDto? userMain =
+          // if (users!.isNotEmpty) {
+          //   var s = users.where((element) => element.userId == UserPref.getUserId).toList();
+          //   userMain = s[0];
           users?.firstWhere((user) => user.userId == UserPref.getUserId);
+      // }
 
       ///TODO: Добавить проверку на userMain == null
       ///Если нулл, выйти из аккаунта
@@ -99,29 +105,23 @@ class ProfileLayout extends StatelessWidget {
       required ChatNotifier chatPod}) async {
     try {
       userPod.deleteUser(userMain.userId!);
-      Navigator.of(context).pushNamed(AuthPage.routeName);
     } catch (e) {
       showDialog(
           context: context,
           builder: (context) =>
               ErrorDialog(textTitle: 'Error', textContent: '$e'));
     }
+    userPod.changeUser(true);
+    await DBHelper.instanse.close();
+    ref.invalidate(River.userPod);
+    ref.invalidate(River.chatPod);
+    ref.invalidate(River.messagePod);
+    Navigator.of(context).pushNamed(AuthPage.routeName);
     showDialog(
         context: context,
         builder: (context) => ErrorDialog(
-              textTitle: 'Success',
-              textContent: 'User ${userMain.name} deleted',
-              onPressed: () async {
-                userPod.changeUser(true);
-                chatPod.getChatId(-1);
-                await DBHelper.instanse.deleteDB();
-                userPod.readUser();
-
-                Future.delayed(
-                  const Duration(seconds: 1),
-                );
-                Navigator.of(context).pushNamed('/');
-              },
-            ));
+            textTitle: 'Success',
+            textContent: 'User ${userMain.name} deleted',
+            onPressed: () => Navigator.of(context).pop()));
   }
 }

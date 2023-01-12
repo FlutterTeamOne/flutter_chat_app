@@ -19,12 +19,10 @@ class AuthPage extends ConsumerStatefulWidget {
 }
 
 class _AuthPageState extends ConsumerState<AuthPage> {
-  
-  
   @override
   void initState() {
     super.initState();
-    ref.read(River.futureUserPod);
+    ref.read(River.futureSynchUserPod);
   }
 
   @override
@@ -39,9 +37,9 @@ class _AuthPageState extends ConsumerState<AuthPage> {
       ///Инициализация Риверпода
       body: Consumer(builder: (context, ref, _) {
         List<UserDto>? users;
-        users = ref.watch(River.userPod).users;
+        users = ref.watch(River.synchUserPod).users;
         return users == null
-        //TODO: Обработчик ошибок
+            //TODO: Обработчик ошибок
             ? const Center(
                 child: CircularProgressIndicator(),
               )
