@@ -75,9 +75,7 @@ class _ColorPickerPageState extends ConsumerState<ColorPickerPage> {
           const SizedBox(height: 16),
           // Pick color in a dialog.
           ListTile(
-            title: const Text('Click this color to modify it in a dialog. '
-                'The color is modified while dialog is open, but returns '
-                'to previous value if dialog is cancelled'),
+            title: const Text('Click this color to modify the font. '),
             subtitle: Text(
               // ignore: lines_longer_than_80_chars
               '${ColorTools.materialNameAndCode(dialogPickerColor, colorSwatchNameMap: colorsNameMap)} '
@@ -105,7 +103,7 @@ class _ColorPickerPageState extends ConsumerState<ColorPickerPage> {
 
           // Show the selected color.
           ListTile(
-            title: const Text('Select color below to change this color'),
+            title: const Text('Choose an accent color shade'),
             subtitle:
                 Text('${ColorTools.materialNameAndCode(screenPickerColor)} '
                     'aka ${ColorTools.nameThatColor(screenPickerColor)}'),
@@ -242,7 +240,7 @@ class _ColorPickerPageState extends ConsumerState<ColorPickerPage> {
                               primaryColor: state.primaryColor,
                             ));
                   },
-                  child: const Text('Normal text size')),
+                  child: const Text('Normal font size')),
               const SizedBox(
                 width: 8,
               ),
@@ -261,7 +259,7 @@ class _ColorPickerPageState extends ConsumerState<ColorPickerPage> {
                               primaryColor: state.primaryColor,
                             ));
                   },
-                  child: const Text('Big text size')),
+                  child: const Text('Bigger font size')),
 
               /// Font family change
               Padding(

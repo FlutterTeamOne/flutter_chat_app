@@ -1,23 +1,13 @@
 ﻿import 'package:flutter/material.dart';
 
 class VideosPage extends StatelessWidget {
-  const VideosPage({
-    Key? key,
-  }) : super(key: key);
+  const VideosPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // color: Theme.of(context).colorScheme.background,
-      child: Center(
-        child: Container(
-
-          child: Text(
-            'VideoS',
-            // style: AppTextStyle.s36Abel,
-          ),
-        ),
-      ),
+    return const Center(
+      key: Key('center in videos_page'),
+      child: Text('VideoS', key: Key('videos_page text')),
     );
   }
 }

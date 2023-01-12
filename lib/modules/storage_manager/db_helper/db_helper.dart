@@ -136,7 +136,7 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
 )
 ''');
 
-      // //Первичная запись юзера в таблицу
+      //Первичная запись юзера в таблицу
       await txn.insert(
         DatabaseConst.userTable,
         {
@@ -264,17 +264,18 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
     await db.close();
   }
 
-  Future deleteDB() async {
+  Future deleteDB([String? testPath]) async {
     var db = await instanse.database;
     var databaseFactory = databaseFactoryFfi;
-    // var dbPath = await getTemporaryDirectory();
+
     var dbPath = '.dart_tool/sqflite_common_ffi/databases/';
     var user = UserPath.getUser;
-    String path = join(
-        dbPath
-        // .path
-        ,
-        user.name + user.userId.toString() + DatabaseConst.dbFileName);
+    String path = testPath ??
+        join(
+            dbPath
+            // .path
+            ,
+            user.name + user.userId.toString() + DatabaseConst.dbFileName);
     _database = null;
     await db.close();
     await databaseFactory.deleteDatabase(path);
