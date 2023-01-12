@@ -93,15 +93,18 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 5));
       await tester.pumpAndSettle();
 
+      //нажатие на кнопку создания юзера
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
       await tester.tap(find.byType(ElevatedButton));
 
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
       expect(newUserWidget, findsOneWidget);
 
+      //нажатие на кнопку cancel
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
       await tester.tap(cancelCreateButton);
 
+      //проверка возьмого юзера
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
       expect(eighthUserWidget, findsNothing);
 
