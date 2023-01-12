@@ -206,54 +206,55 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                     registrationDate: newUserCreateDate,
                     profilePicLink: newUserPictureUrl);
                 context.read<NewUserBloc>().add(SetNewUserEvent(user: newUser));
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      newUserName =
-                          context.watch<NewUserBloc>().state.newUser.name;
-                      return Dialog(
-                        // shape: RoundedRectangleBorder(
-                        //   borderRadius: BorderRadius.circular(20.0),
-                        // ),
-                        child: SizedBox(
-                          height: 80,
-                          width: 50,
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 10),
-                              //Не работает создание юзера
-                              context.read<NewUserBloc>().state.newUser.name ==
-                                      newUserNameText.text
-                                  ? Text('User $newUserName created')
-                                  : const Text('Error'),
-                              //
-                              const SizedBox(height: 10),
-                              Consumer(
-                                builder: (context, ref, _) {
-                                  return ElevatedButton(
-                                      // style: ButtonStyle(
-                                      //     shape: MaterialStateProperty.all<
-                                      //             RoundedRectangleBorder>(
-                                      //         RoundedRectangleBorder(
-                                      //   borderRadius:
-                                      //       BorderRadius.circular(20.0),
-                                      // ))),
-                                      onPressed: () {
-                                        ref
-                                            .read(River.userPod.notifier)
-                                            .readUser();
+                // showDialog(
+                //   context: context,
+                //   builder: (BuildContext context) {
+                //     newUserName =
+                //         context.watch<NewUserBloc>().state.newUser.name;
+                //     return Dialog(
+                //       // shape: RoundedRectangleBorder(
+                //       //   borderRadius: BorderRadius.circular(20.0),
+                //       // ),
+                //       child: SizedBox(
+                //         height: 80,
+                //         width: 50,
+                //         child: Column(
+                //           children: [
+                //             const SizedBox(height: 10),
+                //             //Не работает создание юзера
+                //             context.read<NewUserBloc>().state.newUser.name ==
+                //                     newUserNameText.text
+                //                 ? Text('User $newUserName created')
+                //                 : const Text('Error'),
+                //             //
+                //             const SizedBox(height: 10),
+                //             Consumer(
+                //               builder: (context, ref, _) {
+                //                 return ElevatedButton(
+                //                     // style: ButtonStyle(
+                //                     //     shape: MaterialStateProperty.all<
+                //                     //             RoundedRectangleBorder>(
+                //                     //         RoundedRectangleBorder(
+                //                     //   borderRadius:
+                //                     //       BorderRadius.circular(20.0),
+                //                     // ))),
+                //                     onPressed: () {
+                //                       ref
+                //                           .read(River.userPod.notifier)
+                //                           .readUser();
 
-                                        Navigator.of(context)
-                                            .pushNamed(AuthPage.routeName);
-                                      },
-                                      child: const Icon(Icons.check));
-                                },
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    });
+                //                       Navigator.of(context)
+                //                           .pushNamed(AuthPage.routeName);
+                //                     },
+                //                     child: const Icon(Icons.check));
+                //               },
+                //             )
+                //           ],
+                //         ),
+                //       ),
+                //     );
+                //   },
+                // );
                 // print(
                 //     '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , ');}
               }
