@@ -27,25 +27,17 @@ class UserNotifier extends StateNotifier<UserStateRef> {
         localReadUser();
       }
     });
-    DBHelperStart.instanse.updateListenController.stream.listen((event) {
-      if (event) {
-        localReadUser();
-      }
-    });
   }
 
   Future<UserStateRef> setUsers(List<UserDto>? users) async {
     return state = state.copyWith(users: users);
   }
 
-  Future<UserStateRef> localReadUser() async {
-    var users;
-    if (state.userDbthis) {
-      //TODO: Брать юзеров без dateDelete
-      users = await _usersServices.getAllUsersStart();
-    } else {
-      users = await _usersServices.getAllUsers();
-    }
+  UserStateRef localReadUser() {
+    List<UserDto> users = [];
+
+    _usersServices.getAllUsers().then((value) => users = value);
+
     return state = state.copyWith(users: users);
   }
 
@@ -252,9 +244,9 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     for (var userServ in users) {
       print('USERS IN Base: $userServ');
     }
-   
+
     //Добавляем всех юзеров в state
-    return  state = state.copyWith(users: users);
+    return state = state.copyWith(users: users);
 
     // emit(state.copyWith(users: users));
     // print(users);

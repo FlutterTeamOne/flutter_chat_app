@@ -23,10 +23,9 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
 
   Future<ChatStateRef> readChat([List<ChatDto>? chats]) async {
     List<ChatDto> chats = [];
-    if (!mounted) {chats = await _chatServices.getAllChatsSortedByUpdatedDate();}
-    if (mounted) {chats = await _chatServices.getAllChatsSortedByUpdatedDate();}
+   
     //TODO: Поменять getAllChats на сортированную выборку getAllChatsSortedByUpdatedDate()
-     chats = await _chatServices.getAllChatsSortedByUpdatedDate();
+     _chatServices.getAllChatsSortedByUpdatedDate().then((value) => chats=value);
     //
     var restChats = await RestClient().getChats();
     print('IF CHATS is NULL - ADD CHAT FROM LOCAL DB: $restChats');
