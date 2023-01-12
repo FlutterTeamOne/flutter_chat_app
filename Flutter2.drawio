@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="mB0hwqxY4hN_ohiOeoHB" name="Page-1">
-        <mxGraphModel dx="2360" dy="1917" grid="0" gridSize="10" guides="0" tooltips="0" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" background="#361205" math="0" shadow="0">
+        <mxGraphModel dx="3220" dy="3352" grid="0" gridSize="10" guides="0" tooltips="0" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#361205" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -786,7 +786,7 @@
         </mxGraphModel>
     </diagram>
     <diagram id="4KLVHk0K062dWb6Pxw-m" name="Страница 2">
-        <mxGraphModel dx="2414" dy="317" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="8934" dy="3287" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="odHl5ieTCkIenyNdjCt8-0"/>
                 <mxCell id="odHl5ieTCkIenyNdjCt8-1" parent="odHl5ieTCkIenyNdjCt8-0"/>
@@ -942,7 +942,7 @@
         </mxGraphModel>
     </diagram>
     <diagram id="j13L4Nnf0rDoaTVAsqa8" name="Клиент-Сервер-Клиент">
-        <mxGraphModel dx="760" dy="317" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#3D110C" math="0" shadow="0">
+        <mxGraphModel dx="1092" dy="493" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#3D110C" math="0" shadow="0">
             <root>
                 <mxCell id="VqHHLy8tYyNRWUuqbuyO-0"/>
                 <mxCell id="VqHHLy8tYyNRWUuqbuyO-1" parent="VqHHLy8tYyNRWUuqbuyO-0"/>
@@ -1078,7 +1078,7 @@
         </mxGraphModel>
     </diagram>
     <diagram id="fSJhSe1LEOQkEzKdx_Rf" name="Линейность действий">
-        <mxGraphModel dx="760" dy="317" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#FF21FF" math="0" shadow="0">
+        <mxGraphModel dx="760" dy="576" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#FF21FF" math="0" shadow="0">
             <root>
                 <mxCell id="LV-6roruDiE6-7Rwk6YZ-0"/>
                 <mxCell id="LV-6roruDiE6-7Rwk6YZ-1" parent="LV-6roruDiE6-7Rwk6YZ-0"/>
@@ -1249,7 +1249,7 @@
         </mxGraphModel>
     </diagram>
     <diagram id="tfuHEgf8DNGKbFVdVqC5" name="Линейный тест №1(Проверка чатов))">
-        <mxGraphModel dx="760" dy="317" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#FF21F0" math="0" shadow="0">
+        <mxGraphModel dx="760" dy="576" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#FF21F0" math="0" shadow="0">
             <root>
                 <mxCell id="3JiXKXWKQF6Ymtwr4fm0-0"/>
                 <mxCell id="3JiXKXWKQF6Ymtwr4fm0-1" parent="3JiXKXWKQF6Ymtwr4fm0-0"/>

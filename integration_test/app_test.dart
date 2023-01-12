@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:chat_app/main.dart' as app;
+import 'package:chat_app/ui/pages/library/library_pages.dart';
 import 'package:chat_app/ui/widgets/library/library_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:sidebarx/sidebarx.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +18,7 @@ void main() {
   final Finder eighthUserWidget = find.byKey(const Key('UserCard 7'));
 
   //юзер карточка - кнопка для перехода на юзера
+  final Finder firstUserButton = find.byKey(const Key('UserButton 1'));
   final Finder seventhUserButton = find.byKey(const Key('UserButton 7'));
 
   //кнопка создания юзера на главном экране
@@ -26,6 +29,16 @@ void main() {
   final Finder usernameInputWidget = find.byKey(const Key('name'));
   final Finder emailInputWidget = find.byKey(const Key('email'));
   final Finder passwordInputWidget = find.byKey(const Key('password'));
+
+  //кнопка настроек - нужно искать по иконке
+  final Finder settingsPageButton = find.byIcon(Icons.settings_outlined);
+
+  //кнопка перехода в настройки темы changeTheme
+  final Finder changeThemeButton = find.byKey(const Key('changeThemeButton'));
+
+  //кнопка в настройках темы, скругления углов
+  final Finder roundedBorderButton =
+      find.byKey(const Key('roundedBorderButton'));
 
   //кнопки на экране заполнения данных нового юзера
   final Finder createUserButton = find.byKey(const Key('createUserButton'));
@@ -38,7 +51,7 @@ void main() {
   group('Full test app', () {
     testWidgets('Create user', (tester) async {
       app.main();
-      await tester.pumpAndSettle(const Duration(seconds: 5));
+      await tester.pumpAndSettle(const Duration(milliseconds: 100));
 
       //Проверка 1-го и 6го виджетов юзеров
       await tester.pumpAndSettle();
@@ -78,14 +91,14 @@ void main() {
       expect(seventhUserWidget, findsOneWidget);
 
       await tester.pumpAndSettle();
-      await tester.pumpAndSettle(const Duration(seconds: 5));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
       //надо почистить базу для повторного запуска или поменять данные...
       //... юзера и проверки для корректности теста
     });
 
     testWidgets('Check user 7 info', (tester) async {
       app.main();
-      await tester.pumpAndSettle(const Duration(seconds: 5));
+      await tester.pumpAndSettle(const Duration(milliseconds: 100));
       await tester.pumpAndSettle();
 
       expect(seventhUserWidget, findsOneWidget);
@@ -96,12 +109,12 @@ void main() {
       expect(find.text('newuser'), findsOneWidget);
 
       await tester.pumpAndSettle();
-      await tester.pumpAndSettle(const Duration(seconds: 5));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
     });
 
     testWidgets('Cancel create user', (tester) async {
       app.main();
-      await tester.pumpAndSettle(const Duration(seconds: 5));
+      await tester.pumpAndSettle(const Duration(milliseconds: 100));
       await tester.pumpAndSettle();
 
       //нажатие на кнопку создания юзера
@@ -120,7 +133,32 @@ void main() {
       expect(eighthUserWidget, findsNothing);
 
       await tester.pumpAndSettle();
-      await tester.pumpAndSettle(const Duration(seconds: 5));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+    });
+
+    testWidgets('Settings', (tester) async {
+      app.main();
+      await tester.pumpAndSettle(const Duration(milliseconds: 100));
+      await tester.pumpAndSettle();
+
+      //нажать на первого юзера
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      await tester.tap(firstUserButton);
+      await tester.pumpAndSettle();
+
+      //нажать на настройки
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      await tester.tap(settingsPageButton);
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+
+      //нажать на смену темы
+      await tester.tap(changeThemeButton);
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+
+      expect(roundedBorderButton, findsOneWidget);
+
+      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(seconds: 3));
     });
   });
 }

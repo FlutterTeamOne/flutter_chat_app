@@ -75,7 +75,6 @@ class SideMenuWidget extends StatelessWidget {
                 SidebarXItem(
                   icon: Icons.settings_outlined,
                 ),
-
               ]
             : const [
                 SidebarXItem(
@@ -118,7 +117,6 @@ class SideMenuWidget extends StatelessWidget {
                   icon: Icons.settings,
                   label: 'Settings',
                 ),
-
               ],
       ),
     );

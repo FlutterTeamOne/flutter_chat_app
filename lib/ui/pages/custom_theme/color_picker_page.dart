@@ -190,6 +190,7 @@ class _ColorPickerPageState extends ConsumerState<ColorPickerPage> {
             children: [
               /// Rounded border button
               ElevatedButton(
+                  key: const Key('roundedBorderButton'),
                   onPressed: () {
                     ref
                         .read(changeCustomThemeStateProvider.notifier)
