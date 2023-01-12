@@ -1,3 +1,4 @@
+import 'package:chat_app/ui/pages/change_password_page/layout/change_password_layout.dart';
 import 'package:chat_app/ui/pages/main_layout.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,7 @@ class ChangePasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: ChangePasswordLayout(),
         floatingActionButton: Container(
       child: Align(
         alignment: Alignment.topLeft,

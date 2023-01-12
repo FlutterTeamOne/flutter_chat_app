@@ -322,4 +322,6 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     var users = await _usersServices.getAllUsers();
     state = state.copyWith(users: users);
   }
+
+  //Future<String?> confirmPassword()
 }

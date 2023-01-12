@@ -117,7 +117,10 @@ class ProfileLayout extends StatelessWidget {
                 await DBHelper.instanse.deleteDB();
                 userPod.readUser();
 
-                Navigator.of(context).pushNamed(AuthPage.routeName);
+                Future.delayed(
+                  const Duration(seconds: 1),
+                );
+                Navigator.of(context).pushNamed('/');
               },
             ));
   }

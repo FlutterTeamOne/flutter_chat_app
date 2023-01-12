@@ -6,7 +6,8 @@ service GrpcUsers {
     rpc createUser (CreateUserRequest) returns (CreateUserResponse);
     rpc updateUser (UpdateUserRequest) returns (UpdateUserResponse);
     rpc deleteUser (DeleteUserRequest) returns (DeleteUserResponse);
-    rpc changePassword (PasswordRequest) returns (PasswordResponse);
+    rpc changePassword (PasswordChangeRequest) returns (PasswordResponse);
+    rpc confirmPassword (PasswordConfirmRequest) returns (PasswordResponse);
 }
 
 message GetUserRequest {
@@ -60,10 +61,15 @@ message DeleteUserResponse{
     bool isDeleted=1;
 }
 
-message PasswordRequest{
+message PasswordChangeRequest{
     int32 userId = 3;
     string oldPassword = 1;
     string newPassword = 2;
+}
+
+message PasswordConfirmRequest{
+    int32 userId = 1;
+    int32 password = 2;
 }
 
 message PasswordResponse {

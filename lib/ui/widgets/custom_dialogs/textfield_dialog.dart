@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../../domain/data/library/library_data.dart';
 
-class TextFieldDialog extends StatelessWidget {
-  const TextFieldDialog({
+class TextFormDialog extends StatelessWidget {
+  const TextFormDialog({
     Key? key,
     required this.controller,
     required this.text,

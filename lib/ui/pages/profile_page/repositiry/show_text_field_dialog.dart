@@ -29,11 +29,10 @@ class ShowTextFieldDialog {
               newController.text = '';
           }
           final text = 'Insert new $insertText';
-          return TextFieldDialog(
+          return TextFormDialog(
             controller: newController,
             text: text,
             onPressed: () async {
-
               String updatedDate = DateTime.now().toIso8601String();
               late String newValue = newController.text;
               //TODO: Проверка на те же данные которые введены
