@@ -284,10 +284,10 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     print('GET USER PREF: ${UserPref.getUserDbPref} ');
   }
 
-  void deleteUser(int userId) async {
+  void deleteUser(int userId)  {
     var result;
     try {
-      result = await GrpcClient().deleteUser(userId: userId);
+      GrpcClient().deleteUser(userId: userId).then((value) => result=value);
     } catch (e) {
       throw CustomException(e.toString());
     }

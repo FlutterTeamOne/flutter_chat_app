@@ -18,7 +18,7 @@ class River {
   static final synchUserPod =
       StateNotifierProvider.autoDispose<SynchUserNotifier, SynchStateRef>(
           (ref) => SynchUserNotifier());
-  static final futureSynchUserPod = FutureProvider<SynchStateRef>(
+  static final futureSynchUserPod = FutureProvider.autoDispose<SynchStateRef>(
       (ref) async => await ref.read(synchUserPod.notifier).readUser());
   static final userPod =
       StateNotifierProvider<UserNotifier, UserStateRef>((ref) => UserNotifier());
