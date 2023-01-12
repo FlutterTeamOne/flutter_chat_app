@@ -1,4 +1,3 @@
-
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/ui/pages/main_layout.dart';
 import 'package:chat_app/ui/pages/registration_page/registration_page.dart';
@@ -46,13 +45,15 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: users.length,
-                        itemBuilder: ((context, index) =>
-                            UserCard(user: users![index], key: Key('UserCard $index'),)),
+                        itemBuilder: ((context, index) => UserCard(
+                              user: users![index],
+                              key: Key('UserCard $index'),
+                            )),
                       ),
                     ),
                   ),
                   ElevatedButton(
-                    key: const Key('1'),
+                      key: const Key('createButton'),
                       style: ButtonStyle(
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
