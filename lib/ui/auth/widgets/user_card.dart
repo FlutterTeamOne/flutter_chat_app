@@ -7,14 +7,16 @@ class UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      children: [
-        Consumer(
-          builder: (context, ref, _) {
-            var userPod = ref.read(River.userPod.notifier);
-            return InkWell(
-              hoverColor: Colors.transparent,
-              focusColor: Colors.transparent,
+    final currentWidth = MediaQuery.of(context).size.width;
+    return Consumer(
+      builder: (context, ref, _) {
+        var userPod = ref.read(River.userPod.notifier);
+        return Wrap(
+          alignment: WrapAlignment.center,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            InkWell(
+              overlayColor: MaterialStateProperty.all(Colors.transparent),
               onTap: () async {
                 userPod.changeUser(false);
                 UserPref.setUserId = user.userId!;
@@ -22,6 +24,7 @@ class UserCard extends StatelessWidget {
                 //await DBHelperStart.instanse.close();
                 var db = await DBHelper.instanse.initDB();
                 print("db open? ${db.path},${db.isOpen}");
+                // ignore: use_build_context_synchronously
                 Navigator.of(context).pushNamed(MainLayout.routeName);
               },
               child: ClipRRect(
@@ -37,16 +40,18 @@ class UserCard extends StatelessWidget {
                   cacheHeight: 150,
                 ),
               ),
-            );
-          },
-        ),
-        Text(
-          user.email,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.headline6,
-        ),
-      ],
+            ),
+            Text(
+              user.email,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: currentWidth > 900
+                  ? Theme.of(context).textTheme.headline6
+                  : Theme.of(context).textTheme.titleSmall,
+            )
+          ],
+        );
+      },
     );
   }
 }

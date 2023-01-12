@@ -25,6 +25,17 @@ class _AuthPageState extends ConsumerState<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
+    final currentWidth = MediaQuery.of(context).size.width;
+    adaptation() {
+      if (currentWidth > 1200) {
+        return 8;
+      } else if (currentWidth < 800) {
+        return 5;
+      } else {
+        return 6;
+      }
+    }
+
     return Scaffold(
       floatingActionButton: ElevatedButton(
         style: ButtonStyle(
@@ -60,11 +71,10 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                       ),
                       const SizedBox(height: 50),
                       GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 8,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: adaptation(),
+                          crossAxisSpacing: 15,
+                          mainAxisSpacing: currentWidth > 900 ? 35 : 25,
                         ),
                         shrinkWrap: true,
                         itemCount: users.length,
@@ -74,6 +84,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                           );
                         },
                       ),
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
