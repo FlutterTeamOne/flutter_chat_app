@@ -96,22 +96,25 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
             chatId: newMsg.chatId, dateUpdated: '${newMsg.updatedDate}');
       }
     });
-    DBHelper.instanse.updateListenController.stream.listen((event) async {
-      if (event ==DbListener.isMessage) {
-        var messages = await _messagesServices.getAllMessages();
+    DBHelper.instanse.updateListenController.stream.listen((event) {
+      if (event == DbListener.isMessage) {
+        List<MessageDto> messages=[];
+        _messagesServices.getAllMessages().then((value) => messages=value);
 
         // messages.sort((a, b) => a.localMessageId!.compareTo(b.localMessageId!));
 
         print('sortListen message:$messages');
-
-        readMessages(messages);
+        if (messages.isNotEmpty) {
+          // state.copyWith(messages: messages);
+          readMessages(messages);
+        }
         // state.copyWith(messages: messages);
       }
     });
   }
   Future<MessageStateRef> readMessages([List<MessageDto>? messageList]) async {
     if (messageList == null || messageList.length == 1) {
-      var messages = await _messagesServices.getAllMessages();
+      List<MessageDto> messages = await _messagesServices.getAllMessages();
 
       print("MESSAGES:$messages");
 

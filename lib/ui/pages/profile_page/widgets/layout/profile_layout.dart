@@ -10,9 +10,13 @@ class ProfileLayout extends StatelessWidget {
     return Consumer(builder: (context, ref, _) {
       UserNotifier userPod = ref.read(River.userPod.notifier);
       ChatNotifier chatPod = ref.read(River.chatPod.notifier);
-      List<UserDto>? users = ref.watch(River.userPod).users;
-      UserDto? userMain =
-          users?.firstWhere((user) => user.userId == UserPref.getUserId);
+      List<UserDto>? users = ref.read(River.userPod).users;
+      UserDto? userMain;
+      if (users!.isNotEmpty) {
+        var s = users.where((element) => element.userId == UserPref.getUserId).toList();
+        userMain = s[0];
+        // users.firstWhere((user) => user.userId == UserPref.getUserId);
+      }
 
       ///TODO: Добавить проверку на userMain == null
       ///Если нулл, выйти из аккаунта
@@ -68,7 +72,7 @@ class ProfileLayout extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20.0),
                         ))),
                         onPressed: () {
-                          _deleteUserLogic(userPod, userMain, context, ref);
+                          _deleteUserLogic(userPod, userMain!, context, ref);
                         },
                         child: const Text('Delete user')),
                   ],
