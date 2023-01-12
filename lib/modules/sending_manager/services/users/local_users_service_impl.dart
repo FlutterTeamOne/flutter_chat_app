@@ -48,7 +48,6 @@ class LocalUsersServices implements ILocalUsersServices {
   }) async {
     var db = await DBHelperStart.instanse.database;
     DBHelperStart.instanse.updateListenController.add(true);
-
     return await db.insert(DatabaseConst.userTable, {
       DatabaseConst.usersColumnUserId: userId,
       DatabaseConst.usersColumnName: name,
