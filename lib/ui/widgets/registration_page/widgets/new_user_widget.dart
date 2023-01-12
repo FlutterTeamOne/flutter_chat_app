@@ -56,7 +56,7 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
       child: Form(
         key: _formKey,
         child: SizedBox(
-          width: 250,
+          width: 320,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -126,11 +126,14 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
                 children: [
                   buildCreateNewUserButton(context, newUserNameText,
                       newUserEmailText, newUserPasswordText, _formKey),
-                  CloseButton(
-                    color: Theme.of(context).errorColor,
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/');
-                    },
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: CloseButton(
+                      color: Theme.of(context).errorColor,
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('/');
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -143,11 +146,11 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
 
   Padding buildCreateNewUserButton(BuildContext context, newUserNameText,
       newUserEmailText, newUserPasswordText, GlobalKey<FormState> formKey) {
-    late String newUserName;
-    final newUserPod = ref.watch(River.newUserPod);
+    // late String newUserName;
+    // final newUserPod = ref.watch(River.newUserPod);
     return Padding(
-      padding: const EdgeInsets.only(left: 100.0),
-      child: Row(
+      padding: const EdgeInsets.only(left: 50.0),
+      child: Row(mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ElevatedButton(
               onPressed: () {
@@ -188,7 +191,7 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
                     //                     ref
                     //                         .watch(River.userPod.notifier)
                     //                         .readUser();
-                
+
                     //                     Navigator.of(context)
                     //                         .pushNamed(AuthPage.routeName);
                     //                   },
@@ -204,11 +207,11 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
                     '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , ');
               },
               child: const Text('Create new user')),
-          IconButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed('/');
-              },
-              icon: const Icon(Icons.close_rounded)),
+          // IconButton(
+          //     onPressed: () {
+          //       Navigator.of(context).pushNamed('/');
+          //     },
+          //     icon: const Icon(Icons.close_rounded)),
         ],
       ),
     );
