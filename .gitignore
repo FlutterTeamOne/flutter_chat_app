@@ -71,3 +71,5 @@ server/macos/Flutter/GeneratedPluginRegistrant.swift
 server/windows/flutter/generated_plugin_registrant.cc
 server/windows/flutter/generated_plugin_registrant.h
 server/windows/flutter/generated_plugins.cmake
+pubspec.lock
+server/pubspec.lock
