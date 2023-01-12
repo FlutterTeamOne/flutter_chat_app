@@ -39,14 +39,21 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     return Scaffold(
       floatingActionButton: ElevatedButton(
         style: ButtonStyle(
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ))),
+          backgroundColor:
+              MaterialStateProperty.all(Theme.of(context).primaryColor),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+          ),
+        ),
         onPressed: () {
           Navigator.of(context).pushNamed(RegistrationPage.routeName);
         },
-        child: const Text('Create new user'),
+        child: Text(
+          'Create new user',
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
       ),
       body: Consumer(builder: (context, ref, _) {
         List<UserDto>? users;
@@ -70,19 +77,24 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const SizedBox(height: 50),
-                      GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: adaptation(),
-                          crossAxisSpacing: 15,
-                          mainAxisSpacing: currentWidth > 900 ? 35 : 25,
-                        ),
-                        shrinkWrap: true,
-                        itemCount: users.length,
-                        itemBuilder: (context, index) {
-                          return UserCard(
-                            user: users![index],
-                          );
-                        },
+                      Wrap(
+                        children: [
+                          GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: adaptation(),
+                              crossAxisSpacing: 15,
+                              mainAxisSpacing: currentWidth > 900 ? 35 : 25,
+                            ),
+                            shrinkWrap: true,
+                            itemCount: users.length,
+                            itemBuilder: (context, index) {
+                              return UserCard(
+                                user: users![index],
+                              );
+                            },
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 20),
                     ],
