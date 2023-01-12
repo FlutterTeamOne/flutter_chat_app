@@ -1,77 +1,81 @@
-// import 'package:flutter_test/flutter_test.dart';
+import 'dart:io';
 
-// import '../finders.dart';
+import '../finders.dart';
+import '../library.dart';
 
-// class CreateUserRobot {
-//   CreateUserRobot({required this.tester});
-//   final WidgetTester tester;
+class CreateUserRobot {
+  CreateUserRobot({required this.tester});
+  final WidgetTester tester;
 
-//   {
-//       //TEST 2: CHECK CREATED USER (7) NAME
-//       expect(Finders().seventhUserWidget, findsOneWidget);
-//       await tester.pumpAndSettle(const Duration(milliseconds: 500));
-//       await tester.tap(Finders().seventhUserButton);
-//       await tester.pumpAndSettle(const Duration(milliseconds: 500));
-//       expect(find.text('newuser'), findsOneWidget);
-//       //назад к выборы юзеров
-//       await tester.pumpAndSettle();
-//       await tester.tap(Finders().backFromProfilePageButton);
-//       await tester.pumpAndSettle();
-//       await tester.pumpAndSettle(const Duration(seconds: 1));
+  Future<void> createUserTest(
+      {required Finder userWidget,
+      required String name,
+      required String email,
+      required String password}) async {
+    sleep(const Duration(seconds: 5));
+    await tester.pumpAndSettle(const Duration(milliseconds: 100));
 
-//       //TEST 3: CANCEL CREAT USER
-//       //нажатие на кнопку создания юзера
-//       await tester.pumpAndSettle(const Duration(milliseconds: 500));
-//       await tester.tap(find.byType(ElevatedButton));
-//       await tester.pumpAndSettle(const Duration(milliseconds: 500));
-//       expect(finders.newUserWidget, findsOneWidget);
-//       //нажатие на кнопку cancel
-//       await tester.pumpAndSettle(const Duration(milliseconds: 500));
-//       await tester.tap(finders.cancelCreateButton);
-//       //проверка возьмого юзера
-//       await tester.pumpAndSettle(const Duration(milliseconds: 500));
-//       expect(finders.eighthUserWidget, findsNothing);
-//       await tester.pumpAndSettle();
-//       await tester.pumpAndSettle(const Duration(seconds: 1));
-//   }
+    //Проверка 1-го и 6го виджетов юзеров
+    await tester.pumpAndSettle();
+    expect(Finders().firstUserWidget, findsOneWidget);
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    expect(Finders().sixthUserWidget, findsOneWidget);
 
-//   Future<void> createUser() async {
-//     //TEST 1: CREATE USER TEST
-//       await tester.pumpAndSettle(const Duration(milliseconds: 100));
+    //Нажатие на создание юзера
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    expect(Finders().buttonWidget, findsOneWidget);
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.tap(find.byType(ElevatedButton));
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    expect(Finders().newUserWidget, findsOneWidget);
+    await tester.pumpAndSettle();
 
-//       //Проверка 1-го и 6го виджетов юзеров
-//       await tester.pumpAndSettle();
-//       expect(finders.firstUserWidget, findsOneWidget);
-//       await tester.pumpAndSettle(const Duration(milliseconds: 500));
-//       expect(finders.sixthUserWidget, findsOneWidget);
+    //создаем юзера
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.enterText(Finders().usernameInputWidget, name);
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.enterText(Finders().emailInputWidget, 'newuser@mail.ru');
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.enterText(Finders().passwordInputWidget, 'password');
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.tap(Finders().createUserButton);
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.tap(Finders().createUserDialogButton);
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    //Проверка 7-го виджета юзера
+    await tester.pumpAndSettle();
+    expect(userWidget, findsOneWidget);
+    await tester.pumpAndSettle();
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    //надо почистить базу для повторного запуска или поменять данные...
+    //... юзера и проверки для корректности теста
+  }
 
-//       //Нажатие на создание юзера
-//       await tester.pumpAndSettle(const Duration(milliseconds: 500));
-//       expect(finders.buttonWidget, findsOneWidget);
-//       await tester.pumpAndSettle(const Duration(milliseconds: 500));
-//       await tester.tap(find.byType(ElevatedButton));
-//       await tester.pumpAndSettle(const Duration(milliseconds: 500));
-//       expect(finders.newUserWidget, findsOneWidget);
-//       await tester.pumpAndSettle();
+  Future<void> checkCreateUser(
+      {required Finder userWidget, required String username}) async {
+    expect(userWidget, findsOneWidget);
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.tap(Finders().seventhUserButton);
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    expect(find.text(username), findsOneWidget);
+    //назад к выборы юзеров
+    await tester.pumpAndSettle();
+    await tester.tap(Finders().backFromProfilePageButton);
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+  }
 
-//       //создаем юзера
-//       await tester.pumpAndSettle(const Duration(milliseconds: 500));
-//       await tester.enterText(finders.usernameInputWidget, 'newuser');
-//       await tester.pumpAndSettle(const Duration(milliseconds: 500));
-//       await tester.enterText(finders.emailInputWidget, 'newuser@mail.ru');
-//       await tester.pumpAndSettle(const Duration(milliseconds: 500));
-//       await tester.enterText(finders.passwordInputWidget, 'password');
-//       await tester.pumpAndSettle(const Duration(milliseconds: 500));
-//       await tester.tap(finders.createUserButton);
-//       await tester.pumpAndSettle(const Duration(milliseconds: 500));
-//       await tester.tap(finders.createUserDialogButton);
-//       await tester.pumpAndSettle(const Duration(milliseconds: 500));
-//       //Проверка 7-го виджета юзера
-//       await tester.pumpAndSettle();
-//       expect(finders.seventhUserWidget, findsOneWidget);
-//       await tester.pumpAndSettle();
-//       await tester.pumpAndSettle(const Duration(seconds: 1));
-//       //надо почистить базу для повторного запуска или поменять данные...
-//       //... юзера и проверки для корректности теста
-//   }
-// }
+  Future<void> cancelCreateUser({required Finder userWidget}) async {
+    //нажатие на кнопку создания юзера
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.tap(find.byType(ElevatedButton));
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    expect(Finders().newUserWidget, findsOneWidget);
+    //нажатие на кнопку cancel
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.tap(Finders().cancelCreateButton);
+    //проверка N юзера
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    expect(userWidget, findsNothing);
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+  }
+}
