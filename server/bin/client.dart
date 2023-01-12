@@ -1,7 +1,6 @@
 import 'package:grpc/grpc.dart';
 // import 'package:server/src/generated/messages.pb.dart';
 // import 'package:server/src/generated/messages.pbgrpc.dart';
-// import 'package:server/src/generated/users.pb.dart';
 
 import 'package:server/src/library/library_server.dart';
 
@@ -168,44 +167,33 @@ class Client {
 //   // print("Обратный ответ:");
 //   // print('update User: ${updateUser.writeToJsonMap()}');
 //   // print(await client.updateUser(updateUser));
+
+  Future<PasswordResponse> newPassword(PasswordRequest request) async {
+    var channel = ClientChannel('localhost',
+        port: 6000,
+        options:
+            const ChannelOptions(credentials: ChannelCredentials.insecure()));
+    var stub = GrpcUsersClient(channel,
+        options: CallOptions(timeout: Duration(seconds: 30)));
+    PasswordResponse resp = PasswordResponse();
+    try {
+      resp = await stub.changePassword(request);
+    } catch (e) {
+      print(e);
+    }
+    return resp;
+  }
 }
 
 var con = false;
 void main() async {
   var client = Client();
-  // //Создание сообщения
-  // // var message = CreateMessageRequest();
-  // // message.chatIdMain = 1;
-  // // message.senderMainId = 1;
-  // // message.content = "Hello";
-  // ///
-  // ///Если присылает один и тот же mainMessageId
-  // ///поменяй message.date или message.content
-  // ///
-  // // print("Обратный ответ:");
-  // // print(await client.SendMessage(message));
 
-  // //Обновление сообщения
-  // // var messageUpdate = UpdateMessageRequest();
-  // // messageUpdate.content = "HELL";
-  // // messageUpdate.idMessageMain = 4;
-  // var updateUser = UpdateUserRequest();
-  // updateUser.name = 'bob';
-  // updateUser.email = 'test@test.test';
-  // updateUser.password = 'new pas';
-  // updateUser.profilePicUrl = 'new image url';
+  var message = PasswordRequest()
+    ..userId = 1
+    ..oldPassword = "pass"
+    ..newPassword = "NewPassword";
+  print("Обратный ответ:");
 
-  // print("Обратный ответ:");
-  // print('update User: ${updateUser.writeToJsonMap()}');
-  // print(await client.updateUser(updateUser));
-
-  // var messageEmpty = Empty();
-  // print("Обратный ответ:");
-
-  // print(await client.getUsers(messageEmpty));
-
-  // var message = SynhMainUser(mainUserId: 1);
-  // print("Обратный ответ:");
-
-  // print(await client.GetUsersSynh(message));
+  print(await client.newPassword(message));
 }

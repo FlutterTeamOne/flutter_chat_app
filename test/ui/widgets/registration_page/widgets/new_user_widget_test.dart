@@ -5,19 +5,13 @@ import 'package:flutter_test/flutter_test.dart';
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: NewUserWidget.buildNameRow());
+    return MaterialApp(home: NewUserWidget());
   }
 }
 
-
 void main() {
   group("Тесты для поля ввода Имени пользователя", () {
-    setUpAll(() async {
-  });
-    testWidgets('Отрисовка buildNameRow', (tester) async {
-      
-    });
-
-    
+    setUpAll(() async {});
+    testWidgets('Отрисовка buildNameRow', (tester) async {});
   });
 }

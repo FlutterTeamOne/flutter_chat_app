@@ -111,3 +111,25 @@ const DeleteUserResponse$json = const {
 
 /// Descriptor for `DeleteUserResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List deleteUserResponseDescriptor = $convert.base64Decode('ChJEZWxldGVVc2VyUmVzcG9uc2USHAoJaXNEZWxldGVkGAEgASgIUglpc0RlbGV0ZWQ=');
+@$core.Deprecated('Use passwordRequestDescriptor instead')
+const PasswordRequest$json = const {
+  '1': 'PasswordRequest',
+  '2': const [
+    const {'1': 'userId', '3': 3, '4': 1, '5': 5, '10': 'userId'},
+    const {'1': 'oldPassword', '3': 1, '4': 1, '5': 9, '10': 'oldPassword'},
+    const {'1': 'newPassword', '3': 2, '4': 1, '5': 9, '10': 'newPassword'},
+  ],
+};
+
+/// Descriptor for `PasswordRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List passwordRequestDescriptor = $convert.base64Decode('Cg9QYXNzd29yZFJlcXVlc3QSFgoGdXNlcklkGAMgASgFUgZ1c2VySWQSIAoLb2xkUGFzc3dvcmQYASABKAlSC29sZFBhc3N3b3JkEiAKC25ld1Bhc3N3b3JkGAIgASgJUgtuZXdQYXNzd29yZA==');
+@$core.Deprecated('Use passwordResponseDescriptor instead')
+const PasswordResponse$json = const {
+  '1': 'PasswordResponse',
+  '2': const [
+    const {'1': 'ok', '3': 1, '4': 1, '5': 8, '10': 'ok'},
+  ],
+};
+
+/// Descriptor for `PasswordResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List passwordResponseDescriptor = $convert.base64Decode('ChBQYXNzd29yZFJlc3BvbnNlEg4KAm9rGAEgASgIUgJvaw==');
