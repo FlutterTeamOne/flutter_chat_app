@@ -1,4 +1,6 @@
-﻿part of '../../profile_page.dart';
+﻿// ignore_for_file: avoid_print
+
+part of '../../profile_page.dart';
 
 class ProfileLayout extends StatelessWidget {
   const ProfileLayout({
@@ -88,6 +90,7 @@ class ProfileLayout extends StatelessWidget {
                               onPressed: () {
                                 userPod.deleteUser(userMain.userId!);
 
+                                /// TODO refactor print
                                 print(userMain.userId);
                                 showDialog(
                                     context: context,

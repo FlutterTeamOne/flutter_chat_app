@@ -1,4 +1,6 @@
-﻿import 'dart:io';
+﻿// ignore_for_file: avoid_unnecessary_containers, avoid_print
+
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 
@@ -6,7 +8,6 @@ import '../../../../modules/signal_service/river/message_ref/message_state_ref.d
 import '../../../../modules/signal_service/river/river.dart';
 import 'app_circle_button.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TextInputWidget extends ConsumerStatefulWidget {
@@ -60,6 +61,8 @@ class TextInputWidgetState extends ConsumerState<TextInputWidget> {
                       return;
                     }
                     var file = result.files.first;
+
+                    /// TODO refactor print
                     print('FILE: $file');
                     filePath = file.path!;
                     _sendPath(file.path!);

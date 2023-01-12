@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_string_interpolations, non_constant_identifier_names, unnecessary_brace_in_string_interps, avoid_print
+
 import 'dart:async';
 import 'dart:convert';
 
@@ -21,6 +23,7 @@ class RestClient {
         chats.add(respChats);
       }
     } catch (e) {
+      /// TODO refactor print
       print(e);
     }
     return chats;
@@ -28,9 +31,9 @@ class RestClient {
 
   Future createChatRest(
       {required creatorUserId, required user2Id, required String date}) async {
-    var chatUrl = '$_url/chats/';
-    var restChat;
-    var chatId;
+    String chatUrl = '$_url/chats/';
+    dynamic restChat;
+    int? chatId;
     // var date = DateTime.now().toIso8601String();
     // try {
     //возвращает один созданный элемент
@@ -39,6 +42,8 @@ class RestClient {
       "friend2_id": user2Id,
       "date": date
     });
+
+    /// TODO refactor print
     print('HELLO');
     print('RESP DATA:${resp.data}');
     if (resp.statusCode == 200) {
@@ -51,6 +56,7 @@ class RestClient {
       String userCreatedDate = responseFromRest[3].split(' created_date: ')[1];
       String profilePicUrl = responseFromRest[4].split(' profile_pic_url: ')[1];
       String userUpdatedDate = responseFromRest[5].split(' updated_date: ')[1];
+      // ignore: unused_local_variable
       String? userDeletedDate = responseFromRest[6].split(' deleted_date: ')[1];
 
       await LocalUsersServices().createUser(
@@ -70,17 +76,27 @@ class RestClient {
 
       chatId =
           int.tryParse('${responseFromRest[9].split('res: [{chat_id: ')[1]}')!;
+
+      /// TODO refactor print
       print('CHAT ID: $chatId');
       int friend1_id =
           int.tryParse('${responseFromRest[10].split(' friend1_id: ')[1]}')!;
+
+      /// TODO refactor print
       print('FRIEND ID: $friend1_id');
       int friend2_id =
           int.tryParse('${responseFromRest[11].split(' friend2_id: ')[1]}')!;
+
+      /// TODO refactor print
       print('FRIEND 2: $friend2_id');
       String updatedDate =
           '"${updatedDateInput.substring(0, updatedDateInput.length - 3)}"';
+
+      /// TODO refactor print
       print('UPDATEDDATE: $updatedDate');
       String createdDate = '"${createdDateInput}"';
+
+      /// TODO refactor print
       print('CREATE DATE: $createdDate');
 
       restChat = {
@@ -91,7 +107,8 @@ class RestClient {
         'deleted_date': "",
         'updated_date': updatedDateInput
       };
-      // print(source.);
+
+      /// TODO refactor print
       print('RESTCHAT CLIENT $restChat');
     } else if (resp.statusCode == 404) {
       throw Exception(resp.data);
@@ -112,12 +129,19 @@ class RestClient {
     var chatUrl = '$_url/chats/';
     try {
       var resp = await _dio.delete('$chatUrl$id');
+
+      /// TODO refactor print
       print('DEL RESP:$resp');
       if (resp.statusCode == 200) {
         var data = json.decode(resp.data);
+
+        /// TODO refactor print
         print('DEL DATA: $data');
       }
-    } catch (e) {}
+    } catch (e) {
+      /// TODO refactor print
+      print(e);
+    }
   }
 
   Future<AttachModel> sendImageRest({required String path}) async {
@@ -125,19 +149,26 @@ class RestClient {
     late AttachModel attach;
     try {
       var resp = await _dio.put(imageUrl, data: {"path": path});
+
+      /// TODO refactor print
       print("RESP: $resp");
       if (resp.statusCode == 200) {
         var source = resp.data
             .toString()
             .replaceAll('attachment_id', '"attachment_id"')
             .replaceAll('attachment_meta', '"attachment_meta"');
+
+        /// TODO refactor print
         print('source:$source');
         // var res = json.decode(source);
 
         attach = AttachModel.fromJson(source);
+
+        /// TODO refactor print
         print('mod:$attach');
       }
     } catch (e) {
+      /// TODO refactor print
       print(e);
     }
     return attach;
@@ -151,6 +182,7 @@ class RestClient {
         return resp;
       }
     } catch (e) {
+      /// TODO refactor print
       print(e);
     }
   }
@@ -163,6 +195,7 @@ class RestClient {
         return resp;
       }
     } catch (e) {
+      /// TODO refactor print
       print(e);
     }
   }

@@ -1,10 +1,10 @@
+// ignore_for_file: avoid_print
+
 import 'package:chat_app/main.dart';
 import 'package:chat_app/modules/style_manager/riverpod/theme_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../widgets/custom_theme/color_indicator.dart';
-import '../../widgets/custom_theme/color_tools.dart';
 import '../../widgets/custom_theme/flex_color_picker.dart';
 
 class ColorPickerPage extends ConsumerStatefulWidget {
@@ -139,6 +139,8 @@ class _ColorPickerPageState extends ConsumerState<ColorPickerPage> {
                               textColor: state.textColor,
                               primaryColor: color,
                             ));
+
+                    /// TODO refactor print
                     print(color);
                   },
                   width: 44,
@@ -312,6 +314,8 @@ class _ColorPickerPageState extends ConsumerState<ColorPickerPage> {
                   textColor: state.textColor,
                   primaryColor: color,
                 ));
+
+        /// TODO refactor print
         print(color);
       },
       width: 40,

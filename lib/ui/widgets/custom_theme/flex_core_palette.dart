@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:math' as math;
 
 import 'package:material_color_utilities/material_color_utilities.dart';

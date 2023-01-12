@@ -1,10 +1,8 @@
-﻿import '../../../modules/signal_service/river/chat_ref/chat_state_ref.dart';
-import '../../../modules/signal_service/river/river.dart';
+﻿import '../../../modules/signal_service/river/river.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'layouts/chat_list_layout.dart';
 import 'layouts/default_user_chat_layout.dart';
@@ -19,7 +17,8 @@ class AsapPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, _) {
-        var chats;
+        // ignore: unused_local_variable
+        List<ChatDto>? chats;
         ref.watch(
             River.futureChatPod.selectAsync((data) => chats = data.chats));
         var chatPod = ref.watch(River.chatPod);

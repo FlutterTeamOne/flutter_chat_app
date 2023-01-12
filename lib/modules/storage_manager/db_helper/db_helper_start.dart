@@ -1,10 +1,11 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 
 import '../../../src/constants/app_data_constants.dart';
 
 import '../../../src/constants/db_constants.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -35,7 +36,9 @@ class DBHelperStart {
     // print('PATH_start: ${dbPath.path}');
     // String path = join(dbPath.path, DatabaseConst.dbFileNameStart);
     String path = join(dbPath, DatabaseConst.dbFileNameStart);
-    print('PATH_absolute: ${path}');
+
+    /// TODO refactor print
+    print('PATH_absolute: $path');
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(
           version: DatabaseConst.dbVersion,
@@ -115,7 +118,7 @@ CREATE TABLE ${DatabaseConst.userTable} (
   Future deleteDB([String? testPath]) async {
     var db = await instanse.database;
     var databaseFactory = databaseFactoryFfi;
-    
+
     _database = null;
     await db.close();
     await databaseFactory.deleteDatabase(db.path);

@@ -1,9 +1,8 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, prefer_final_fields, prefer_typing_uninitialized_variables
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../../src/libraries/library_all.dart';
-
+// ignore: must_be_immutable
 class AddChatDialogWidget extends StatefulWidget {
   int val;
   AddChatDialogWidget({

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 
 import 'package:chat_app/domain/data/dto/user_dto/main_user_dto.dart';
@@ -5,9 +7,11 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   setUpAll(() async {
+    /// TODO refactor print
     print("test start");
   });
   tearDownAll(() {
+    /// TODO refactor print
     print("test end");
   });
   group("MainUserDto tests", () {

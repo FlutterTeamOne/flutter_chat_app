@@ -1,4 +1,6 @@
-﻿import 'package:flutter/material.dart';
+﻿// ignore_for_file: avoid_unnecessary_containers
+
+import 'package:flutter/material.dart';
 
 class DefaultUserChatLayout extends StatelessWidget {
   const DefaultUserChatLayout({super.key});
@@ -18,7 +20,7 @@ class DefaultUserChatLayout extends StatelessWidget {
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               // Text(
               //   'Sfera'.toUpperCase(),
               // ),

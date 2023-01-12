@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
 part of '../authorization_page.dart';
 
 class UserCard extends StatelessWidget {
@@ -21,6 +23,8 @@ class UserCard extends StatelessWidget {
                 UserPath.user = user;
                 //await DBHelperStart.instanse.close();
                 var db = await DBHelper.instanse.initDB();
+
+                /// TODO refactor print
                 print("db open? ${db.path},${db.isOpen}");
 
                 Navigator.of(context).pushNamed(MainLayout.routeName);

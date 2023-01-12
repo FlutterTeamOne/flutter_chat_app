@@ -1,7 +1,8 @@
+// ignore_for_file: unused_element, prefer_typing_uninitialized_variables
+
 import 'dart:async';
 import 'dart:io';
 
-import 'package:grpc/grpc.dart';
 import 'package:grpc/grpc.dart';
 import 'package:server/src/db_server/services/message_service.dart';
 import 'package:server/src/library/library_server.dart';
@@ -211,7 +212,7 @@ class GrpcUsers extends GrpcUsersServiceBase {
   Future<GetUserResponse> getUser(
       ServiceCall call, GetUserRequest request) async {
     print('ACTIVATE GET USER SERVER');
-    var src;
+    dynamic src;
     if (!request.id.isNaN) {
       print('REQUEST :');
       src = await UsersServices()

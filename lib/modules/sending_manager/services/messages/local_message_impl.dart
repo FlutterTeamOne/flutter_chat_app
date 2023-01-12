@@ -1,4 +1,4 @@
-import 'package:chat_app/src/generated/sync/grpcsynh.pbgrpc.dart';
+// ignore_for_file: override_on_non_overriding_member
 
 import '../../../../domain/data/dto/attach_dto/attach_dto.dart';
 import '../../../../src/generated/grpc_lib/grpc_message_lib.dart';
@@ -114,7 +114,6 @@ class LocalMessagesServices implements ILocalMessagesServices {
         '''DELETE FROM ${DatabaseConst.messageTable}  WHERE ${DatabaseConst.messagesColumnLocalMessagesId}=?''',
         [id]);
     return deleted;
-    
   }
 
   Future<int> deleteMessageFromBase(
@@ -173,8 +172,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
   }
 
   @override
-  Future 
-  updateMessage(
+  Future updateMessage(
       {required MessageDto message, required int localMessageId}) async {
     await DBHelper.instanse.onUpdate(
         tableName: 'messages',
@@ -188,7 +186,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
           DatabaseConst.messagesColumnDeletedDate: message.deletedDate,
           DatabaseConst.messagesColumnIsRead: message.isRead,
           DatabaseConst.messagesColumnContent: message.content,
-          DatabaseConst.messagesColumnMessageId:message.messageId
+          DatabaseConst.messagesColumnMessageId: message.messageId
         },
         id: localMessageId);
   }

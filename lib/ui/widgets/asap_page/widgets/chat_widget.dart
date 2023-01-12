@@ -69,7 +69,7 @@ class ChatWidgetState extends State<ChatWidget> {
         ),
       ),
       body: messages.isEmpty
-          ? Center(child: Text('Start chatting'))
+          ? const Center(child: Text('Start chatting'))
           : GroupedListView<MessageDto, DateTime>(
               controller: scrollController,
               padding: const EdgeInsets.all(10),

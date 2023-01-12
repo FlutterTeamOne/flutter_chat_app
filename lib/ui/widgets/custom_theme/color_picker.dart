@@ -1,4 +1,4 @@
-// ignore_for_file: comment_references
+// ignore_for_file: comment_references, library_private_types_in_public_api
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';

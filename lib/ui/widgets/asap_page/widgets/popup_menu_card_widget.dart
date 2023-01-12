@@ -1,4 +1,6 @@
-﻿import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
+﻿// ignore_for_file: avoid_print
+
+import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 
 import '../../../../modules/signal_service/river/message_ref/message_state_ref.dart';
 import '../../../../modules/signal_service/river/river.dart';
@@ -50,6 +52,7 @@ class _PopupMenuCardWidgetState extends ConsumerState<PopupMenuCardWidget> {
             var msg = data![0].split('message: ')[1];
             // image = data[4].split('url: ')[1];
             // print('image: $image');
+            /// TODO refactor print
             print('msg: $msg');
             widget.textController?.text = msg;
           }

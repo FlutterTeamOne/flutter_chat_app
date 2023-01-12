@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field, avoid_print
+
 import 'dart:async';
 
 import 'package:chat_app/modules/client/grpc_client.dart';
@@ -30,10 +32,12 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
 
     _subscription =
         stub.streamMessage(messageController.stream).listen((value) async {
+      /// TODO refactor print
       print("MESSAGE!!!!!!!!!!!!!!!");
       print(value.messageState);
       if (value.messageState == MessageStateEnum.isReadMessage) {
-        print("READMESSAGE: ${value}");
+        /// TODO refactor print
+        print("READMESSAGE: value");
         var messages = <MessageDto>[];
         var msg = value.readMessage.message;
         await _messagesServices.addNewMessageFromBase(message: msg);
@@ -58,6 +62,7 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
             messageId: updMsg.idMessageMain,
             updateDate: updMsg.dateUpdate);
 
+        /// TODO refactor print
         print('id Message Main: ${updMsg.idMessageMain}');
         print('date update: ${updMsg.idMessageMain}');
 
@@ -73,10 +78,12 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
             id: del.idMessageMain, dateDelete: del.dateDelete);
         var messages = await _messagesServices.getAllMessages();
 
+        /// TODO refactor print
         print('IsDelete message:$messages');
 
         readMessages(messages);
       } else if (value.messageState == MessageStateEnum.isCreateMessage) {
+        /// TODO refactor print
         print("IsCreate: ${value.createMessage.message}");
         var msg = value.createMessage.message;
         var newMsg = MessageDto(
@@ -101,7 +108,7 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
         var messages = await _messagesServices.getAllMessages();
 
         // messages.sort((a, b) => a.localMessageId!.compareTo(b.localMessageId!));
-
+        /// TODO refactor print
         print('sortListen message:$messages');
 
         readMessages(messages);
@@ -113,10 +120,12 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
     if (messageList == null || messageList.length == 1) {
       var messages = await _messagesServices.getAllMessages();
 
+      /// TODO refactor print
       print("MESSAGES:$messages");
 
       state = state.copyWith(messages: messages);
     } else {
+      /// TODO refactor print
       print('EVENT MSG: $messageList');
 
       state = state.copyWith(messages: messageList);
@@ -138,6 +147,8 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
     if (mediaState == MediaState.isPreparation) {
       state = state.copyWith(mediaState: MediaState.isPreparation);
     }
+
+    /// TODO refactor print
     print('MESSAGE: $message');
     //отправка текстового сообщения
     if (contentType == ContentType.isText && message != null) {
@@ -263,7 +274,10 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
 //           print('id Message Main: ${messageUpdateResponse.idMessageMain}');
 //           print('date update: ${messageUpdateResponse.dateUpdate}');
 //         }
-      } catch (e) {}
+      } catch (e) {
+        /// TODO refactor print
+        print(e);
+      }
     }
     if (isEditing == EditState.isNotEditing) {
       state = state.copyWith(editState: EditState.isNotEditing);
@@ -273,7 +287,8 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
   deleteMessage({required int messageId}) async {
     await _messagesServices.deleteMessage(id: messageId);
     DBHelper.instanse.updateListenController.add(true);
-    // add(ReadMessageEvent());
+
+    /// TODO refactor print
     print('message ID: $messageId');
     state = state.copyWith(
         deleteState: DeleteState.isDeleted, editState: EditState.isNotEditing);
@@ -286,6 +301,9 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
       // print('DEL ID: ${response.idMessageMain}');
 
       // await _messagesServices.updateWrittenToServer(localMessageId: localMessageId, updatedDate: updatedDate)
-    } catch (e) {}
+    } catch (e) {
+      /// TODO refactor print
+      print(e);
+    }
   }
 }

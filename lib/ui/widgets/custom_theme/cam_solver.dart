@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// ignore_for_file: depend_on_referenced_packages, non_constant_identifier_names
+
 import 'dart:math';
 import 'package:material_color_utilities/utils/math_utils.dart';
 import 'package:material_color_utilities/utils/color_utils.dart';

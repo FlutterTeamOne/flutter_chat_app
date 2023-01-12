@@ -1,4 +1,6 @@
-﻿part of '../profile_page.dart';
+﻿// ignore_for_file: avoid_print
+
+part of '../profile_page.dart';
 
 class ButtonChangeName extends ConsumerWidget {
   const ButtonChangeName({
@@ -6,7 +8,7 @@ class ButtonChangeName extends ConsumerWidget {
     required this.userMain,
   }) : super(key: key);
 
-  final userMain;
+  final UserDto userMain;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -62,6 +64,7 @@ class ButtonChangeName extends ConsumerWidget {
                               userPod.updateUser(updatedUser);
                               userPod.readUser();
 
+                              /// TODO refactor print
                               print(newName);
                               Navigator.pop(context);
                             },

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,6 +17,8 @@ class UserPath {
 
   Future<String> getDbPath() async {
     var dbPath = await getTemporaryDirectory();
+
+    /// TODO refactor print
     print('PATH: ${dbPath.path}');
     // var _dbFileName = 'sfera';
     return dbPath.path;

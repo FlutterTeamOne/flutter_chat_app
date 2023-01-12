@@ -1,11 +1,12 @@
-import 'package:chat_app/src/constants/db_constants.dart';
+// ignore_for_file: avoid_print
+
 import 'package:chat_app/src/libraries/library_all.dart';
 
 import '../../ui/widgets/registration_page/models/new_user_model.dart';
 import 'package:grpc/grpc.dart';
 
 import '../../src/generated/users/users.pbgrpc.dart';
-import '../sending_manager/library/library_sending_manager.dart';
+
 import '../../domain/data/dto/user_dto/user_dto.dart';
 import '../../src/generated/grpc_lib/grpc_user_lib.dart';
 import 'custom_exception.dart';
@@ -32,8 +33,11 @@ class GrpcClient {
     try {
       response = await stub.deleteUser(request);
     } catch (e) {
+      /// TODO refactor print
       print(e);
     }
+
+    /// TODO refactor print
     print('User delete: $response');
     return response;
   }
@@ -47,6 +51,7 @@ class GrpcClient {
     try {
       response = await stub.getUser(request);
     } on GrpcError catch (e) {
+      /// TODO refactor print
       print('ERROR getUser GRPC_CLIENT: $e');
       throw CustomException(e.message.toString());
     }
@@ -56,7 +61,7 @@ class GrpcClient {
   Future createUser({required NewUserModel user}) async {
     late GrpcUsersClient stub;
     stub = GrpcUsersClient(channel,
-        options: CallOptions(timeout: Duration(seconds: 30)));
+        options: CallOptions(timeout: const Duration(seconds: 30)));
     var request = CreateUserRequest()
       ..name = user.name!
       ..email = user.email!
@@ -67,8 +72,11 @@ class GrpcClient {
     try {
       response = await stub.createUser(request);
     } catch (e) {
+      /// TODO refactor print
       print(e);
     }
+
+    /// TODO refactor print
     print('CREATE USER FROM GRPC CLIENT RESPONSE: ${response.toString()}');
     return UserDto(
         userId: response.id,
@@ -82,19 +90,24 @@ class GrpcClient {
   updateUser({required UserDto updatedUser}) async {
     late GrpcUsersClient stub;
     stub = GrpcUsersClient(channel,
-        options: CallOptions(timeout: Duration(seconds: 30)));
+        options: CallOptions(timeout: const Duration(seconds: 30)));
     var request = UpdateUserRequest()
       ..id = updatedUser.userId!
       ..email = updatedUser.email
       ..name = updatedUser.name
       ..profilePicUrl = updatedUser.profilePicLink;
     var response = UpdateUserResponse();
+
+    /// TODO refactor print
     print("Отправлен Юзер: $request");
     try {
       response = await stub.updateUser(request);
     } catch (e) {
+      /// TODO refactor print
       print(e);
     }
+
+    /// TODO refactor print
     print("Получен Респонc: $response");
     return response;
   }

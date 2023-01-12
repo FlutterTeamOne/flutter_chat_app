@@ -89,16 +89,17 @@ class ChatsServices implements IChatsServices {
   }
 
   @override
+  // ignore: non_constant_identifier_names
   getChatByTwoIds({required int friend1_id, required int friend2_id}) async {
     Database db = await DbServerServices.instanse.database;
 
-    var id_chat = await db.rawQuery('''
+    var idChat = await db.rawQuery('''
       SELECT f.chat_id FROM chats f 
 	      WHERE 
         (((f.friend1_id = $friend1_id) AND (f.friend2_id = $friend2_id)) 
         OR 
         ((f.friend1_id = $friend2_id) AND (f.friend2_id = $friend1_id)))''');
-    return id_chat;
+    return idChat;
   }
 
   @override

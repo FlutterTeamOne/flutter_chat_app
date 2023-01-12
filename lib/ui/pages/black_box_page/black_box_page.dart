@@ -1,4 +1,6 @@
-﻿import 'package:flutter/material.dart';
+﻿// ignore_for_file: avoid_unnecessary_containers
+
+import 'package:flutter/material.dart';
 
 class BlackBoxPage extends StatelessWidget {
   const BlackBoxPage({

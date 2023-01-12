@@ -1,8 +1,5 @@
-import 'dart:async';
 import 'package:chat_app/modules/storage_manager/preferences/user_preferences.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/rendering.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   group('UserPrefernces', () {

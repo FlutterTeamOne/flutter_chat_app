@@ -17,7 +17,7 @@ class _UserPic extends StatelessWidget {
         width: 125,
         decoration: BoxDecoration(
           image: userPic.isEmpty
-              ? DecorationImage(
+              ? const DecorationImage(
                   fit: BoxFit.cover,
                   image: AssetImage(
                       'assets/images/user_images/defaultUserAvatar.png'))

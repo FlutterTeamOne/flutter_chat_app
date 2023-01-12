@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 
 import 'package:chat_app/domain/data/dto/message_dto/message_dto.dart';
@@ -7,9 +9,11 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   MessageDto messageDto = MessageDto(chatId: 1, senderId: 1, content: "Hello");
   setUpAll(() async {
+    /// TODO refactor print
     print("test start");
   });
   tearDownAll(() {
+    /// TODO refactor print
     print("test end");
   });
   group("MessageDto tests", () {
@@ -105,6 +109,8 @@ void main() {
 
     test('ToString', () async {
       var actual = messageDto.toString();
+
+      /// TODO refactor print
       print(actual);
 
       expect(actual,
@@ -135,7 +141,6 @@ void main() {
     ///Проблема с логикой, проверки на null
     ///
     // test('fromJson', () async {
-
 
     //   var toJson = messageDto.toJson();
     //   var actual = MessageDto.fromJson(toJson);

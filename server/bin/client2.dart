@@ -6,13 +6,14 @@
 
 // late GrpcMessagesClient stub;
 
+// ignore_for_file: unused_local_variable
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:grpc/grpc.dart';
 import 'package:server/src/generated/messages.pbgrpc.dart';
-import 'package:server/src/generated/messages.pbjson.dart';
 
 Future<void> main(List<String> args) async {
   if (args.isEmpty) {

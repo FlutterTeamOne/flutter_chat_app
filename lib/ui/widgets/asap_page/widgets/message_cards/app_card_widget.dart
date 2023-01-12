@@ -1,4 +1,4 @@
-import 'dart:convert';
+// ignore_for_file: prefer_typing_uninitialized_variables, avoid_print
 
 import '../../../../../src/generated/grpc_lib/grpc_message_lib.dart';
 import '../../../../../src/libraries/library_all.dart';
@@ -30,11 +30,15 @@ class AppCardWidget extends StatelessWidget {
     if (message.contentType == ContentType.isMedia) {
       List<String> data = message.content.split(',');
       image = data[3].split('url: ')[1];
+
+      /// TODO refactor print
       print('image: $image');
     } else if (message.contentType == ContentType.isMediaText) {
       List<String> data = message.content.split(',');
       msg = data[0].split('message: ')[1];
       image = data[4].split('url: ')[1];
+
+      /// TODO refactor print
       print('image: $image');
       print('msg: $msg');
     } else {

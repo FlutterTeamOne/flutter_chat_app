@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 import 'package:chat_app/modules/style_manager/riverpod/theme_models.dart';
 import 'package:chat_app/modules/style_manager/utils/style_manager_utils.dart';
@@ -29,16 +31,19 @@ Future<void> main() async {
 
   await UserPref.init();
   await UserPref.restore();
+
+  /// TODO refactor print
   print("UserPref: ${UserPref.getUserDbPref}");
   UserPref.getUserDbPref
       ? await DBHelperStart.instanse.initDB()
       : await DBHelper.instanse.initDB();
 
-  var envVars = AppDataConstants.envVars;
   var userDir = AppDataConstants.userDirectory;
   var directory =
       await Directory('$userDir/AppData/Local/FlutterChatApp/databases')
           .create(recursive: true);
+
+  /// TODO refactor print
   print(directory.path);
   runApp(ProviderScope(child: MyApp()));
 }
@@ -47,11 +52,9 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
   final GrpcClient grpcClient = GrpcClient();
 
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(providers: [
-
       BlocProvider(create: (context) => NewUserBloc()),
     ], child: buildMaterialApp(context));
   }
@@ -84,9 +87,11 @@ Consumer buildMaterialApp(BuildContext context) {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(theme.borderRadius!))),
           brightness: theme.brightness,
-          primarySwatch: StyleManagerUtils().createMaterialColor(theme.primaryColor!),
+          primarySwatch:
+              StyleManagerUtils().createMaterialColor(theme.primaryColor!),
 
-          primaryColor: StyleManagerUtils().createMaterialColor(theme.primaryColor!),
+          primaryColor:
+              StyleManagerUtils().createMaterialColor(theme.primaryColor!),
           errorColor: Colors.redAccent.shade200,
 
           textSelectionTheme: TextSelectionThemeData(

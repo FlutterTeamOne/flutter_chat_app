@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import '../../../../src/constants/db_constants.dart';
 import '../../../../domain/data/library/library_data.dart';
 import '../../library/library_sending_manager.dart';
@@ -52,6 +54,8 @@ class LocalChatServices implements ILocalChatsServices {
         await db.rawQuery('''SELECT * FROM chats ORDER BY update_date DESC''');
 
     var res = chats.map((item) => ChatDto.fromMap(item)).toList();
+
+    /// TODO refactor print
     print('getAllChatsSortedByUpdatedDate chats: $chats');
     print('getAllChatsSortedByUpdatedDate res: $res');
 

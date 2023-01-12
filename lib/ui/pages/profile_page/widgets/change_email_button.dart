@@ -1,4 +1,6 @@
-﻿part of '../profile_page.dart';
+﻿// ignore_for_file: avoid_print
+
+part of '../profile_page.dart';
 
 class ButtonChangeEmail extends ConsumerWidget {
   const ButtonChangeEmail({
@@ -6,7 +8,7 @@ class ButtonChangeEmail extends ConsumerWidget {
     required this.userMain,
   }) : super(key: key);
 
-  final userMain;
+  final UserDto userMain;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -63,6 +65,8 @@ class ButtonChangeEmail extends ConsumerWidget {
                               userPod.updateUser(updatedUser);
 
                               userPod.readUser();
+
+                              /// TODO refactor print
                               print(newEmail);
                               Navigator.pop(context);
                             },

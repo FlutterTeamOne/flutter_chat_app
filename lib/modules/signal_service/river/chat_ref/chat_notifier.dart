@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:chat_app/domain/data/dto/chat_dto/chat_dto.dart';
 import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/modules/client/rest_client.dart';
@@ -26,6 +28,8 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
     var chats = await _chatServices.getAllChatsSortedByUpdatedDate();
     //
     var restChats = await RestClient().getChats();
+
+    /// TODO refactor print
     print('IF CHATS is NULL - ADD CHAT FROM LOCAL DB: $restChats');
     print('IF CHATS is NULL - ADD CHAT FROM LOCAL DB: $chats');
     //сравниваем два листа и в зависимости от этого меняем стейт на нужный лист
@@ -43,6 +47,7 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
             chatId: chat.chatId!);
       }
     } else {
+      /// TODO refactor print
       print('ADD CHAT FROM EVENT: $chats');
       state = state.copyWith(chats: chats);
     }
@@ -60,6 +65,7 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
       throw CustomException(e.response.toString());
     }
 
+    /// TODO refactor print
     print("JAJAJ");
     var chats = await _chatServices.createChat(
         createDate: chatFromRest.createdDate,
@@ -70,6 +76,7 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
   }
 
   void getChatId(int chatId) {
+    /// TODO refactor print
     print('HEY');
     state = state.copyWith(chatId: chatId);
     // return state;
@@ -80,6 +87,8 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
     await _chatServices.deleteChat(id: chatId);
     //запрос на удаление к рест серверу
     await RestClient().deleteChatRest(id: chatId);
+
+    /// TODO refactor print
     print('CHAT ID: $chatId');
     state = state.copyWith(chatId: null);
   }

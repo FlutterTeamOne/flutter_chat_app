@@ -1,25 +1,23 @@
-﻿import 'dart:async';
+﻿// ignore_for_file: unused_field, unused_element, avoid_print
+
+import 'dart:async';
 import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/modules/signal_service/river/river.dart';
-import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
-import 'package:chat_app/src/generated/chats/chats.pbgrpc.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/generated/users/users.pbgrpc.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/add_chat_dialog_widget.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/search_field.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../modules/storage_manager/db_helper/user_path.dart';
 import '../../../widgets/library/library_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../src/libraries/library_all.dart';
 
 class ChatListLayout extends StatefulWidget {
   final List<ChatDto> chatModel;
   final List<MessageDto> messageModel;
 
-  ChatListLayout(
+  const ChatListLayout(
       {super.key, required this.chatModel, required this.messageModel});
 
   @override
@@ -78,7 +76,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                 //     break;
                                 //   }
                                 // }
-                              var  friend = userPod.users?.firstWhere((user) =>
+                                var friend = userPod.users?.firstWhere((user) =>
                                     widget.chatModel[index].userIdChat ==
                                     user.userId);
                                 var lastMessage = MessageDto(
@@ -134,6 +132,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                               builder: (BuildContext context) =>
                                   (AddChatDialogWidget(val: value)))
                           .then((value) async {
+                        /// TODO refactor print
                         print('FriendId From Add Dialog: $value');
                         print('Current UserId: ${UserPref.getUserId}');
                         //FriendId Validation
@@ -141,8 +140,12 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                         try {
                           userFromServerDb =
                               await grpcClient.getUser(userId: value);
+
+                          /// TODO refactor print
                           print("UserFromServer: $userFromServerDb");
                           if (!mounted) return;
+
+                          /// TODO refactor print
                           print("BEFORE REST");
                           await ref.read(River.chatPod.notifier).createChat(
                                 ChatDto(
@@ -152,6 +155,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                 ),
                               );
                         } on CustomException catch (e) {
+                          /// TODO refactor print
                           print('GET USER RESPONSE ERROR: $e');
                           await showDialog(
                               context: context,

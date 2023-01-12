@@ -1,4 +1,6 @@
-﻿part of '../profile_page.dart';
+﻿// ignore_for_file: avoid_print
+
+part of '../profile_page.dart';
 
 class _AppDialog extends ConsumerStatefulWidget {
   const _AppDialog({
@@ -37,8 +39,8 @@ class _AppDialogState extends ConsumerState<_AppDialog> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
+              children: const [
+                Text(
                   'Choose image',
                   // Стиль
                   // style: TextStyle(fontSize: 16),
@@ -133,6 +135,7 @@ class _AppDialogState extends ConsumerState<_AppDialog> {
                                                   .read(River.userPod.notifier)
                                                   .readUser();
 
+                                              /// TODO refactor print
                                               print(newUrl);
                                               Navigator.pop(context);
                                             }
@@ -171,6 +174,7 @@ class _AppDialogState extends ConsumerState<_AppDialog> {
 }
 
 Future<bool> validateImage(String imageUrl) async {
+  // ignore: prefer_typing_uninitialized_variables
   var res;
   try {
     res = await Dio().get(imageUrl);
@@ -180,6 +184,8 @@ Future<bool> validateImage(String imageUrl) async {
 
   if (res.statusCode != 200) return false;
   var data = res.headers;
+
+  /// TODO refactor print
   print("IMAGE $data");
   print(data['content-type'][0]);
   return checkIfImage(data['content-type'][0]);
