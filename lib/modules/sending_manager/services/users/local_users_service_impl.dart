@@ -47,8 +47,7 @@ class LocalUsersServices implements ILocalUsersServices {
     required String profilePicUrl,
   }) async {
     var db = await DBHelperStart.instanse.database;
-    DBHelper.instanse.updateListenController.add(DbListener.isUser);
-
+    DBHelperStart.instanse.updateListenController.add(true);
     return await db.insert(DatabaseConst.userTable, {
       DatabaseConst.usersColumnUserId: userId,
       DatabaseConst.usersColumnName: name,
@@ -161,7 +160,7 @@ class LocalUsersServices implements ILocalUsersServices {
         'UPDATE ${DatabaseConst.userTable} SET $newValues WHERE $condition');
   }
 
-  Future getLastUserId() async {
+  Future getLastUserIdStart() async {
     var db = await DBHelperStart.instanse.database;
     var lastUser = await db.rawQuery('''
               SELECT MAX(user_id)
@@ -172,7 +171,7 @@ class LocalUsersServices implements ILocalUsersServices {
     return lastUser[0]['MAX(user_id)'] ?? 0;
   }
 
-  Future<List<Map<String, Object?>>> getAllUserIdAndUpdatedStarted() async {
+  Future<List<Map<String, Object?>>> getAllUserIdAndUpdatedStart() async {
     var db = await DBHelperStart.instanse.database;
     var users = await db.rawQuery('''
               SELECT user_id, updated_date

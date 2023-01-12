@@ -33,7 +33,7 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
       print("MESSAGE!!!!!!!!!!!!!!!");
       print(value.messageState);
       if (value.messageState == MessageStateEnum.isReadMessage) {
-        print("READMESSAGE: ${value}");
+        print("READMESSAGE: ${value.readMessage.message}");
         var messages = <MessageDto>[];
         var msg = value.readMessage.message;
         await _messagesServices.addNewMessageFromBase(message: msg);
@@ -291,5 +291,9 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
 
       // await _messagesServices.updateWrittenToServer(localMessageId: localMessageId, updatedDate: updatedDate)
     } catch (e) {}
+  }
+
+  Future<void> disconnect() async {
+    await _subscription.cancel();
   }
 }

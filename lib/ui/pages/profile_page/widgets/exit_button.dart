@@ -20,10 +20,10 @@ class ExitButton extends ConsumerWidget {
             //закрыть базу
             userPod.changeUser(true);
 
-            // chatPod.getChatId(-1);
+            //chatPod.getChatId(-1);
 
             await DBHelper.instanse.close();
-           
+            ref.read(River.messagePod.notifier).disconnect();
             ref.invalidate(River.userPod);
             ref.invalidate(River.chatPod);
             ref.invalidate(River.messagePod);
@@ -35,6 +35,7 @@ class ExitButton extends ConsumerWidget {
 
             //  ref.exists(River.chatPod);
             //   ref.exists(River.messagePod);
+
             Navigator.of(context).pushNamed(AuthPage.routeName);
           },
           icon: const Icon(Icons.exit_to_app),

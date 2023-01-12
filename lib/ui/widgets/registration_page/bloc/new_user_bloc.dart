@@ -1,7 +1,7 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../domain/data/dto/user_dto/user_dto.dart';
 import '../../../../modules/client/grpc_client.dart';
-import '../../../../modules/storage_manager/db_helper/db_helper.dart';
 
 import 'new_user_event.dart';
 import 'new_user_state.dart';

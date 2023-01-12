@@ -323,46 +323,31 @@ class GrpcSynh extends GrpcSynchronizationServiceBase {
     ///Юзеры и чаты
     ///
     if (request.chats.maxChatId == 0) {
-      print('new chats started');
       newChats = await ChatsServices()
           .getChatsByUserId(userId: request.users.mainUser);
-      print('new chats ended');
-      print('new users started');
       newUsers = await UsersServices()
           .getAllUsersByIDfriend(userId: request.users.mainUser);
-      print('new users ended');
       updatedUsers = [];
       updatedChats = [];
-      print('REQUEST CHATS MAX CHAT ID OK');
     } else {
-      print(
-          'else new chats started: mainUser:${request.users.mainUser} :maxChatID ${request.chats.maxChatId} ');
       newChats = await ChatsServices().getChatsByUserIdMoreChatId(
           userId: request.users.mainUser, chatId: request.chats.maxChatId);
-      print('else updated chats started ${request.chats.chatsForUpdate}');
       updatedChats = await ChatsServices()
           .getUpdatedChats(chats: request.chats.chatsForUpdate);
-      print('else updated users started ${request.users.usersForUpdate}');
       updatedUsers = await UsersServices()
           .getUpdatedUsers(users: request.users.usersForUpdate);
-      print('else  newusers started');
       newUsers = await UsersServices().getAllUsersByIDfriendMoreChatId(
           id: request.users.mainUser, chatId: request.chats.maxChatId);
-      print('ELSE REQUEST CHATS MAX CHAT ID OK');
     }
-    print("ВЫШЛИ ИЗ ЮЗЕРОВ И ЧАТОВ");
 
     ///
     ///Сообщения
     ///
     if (request.messages.maxMessageId == 0) {
-      print("Нет сообщений совсем");
       newMessages = await MessagesDBServices()
           .getMessageByUserId(userId: request.users.mainUser);
       updatedMessages = [];
     } else {
-      print("Есть ли сообщения больше ${request.messages.maxMessageId}?");
-      print("MainUserId: ${request.users.mainUser}");
       newMessages = await MessagesDBServices().getMessageByUserIdMoreMessageId(
           userId: request.users.mainUser,
           messageId: request.messages.maxMessageId);
@@ -406,13 +391,9 @@ class GrpcSynh extends GrpcSynchronizationServiceBase {
     }
     var newUsers = await usersServices.getAllUsersMoreId(id: lastId);
 
-    print("NEWUSERS START $newUsers");
-    print("UPDATEDUSERS START $usersUpdated");
-
     var newUserResponse = SynhHelper.synhUsersResponse(users: newUsers);
-    print('NEW USERS RESP START: $newUserResponse');
     var updatedUserResponse = SynhHelper.synhUsersResponse(users: usersUpdated);
-
+    print('NEW USERS RESP START: $newUserResponse');
     print('UPDATED USERS RESP START: $updatedUserResponse');
 
     return UsersResponse(
