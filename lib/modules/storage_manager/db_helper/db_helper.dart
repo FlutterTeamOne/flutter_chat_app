@@ -8,7 +8,7 @@ import 'package:path/path.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-enum DbListener {isUnknown, isUser, isChat, isMessage }
+enum DbListener { isUnknown, isUser, isChat, isMessage }
 
 class DBHelper {
   //Singleton
@@ -22,9 +22,11 @@ class DBHelper {
 
   ///Стрим контроллер, чтоб слушать изменения в БД
   final _updateListenController = StreamController<DbListener>.broadcast();
-  StreamController<DbListener> get updateListenController => _updateListenController;
+  StreamController<DbListener> get updateListenController =>
+      _updateListenController;
 
-  void _updateListen() => _updateListenController.sink.add(DbListener.isUnknown);
+  void _updateListen() =>
+      _updateListenController.sink.add(DbListener.isUnknown);
 
   ///Инициализация локальной БД. Если ее нет,
   ///то создается новая БД
@@ -76,9 +78,9 @@ CREATE TABLE ${DatabaseConst.mainUserTable}(
 //Таблица Chats
       await txn.execute('''
 CREATE TABLE ${DatabaseConst.chatsTable}(
- ${DatabaseConst.chatsColumnChatId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey},
- ${DatabaseConst.chatsColumnUserId} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique},
- ${DatabaseConst.chatsColumnCreatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
+ ${DatabaseConst.chatsColumnChatId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.unique},
+ ${DatabaseConst.chatsColumnUserId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
+ ${DatabaseConst.chatsColumnCreatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull}, 
  ${DatabaseConst.chatsColumnUpdatedDate} ${DatabaseConst.char26},
  ${DatabaseConst.chatsColumnDeletedDate} ${DatabaseConst.char26},
  ${DatabaseConst.constraint} CHATS_FK_84 ${DatabaseConst.foreignKey} ( ${DatabaseConst.chatsColumnUserId} ) ${DatabaseConst.references} ${DatabaseConst.userTable} ( ${DatabaseConst.usersColumnUserId} )

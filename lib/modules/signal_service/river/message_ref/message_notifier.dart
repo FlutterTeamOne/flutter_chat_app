@@ -275,22 +275,27 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
     }
   }
 
-  deleteMessage({required int messageId}) async {
-    await _messagesServices.deleteMessage(id: messageId);
+  deleteMessage({required MessageDto message}) async {
+    if (message.messageId != null) {
+      await _messagesServices.deleteMessageByMessageId(id: message.messageId!);
+      var messageDelete = DynamicRequest(
+          deleteMessage: DeleteMessageRequest(idMessageMain: message.messageId),
+          messageState: MessageStateEnum.isDeleteMesage);
+      try {
+        messageController.add(messageDelete);
+        // print('DEL DATE: ${response.dateDelete}');
+        // print('DEL ID: ${response.idMessageMain}');
+
+        // await _messagesServices.updateWrittenToServer(localMessageId: localMessageId, updatedDate: updatedDate)
+      } catch (e) {}
+    } else {
+      await _messagesServices.deleteMessageByLocalMessageId(
+          id: message.localMessageId!);
+    }
     // add(ReadMessageEvent());
-    print('message ID: $messageId');
+    print('message ID: $message');
     state = state.copyWith(
         deleteState: DeleteState.isDeleted, editState: EditState.isNotEditing);
-    var messageDelete = DynamicRequest(
-        deleteMessage: DeleteMessageRequest(idMessageMain: messageId),
-        messageState: MessageStateEnum.isDeleteMesage);
-    try {
-      messageController.add(messageDelete);
-      // print('DEL DATE: ${response.dateDelete}');
-      // print('DEL ID: ${response.idMessageMain}');
-
-      // await _messagesServices.updateWrittenToServer(localMessageId: localMessageId, updatedDate: updatedDate)
-    } catch (e) {}
   }
 
   Future<void> disconnect() async {

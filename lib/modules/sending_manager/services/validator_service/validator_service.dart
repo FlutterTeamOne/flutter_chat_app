@@ -30,7 +30,9 @@ class ValidatorService {
         attachmentId: message.attachmentId,
         isRead: message.isRead,
       );
-      await LocalMessagesServices().addNewMessageFromBase(message: msg);
+      if (msg.dateDelete == null || msg.dateDelete == '') {
+        await LocalMessagesServices().addNewMessageFromBase(message: msg);
+      }
     }
   }
 
