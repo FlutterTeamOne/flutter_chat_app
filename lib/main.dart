@@ -68,37 +68,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(providers: [
-      // BlocProvider<ConnectionBloc>(
-      //   create: (context) => ConnectionBloc(),
-      //   // lazy: false,
-      // ),
-      // BlocProvider(
-      //   create: (_) => GrpcConnectionBloc(grpcClient, ConnectionBloc())
-      //     ..add(
-      //       const GrpcConnectionStarted(),
-      //     ),
-      //   // lazy: false,
-      // ),
-      // BlocProvider<UserBloc>(
-      //   create: (context) =>
-      //       UserBloc()..add(ReadUsersEvent(userDb: UserPref.getUserDbPref)),
-      // ),
-      // BlocProvider<ChatBloc>(
-
-      //   create: (context) => ChatBloc(userBloc: UserBloc()),
-
-      // ),
-      // BlocProvider<MessageBloc>(
-      //   create: (context) => MessageBloc(
-      //       grpcClient: grpcClient,
-      //       grpcConnection: context.read<GrpcConnectionBloc>()),
-      // ),
-      BlocProvider(
-        create: (context) => ChangeThemeBloc(),
-      ),
-      BlocProvider(create: (context) => NewUserBloc()),
-    ], child: buildMaterialApp(context));
+     return buildMaterialApp(context);
   }
 }
 

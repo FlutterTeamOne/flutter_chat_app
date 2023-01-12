@@ -3,23 +3,25 @@ import 'package:chat_app/ui/auth/authorization_page.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../bloc/new_user_bloc.dart';
-import '../bloc/new_user_event.dart';
+
 import '../models/new_user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/new_user_state.dart';
 part 'form_widget.dart';
 
-class NewUserWidget extends StatefulWidget {
+class NewUserWidget extends ConsumerStatefulWidget {
   const NewUserWidget({Key? key}) : super(key: key);
 
   @override
-  State<NewUserWidget> createState() => _NewUserWidgetState();
+  ConsumerState<ConsumerStatefulWidget> createState() {
+    return _NewUserWidgetState();
+  }
+
+  // @override
+  // State<NewUserWidget> createState() => _NewUserWidgetState();
 }
 
-class _NewUserWidgetState extends State<NewUserWidget> {
+class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
   static const String newUserPictureUrl =
       """https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg?w=2000""";
   static String newUserCreateDate = DateTime.now().toIso8601String();
@@ -183,83 +185,97 @@ class _NewUserWidgetState extends State<NewUserWidget> {
     );
   }
 
+// <<<<<<< HEAD
   buildCreateNewUserButton(BuildContext context, newUserNameText,
       newUserEmailText, newUserPasswordText, formKey) {
     late String newUserName;
-    return BlocConsumer<NewUserBloc, NewUserState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        return ElevatedButton(
-            child: const Text('Create'),
-            // style: ButtonStyle(
-            //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            //         RoundedRectangleBorder(
-            //   borderRadius: BorderRadius.circular(20.0),
-            // ))),
-            onPressed: () {
-              final isValid = formKey.currentState!.validate();
-              if (isValid) {
-                late NewUserModel newUser = NewUserModel(
-                    name: newUserNameText.text,
-                    email: newUserEmailText.text,
-                    password: newUserPasswordText.text,
-                    registrationDate: newUserCreateDate,
-                    profilePicLink: newUserPictureUrl);
-                context.read<NewUserBloc>().add(SetNewUserEvent(user: newUser));
-                // showDialog(
-                //   context: context,
-                //   builder: (BuildContext context) {
-                //     newUserName =
-                //         context.watch<NewUserBloc>().state.newUser.name;
-                //     return Dialog(
-                //       // shape: RoundedRectangleBorder(
-                //       //   borderRadius: BorderRadius.circular(20.0),
-                //       // ),
-                //       child: SizedBox(
-                //         height: 80,
-                //         width: 50,
-                //         child: Column(
-                //           children: [
-                //             const SizedBox(height: 10),
-                //             //Не работает создание юзера
-                //             context.read<NewUserBloc>().state.newUser.name ==
-                //                     newUserNameText.text
-                //                 ? Text('User $newUserName created')
-                //                 : const Text('Error'),
-                //             //
-                //             const SizedBox(height: 10),
-                //             Consumer(
-                //               builder: (context, ref, _) {
-                //                 return ElevatedButton(
-                //                     // style: ButtonStyle(
-                //                     //     shape: MaterialStateProperty.all<
-                //                     //             RoundedRectangleBorder>(
-                //                     //         RoundedRectangleBorder(
-                //                     //   borderRadius:
-                //                     //       BorderRadius.circular(20.0),
-                //                     // ))),
-                //                     onPressed: () {
-                //                       ref
-                //                           .read(River.userPod.notifier)
-                //                           .readUser();
 
-                //                       Navigator.of(context)
-                //                           .pushNamed(AuthPage.routeName);
-                //                     },
-                //                     child: const Icon(Icons.check));
-                //               },
-                //             )
-                //           ],
-                //         ),
-                //       ),
-                //     );
-                //   },
-                // );
-                // print(
-                //     '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , ');}
-              }
-            });
-      },
-    );
+    return ElevatedButton(
+        child: const Text('Create'),
+        // style: ButtonStyle(
+        //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        //         RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.circular(20.0),
+        // ))),
+        onPressed: () {
+          final isValid = formKey.currentState!.validate();
+          if (isValid) {
+// =======
+//   Padding buildCreateNewUserButton(BuildContext context, newUserNameText,
+//       newUserEmailText, newUserPasswordText, GlobalKey<FormState> formKey) {
+//     // late String newUserName;
+//     // final newUserPod = ref.watch(River.newUserPod);
+//     return Padding(
+//       padding: const EdgeInsets.only(left: 50.0),
+//       child: Row(mainAxisAlignment: MainAxisAlignment.center,
+//         children: [
+//           ElevatedButton(
+//               onPressed: () {
+// >>>>>>> origin/new_user_bloc-to-riverpod
+            late NewUserModel newUser = NewUserModel(
+                name: newUserNameText.text,
+                email: newUserEmailText.text,
+                password: newUserPasswordText.text,
+                registrationDate: newUserCreateDate,
+                profilePicLink: newUserPictureUrl);
+
+            ref.read(River.newUserPod.notifier).newUser(newUser: newUser);
+            ref.read(River.userPod.notifier).readUser();
+            Navigator.of(context).pushNamed(AuthPage.routeName);
+            var stateNewName = ref.watch(River.newUserPod).newUser.name;
+            print('state new name: $stateNewName');
+            // showDialog(
+            //   context: context,
+            //   builder: (BuildContext context) {
+            //     newUserName =
+            //         context.watch<NewUserBloc>().state.newUser.name;
+            //     return Dialog(
+            //       // shape: RoundedRectangleBorder(
+            //       //   borderRadius: BorderRadius.circular(20.0),
+            //       // ),
+            //       child: SizedBox(
+            //         height: 80,
+            //         width: 50,
+            //         child: Column(
+            //           children: [
+            //             const SizedBox(height: 10),
+            //             //Не работает создание юзера
+            //             context.read<NewUserBloc>().state.newUser.name ==
+            //                     newUserNameText.text
+            //                 ? Text('User $newUserName created')
+            //                 : const Text('Error'),
+            //             //
+            //             const SizedBox(height: 10),
+            //             Consumer(
+            //               builder: (context, ref, _) {
+            //                 return ElevatedButton(
+            //                     // style: ButtonStyle(
+            //                     //     shape: MaterialStateProperty.all<
+            //                     //             RoundedRectangleBorder>(
+            //                     //         RoundedRectangleBorder(
+            //                     //   borderRadius:
+            //                     //       BorderRadius.circular(20.0),
+            //                     // ))),
+            //                     onPressed: () {
+            //                       ref
+            //                           .read(River.userPod.notifier)
+            //                           .readUser();
+
+            //                       Navigator.of(context)
+            //                           .pushNamed(AuthPage.routeName);
+            //                     },
+            //                     child: const Icon(Icons.check));
+            //               },
+            //             )
+            //           ],
+            //         ),
+            //       ),
+            //     );
+            //   },
+            // );
+            // print(
+            // '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , ');
+          }
+        });
   }
 }
