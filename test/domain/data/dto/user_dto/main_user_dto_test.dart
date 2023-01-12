@@ -4,12 +4,8 @@ import 'package:chat_app/domain/data/dto/user_dto/main_user_dto.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  setUpAll(() async {
-    print("test start");
-  });
-  tearDownAll(() {
-    print("test end");
-  });
+  setUpAll(() async {});
+  tearDownAll(() {});
   group("MainUserDto tests", () {
     test('CopyWith response', () async {
       MainUserDto mainUserDto = MainUserDto(userId: 1, key: '', dateSync: '');

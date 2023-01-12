@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import '../library/library_server.dart';
 
 Future<void> main() async {
@@ -25,7 +27,6 @@ Future<void> main() async {
 
   var result = await messagesService.getMessageByUserIdMoreMessageId(
       messageId: 7, userId: 1);
-
 
   // db.rawUpdate(''' UPDATE messages
   //         SET content = 'Zdarova papasha'

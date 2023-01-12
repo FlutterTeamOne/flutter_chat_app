@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// ignore_for_file: depend_on_referenced_packages, hash_and_equals, avoid_renaming_method_parameters
+
 import 'package:material_color_utilities/utils/color_utils.dart';
 
 import 'cam16.dart';

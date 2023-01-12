@@ -1,13 +1,14 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: unused_local_variable
+
 import 'package:server/src/generated/grpcsynh.pb.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:test/test.dart';
-import '../../../lib/src/db_server/services/database_impl.dart';
 
-import '../../../lib/src/db_server/database_helper/users/users_impl.dart';
+import 'package:test/test.dart';
+import 'package:server/src/db_server/services/database_impl.dart';
+
+import 'package:server/src/db_server/database_helper/users/users_impl.dart';
 
 void main() {
   // WidgetsFlutterBinding.ensureInitialized();

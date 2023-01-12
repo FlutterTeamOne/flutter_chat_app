@@ -1,12 +1,15 @@
+// ignore_for_file: unused_element, duplicate_ignore, prefer_typing_uninitialized_variables
+
 import 'dart:async';
 import 'dart:io';
 
 import 'package:grpc/grpc.dart';
-import 'package:grpc/grpc.dart';
+
 import 'package:server/src/db_server/services/message_service.dart';
 import 'package:server/src/library/library_server.dart';
 import 'package:server/src/synh_helper/synh_helper.dart';
 
+// ignore: duplicate_ignore
 ///
 ///Заполняем все методы как и в Protoc файле
 ///
@@ -86,6 +89,7 @@ class GrpcMessage extends GrpcMessagesServiceBase {
     }
   }
 
+  // ignore: unused_element
   _onCreateMessage(
       {required StreamController<DynamicResponse> controller,
       required StreamController<DynamicResponse> clientController,

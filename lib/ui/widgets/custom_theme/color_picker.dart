@@ -679,6 +679,7 @@ class ColorPicker extends StatefulWidget {
   static const String _selectWheelAnyLabel = 'Wheel';
 
   @override
+  // ignore: library_private_types_in_public_api
   _ColorPickerState createState() => _ColorPickerState();
 
   /// Show the defined [ColorPicker] in a custom alert dialog.

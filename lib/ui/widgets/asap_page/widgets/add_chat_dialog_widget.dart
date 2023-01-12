@@ -2,8 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../../src/libraries/library_all.dart';
-
+// ignore: must_be_immutable
 class AddChatDialogWidget extends StatefulWidget {
   int val;
   AddChatDialogWidget({
@@ -16,8 +15,8 @@ class AddChatDialogWidget extends StatefulWidget {
 }
 
 class _AddChatDialogWidgetState extends State<AddChatDialogWidget> {
-  var _friendIdFieldController = TextEditingController();
-  var _friendId;
+  final _friendIdFieldController = TextEditingController();
+  late String _friendId;
 
   void _updateText() {
     setState(() {

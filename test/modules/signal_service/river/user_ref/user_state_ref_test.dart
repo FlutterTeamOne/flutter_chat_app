@@ -1,3 +1,5 @@
+// ignore_for_file: await_only_futures
+
 import 'package:chat_app/domain/data/dto/user_dto/user_dto.dart';
 import 'package:chat_app/modules/signal_service/river/user_ref/user_state_ref.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
@@ -11,11 +13,8 @@ void main() async {
 
   setUpAll(() async {
     await UserPref.init();
-    print("test start");
   });
-  tearDownAll(() {
-    print("test end");
-  });
+  tearDownAll(() {});
   group("UserStateRef copyWith tests", () {
     test('CopyWith test All null', () async {
       var userStateRefNullAll =
@@ -61,7 +60,6 @@ void main() async {
       var userStateRef =
           const UserStateRef(users: [], userDb: null, isDeleted: false);
       var response = userStateRef.userDbthis;
-      print(response);
 
       expect(response, false);
     });

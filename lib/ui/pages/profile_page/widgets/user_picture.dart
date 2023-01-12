@@ -1,4 +1,6 @@
-﻿part of '../profile_page.dart';
+﻿// ignore_for_file: prefer_const_constructors
+
+part of '../profile_page.dart';
 
 class _UserPic extends StatelessWidget {
   const _UserPic({

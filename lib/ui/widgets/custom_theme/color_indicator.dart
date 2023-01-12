@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 
 /// A Material widget used as a color indicator and color selector by the
@@ -146,6 +148,7 @@ class _ColorIndicatorState extends State<ColorIndicator> {
     final Color iconColor = isLight ? Colors.black : Colors.white;
     // If no border color is given, we use the theme divider color as
     // border color, it is typically a suitable grey color.
+    // ignore: unused_local_variable
     final Color borderColor =
         widget.borderColor ?? Theme.of(context).dividerColor;
 

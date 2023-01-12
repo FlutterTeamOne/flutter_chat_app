@@ -6,12 +6,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   MessageDto messageDto = MessageDto(chatId: 1, senderId: 1, content: "Hello");
-  setUpAll(() async {
-    print("test start");
-  });
-  tearDownAll(() {
-    print("test end");
-  });
+  setUpAll(() async {});
+  tearDownAll(() {});
   group("MessageDto tests", () {
     test('CopyWith response', () async {
       var actual = messageDto.copyWith();
@@ -105,7 +101,6 @@ void main() {
 
     test('ToString', () async {
       var actual = messageDto.toString();
-      print(actual);
 
       expect(actual,
           'MessageDto(localMessageId: null, chatId: 1, senderId: 1, messageId: null, content: Hello, createdDate: null, updatedDate: null, deletedDate: null, isRead: 0)');
@@ -135,7 +130,6 @@ void main() {
     ///Проблема с логикой, проверки на null
     ///
     // test('fromJson', () async {
-
 
     //   var toJson = messageDto.toJson();
     //   var actual = MessageDto.fromJson(toJson);

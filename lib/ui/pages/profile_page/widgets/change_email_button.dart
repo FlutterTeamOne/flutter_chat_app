@@ -6,6 +6,7 @@ class ButtonChangeEmail extends ConsumerWidget {
     required this.userMain,
   }) : super(key: key);
 
+  // ignore: prefer_typing_uninitialized_variables
   final userMain;
 
   @override
@@ -63,7 +64,7 @@ class ButtonChangeEmail extends ConsumerWidget {
                               userPod.updateUser(updatedUser);
 
                               userPod.readUser();
-                              print(newEmail);
+
                               Navigator.pop(context);
                             },
                             child: const Icon(Icons.check)),

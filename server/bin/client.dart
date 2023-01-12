@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, unused_local_variable
+
 import 'package:grpc/grpc.dart';
 // import 'package:server/src/generated/messages.pb.dart';
 // import 'package:server/src/generated/messages.pbgrpc.dart';

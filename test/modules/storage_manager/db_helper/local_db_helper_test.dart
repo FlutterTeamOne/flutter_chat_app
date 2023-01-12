@@ -1,69 +1,83 @@
-import 'dart:developer';
-import 'dart:io';
-
-import 'package:chat_app/modules/signal_service/service_locator/locator.dart';
-import 'package:chat_app/modules/storage_manager/db_helper/db_helper.dart';
-import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/src/constants/db_constants.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:path/path.dart';
+
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqflite/sqflite.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  group("Local db: creating tables:", () {   
-      var user = UserDto(name: 'name', email: 'email', createdDate: 'createdDate', profilePicLink: 'profilePicLink', updatedDate: 'updatedDate');
-      UserPath.user = user;
+  group("Local db: creating tables:", () {
+    var user = UserDto(
+        name: 'name',
+        email: 'email',
+        createdDate: 'createdDate',
+        profilePicLink: 'profilePicLink',
+        updatedDate: 'updatedDate');
+    UserPath.user = user;
 
     test('"users" table created', () async {
       await DBHelper.instanse.initDB();
       var db = await DBHelper.instanse.database;
-      var r = await db.rawQuery('''SELECT name FROM sqlite_master WHERE type='table' AND name='users';''');
-      
-      expect(r, [{'name': 'users'}]);
+      var r = await db.rawQuery(
+          '''SELECT name FROM sqlite_master WHERE type='table' AND name='users';''');
+
+      expect(r, [
+        {'name': 'users'}
+      ]);
     });
 
     test('"messages" table created', () async {
       await DBHelper.instanse.initDB();
       var db = await DBHelper.instanse.database;
-      var r = await db.rawQuery('''SELECT name FROM sqlite_master WHERE type='table' AND name='messages';''');
-      
-      expect(r, [{'name': 'messages'}]);
+      var r = await db.rawQuery(
+          '''SELECT name FROM sqlite_master WHERE type='table' AND name='messages';''');
+
+      expect(r, [
+        {'name': 'messages'}
+      ]);
     });
 
     test('"chats" table created', () async {
       await DBHelper.instanse.initDB();
       var db = await DBHelper.instanse.database;
-      var r = await db.rawQuery('''SELECT name FROM sqlite_master WHERE type='table' AND name='chats';''');
-      
-      expect(r, [{'name': 'chats'}]);
+      var r = await db.rawQuery(
+          '''SELECT name FROM sqlite_master WHERE type='table' AND name='chats';''');
+
+      expect(r, [
+        {'name': 'chats'}
+      ]);
     });
-    
+
     test('"main_user" table created', () async {
       await DBHelper.instanse.initDB();
       var db = await DBHelper.instanse.database;
-      var r = await db.rawQuery('''SELECT name FROM sqlite_master WHERE type='table' AND name='main_user';''');
-      
-      expect(r, [{'name': 'main_user'}]);
+      var r = await db.rawQuery(
+          '''SELECT name FROM sqlite_master WHERE type='table' AND name='main_user';''');
+
+      expect(r, [
+        {'name': 'main_user'}
+      ]);
     });
-    
+
     test('"attachments" table created', () async {
       await DBHelper.instanse.initDB();
       var db = await DBHelper.instanse.database;
-      var r = await db.rawQuery('''SELECT name FROM sqlite_master WHERE type='table' AND name='attachments';''');
-      
-      expect(r, [{'name': 'attachments'}]);
+      var r = await db.rawQuery(
+          '''SELECT name FROM sqlite_master WHERE type='table' AND name='attachments';''');
+
+      expect(r, [
+        {'name': 'attachments'}
+      ]);
     });
     // test('"user_last_time_online" table created', () async {
     //   await DBHelper.instanse.initDB();
     //   var db = await DBHelper.instanse.database;
     //   var r = await db.rawQuery('''SELECT name FROM sqlite_master WHERE type='table' AND name='user_last_time_online';''');
-      
+
     //   expect(r, [{'name': 'user_last_time_online'}]);
     // });
   });
@@ -93,63 +107,63 @@ Future main() async {
 
       var r = await db.rawQuery('''PRAGMA table_info(users)''');
       var matcher = [
-            {
-              'cid': 0,
-              'name': 'user_id',
-              'type': 'INTEGER',
-              'notnull': 0,
-              'dflt_value': null,
-              'pk': 1
-            },
-            {
-              'cid': 1,
-              'name': 'name',
-              'type': 'char(50)',
-              'notnull': 1,
-              'dflt_value': null,
-              'pk': 0
-            },
-            {
-              'cid': 2,
-              'name': 'email',
-              'type': 'char(50)',
-              'notnull': 1,
-              'dflt_value': null,
-              'pk': 0
-            },
-            {
-              'cid': 3,
-              'name': 'profile_pic_link',
-              'type': 'char(50)',
-              'notnull': 1,
-              'dflt_value': null,
-              'pk': 0
-            },
-            {
-              'cid': 4,
-              'name': 'created_date',
-              'type': 'char(26)',
-              'notnull': 1,
-              'dflt_value': null,
-              'pk': 0
-            },
-            {
-              'cid': 5,
-              'name': 'updated_date',
-              'type': 'char(26)',
-              'notnull': 1,
-              'dflt_value': null,
-              'pk': 0
-            },
-            {
-              'cid': 6,
-              'name': 'deleted_date',
-              'type': 'char(26)',
-              'notnull': 0,
-              'dflt_value': null,
-              'pk': 0
-            }
-          ];
+        {
+          'cid': 0,
+          'name': 'user_id',
+          'type': 'INTEGER',
+          'notnull': 0,
+          'dflt_value': null,
+          'pk': 1
+        },
+        {
+          'cid': 1,
+          'name': 'name',
+          'type': 'char(50)',
+          'notnull': 1,
+          'dflt_value': null,
+          'pk': 0
+        },
+        {
+          'cid': 2,
+          'name': 'email',
+          'type': 'char(50)',
+          'notnull': 1,
+          'dflt_value': null,
+          'pk': 0
+        },
+        {
+          'cid': 3,
+          'name': 'profile_pic_link',
+          'type': 'char(50)',
+          'notnull': 1,
+          'dflt_value': null,
+          'pk': 0
+        },
+        {
+          'cid': 4,
+          'name': 'created_date',
+          'type': 'char(26)',
+          'notnull': 1,
+          'dflt_value': null,
+          'pk': 0
+        },
+        {
+          'cid': 5,
+          'name': 'updated_date',
+          'type': 'char(26)',
+          'notnull': 1,
+          'dflt_value': null,
+          'pk': 0
+        },
+        {
+          'cid': 6,
+          'name': 'deleted_date',
+          'type': 'char(26)',
+          'notnull': 0,
+          'dflt_value': null,
+          'pk': 0
+        }
+      ];
       expect(r, matcher);
       db.close();
     });
@@ -158,7 +172,7 @@ Future main() async {
       databaseFactory.deleteDatabase('test');
       var db = await databaseFactory.openDatabase('test');
       await db.transaction((txn) async {
-      await txn.execute('''
+        await txn.execute('''
         CREATE TABLE ${DatabaseConst.chatsTable}(
           ${DatabaseConst.chatsColumnChatId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
           ${DatabaseConst.chatsColumnUserId} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique},
@@ -172,47 +186,47 @@ Future main() async {
 
       var r = await db.rawQuery('''PRAGMA table_info(chats)''');
       var matcher = [
-            {
-              'cid': 0,
-              'name': 'chat_id',
-              'type': 'INTEGER',
-              'notnull': 0,
-              'dflt_value': null,
-              'pk': 1
-            },
-            {
-              'cid': 1,
-              'name': 'user_id',
-              'type': 'INTEGER',
-              'notnull': 1,
-              'dflt_value': null,
-              'pk': 0
-            },
-            {
-              'cid': 2,
-              'name': 'created_date',
-              'type': 'char(26)',
-              'notnull': 1,
-              'dflt_value': null,
-              'pk': 0
-            },
-            {
-              'cid': 3,
-              'name': 'update_date',
-              'type': 'char(26)',
-              'notnull': 0,
-              'dflt_value': null,
-              'pk': 0
-            },
-            {
-              'cid': 4,
-              'name': 'deleted_date',
-              'type': 'char(26)',
-              'notnull': 0,
-              'dflt_value': null,
-              'pk': 0
-            }
-          ];
+        {
+          'cid': 0,
+          'name': 'chat_id',
+          'type': 'INTEGER',
+          'notnull': 0,
+          'dflt_value': null,
+          'pk': 1
+        },
+        {
+          'cid': 1,
+          'name': 'user_id',
+          'type': 'INTEGER',
+          'notnull': 1,
+          'dflt_value': null,
+          'pk': 0
+        },
+        {
+          'cid': 2,
+          'name': 'created_date',
+          'type': 'char(26)',
+          'notnull': 1,
+          'dflt_value': null,
+          'pk': 0
+        },
+        {
+          'cid': 3,
+          'name': 'update_date',
+          'type': 'char(26)',
+          'notnull': 0,
+          'dflt_value': null,
+          'pk': 0
+        },
+        {
+          'cid': 4,
+          'name': 'deleted_date',
+          'type': 'char(26)',
+          'notnull': 0,
+          'dflt_value': null,
+          'pk': 0
+        }
+      ];
       expect(r, matcher);
       db.close();
     });
@@ -221,7 +235,7 @@ Future main() async {
       databaseFactory.deleteDatabase('test');
       var db = await databaseFactory.openDatabase('test');
       await db.transaction((txn) async {
-      await txn.execute('''
+        await txn.execute('''
         CREATE TABLE ${DatabaseConst.messageTable} (
           ${DatabaseConst.messagesColumnLocalMessagesId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
           ${DatabaseConst.messagesColumnChatId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
@@ -248,95 +262,95 @@ Future main() async {
 
       var r = await db.rawQuery('''PRAGMA table_info(messages)''');
       var matcher = [
-            {
-              'cid': 0,
-              'name': 'local_messages_id',
-              'type': 'INTEGER',
-              'notnull': 0,
-              'dflt_value': null,
-              'pk': 1
-            },
-            {
-              'cid': 1,
-              'name': 'chat_id',
-              'type': 'INTEGER',
-              'notnull': 1,
-              'dflt_value': null,
-              'pk': 0
-            },
-            {
-              'cid': 2,
-              'name': 'created_date',
-              'type': 'char(26)',
-              'notnull': 1,
-              'dflt_value': null,
-              'pk': 0
-            },
-            {
-              'cid': 3,
-              'name': 'sender_id',
-              'type': 'INTEGER',
-              'notnull': 1,
-              'dflt_value': null,
-              'pk': 0
-            },
-            {
-              'cid': 4,
-              'name': 'message_id',
-              'type': 'INTEGER',
-              'notnull': 0,
-              'dflt_value': null,
-              'pk': 0
-            },
-            {
-              'cid': 5,
-              'name': 'is_read',
-              'type': 'INTEGER',
-              'notnull': 1,
-              'dflt_value': '0',
-              'pk': 0
-            },
-            {
-              'cid': 6,
-              'name': 'content',
-              'type': 'char(50)',
-              'notnull': 1,
-              'dflt_value': null,
-              'pk': 0
-            },
-            {
-              'cid': 7,
-              'name': 'updated_date',
-              'type': 'char(26)',
-              'notnull': 1,
-              'dflt_value': null,
-              'pk': 0
-            },
-            {
-              'cid': 8,
-              'name': 'deleted_date',
-              'type': 'char(26)',
-              'notnull': 0,
-              'dflt_value': null,
-              'pk': 0
-            },
-            {
-              'cid': 9,
-              'name': 'attachment_id',
-              'type': 'INTEGER',
-              'notnull': 0,
-              'dflt_value': null,
-              'pk': 0
-            },
-            {
-              'cid': 10,
-              'name': 'content_type',
-              'type': 'TEXT',
-              'notnull': 0,
-              'dflt_value': null,
-              'pk': 0
-            }
-          ];
+        {
+          'cid': 0,
+          'name': 'local_messages_id',
+          'type': 'INTEGER',
+          'notnull': 0,
+          'dflt_value': null,
+          'pk': 1
+        },
+        {
+          'cid': 1,
+          'name': 'chat_id',
+          'type': 'INTEGER',
+          'notnull': 1,
+          'dflt_value': null,
+          'pk': 0
+        },
+        {
+          'cid': 2,
+          'name': 'created_date',
+          'type': 'char(26)',
+          'notnull': 1,
+          'dflt_value': null,
+          'pk': 0
+        },
+        {
+          'cid': 3,
+          'name': 'sender_id',
+          'type': 'INTEGER',
+          'notnull': 1,
+          'dflt_value': null,
+          'pk': 0
+        },
+        {
+          'cid': 4,
+          'name': 'message_id',
+          'type': 'INTEGER',
+          'notnull': 0,
+          'dflt_value': null,
+          'pk': 0
+        },
+        {
+          'cid': 5,
+          'name': 'is_read',
+          'type': 'INTEGER',
+          'notnull': 1,
+          'dflt_value': '0',
+          'pk': 0
+        },
+        {
+          'cid': 6,
+          'name': 'content',
+          'type': 'char(50)',
+          'notnull': 1,
+          'dflt_value': null,
+          'pk': 0
+        },
+        {
+          'cid': 7,
+          'name': 'updated_date',
+          'type': 'char(26)',
+          'notnull': 1,
+          'dflt_value': null,
+          'pk': 0
+        },
+        {
+          'cid': 8,
+          'name': 'deleted_date',
+          'type': 'char(26)',
+          'notnull': 0,
+          'dflt_value': null,
+          'pk': 0
+        },
+        {
+          'cid': 9,
+          'name': 'attachment_id',
+          'type': 'INTEGER',
+          'notnull': 0,
+          'dflt_value': null,
+          'pk': 0
+        },
+        {
+          'cid': 10,
+          'name': 'content_type',
+          'type': 'TEXT',
+          'notnull': 0,
+          'dflt_value': null,
+          'pk': 0
+        }
+      ];
       expect(r, matcher);
       db.close();
     });
@@ -345,7 +359,7 @@ Future main() async {
       databaseFactory.deleteDatabase('test');
       var db = await databaseFactory.openDatabase('test');
       await db.transaction((txn) async {
-      await txn.execute('''
+        await txn.execute('''
         CREATE TABLE ${DatabaseConst.mainUserTable}(
           ${DatabaseConst.mainUserColumnUserId} ${DatabaseConst.integer},
           ${DatabaseConst.mainUserColumnKey} ${DatabaseConst.char50},
@@ -356,31 +370,31 @@ Future main() async {
 
       var r = await db.rawQuery('''PRAGMA table_info(main_user)''');
       var matcher = [
-            {
-              'cid': 0,
-              'name': 'user_id',
-              'type': 'INTEGER',
-              'notnull': 0,
-              'dflt_value': null,
-              'pk': 0
-            },
-            {
-              'cid': 1,
-              'name': 'user_key',
-              'type': 'char(50)',
-              'notnull': 0,
-              'dflt_value': null,
-              'pk': 0
-            },
-            {
-              'cid': 2,
-              'name': 'date_sync',
-              'type': 'char(26)',
-              'notnull': 0,
-              'dflt_value': null,
-              'pk': 0
-            }
-          ];
+        {
+          'cid': 0,
+          'name': 'user_id',
+          'type': 'INTEGER',
+          'notnull': 0,
+          'dflt_value': null,
+          'pk': 0
+        },
+        {
+          'cid': 1,
+          'name': 'user_key',
+          'type': 'char(50)',
+          'notnull': 0,
+          'dflt_value': null,
+          'pk': 0
+        },
+        {
+          'cid': 2,
+          'name': 'date_sync',
+          'type': 'char(26)',
+          'notnull': 0,
+          'dflt_value': null,
+          'pk': 0
+        }
+      ];
       expect(r, matcher);
       db.close();
     });
@@ -389,7 +403,7 @@ Future main() async {
       databaseFactory.deleteDatabase('test');
       var db = await databaseFactory.openDatabase('test');
       await db.transaction((txn) async {
-      await txn.execute('''
+        await txn.execute('''
         CREATE TABLE ${DatabaseConst.attachmentsTable} 
         (
         ${DatabaseConst.attachmentsColumnAttachmentId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.autoincrement},
@@ -400,23 +414,23 @@ Future main() async {
 
       var r = await db.rawQuery('''PRAGMA table_info(attachments)''');
       var matcher = [
-            {
-              'cid': 0,
-              'name': 'attachment_id',
-              'type': 'INTEGER',
-              'notnull': 0,
-              'dflt_value': null,
-              'pk': 1
-            },
-            {
-              'cid': 1,
-              'name': 'attachment_meta',
-              'type': 'char(4096)',
-              'notnull': 1,
-              'dflt_value': null,
-              'pk': 0
-            }
-          ];
+        {
+          'cid': 0,
+          'name': 'attachment_id',
+          'type': 'INTEGER',
+          'notnull': 0,
+          'dflt_value': null,
+          'pk': 1
+        },
+        {
+          'cid': 1,
+          'name': 'attachment_meta',
+          'type': 'char(4096)',
+          'notnull': 1,
+          'dflt_value': null,
+          'pk': 0
+        }
+      ];
       expect(r, matcher);
       db.close();
     });
@@ -451,18 +465,18 @@ Future main() async {
       var r = await db.rawQuery('''
         SELECT * FROM sqlite_master WHERE (type = "index") and (name = "CHATS_FK_3")''');
       var matcher = [
-            {
-              'type': 'index',
-              'name': 'CHATS_FK_3',
-              'tbl_name': 'chats',
-              'rootpage': 5,
-              'sql': 'CREATE INDEX CHATS_FK_3 ON chats\n'
-                '          (\n'
-                '            user_id\n'
-                '          )\n'
-                '        '
-            }
-          ];
+        {
+          'type': 'index',
+          'name': 'CHATS_FK_3',
+          'tbl_name': 'chats',
+          'rootpage': 5,
+          'sql': 'CREATE INDEX CHATS_FK_3 ON chats\n'
+              '          (\n'
+              '            user_id\n'
+              '          )\n'
+              '        '
+        }
+      ];
       expect(r, matcher);
       db.close();
     });
@@ -504,17 +518,17 @@ Future main() async {
       var r = await db.rawQuery('''
         SELECT * FROM sqlite_master WHERE (type = "index") and (name = "MESSAGES_FK_2")''');
       var matcher = [
-            {
-              'type': 'index',
-              'name': 'MESSAGES_FK_2',
-              'tbl_name': 'messages',
-              'rootpage': 4,
-              'sql': 'CREATE INDEX MESSAGES_FK_2 ON messages\n'
-                '          (\n'
-                '            chat_id  \n'
-                '          )'
-            }
-          ];
+        {
+          'type': 'index',
+          'name': 'MESSAGES_FK_2',
+          'tbl_name': 'messages',
+          'rootpage': 4,
+          'sql': 'CREATE INDEX MESSAGES_FK_2 ON messages\n'
+              '          (\n'
+              '            chat_id  \n'
+              '          )'
+        }
+      ];
       expect(r, matcher);
       db.close();
     });
@@ -540,21 +554,20 @@ Future main() async {
       var r = await db.rawQuery('''
         SELECT * FROM sqlite_master WHERE (type = "index") and (name = "MAIN_USER_FK_1")''');
       var matcher = [
-            {
-              'type': 'index',
-              'name': 'MAIN_USER_FK_1',
-              'tbl_name': 'main_user',
-              'rootpage': 3,
-              'sql': 'CREATE INDEX MAIN_USER_FK_1 ON main_user\n'
-                '          (\n'
-                '            user_id\n'
-                '          )\n'
-                '          '
-            }
-          ];
+        {
+          'type': 'index',
+          'name': 'MAIN_USER_FK_1',
+          'tbl_name': 'main_user',
+          'rootpage': 3,
+          'sql': 'CREATE INDEX MAIN_USER_FK_1 ON main_user\n'
+              '          (\n'
+              '            user_id\n'
+              '          )\n'
+              '          '
+        }
+      ];
       expect(r, matcher);
       db.close();
     });
-
   });
 }

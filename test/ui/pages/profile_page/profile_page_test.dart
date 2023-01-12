@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:chat_app/domain/data/dto/user_dto/user_dto.dart';
 import 'package:chat_app/modules/signal_service/river/river.dart';
 import 'package:chat_app/modules/signal_service/river/user_ref/user_notifier.dart';
@@ -7,11 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: Scaffold(body: ProfilePage()));
+    return const MaterialApp(home: Scaffold(body: ProfilePage()));
   }
 }
 
@@ -31,8 +32,8 @@ void main() async {
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
-    testWidgets('Все ок', (tester) async { 
-      await tester.pumpWidget(ProviderScope(child: MyApp(), overrides: [
+    testWidgets('Все ок', (tester) async {
+      await tester.pumpWidget(ProviderScope(overrides: [
         River.userPod.overrideWith((ref) {
           return UserNotifier()
             ..setUsers([
@@ -44,10 +45,9 @@ void main() async {
                   updatedDate: '')
             ]);
         })
-      ]));
-      await tester.pump(Duration(seconds: 1));
+      ], child: MyApp()));
+      await tester.pump(const Duration(seconds: 1));
       expect(find.byType(CircularProgressIndicator), findsNothing);
     });
   });
 }
-

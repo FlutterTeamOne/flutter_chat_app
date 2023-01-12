@@ -75,7 +75,6 @@ class SideMenuWidget extends StatelessWidget {
                 SidebarXItem(
                   icon: Icons.settings_outlined,
                 ),
-
               ]
             : const [
                 SidebarXItem(
@@ -118,7 +117,6 @@ class SideMenuWidget extends StatelessWidget {
                   icon: Icons.settings,
                   label: 'Settings',
                 ),
-
               ],
       ),
     );
@@ -137,7 +135,7 @@ class SideMenuWidget extends StatelessWidget {
       // selectedTextStyle: AppTextStyle.s17AbelPurple,
       selectedItemTextPadding: const EdgeInsets.only(left: 30),
       itemTextPadding: const EdgeInsets.only(left: 30),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           // color: Theme.of(context).colorScheme.primary,
           ),
     );

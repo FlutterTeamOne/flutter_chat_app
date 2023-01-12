@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:sqflite_common/sqlite_api.dart';
 
 import '../../../library/library_server.dart';

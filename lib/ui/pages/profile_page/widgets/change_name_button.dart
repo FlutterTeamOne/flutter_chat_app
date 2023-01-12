@@ -6,6 +6,7 @@ class ButtonChangeName extends ConsumerWidget {
     required this.userMain,
   }) : super(key: key);
 
+  // ignore: prefer_typing_uninitialized_variables
   final userMain;
 
   @override
@@ -62,7 +63,6 @@ class ButtonChangeName extends ConsumerWidget {
                               userPod.updateUser(updatedUser);
                               userPod.readUser();
 
-                              print(newName);
                               Navigator.pop(context);
                             },
                             child: const Icon(Icons.check)),

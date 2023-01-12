@@ -32,7 +32,7 @@ class SettingsPage extends StatelessWidget {
               // context.read<ChangeThemeBloc>().add(SetThemeEvent(index: 6));
               Navigator.of(context).pushNamed('/color_picker_page');
             },
-            child: Text('Custom theme'))
+            child: const Text('Custom theme'))
       ],
     ));
   }

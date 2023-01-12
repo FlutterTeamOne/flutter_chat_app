@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:server/src/library/library_server.dart';
 import 'package:shelf/shelf.dart';
@@ -73,7 +72,7 @@ class ChatApi {
     router.delete('/<id>', (Request request, String id) async {
       var chatId = int.tryParse(id);
       print('CHAI ID DEL: $chatId');
-      var resp;
+      int? resp;
       if (chatId != null) {
         resp = await _chatService.deleteChat(id: chatId);
       }

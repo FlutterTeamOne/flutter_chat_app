@@ -170,6 +170,7 @@ class _AppDialogState extends ConsumerState<_AppDialog> {
 }
 
 Future<bool> validateImage(String imageUrl) async {
+  // ignore: prefer_typing_uninitialized_variables
   var res;
   try {
     res = await Dio().get(imageUrl);
@@ -179,8 +180,7 @@ Future<bool> validateImage(String imageUrl) async {
 
   if (res.statusCode != 200) return false;
   var data = res.headers;
-  print("IMAGE $data");
-  print(data['content-type'][0]);
+
   return checkIfImage(data['content-type'][0]);
 }
 

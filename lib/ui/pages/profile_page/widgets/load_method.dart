@@ -1,4 +1,6 @@
-﻿part of '../profile_page.dart';
+﻿// ignore_for_file: prefer_const_constructors
+
+part of '../profile_page.dart';
 
 class _LoadMethod extends StatelessWidget {
   const _LoadMethod({
@@ -15,7 +17,6 @@ class _LoadMethod extends StatelessWidget {
     return Material(
       borderRadius: BorderRadius.circular(20),
       child: InkWell(
-
         borderRadius: BorderRadius.circular(20),
         onTap: onTap,
         child: Container(
@@ -33,7 +34,9 @@ class _LoadMethod extends StatelessWidget {
               CircleAvatar(
                 radius: 30,
                 backgroundColor: Theme.of(context).primaryColor,
-                child: Icon(Icons.add_photo_alternate, size: 25,
+                child: Icon(
+                  Icons.add_photo_alternate,
+                  size: 25,
                   color: Colors.white,
                 ),
               ),
