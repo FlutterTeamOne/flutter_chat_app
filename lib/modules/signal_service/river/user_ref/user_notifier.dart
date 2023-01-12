@@ -23,13 +23,13 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     _mainUserServices = MainUserServices();
     _messagesServices = LocalMessagesServices();
     _chatServices = LocalChatServices();
-    DBHelper.instanse.updateListenController.stream.listen((event) async {
+    DBHelper.instanse.updateListenController.stream.listen((event) {
       if (event == DbListener.isUser) {
         if (!mounted) {
           return;
         }
 
-        await localReadUser();
+        localReadUser();
       }
     });
   }
@@ -49,56 +49,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
   Future<UserStateRef> readUser() async {
     //Получаем всех юзеров из локальной базы
     var users = <UserDto>[];
-    //проверяем состояние загруженного пользователя
-//     if (state.userDbthis) {
-//       List<Map<String, Object?>> usersForUpdate =
-//           await _usersServices.getAllUserIdAndUpdatedStarted();
-//       List<UserRequest> usersRequest = [];
-//       if (usersForUpdate.isNotEmpty) {
-//         print("lastID ${usersForUpdate.last['user_id']}");
-//         for (var user in usersForUpdate) {
-//           usersRequest.add(UserRequest(
-//               userId: user['user_id'] as int,
-//               updatedDate: user['updated_date'] as String));
-//         }
-//       }
-//       //подключаемся к серверу
-//       var stub = GrpcSynchronizationClient(GrpcClient().channel);
-//       var usersResponse = UsersResponse();
-//       //отправляем запрос на сервер и получаем всех юзеров
-//       try {
-//         usersResponse = await stub.sync(UsersRequest(
-//             mainUser: UserPref.getUserId, usersForUpdate: usersRequest));
-//       } catch (e) {
-//         print(e);
-//       }
-//       print("UsersServ NEW ${usersResponse.usersNew}");
-//       print("UsersServ UPDATED ${usersResponse.usersUpdated}");
-//       for (var user in usersResponse.usersNew) {
-//         //парсим всех юзеров и записываем их в локальное дб
-//         await _usersServices.createUserStart(
-//             userId: user.userId,
-//             name: user.name,
-//             email: user.email,
-//             createdDate: user.createdDate,
-//             updatedDate: user.updateDate,
-//             deletedDate: user.deletedDate,
-//             profilePicUrl: user.picture);
-//       }
-//       for (var user in usersResponse.usersUpdated) {
-//         await _usersServices.updateUserStart(
-//             newValues: '''name = "${user.name}",
-//                           email = "${user.email}",
-//                           created_date = "${user.createdDate}",
-//                           updated_date = "${user.updateDate}",
-//                           deleted_date = "${user.deletedDate}",
-//                           profile_pic_link = "${user.picture}"''',
-//             condition: 'user_id = ${user.userId}');
-//       }
-// //получаем всех начальных юзеров
-//       users = await _usersServices.getAllUsersStart();
-//     } else {
-//делаем синхронизацию
+    //делаем синхронизацию
     ///
     ///Юзеры
     ///
@@ -238,7 +189,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       );
       print("UPDATEMESSAGE START");
       if (msg.deletedDate != null && msg.deletedDate != '') {
-        await _messagesServices.deleteMessage(id: msg.messageId!);
+        await _messagesServices.deleteMessageByMessageId(id: msg.messageId!);
       } else {
         await _messagesServices.updateMessageSynh(msg: msg);
       }
@@ -285,10 +236,10 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     print('GET USER PREF: ${UserPref.getUserDbPref} ');
   }
 
-  void deleteUser(int userId)  {
+  void deleteUser(int userId) {
     var result;
     try {
-      GrpcClient().deleteUser(userId: userId).then((value) => result=value);
+      GrpcClient().deleteUser(userId: userId).then((value) => result = value);
     } catch (e) {
       throw CustomException(e.toString());
     }
@@ -297,7 +248,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     state = state.copyWith(isDeleted: result.isDeleted);
   }
 
-  Future<void> updateUser(UserDto user) async {
+  Future<void> updateMainUser(UserDto user) async {
     var result = UpdateUserResponse();
     try {
       result = await GrpcClient().updateUser(updatedUser: user);
@@ -312,8 +263,12 @@ class UserNotifier extends StateNotifier<UserStateRef> {
             ${DatabaseConst.usersColumnUpdatedDate} = "${result.dateUpdated}"''',
         condition: '${DatabaseConst.usersColumnUserId} = ${result.userId}');
     //TODO:Артур добавил стрим на изменения состояний при изменении локальной базы у себя в ветке
-    var users = await _usersServices.getAllUsers();
-    state = state.copyWith(users: users);
+    final users = await _usersServices.getUserById(id: UserPref.getUserId);
+    late UserDto newMainUser;
+    if (users.isNotEmpty) {
+      newMainUser = users.map((user) => UserDto.fromMap(user)).toList()[0];
+    }
+    state = state.copyWith(mainUser: newMainUser);
   }
 
   Future<bool> confirmPassword(
@@ -348,5 +303,15 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       throw CustomException(e.message.toString());
     }
     return response.ok;
+  }
+
+  Future<void> setMainUser() async {
+    late UserDto user;
+    List<Map<String, Object?>> users =
+        await localUsersServices.getUserById(id: UserPref.getUserId);
+    if (users.isNotEmpty) {
+      user = users.map((user) => UserDto.fromMap(user)).toList()[0];
+    }
+    state = state.copyWith(mainUser: user);
   }
 }

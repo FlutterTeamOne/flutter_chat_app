@@ -124,16 +124,6 @@ class LocalUsersServices implements ILocalUsersServices {
   }
 
   @override
-  Future<Map<String, Object?>> getUserByLocalId({required int localId}) async {
-    var db = await DBHelper.instanse.database;
-
-    var user = await db.rawQuery('''
-      SELECT * FROM users WHERE user_id = $localId
-      ''');
-
-    return user[0];
-  }
-
   Future<List<Map<String, Object?>>> getUserById({required int id}) async {
     var db = await DBHelper.instanse.database;
 

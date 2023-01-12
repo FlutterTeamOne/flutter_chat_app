@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -67,9 +68,16 @@ class _AddChatDialogWidgetState extends State<AddChatDialogWidget> {
           ),
           ElevatedButton(
               onPressed: () async {
-                widget.val = int.parse(_friendId!);
+                if (_friendId == null || _friendId == '') {
+                  showDialog(
+                      context: context,
+                      builder: (context) => ErrorDialog(
+                          textTitle: 'Error', textContent: 'Введите id'));
+                } else {
+                  widget.val = int.parse(_friendId!);
 
-                Navigator.pop(context, widget.val);
+                  Navigator.pop(context, widget.val);
+                }
               },
               child: const Text('Add')),
         ]),

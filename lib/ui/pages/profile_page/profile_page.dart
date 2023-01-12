@@ -33,10 +33,10 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       body: Consumer(
         builder: (context, ref, _) {
-          final name = ref.watch(River.userPod).users?[0].name;
-          print('USER POD PROFILE NAME: $name');
-          
-          return name != null && name != ''
+          final mainUser = ref.watch(River.userPod).mainUser;
+          print('USER POD PROFILE: $mainUser');
+
+          return mainUser != null
               ? const ProfileLayout(key: Key("ProfileLayout"))
               : const Center(
                   child: CircularProgressIndicator(),

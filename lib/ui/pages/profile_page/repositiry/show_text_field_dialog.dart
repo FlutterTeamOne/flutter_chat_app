@@ -69,7 +69,7 @@ class ShowTextFieldDialog {
                           ? userMain.profilePicLink
                           : newValue,
                       updatedDate: updatedDate);
-                  userPod.updateUser(updatedUser);
+                  userPod.updateMainUser(updatedUser);
 
                   //TODO: Убрать Принт
                   print("NEW ${enumUserInfo}: $newValue");

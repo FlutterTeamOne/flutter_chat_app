@@ -14,10 +14,10 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
   late LocalChatServices _chatServices;
   ChatNotifier() : super(const ChatStateRef()) {
     _chatServices = LocalChatServices();
-    DBHelper.instanse.updateListenController.stream.listen((event)async {
+    DBHelper.instanse.updateListenController.stream.listen((event) {
       if (event == DbListener.isChat) {
         if (!mounted) return;
-       await readChat();
+        readChat();
       }
     });
   }
@@ -25,32 +25,10 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
   Future<ChatStateRef> readChat([List<ChatDto>? chats]) async {
     List<ChatDto> chats = [];
 
-    //TODO: Поменять getAllChats на сортированную выборку getAllChatsSortedByUpdatedDate()
-    _chatServices
-        .getAllChatsSortedByUpdatedDate()
-        .then((value) => chats = value);
-    //
-    var restChats = await RestClient().getChats();
-    print('IF CHATS is NULL - ADD CHAT FROM LOCAL DB: $restChats');
-    print('IF CHATS is NULL - ADD CHAT FROM LOCAL DB: $chats');
-    //сравниваем два листа и в зависимости от этого меняем стейт на нужный лист
-    listEquals(chats, restChats)
-        ? state = state.copyWith(chats: restChats)
-        : state = state.copyWith(chats: chats);
+    chats = await _chatServices.getAllChatsSortedByUpdatedDate();
 
-    //если локальная база отличается от серверной,
-    //то перезаписываем локальную базу
-    if (!listEquals(chats, restChats)) {
-      for (var chat in restChats) {
-        await _chatServices.createChat(
-            createDate: chat.createdDate,
-            userId: chat.userIdChat,
-            chatId: chat.chatId!);
-      }
-    } else {
-      print('ADD CHAT FROM EVENT: $chats');
-      state = state.copyWith(chats: chats);
-    }
+    print('ADD CHAT FROM EVENT: $chats');
+    state = state.copyWith(chats: chats);
 
     return state;
   }

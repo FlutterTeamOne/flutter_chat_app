@@ -224,8 +224,7 @@ void main() {
           (await db.rawQuery('''SELECT last_insert_rowid()'''))[0]
               ['last_insert_rowid()'] as int;
 
-      var r =
-          await LocalUsersServices().getUserByLocalId(localId: insertedRowId);
+      var r = await LocalUsersServices().getUserById(localId: insertedRowId);
 
       var matcher = (await db.rawQuery(
           '''SELECT * FROM users WHERE (user_id = $insertedRowId);'''))[0];
@@ -249,8 +248,7 @@ void main() {
           (await db.rawQuery('''SELECT last_insert_rowid()'''))[0]
               ['last_insert_rowid()'] as int;
 
-      var r =
-          await LocalUsersServices().getUserByLocalId(localId: insertedRowId);
+      var r = await LocalUsersServices().getUserById(localId: insertedRowId);
 
       var matcher = (await db.rawQuery(
           '''SELECT * FROM users WHERE (user_id = $insertedRowId);'''))[0];
