@@ -10,7 +10,7 @@ class NewUserNotifier extends StateNotifier<NewUserStateRef> {
   NewUserNotifier()
       : super(NewUserStateRef(
             newUser: UserDto(
-                name: '',
+                name: 'qwerqwer',
                 email: "",
                 updatedDate: "",
                 createdDate: "",
@@ -20,7 +20,10 @@ class NewUserNotifier extends StateNotifier<NewUserStateRef> {
     print('event user ${state.newUser.name}');
     UserDto newCreatedUser = await GrpcClient().createUser(user: newUser);
     print('response: $newCreatedUser');
-    state = NewUserStateRef(newUser: UserDto(name: newCreatedUser.name, email: newCreatedUser.email, createdDate: newCreatedUser.createdDate, profilePicLink: newCreatedUser.profilePicLink, updatedDate: newCreatedUser.updatedDate));
+    NewUserStateRef _newState = NewUserStateRef(newUser: newCreatedUser);
+    print ('var newState: $_newState');
+    state = _newState;
+
     print ('state - create new user: $state');
   }
 }

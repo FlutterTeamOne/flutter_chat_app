@@ -143,8 +143,8 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
 
   Padding buildCreateNewUserButton(BuildContext context, newUserNameText,
       newUserEmailText, newUserPasswordText, GlobalKey<FormState> formKey) {
-    // late String newUserName;
-    // final newUserPod = ref.watch(River.newUserPod);
+    late String newUserName;
+    final newUserPod = ref.watch(River.newUserPod);
     return Padding(
       padding: const EdgeInsets.only(left: 100.0),
       child: Row(
@@ -160,51 +160,48 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
                 ref.read(River.newUserPod.notifier).newUser(newUser: newUser);
                 ref.read(River.userPod.notifier).readUser();
                 Navigator.of(context).pushNamed(AuthPage.routeName);
-                // var stateNewName = ref
-                //     .watch(River.newUserPod)
-                //     .newUser
-                //     .name;
-                // print('state new name: $stateNewName');
+                var stateNewName = ref
+                    .watch(River.newUserPod)
+                    .newUser
+                    .name;
+                print('state new name: $stateNewName');
                 // showDialog(
-                //     context: context,
-                //     builder: (BuildContext context) {
-                //       newUserName = newUserPod.newUser.name;
-                //       return Dialog(
-                //         child: SizedBox(
-                //           height: 80,
-                //           width: 50,
-                //           child: Column(
-                //             children: [
-                //               Padding(
-                //                   padding: const EdgeInsets.all(8.0),
-                //                   child: ref
-                //                               .watch(River.newUserPod)
-                //                               .newUser
-                //                               .name ==
-                //                           newUserNameText.text
-                //                       ? Text('User $newUserName created')
-                //                       : const Text('Error')),
-                //               Consumer(
-                //                 builder: (context, ref, _) {
-                //                   return ElevatedButton(
-                //                       onPressed: () {
-                //                         ref
-                //                             .read(River.userPod.notifier)
-                //                             .readUser();
-                //
-                //                         Navigator.of(context)
-                //                             .pushNamed(AuthPage.routeName);
-                //                       },
-                //                       child: const Icon(Icons.check));
-                //                 },
-                //               )
-                //             ],
-                //           ),
-                //         ),
-                //       );
-                //     });
-                // print(
-                //     '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , ');
+                    // context: context,
+                    // builder: (BuildContext context) {
+                    //   newUserName = newUserPod.newUser.name;
+                    //   return Dialog(
+                    //     child: SizedBox(
+                    //       height: 80,
+                    //       width: 50,
+                    //       child: Column(
+                    //         children: [
+                    //           Padding(
+                    //               padding: const EdgeInsets.all(8.0),
+                    //               child: ref.watch(River.newUserPod).newUser.name ==
+                    //                       newUserNameText.text
+                    //                   ? Text('User $newUserName created')
+                    //                   : const Text('Error')),
+                    //           Consumer(
+                    //             builder: (context, ref, _) {
+                    //               return ElevatedButton(
+                    //                   onPressed: () {
+                    //                     ref
+                    //                         .watch(River.userPod.notifier)
+                    //                         .readUser();
+                
+                    //                     Navigator.of(context)
+                    //                         .pushNamed(AuthPage.routeName);
+                    //                   },
+                    //                   child: const Icon(Icons.check));
+                    //             },
+                    //           )
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   );
+                    // });
+                print(
+                    '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , ');
               },
               child: const Text('Create new user')),
           IconButton(
