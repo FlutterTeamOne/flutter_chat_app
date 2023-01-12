@@ -201,12 +201,12 @@ class GrpcUsers extends GrpcUsersServiceBase {
 
   //TODO: Расписать ошибки и вынести в отдельный класс
   List<GrpcError> errors = [
-    GrpcError.custom(15, "Нет пользователя с таким ID"),
-    GrpcError.custom(16, "Нет пользователя с таким Name"),
-    GrpcError.custom(17, "Нет пользователя с таким Email"),
-    GrpcError.custom(18, "Пользователь удален"),
-    GrpcError.custom(19, "Неверный старый пароль"),
-    GrpcError.custom(20, "Произошла неизвестная ошибка")
+    GrpcError.custom(15, "Нет пользователя с таким ID"), //0
+    GrpcError.custom(16, "Нет пользователя с таким Name"), //1
+    GrpcError.custom(17, "Нет пользователя с таким Email"), //2
+    GrpcError.custom(18, "Пользователь удален"), //3
+    GrpcError.custom(19, "Неверный старый пароль"), //4
+    GrpcError.custom(20, "Произошла неизвестная ошибка") //5
   ];
 
   @override
@@ -271,7 +271,7 @@ class GrpcUsers extends GrpcUsersServiceBase {
 
   @override
   Future<PasswordResponse> changePassword(
-      ServiceCall call, PasswordRequest request) async {
+      ServiceCall call, PasswordChangeRequest request) async {
     Map<String, Object?> user =
         await UsersServices().getUserById(userId: request.userId);
     if (user.isEmpty) {
@@ -288,6 +288,20 @@ class GrpcUsers extends GrpcUsersServiceBase {
       throw errors[5];
     }
     return PasswordResponse(ok: true);
+  }
+
+  @override
+  Future<PasswordResponse> confirmPassword(
+      ServiceCall call, PasswordConfirmRequest request) async {
+    Map<String, Object?> user =
+        await UsersServices().getUserById(userId: request.userId);
+    if (user.isEmpty) {
+      throw errors[5];
+    }
+    if (request.password.compareTo(user['password'] as String) != 0) {
+      throw errors[4];
+    }
+    return (PasswordResponse(ok: true));
   }
 }
 
