@@ -38,58 +38,40 @@ void main() {
     // });
 
     testWidgets('Create user', (tester) async {
-      bool isClicked = false;
       app.main();
-      //await tester.pumpAndSettle(const Duration(milliseconds: 100));
-      //Проверка 1-го и 6го виджетов юзеров
       await tester.pumpAndSettle(const Duration(seconds: 5));
-      try {
-        await tester.pumpAndSettle();
-        expect(firstUserWidget, findsOneWidget);
-        await tester.pumpAndSettle(const Duration(milliseconds: 500));
-        expect(sixthUserWidget, findsOneWidget);
-        print('LOG: USER 1 AND 6 TEST +');
-      } catch (e) {
-        print('LOG: USER 1 AND 6 TEST ERROR = $e');
-        print('LOG: TEST CREATE USER FAILED');
-      }
-      try {
-        await tester.pumpAndSettle(const Duration(milliseconds: 500));
-        expect(buttonWidget, findsOneWidget);
-        await tester.pumpAndSettle(const Duration(milliseconds: 500));
-        await tester.tap(find.byType(ElevatedButton));
-        await tester.pumpAndSettle(const Duration(milliseconds: 500));
-        expect(newUserWidget, findsOneWidget);
-        isClicked = true;
-        print('LOG: CREATE USER BUTTON TEST +');
-      } catch (e) {
-        print('LOG: CREATE USER BUTTON TEST $e');
-        print('LOG: TEST CREATE USER FAILED');
-        isClicked = false;
-      }
-      if (isClicked) {
-        //создаем юзера
-        await tester.pumpAndSettle(const Duration(milliseconds: 500));
-        await tester.enterText(usernameInputWidget, 'newuser2');
-        await tester.pumpAndSettle(const Duration(milliseconds: 500));
-        await tester.enterText(emailInputWidget, 'newuser2@mail.ru');
-        await tester.pumpAndSettle(const Duration(milliseconds: 500));
-        await tester.enterText(passwordInputWidget, 'password');
-        await tester.pumpAndSettle(const Duration(milliseconds: 500));
-        await tester.tap(createUserButton);
-        await tester.pumpAndSettle(const Duration(milliseconds: 500));
-        await tester.tap(createUserDialogButton);
-        await tester.pumpAndSettle(const Duration(milliseconds: 500));
-        //Проверка 7-го виджета юзера
-        try {
-          await tester.pumpAndSettle();
-          expect(seventhUserWidget, findsOneWidget);
-          print('LOG: USER 7 TEST +');
-        } catch (e) {
-          print('LOG: USER 7 TEST ERROR = $e');
-          print('LOG: TEST CREATE USER FAILED');
-        }
-      }
+
+      //Проверка 1-го и 6го виджетов юзеров
+      await tester.pumpAndSettle();
+      expect(firstUserWidget, findsOneWidget);
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      expect(sixthUserWidget, findsOneWidget);
+
+      //Нажатие на создание юзера
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      expect(buttonWidget, findsOneWidget);
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      await tester.tap(find.byType(ElevatedButton));
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      expect(newUserWidget, findsOneWidget);
+
+      //создаем юзера
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      await tester.enterText(usernameInputWidget, 'newuser2');
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      await tester.enterText(emailInputWidget, 'newuser2@mail.ru');
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      await tester.enterText(passwordInputWidget, 'password');
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      await tester.tap(createUserButton);
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      await tester.tap(createUserDialogButton);
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+
+      //Проверка 7-го виджета юзера
+      await tester.pumpAndSettle();
+      expect(seventhUserWidget, findsOneWidget);
+
       await tester.pumpAndSettle(const Duration(seconds: 5));
       //надо почистить базу для повторного запуска или поменять данные...
       //... юзера и проверки для корректности теста
