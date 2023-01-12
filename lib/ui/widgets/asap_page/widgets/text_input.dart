@@ -95,6 +95,7 @@ class TextInputWidgetState extends ConsumerState<TextInputWidget> {
                       ),
                     ],
                     TextField(
+                      key: const Key('messageInputField'),
                       cursorWidth: 1,
                       maxLength: 350,
                       minLines: 1,
@@ -129,6 +130,7 @@ class TextInputWidgetState extends ConsumerState<TextInputWidget> {
               ),
               const SizedBox(width: 10),
               AppCircleButtonWidget(
+                key: const Key('sendMessageButton'),
                 onTap: widget.onTap,
                 icon: Icons.send_rounded,
               ),

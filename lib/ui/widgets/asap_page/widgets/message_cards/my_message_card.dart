@@ -28,6 +28,7 @@ class MyMessageCardWidget extends StatelessWidget {
         ),
         child: isSuccess != null
             ? PopupMenuCardWidget(
+                key: const Key('messageText'),
                 message: message,
                 textController: textController,
                 marginIndex: 15)

@@ -78,7 +78,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                 //     break;
                                 //   }
                                 // }
-                              var  friend = userPod.users?.firstWhere((user) =>
+                                var friend = userPod.users?.firstWhere((user) =>
                                     widget.chatModel[index].userIdChat ==
                                     user.userId);
                                 var lastMessage = MessageDto(
@@ -92,6 +92,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                 // var lastMessageId = widget.chatModel.
                                 // : widget.messageModel.length - 1;
                                 return UserCardWidget(
+                                    key: Key('userCardWidget $index'),
                                     sender: lastMessage.chatId == 0
                                         ? ""
                                         : !checkSender(lastMessage.senderId)
