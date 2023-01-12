@@ -8,6 +8,7 @@ import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_sync_lib.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:grpc/grpc.dart';
 
 import '../../../../src/generated/grpc_lib/grpc_user_lib.dart';
 
@@ -315,5 +316,37 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     state = state.copyWith(users: users);
   }
 
-  //Future<String?> confirmPassword()
+  Future<bool> confirmPassword(
+      {required int userId, required String password}) async {
+    PasswordResponse response;
+    GrpcUsersClient stub = GrpcUsersClient(GrpcClient().channel);
+    try {
+      response = await stub.confirmPassword(
+          PasswordConfirmRequest(userId: userId, password: password));
+      print('RESULT: $response');
+    } on GrpcError catch (e) {
+      print('ERROR CONFIRM PASSWORD GRPC_CLIENT: $e');
+      throw CustomException(e.message.toString());
+    }
+    return response.ok;
+  }
+
+  Future<bool> changePassword(
+      {required int userId,
+      required String newPassword,
+      required String oldPassword}) async {
+    PasswordResponse response = PasswordResponse();
+    GrpcUsersClient stub = GrpcUsersClient(GrpcClient().channel);
+    try {
+      response = await stub.changePassword(PasswordChangeRequest(
+          userId: userId, oldPassword: oldPassword, newPassword: newPassword));
+      //TODO: Убрать принт
+      print('RESULT CHANGE PASSWORD: $response');
+    } on GrpcError catch (e) {
+      //TODO: Убрать принт
+      print('ERROR CHANGE PASSWORD GRPC_CLIENT: $e');
+      throw CustomException(e.message.toString());
+    }
+    return response.ok;
+  }
 }

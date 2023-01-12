@@ -168,7 +168,7 @@ class Client {
 //   // print('update User: ${updateUser.writeToJsonMap()}');
 //   // print(await client.updateUser(updateUser));
 
-  Future<PasswordResponse> newPassword(PasswordRequest request) async {
+  Future<PasswordResponse> newPassword(PasswordChangeRequest request) async {
     var channel = ClientChannel('localhost',
         port: 6000,
         options:
@@ -183,17 +183,39 @@ class Client {
     }
     return resp;
   }
+
+  Future<PasswordResponse> confirmPassword(
+      PasswordConfirmRequest request) async {
+    var channel = ClientChannel('localhost',
+        port: 6000,
+        options:
+            const ChannelOptions(credentials: ChannelCredentials.insecure()));
+    var stub = GrpcUsersClient(channel,
+        options: CallOptions(timeout: Duration(seconds: 30)));
+    PasswordResponse resp = PasswordResponse();
+    try {
+      resp = await stub.confirmPassword(request);
+    } catch (e) {
+      print(e);
+    }
+    return resp;
+  }
 }
 
 var con = false;
 void main() async {
   var client = Client();
 
-  var message = PasswordRequest()
+  var message2 = PasswordConfirmRequest()
+    ..userId = 1
+    ..password = 'NewPassword';
+
+  var message = PasswordChangeRequest()
     ..userId = 1
     ..oldPassword = "pass"
     ..newPassword = "NewPassword";
   print("Обратный ответ:");
 
   print(await client.newPassword(message));
+  print(await client.confirmPassword(message2));
 }

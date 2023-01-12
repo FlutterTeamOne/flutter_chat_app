@@ -112,7 +112,8 @@ class ProfileLayout extends StatelessWidget {
               ErrorDialog(textTitle: 'Error', textContent: '$e'));
     }
     userPod.changeUser(true);
-    await DBHelper.instanse.close();
+    await DBHelper.instanse.deleteDB();
+    ref.read(River.messagePod.notifier).disconnect();
     ref.invalidate(River.userPod);
     ref.invalidate(River.chatPod);
     ref.invalidate(River.messagePod);

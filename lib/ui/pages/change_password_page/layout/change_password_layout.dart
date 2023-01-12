@@ -1,17 +1,23 @@
+import 'package:chat_app/modules/signal_service/river/river.dart';
+import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/ui/pages/change_password_page/repository/field_form_class.dart';
+import 'package:chat_app/ui/pages/main_layout.dart';
+import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
 import 'package:chat_app/ui/widgets/custom_widgets/TextFormFieldWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ChangePasswordLayout extends StatefulWidget {
+class ChangePasswordLayout extends ConsumerStatefulWidget {
   ChangePasswordLayout({
     super.key,
   });
 
   @override
-  State<ChangePasswordLayout> createState() => _ChangePasswordLayoutState();
+  ConsumerState<ChangePasswordLayout> createState() =>
+      _ChangePasswordLayoutState();
 }
 
-class _ChangePasswordLayoutState extends State<ChangePasswordLayout> {
+class _ChangePasswordLayoutState extends ConsumerState<ChangePasswordLayout> {
   GlobalKey<FormState> _changePasswordKey = GlobalKey<FormState>();
   late TextEditingController oldPasswordController;
 
@@ -111,13 +117,37 @@ class _ChangePasswordLayoutState extends State<ChangePasswordLayout> {
             ),
             const SizedBox(height: 15),
             ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (!_changePasswordKey.currentState!.validate()) {
                     print("HEllo");
                     return;
                   }
+                  bool result = false;
+                  try {
+                    result = await ref
+                        .read(River.userPod.notifier)
+                        .changePassword(
+                            userId: UserPref.getUserId,
+                            oldPassword: oldPasswordController.text,
+                            newPassword: newPasswordController.text);
+                  } catch (e) {
+                    showDialog(
+                        context: context,
+                        builder: (context) =>
+                            ErrorDialog(textTitle: "Error", textContent: '$e'));
+                  }
+
                   _changePasswordKey.currentState!.save();
-                  //TODO: Отправка на сервер запроса на смену пароля
+                  if (result == true) {
+                    showDialog(
+                        context: context,
+                        builder: (context) => ErrorDialog(
+                              textTitle: "Success",
+                              textContent: 'Пароль успешно изменен',
+                              onPressed: () => Navigator.of(context)
+                                  .pushNamed(MainLayout.routeName),
+                            ));
+                  }
                 },
                 child: const Text("Отправить"))
           ],
