@@ -1,4 +1,3 @@
-
 import 'package:chat_app/modules/signal_service/river/river.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';
 import 'package:flutter/services.dart';
@@ -6,13 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/new_user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 
 part 'form_widget.dart';
 
 class NewUserWidget extends ConsumerStatefulWidget {
   const NewUserWidget({Key? key}) : super(key: key);
-  
+
   @override
   ConsumerState<ConsumerStatefulWidget> createState() {
     return _NewUserWidgetState();
@@ -144,85 +143,70 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
 
   Padding buildCreateNewUserButton(BuildContext context, newUserNameText,
       newUserEmailText, newUserPasswordText, GlobalKey<FormState> formKey) {
-    late String newUserName;
-    final newUserPod = ref.watch(River.newUserPod);
+    // late String newUserName;
+    // final newUserPod = ref.watch(River.newUserPod);
     return Padding(
       padding: const EdgeInsets.only(left: 100.0),
       child: Row(
         children: [
           ElevatedButton(
-                  // style: ButtonStyle(
-                  //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  //         RoundedRectangleBorder(
-                  //   borderRadius: BorderRadius.circular(20.0),
-                  // ))),
-                  onPressed: () {
-                    // if (_nameKey.currentState!.validate() &&
-                    //     _emailKey.currentState!.validate() &&
-                    //     _passwordKey.currentState!.validate()) {
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //     const SnackBar(content: Text('Creating new user')),
-                    //   );
-                    // }
-                    late NewUserModel newUser = NewUserModel(
-                        name: newUserNameText.text,
-                        email: newUserEmailText.text,
-                        password: newUserPasswordText.text,
-                        registrationDate: newUserCreateDate,
-                        profilePicLink: newUserPictureUrl);
-                    ref.read(River.newUserPod.notifier).newUser(newUser: newUser);
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          newUserName =
-                             newUserPod.newUser.name;
-                          return Dialog(
-                            // shape: RoundedRectangleBorder(
-                            //   borderRadius: BorderRadius.circular(20.0),
-                            // ),
-                            child: SizedBox(
-                              height: 80,
-                              width: 50,
-                              child: Column(
-                                children: [
-                                  Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child:  ref.watch(River.newUserPod).newUser.name ==
-                                              newUserNameText.text
-                                          ? Text('User $newUserName created')
-                                          : const Text('Error')),
-                                  Consumer(
-                                    builder: (context, ref, _) {
-                                      return ElevatedButton(
-                                          // style: ButtonStyle(
-                                          //     shape: MaterialStateProperty.all<
-                                          //             RoundedRectangleBorder>(
-                                          //         RoundedRectangleBorder(
-                                          //   borderRadius:
-                                          //       BorderRadius.circular(20.0),
-                                          // ))),
-                                          onPressed: () {
-                                            ref
-                                                .read(River.userPod.notifier)
-                                                .readUser();
-
-                                            Navigator.of(context)
-                                                .pushNamed(AuthPage.routeName);
-                                          },
-                                          child: const Icon(Icons.check));
-                                    },
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        });
-                    // print(
-                    //     '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , ');
-                  },
-        
-                  child: const Text('Create new user')),
-
+              onPressed: () {
+                late NewUserModel newUser = NewUserModel(
+                    name: newUserNameText.text,
+                    email: newUserEmailText.text,
+                    password: newUserPasswordText.text,
+                    registrationDate: newUserCreateDate,
+                    profilePicLink: newUserPictureUrl);
+                ref.read(River.newUserPod.notifier).newUser(newUser: newUser);
+                ref.read(River.userPod.notifier).readUser();
+                Navigator.of(context).pushNamed(AuthPage.routeName);
+                // var stateNewName = ref
+                //     .watch(River.newUserPod)
+                //     .newUser
+                //     .name;
+                // print('state new name: $stateNewName');
+                // showDialog(
+                //     context: context,
+                //     builder: (BuildContext context) {
+                //       newUserName = newUserPod.newUser.name;
+                //       return Dialog(
+                //         child: SizedBox(
+                //           height: 80,
+                //           width: 50,
+                //           child: Column(
+                //             children: [
+                //               Padding(
+                //                   padding: const EdgeInsets.all(8.0),
+                //                   child: ref
+                //                               .watch(River.newUserPod)
+                //                               .newUser
+                //                               .name ==
+                //                           newUserNameText.text
+                //                       ? Text('User $newUserName created')
+                //                       : const Text('Error')),
+                //               Consumer(
+                //                 builder: (context, ref, _) {
+                //                   return ElevatedButton(
+                //                       onPressed: () {
+                //                         ref
+                //                             .read(River.userPod.notifier)
+                //                             .readUser();
+                //
+                //                         Navigator.of(context)
+                //                             .pushNamed(AuthPage.routeName);
+                //                       },
+                //                       child: const Icon(Icons.check));
+                //                 },
+                //               )
+                //             ],
+                //           ),
+                //         ),
+                //       );
+                //     });
+                // print(
+                //     '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , ');
+              },
+              child: const Text('Create new user')),
           IconButton(
               onPressed: () {
                 Navigator.of(context).pushNamed('/');
@@ -232,4 +216,4 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
       ),
     );
   }
-}          
+}
