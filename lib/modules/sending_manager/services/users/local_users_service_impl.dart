@@ -1,3 +1,5 @@
+import 'package:sqflite_common/sqlite_api.dart';
+
 import '../../../storage_manager/db_helper/db_helper_start.dart';
 
 import '../../../../src/constants/db_constants.dart';
@@ -19,10 +21,8 @@ class LocalUsersServices implements ILocalUsersServices {
     String? deletedDate,
     required String profilePicUrl,
   }) async {
-    var db = await DBHelper.instanse.database;
-    DBHelper.instanse.updateListenController.add(DbListener.isUser);
-
-    return await db.insert(DatabaseConst.userTable, {
+    final Database db = await DBHelper.instanse.database;
+    final newUserId = await db.insert(DatabaseConst.userTable, {
       DatabaseConst.usersColumnUserId: userId,
       DatabaseConst.usersColumnName: name,
       DatabaseConst.usersColumnEmail: email,
@@ -31,6 +31,9 @@ class LocalUsersServices implements ILocalUsersServices {
       DatabaseConst.usersColumnDeletedDate: deletedDate ?? '',
       DatabaseConst.usersColumnProfilePicLink: profilePicUrl,
     });
+    DBHelper.instanse.updateListenController.add(DbListener.isUser);
+
+    return newUserId;
   }
 
   @override
@@ -70,11 +73,7 @@ class LocalUsersServices implements ILocalUsersServices {
   @override
   Future<List<UserDto>> getAllUsers() async {
     var db = await DBHelper.instanse.database;
-    var users = await db.rawQuery('''
-              SELECT *
-              FROM ${DatabaseConst.userTable}
-              ''');
-
+    var users = await db.rawQuery('SELECT * FROM ${DatabaseConst.userTable}');
     return users.map((item) => UserDto.fromMap(item)).toList();
   }
 

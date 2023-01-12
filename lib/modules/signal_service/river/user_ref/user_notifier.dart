@@ -22,23 +22,27 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     _mainUserServices = MainUserServices();
     _messagesServices = LocalMessagesServices();
     _chatServices = LocalChatServices();
-    DBHelper.instanse.updateListenController.stream.listen((event) {
+    DBHelper.instanse.updateListenController.stream.listen((event) async {
       if (event == DbListener.isUser) {
-        localReadUser();
+        if (!mounted) {
+          return;
+        }
+
+        await localReadUser();
       }
     });
   }
 
-  Future<UserStateRef> setUsers(List<UserDto>? users) async {
-    return state = state.copyWith(users: users);
-  }
+  UserStateRef setUsers(List<UserDto>? users) =>
+      state = state.copyWith(users: users);
 
-  UserStateRef localReadUser() {
+  Future<UserStateRef> localReadUser() {
     List<UserDto> users = [];
 
-    _usersServices.getAllUsers().then((value) => users = value);
-
-    return state = state.copyWith(users: users);
+    return _usersServices.getAllUsers().then((value) {
+      return state = state.copyWith(users: value);
+    });
+    // return state = state.copyWith(users: users);
   }
 
   Future<UserStateRef> readUser() async {

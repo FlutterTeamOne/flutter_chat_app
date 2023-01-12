@@ -14,18 +14,21 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
   late LocalChatServices _chatServices;
   ChatNotifier() : super(const ChatStateRef()) {
     _chatServices = LocalChatServices();
-    DBHelper.instanse.updateListenController.stream.listen((event) {
+    DBHelper.instanse.updateListenController.stream.listen((event)async {
       if (event == DbListener.isChat) {
-        readChat();
+        if (!mounted) return;
+       await readChat();
       }
     });
   }
 
   Future<ChatStateRef> readChat([List<ChatDto>? chats]) async {
     List<ChatDto> chats = [];
-   
+
     //TODO: Поменять getAllChats на сортированную выборку getAllChatsSortedByUpdatedDate()
-     _chatServices.getAllChatsSortedByUpdatedDate().then((value) => chats=value);
+    _chatServices
+        .getAllChatsSortedByUpdatedDate()
+        .then((value) => chats = value);
     //
     var restChats = await RestClient().getChats();
     print('IF CHATS is NULL - ADD CHAT FROM LOCAL DB: $restChats');
