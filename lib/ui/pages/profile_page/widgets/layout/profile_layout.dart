@@ -12,13 +12,7 @@ class ProfileLayout extends StatelessWidget {
     return Consumer(builder: (context, ref, _) {
       UserNotifier userPod = ref.read(River.userPod.notifier);
       ChatNotifier chatPod = ref.read(River.chatPod.notifier);
-      List<UserDto>? users = ref.read(River.userPod).users;
-      UserDto? userMain =
-          // if (users!.isNotEmpty) {
-          //   var s = users.where((element) => element.userId == UserPref.getUserId).toList();
-          //   userMain = s[0];
-          users?.firstWhere((user) => user.userId == UserPref.getUserId);
-      // }
+      UserDto? userMain = ref.watch(River.userPod).mainUser;
 
       ///TODO: Добавить проверку на userMain == null
       ///Если нулл, выйти из аккаунта
@@ -112,7 +106,8 @@ class ProfileLayout extends StatelessWidget {
               ErrorDialog(textTitle: 'Error', textContent: '$e'));
     }
     userPod.changeUser(true);
-    await DBHelper.instanse.close();
+    await DBHelper.instanse.deleteDB();
+    ref.read(River.messagePod.notifier).disconnect();
     ref.invalidate(River.userPod);
     ref.invalidate(River.chatPod);
     ref.invalidate(River.messagePod);

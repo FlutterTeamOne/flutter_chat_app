@@ -34,38 +34,42 @@ class _PopupMenuCardWidgetState extends ConsumerState<PopupMenuCardWidget> {
     var messagePod = ref.read(River.messagePod.notifier);
     final items = [
       // Тут находится то чо отображается в плавающем окне
+
       ListTileWidget(
         icon: Icons.edit,
         text: 'Edit',
-        onTap: () {
-          if (widget.message?.contentType == ContentType.isText) {
-            widget.textController?.text = widget.message!.content;
-          } else if (widget.message?.contentType == ContentType.isMedia) {
-            // List<String>? data = widget.message?.content.split(',');
-            // var msg = data![0].split(' message: ')[1];
-            // print('msg popup: $msg');
-            widget.textController?.text = '';
-          } else {
-            List<String>? data = widget.message?.content.split(',');
-            var msg = data![0].split('message: ')[1];
-            // image = data[4].split('url: ')[1];
-            // print('image: $image');
-            print('msg: $msg');
-            widget.textController?.text = msg;
-          }
-          messagePod.updateMessage(
-            messageId: widget.message?.localMessageId,
-            isEditing: EditState.isPreparation,
-          );
-          popupmenuController.hideMenu();
-        },
+        onTap: widget.message?.contentType == ContentType.isMedia
+            ? () {}
+            : () {
+                if (widget.message?.contentType == ContentType.isText) {
+                  widget.textController?.text = widget.message!.content;
+                } else if (widget.message?.contentType == ContentType.isMedia) {
+                  // List<String>? data = widget.message?.content.split(',');
+                  // var msg = data![0].split(' message: ')[1];
+                  // print('msg popup: $msg');
+                  widget.textController?.text = '';
+                } else {
+                  List<String>? data = widget.message?.content.split(',');
+                  var msg = data![0].split('message: ')[1];
+                  // image = data[4].split('url: ')[1];
+                  // print('image: $image');
+                  print('msg: $msg');
+                  widget.textController?.text = msg;
+                }
+                messagePod.updateMessage(
+                  messageId: widget.message?.localMessageId,
+                  isEditing: EditState.isPreparation,
+                );
+                popupmenuController.hideMenu();
+              },
       ),
       const SizedBox(height: 5),
       ListTileWidget(
         icon: Icons.delete,
         text: 'Delete',
         onTap: () {
-          messagePod.deleteMessage(messageId: widget.message!.messageId!);
+          //TODO: Удалять по LocalId не отправленные сообщнеия
+          messagePod.deleteMessage(message: widget.message!);
           popupmenuController.hideMenu();
         },
       ),

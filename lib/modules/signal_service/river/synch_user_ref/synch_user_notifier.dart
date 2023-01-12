@@ -1,6 +1,7 @@
 import 'package:chat_app/modules/signal_service/river/synch_user_ref/synch_state_ref.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../src/generated/grpc_lib/grpc_sync_lib.dart';
@@ -16,7 +17,7 @@ class SynchUserNotifier extends StateNotifier<SynchStateRef> {
     var users = <UserDto>[];
 
     List<Map<String, Object?>> usersForUpdate =
-        await _usersServices.getAllUserIdAndUpdatedStarted();
+        await _usersServices.getAllUserIdAndUpdatedStart();
     List<UserRequest> usersRequest = [];
     if (usersForUpdate.isNotEmpty) {
       print("lastID ${usersForUpdate.last['user_id']}");
@@ -29,38 +30,45 @@ class SynchUserNotifier extends StateNotifier<SynchStateRef> {
     //подключаемся к серверу
     var stub = GrpcSynchronizationClient(GrpcClient().channel);
     var usersResponse = UsersResponse();
+
+    bool error = false;
     //отправляем запрос на сервер и получаем всех юзеров
     try {
       usersResponse = await stub.sync(UsersRequest(
           mainUser: UserPref.getUserId, usersForUpdate: usersRequest));
     } catch (e) {
-      print(e);
+      print("ERROR SYNH: $e");
+      //TODO:Добавить чтение из локальной базы в userResponse
+      //Выводить экран ошибки
+      error = true;
     }
     print("UsersServ NEW ${usersResponse.usersNew}");
     print("UsersServ UPDATED ${usersResponse.usersUpdated}");
-    for (var user in usersResponse.usersNew) {
-      //парсим всех юзеров и записываем их в локальное дб
-      await _usersServices.createUserStart(
-          userId: user.userId,
-          name: user.name,
-          email: user.email,
-          createdDate: user.createdDate,
-          updatedDate: user.updateDate,
-          deletedDate: user.deletedDate,
-          profilePicUrl: user.picture);
-    }
-    for (var user in usersResponse.usersUpdated) {
-      await _usersServices.updateUserStart(
-          newValues: '''name = "${user.name}",
+    if (!error) {
+      for (var user in usersResponse.usersNew) {
+        //парсим всех юзеров и записываем их в локальное дб
+        await _usersServices.createUserStart(
+            userId: user.userId,
+            name: user.name,
+            email: user.email,
+            createdDate: user.createdDate,
+            updatedDate: user.updateDate,
+            deletedDate: user.deletedDate,
+            profilePicUrl: user.picture);
+      }
+      for (var user in usersResponse.usersUpdated) {
+        await _usersServices.updateUserStart(
+            newValues: '''name = "${user.name}",
                           email = "${user.email}",
                           created_date = "${user.createdDate}",
                           updated_date = "${user.updateDate}",
                           deleted_date = "${user.deletedDate}",
                           profile_pic_link = "${user.picture}"''',
-          condition: 'user_id = ${user.userId}');
+            condition: 'user_id = ${user.userId}');
+      }
     }
-//получаем всех начальных юзеров
+    //получаем всех начальных юзеров
     users = await _usersServices.getAllUsersStart();
-   return state = state.copyWith(users: users);
+    return state = state.copyWith(users: users);
   }
 }

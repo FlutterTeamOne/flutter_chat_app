@@ -1,10 +1,5 @@
-import 'dart:developer';
-
-import 'package:chat_app/modules/signal_service/river/river.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../bloc/new_user_bloc.dart';
 import '../bloc/new_user_event.dart';
 import '../models/new_user_model.dart';
@@ -264,7 +259,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
           ),
           IconButton(
               onPressed: () {
-                Navigator.of(context).pushNamed('/');
+                Navigator.of(context).pushNamed(AuthPage.routeName);
               },
               icon: const Icon(Icons.close_rounded)),
         ],
