@@ -47,7 +47,7 @@ class LocalUsersServices implements ILocalUsersServices {
     required String profilePicUrl,
   }) async {
     var db = await DBHelperStart.instanse.database;
-    DBHelper.instanse.updateListenController.add(DbListener.isUser);
+    DBHelperStart.instanse.updateListenController.add(true);
 
     return await db.insert(DatabaseConst.userTable, {
       DatabaseConst.usersColumnUserId: userId,
