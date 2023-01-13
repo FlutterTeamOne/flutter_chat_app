@@ -1,7 +1,6 @@
 ﻿import 'package:chat_app/modules/signal_service/river/message_ref/message_notifier.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/ui/pages/asap_page/layouts/edit_chat_popup_widget.dart';
-import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
 
 import '../../../../modules/signal_service/river/message_ref/message_state_ref.dart';
 import '../../../../modules/signal_service/river/river.dart';
@@ -87,55 +86,42 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                         textController: controller,
                         messages: messageWatch.messages!,
                         chatId: widget.chatId,
+                        deletedUser: user.deletedDate,
                       )
                     : const Center(child: CircularProgressIndicator()),
               ),
-              TextInputWidget(
-                onSubmitted: (text) =>
-                    _sendAndChange(messageRead, messageNotif),
-                controller: controller,
-                onTap: () => user.deletedDate!.isNotEmpty
-                    ? showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            child: SizedBox(
-                              height: 80,
-                              width: 80,
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text('User ${user.name} is deleted'),
-                                  ),
-                                  ElevatedButton(
-                                      style: ButtonStyle(
-                                          shape: MaterialStateProperty.all<
-                                                  RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                      ))),
-                                      onPressed: () => Navigator.pop(context),
-                                      child: const Icon(
-                                        Icons.close_rounded,
-                                      ))
-                                ],
-                              ),
-                            ),
-                          );
-                        })
-                    : _sendAndChange(messageRead, messageNotif),
-                editState: messageRead.editState,
-                editText: controller.text,
-                cancelEdit: () {
-                  messageNotif.updateMessage(isEditing: EditState.isNotEditing);
-                  controller.clear();
-                },
-              ),
+              if (user.deletedDate!.isEmpty || user.deletedDate == null) ...[
+                TextInputWidget(
+                  onSubmitted: (text) =>
+                      _sendAndChange(messageRead, messageNotif),
+                  controller: controller,
+                  onTap: () => _sendAndChange(messageRead, messageNotif),
+                  editState: messageRead.editState,
+                  editText: controller.text,
+                  cancelEdit: () {
+                    messageNotif.updateMessage(
+                        isEditing: EditState.isNotEditing);
+                    controller.clear();
+                  },
+                )
+              ] else ...[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text('Oops This user has deleted their account'),
+                      SizedBox(
+                        width: 20
+                      ),
+                      Icon(
+                        Icons.error_outlined,
+                        // color: Colors.yellow,
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ],
           );
   }

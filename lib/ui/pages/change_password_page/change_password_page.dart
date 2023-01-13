@@ -12,13 +12,13 @@ class ChangePasswordPage extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
+          const SliverAppBar(
             centerTitle: true,
             title: Text('Change Password'),
           ),
           SliverPadding(
             padding: EdgeInsets.only(top: height *0.25),
-            sliver: SliverToBoxAdapter(
+            sliver: const SliverToBoxAdapter(
               child: ChangePasswordLayout(),
             ),
           )
