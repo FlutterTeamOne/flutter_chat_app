@@ -18,16 +18,23 @@ void main() {
   DeleteUserRobot deleteUserTest;
 
   group('Integration tests', () {
-    setUpAll(() {
+    setUp(() {
       app.main();
     });
 
     testWidgets(
-      "CREATE USER AND CANCEL CREATE USER TESTS: ",
+      "all in one test",
       (WidgetTester tester) async {
         finders = Finders();
         createUserTest = CreateUserRobot(tester: tester);
+        settingsTest = SettingsPageRobot(tester: tester);
+        asapTest = AsapPageRobot(tester: tester);
+        deleteUserTest = DeleteUserRobot(tester: tester);
 
+        await tester.pumpAndSettle();
+
+        //ТЕСТ 1
+        //СОЗДАНИЕ ЮЗЕРА, ПРОВЕРКА СОЗДАНИЯ, ОТМЕНА СОЗДАНИЯ ЮЗЕРА
         await createUserTest.createUserTest(
             userWidget: finders.seventhUserWidget,
             name: 'newuser',
@@ -37,32 +44,24 @@ void main() {
             userWidget: finders.seventhUserButton, username: 'newuser');
         await createUserTest.cancelCreateUser(
             userWidget: finders.eighthUserWidget);
+        // TODO: удаление юзера
+
+        //ТЕСТ 2
+        // ПЕРЕХОД В НАСТРОЙКИ, НАЖИМАЕМ НА КНОПКУ СМЕНЫ ТЕМЫ, ПРОВЕРКА
+        await settingsTest.tapSettings();
+        await settingsTest.tapChangeTheme();
+        await settingsTest.goToAuthPage();
+
+        //ТЕСТ 3
+        //ПЕРЕХОДИМ В ЧАТЫ, ПРОВЕРЯЕМ ЧАТЫ ЮЗЕРА, ОТПРАВЛЯЕМ СООБЩЕНИЕ
+        await asapTest.goToAsapPage();
+        await asapTest.checkChats();
+        await asapTest.addMessage(message: 'message');
+        await asapTest.goToAuthPage();
+
+        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 5));
       },
     );
-
-    testWidgets('SETTINGS TEST: ', (WidgetTester tester) async {
-      finders = Finders();
-      settingsTest = SettingsPageRobot(tester: tester);
-
-      await settingsTest.tapSettings();
-      await settingsTest.tapChangeTheme();
-      await settingsTest.goToAuthPage();
-    });
-
-    testWidgets('ASAP CHAT TESTS: ', (WidgetTester tester) async {
-      finders = Finders();
-      asapTest = AsapPageRobot(tester: tester);
-
-      await asapTest.goToAsapPage(userButton: finders.firstUserButton);
-      await asapTest.checkChats();
-      await asapTest.addMessage(message: 'message');
-      await asapTest.goToAuthPage();
-    });
-
-    //Удаление юзера не написан
-    testWidgets('Delete user', (WidgetTester tester) async {
-      finders = Finders();
-      deleteUserTest = DeleteUserRobot(tester: tester);
-    });
   });
 }

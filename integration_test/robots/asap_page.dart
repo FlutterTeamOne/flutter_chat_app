@@ -6,47 +6,46 @@ class AsapPageRobot {
   AsapPageRobot({required this.tester});
   final WidgetTester tester;
 
-  Future<void> goToAsapPage({required Finder userButton}) async {
-    await tester.pumpAndSettle(const Duration(milliseconds: 500));
-    await tester.tap(userButton);
-    await tester.pumpAndSettle();
+  Future<void> goToAsapPage() async {
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await tester.tap(Finders().firstUserButton);
     //нажимаем на чат - asapPage
-    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.pumpAndSettle();
     await tester.tap(Finders().asapPageButton);
-    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.pumpAndSettle();
   }
 
   Future<void> checkChats() async {
-    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
     //проверяем карточки юзеров у первого три чата
     expect(Finders().userCardWidget, findsNWidgets(3));
-    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.pumpAndSettle();
     expect(Finders().firstUserCard, findsOneWidget);
-    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.pumpAndSettle();
   }
 
   Future<void> addMessage({required String message}) async {
-    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
     //добавляем сообщение в чат с первым юзером
     await tester.tap(Finders().firstUserCard);
-    await tester.pumpAndSettle(const Duration(microseconds: 500));
+    await tester.pumpAndSettle();
     await tester.tap(Finders().messageInputField);
-    await tester.pumpAndSettle(const Duration(microseconds: 500));
+    await tester.pumpAndSettle();
     await tester.enterText(Finders().messageInputField, message);
-    await tester.pumpAndSettle(const Duration(microseconds: 500));
+    await tester.pumpAndSettle();
     await tester.tap(Finders().sendMessageButton);
-    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.pumpAndSettle();
   }
 
   Future<void> goToAuthPage() async {
-    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
     await tester.tap(Finders().profilePageButton);
-    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.pumpAndSettle();
     await tester.tap(Finders().backFromProfilePageButton);
-    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
     await tester.pumpAndSettle();
     expect(Finders().firstUserButton, findsOneWidget);
-    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.pumpAndSettle();
   }
 }
 
