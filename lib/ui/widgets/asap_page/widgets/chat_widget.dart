@@ -51,6 +51,7 @@ class ChatWidgetState extends State<ChatWidget> {
       if (i.chatId == widget.chatId) {
         messages.add(i);
       }
+      messages.sort(((a, b) => a.createdDate!.compareTo(b.createdDate!)));
     }
 
     return Scaffold(
@@ -78,10 +79,12 @@ class ChatWidgetState extends State<ChatWidget> {
               order: GroupedListOrder.DESC,
               groupBy: (message) {
                 final date = DateTime.parse(message.createdDate!);
+                // DateTime(date.year, date.month, date.day, date.hour, date.minute, date.second, date.microsecond);
                 return DateTime(date.year, date.month, date.day);
               },
               groupHeaderBuilder: (MessageDto message) =>
                   TimeCardWidget(date: message.createdDate!),
+              // TODO: нужна сортировка сообщений внутри группы по дате
               itemBuilder: (context, MessageDto message) {
                 if (!checkSender(message.senderId)) {
                   // print(message.isSentByMe);
