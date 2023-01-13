@@ -124,6 +124,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     print('NEW_CHATS: ${response.chats.chatsNew}');
     for (var chat in response.chats.chatsNew) {
       await ValidatorService.validChat(chat: chat);
+      print('\\\\\\\\\\\\\\NEW CHATS DONE\\\\\\\\\\\\\\');
     }
 
     ///
@@ -161,7 +162,10 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     ///ОБНОВЛЯЕМ ЧАТЫ
     ///
     print("RESPONSE_UPDATED_CHATS: ${response.chats.chatsUpdated}");
-    for (var chats in response.chats.chatsUpdated) {}
+    for (var chats in response.chats.chatsUpdated) {
+            print('\\\\\\\\\\\\\\CHATS UPDATED DONE $chats\\\\\\\\\\\\\\');
+
+    }
 
     ///
     ///ОБНОВЛЯЕМ СООБЩЕНИЯ

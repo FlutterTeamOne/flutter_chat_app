@@ -75,6 +75,9 @@ class ValidatorService {
           userId: chat.userId,
           chatId: chat.chatId);
     }
+    if (chat.deletedDate.isNotEmpty) {
+      await LocalMessagesServices().deleteAllMessagesInChat(chatID: chat.chatId);
+    }
     if (chatByUser.isEmpty) {}
   }
 }
