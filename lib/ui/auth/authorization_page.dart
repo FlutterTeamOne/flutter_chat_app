@@ -46,6 +46,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         scrollDirection: Axis.horizontal,
                         itemCount: users.length,
                         itemBuilder: ((context, index) => UserCard(
+                              index: index,
                               user: users![index],
                               key: Key('UserCard $index'),
                             )),

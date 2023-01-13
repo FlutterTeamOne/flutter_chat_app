@@ -1,5 +1,6 @@
+import 'package:flutter_test/flutter_test.dart';
+
 import '../finders.dart';
-import '../library.dart';
 
 class SettingsPageRobot {
   SettingsPageRobot({required this.tester});
@@ -8,6 +9,7 @@ class SettingsPageRobot {
   Future<void> tapSettings() async {
     //нажать на первого юзера finders.firstUserButton
     await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    //Finders().firstUserButton
     await tester.tap(Finders().firstUserButton);
     //нажать на настройки
     await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -29,7 +31,7 @@ class SettingsPageRobot {
     await tester.tap(Finders().backFromSettinsPageButton);
     await tester.pumpAndSettle(const Duration(milliseconds: 500));
     await tester.pumpAndSettle();
-    expect(Finders().firstUserWidget, findsOneWidget);
+    expect(Finders().firstUserButton, findsOneWidget);
     await tester.pumpAndSettle(const Duration(milliseconds: 500));
   }
 }

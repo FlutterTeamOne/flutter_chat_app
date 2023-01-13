@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+
 import '../finders.dart';
-import '../library.dart';
 
 class CreateUserRobot {
   CreateUserRobot({required this.tester});

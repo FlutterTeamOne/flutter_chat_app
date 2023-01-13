@@ -1,8 +1,8 @@
 part of '../authorization_page.dart';
 
 class UserCard extends StatelessWidget {
-  const UserCard({super.key, required this.user});
-
+  const UserCard({super.key, required this.user, required this.index});
+  final int index;
   final UserDto user;
 
   @override
@@ -13,7 +13,7 @@ class UserCard extends StatelessWidget {
           builder: (context, ref, _) {
             var userPod = ref.read(River.userPod.notifier);
             return InkWell(
-              key: Key('UserButton ${user.userId}'),
+              key: Key('UserButton $index'),
               hoverColor: Colors.transparent,
               focusColor: Colors.transparent,
               onTap: () async {

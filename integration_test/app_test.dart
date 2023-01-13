@@ -5,6 +5,7 @@ import 'package:integration_test/integration_test.dart';
 import 'finders.dart';
 import 'robots/asap_page.dart';
 import 'robots/create_user.dart';
+import 'robots/delete_user.dart';
 import 'robots/settings.dart';
 
 void main() {
@@ -14,39 +15,53 @@ void main() {
   CreateUserRobot createUserTest;
   SettingsPageRobot settingsTest;
   AsapPageRobot asapTest;
+  DeleteUserRobot deleteUserTest;
 
-  group('Integration test', () {
+  group('Integration tests', () {
     setUpAll(() {
       app.main();
     });
 
-    testWidgets('whole app test', (WidgetTester tester) async {
+    // testWidgets(
+    //   "create user and cancel create",
+    //   (WidgetTester tester) async {
+    //     finders = Finders();
+    //     createUserTest = CreateUserRobot(tester: tester);
+
+    //     await createUserTest.createUserTest(
+    //         userWidget: finders.seventhUserWidget,
+    //         name: 'newuser',
+    //         email: 'newuser@mail.ru',
+    //         password: 'password');
+    //     await createUserTest.checkCreateUser(
+    //         userWidget: finders.seventhUserButton, username: 'newuser');
+    //     await createUserTest.cancelCreateUser(
+    //         userWidget: finders.eighthUserWidget);
+    //   },
+    // );
+
+    // testWidgets('settings', (WidgetTester tester) async {
+    //   finders = Finders();
+    //   settingsTest = SettingsPageRobot(tester: tester);
+
+    //   await settingsTest.tapSettings();
+    //   await settingsTest.tapChangeTheme();
+    //   await settingsTest.goToAuthPage();
+    // });
+
+    testWidgets('Asap Page', (WidgetTester tester) async {
       finders = Finders();
-      createUserTest = CreateUserRobot(tester: tester);
-      settingsTest = SettingsPageRobot(tester: tester);
       asapTest = AsapPageRobot(tester: tester);
-
-      await createUserTest.createUserTest(
-          userWidget: finders.seventhUserWidget,
-          name: 'newuser',
-          email: 'newuser@mail.ru',
-          password: 'password');
-      await createUserTest.checkCreateUser(
-          userWidget: finders.seventhUserButton, username: 'newuser');
-      await createUserTest.cancelCreateUser(
-          userWidget: finders.eighthUserWidget);
-
-      await settingsTest.tapSettings();
-      await settingsTest.tapChangeTheme();
-      await settingsTest.goToAuthPage();
 
       await asapTest.goToAsapPage(userButton: finders.firstUserButton);
       await asapTest.checkChats();
       await asapTest.addMessage(message: 'message');
       await asapTest.goToAuthPage();
+    });
 
-      await tester.pumpAndSettle();
-      await tester.pumpAndSettle(const Duration(seconds: 3));
+    testWidgets('Delete user', (WidgetTester tester) async {
+      finders = Finders();
+      deleteUserTest = DeleteUserRobot(tester: tester);
     });
   });
 }

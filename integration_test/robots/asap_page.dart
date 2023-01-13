@@ -1,5 +1,6 @@
+import 'package:flutter_test/flutter_test.dart';
+
 import '../finders.dart';
-import '../library.dart';
 
 class AsapPageRobot {
   AsapPageRobot({required this.tester});
@@ -7,8 +8,8 @@ class AsapPageRobot {
 
   Future<void> goToAsapPage({required Finder userButton}) async {
     await tester.pumpAndSettle(const Duration(milliseconds: 500));
-    //Finders().firstUserButton
     await tester.tap(userButton);
+    await tester.pumpAndSettle();
     //нажимаем на чат - asapPage
     await tester.pumpAndSettle(const Duration(milliseconds: 500));
     await tester.tap(Finders().asapPageButton);
@@ -44,7 +45,7 @@ class AsapPageRobot {
     await tester.tap(Finders().backFromProfilePageButton);
     await tester.pumpAndSettle(const Duration(milliseconds: 500));
     await tester.pumpAndSettle();
-    expect(Finders().firstUserWidget, findsOneWidget);
+    expect(Finders().firstUserButton, findsOneWidget);
     await tester.pumpAndSettle(const Duration(milliseconds: 500));
   }
 }

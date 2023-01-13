@@ -1,5 +1,6 @@
 import 'package:chat_app/ui/widgets/library/library_widgets.dart';
-import 'library.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 class Finders {
   //юзеры виджет карточки для проверки наличия юзера
@@ -10,9 +11,9 @@ class Finders {
   final Finder eighthUserWidget = find.byKey(const Key('UserCard 7'));
 
   //юзер карточка - кнопка для перехода на юзера
-  final Finder firstUserButton = find.byKey(const Key('UserButton 1'));
-  final Finder thirdUserButton = find.byKey(const Key('UserButton 3'));
-  final Finder seventhUserButton = find.byKey(const Key('UserButton 7'));
+  final Finder firstUserButton = find.byKey(const Key('UserButton 0'));
+  final Finder thirdUserButton = find.byKey(const Key('UserButton 2'));
+  final Finder seventhUserButton = find.byKey(const Key('UserButton 6'));
 
   //кнопка создания юзера на главном экране
   final Finder buttonWidget = find.byKey(const Key('createButton'));
