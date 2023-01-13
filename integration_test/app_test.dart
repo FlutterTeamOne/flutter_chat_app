@@ -22,34 +22,34 @@ void main() {
       app.main();
     });
 
-    // testWidgets(
-    //   "create user and cancel create",
-    //   (WidgetTester tester) async {
-    //     finders = Finders();
-    //     createUserTest = CreateUserRobot(tester: tester);
+    testWidgets(
+      "CREATE USER AND CANCEL CREATE USER TESTS: ",
+      (WidgetTester tester) async {
+        finders = Finders();
+        createUserTest = CreateUserRobot(tester: tester);
 
-    //     await createUserTest.createUserTest(
-    //         userWidget: finders.seventhUserWidget,
-    //         name: 'newuser',
-    //         email: 'newuser@mail.ru',
-    //         password: 'password');
-    //     await createUserTest.checkCreateUser(
-    //         userWidget: finders.seventhUserButton, username: 'newuser');
-    //     await createUserTest.cancelCreateUser(
-    //         userWidget: finders.eighthUserWidget);
-    //   },
-    // );
+        await createUserTest.createUserTest(
+            userWidget: finders.seventhUserWidget,
+            name: 'newuser',
+            email: 'newuser@mail.ru',
+            password: 'password');
+        await createUserTest.checkCreateUser(
+            userWidget: finders.seventhUserButton, username: 'newuser');
+        await createUserTest.cancelCreateUser(
+            userWidget: finders.eighthUserWidget);
+      },
+    );
 
-    // testWidgets('settings', (WidgetTester tester) async {
-    //   finders = Finders();
-    //   settingsTest = SettingsPageRobot(tester: tester);
+    testWidgets('SETTINGS TEST: ', (WidgetTester tester) async {
+      finders = Finders();
+      settingsTest = SettingsPageRobot(tester: tester);
 
-    //   await settingsTest.tapSettings();
-    //   await settingsTest.tapChangeTheme();
-    //   await settingsTest.goToAuthPage();
-    // });
+      await settingsTest.tapSettings();
+      await settingsTest.tapChangeTheme();
+      await settingsTest.goToAuthPage();
+    });
 
-    testWidgets('Asap Page', (WidgetTester tester) async {
+    testWidgets('ASAP CHAT TESTS: ', (WidgetTester tester) async {
       finders = Finders();
       asapTest = AsapPageRobot(tester: tester);
 
@@ -59,6 +59,7 @@ void main() {
       await asapTest.goToAuthPage();
     });
 
+    //Удаление юзера не написан
     testWidgets('Delete user', (WidgetTester tester) async {
       finders = Finders();
       deleteUserTest = DeleteUserRobot(tester: tester);
