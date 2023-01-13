@@ -255,6 +255,15 @@ class GrpcUsers extends GrpcUsersServiceBase {
       ServiceCall call, UpdateUserRequest request) async {
     var updateUserResponse = UpdateUserResponse();
     updateUserResponse.dateUpdated = DateTime.now().toIso8601String();
+    Map<String, Object?> user =
+        await UsersServices().getUserById(userId: request.id);
+    if (request.email != user['email']) {
+      List<Map<String, Object?>> users =
+          await UsersServices().getUserByEmail(email: request.email);
+      if (users.isNotEmpty) {
+        throw errors[6];
+      }
+    }
     var src = await UsersServices().updateUser(
         newValues: '''name = '${request.name}', 
             email = '${request.email}', 

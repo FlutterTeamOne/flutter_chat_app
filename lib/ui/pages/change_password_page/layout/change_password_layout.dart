@@ -97,7 +97,9 @@ class _ChangePasswordLayoutState extends ConsumerState<ChangePasswordLayout> {
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            const SizedBox(height: 15),
             SizedBox(
               width: 300,
               child: ListView.separated(

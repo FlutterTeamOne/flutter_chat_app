@@ -8,21 +8,22 @@ class ChangePasswordPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: ChangePasswordLayout(),
-        floatingActionButton: Container(
-      child: Align(
-        alignment: Alignment.topLeft,
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: FloatingActionButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(MainLayout.routeName);
-            },
-            child: Icon(Icons.arrow_back),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            centerTitle: true,
+            title: Text('Change Password'),
           ),
-        ),
+          SliverPadding(
+            padding: EdgeInsets.only(top: height *0.25),
+            sliver: SliverToBoxAdapter(
+              child: ChangePasswordLayout(),
+            ),
+          )
+        ],
       ),
-    ));
+    );
   }
 }

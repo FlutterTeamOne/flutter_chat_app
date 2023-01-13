@@ -274,8 +274,9 @@ class UserNotifier extends StateNotifier<UserStateRef> {
             ${DatabaseConst.usersColumnProfilePicLink} = "${response.profilePicUrl}",
             ${DatabaseConst.usersColumnUpdatedDate} = "${response.dateUpdated}"''',
           condition: '${DatabaseConst.usersColumnUserId} = ${response.userId}');
-    } catch (e) {
+    } on GrpcError catch (e) {
       print(e);
+      throw CustomException(e.message.toString());
     }
     final users = await _usersServices.getUserById(id: UserPref.getUserId);
     late UserDto newMainUser;
