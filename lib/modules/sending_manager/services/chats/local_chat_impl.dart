@@ -72,6 +72,18 @@ class LocalChatServices implements ILocalChatsServices {
   }
 
   @override
+  Future<List<Map<String, Object?>>> getChatByUserId({required int id}) async {
+    var db = await DBHelper.instanse.database;
+    var chat = await db.rawQuery('''
+              SELECT *
+              FROM ${DatabaseConst.chatsTable}
+              WHERE ${DatabaseConst.chatsColumnUserId}=?
+              ''', [id]);
+
+    return chat;
+  }
+
+  @override
   Future<int> getMainIdChatByMessage({required int localId}) async {
     var db = await DBHelper.instanse.database;
     var chat = await db.rawQuery('''SELECT ${DatabaseConst.chatsColumnChatId} 
