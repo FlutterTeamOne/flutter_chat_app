@@ -1,3 +1,6 @@
+import 'package:chat_app/modules/signal_service/river/river.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../widgets/registration_page/bloc/new_user_bloc.dart';
 import '../../widgets/registration_page/widgets/new_user_widget.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +14,9 @@ class RegistrationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NewUserBloc, NewUserState>(
-      builder: (context, state) {
-        return const Scaffold(
-          body: NewUserWidget(),
-        );
-      },
+    // var userPod = ref.read(River.userPod.notifier);
+    return const Scaffold(
+      body: NewUserWidget(),
     );
   }
 }

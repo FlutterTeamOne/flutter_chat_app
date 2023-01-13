@@ -1,12 +1,12 @@
-import '../models/new_user_model.dart';
+// import '../models/new_user_model.dart';
 
-abstract class NewUserEvent {}
+// abstract class NewUserEvent {}
 
-class SetNewUserEvent extends NewUserEvent {
-  final NewUserModel user;
+// class SetNewUserEvent extends NewUserEvent {
+//   final NewUserModel user;
 
-  SetNewUserEvent({
+//   SetNewUserEvent({
 
-    required this.user
-  });
-}
+//     required this.user
+//   });
+// }

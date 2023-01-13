@@ -47,13 +47,9 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
   final GrpcClient grpcClient = GrpcClient();
 
-
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(providers: [
-
-      BlocProvider(create: (context) => NewUserBloc()),
-    ], child: buildMaterialApp(context));
+    return buildMaterialApp(context);
   }
 }
 
@@ -84,9 +80,11 @@ Consumer buildMaterialApp(BuildContext context) {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(theme.borderRadius!))),
           brightness: theme.brightness,
-          primarySwatch: StyleManagerUtils().createMaterialColor(theme.primaryColor!),
+          primarySwatch:
+              StyleManagerUtils().createMaterialColor(theme.primaryColor!),
 
-          primaryColor: StyleManagerUtils().createMaterialColor(theme.primaryColor!),
+          primaryColor:
+              StyleManagerUtils().createMaterialColor(theme.primaryColor!),
           errorColor: Colors.redAccent.shade200,
 
           textSelectionTheme: TextSelectionThemeData(
