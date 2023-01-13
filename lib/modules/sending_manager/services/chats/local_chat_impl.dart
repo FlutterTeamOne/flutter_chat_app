@@ -55,7 +55,7 @@ class LocalChatServices implements ILocalChatsServices {
 
     var res = chats.map((item) => ChatDto.fromMap(item)).toList();
 
-    /// TODO refactor print
+    /// TODO: refactor print
     print('getAllChatsSortedByUpdatedDate chats: $chats');
     print('getAllChatsSortedByUpdatedDate res: $res');
 

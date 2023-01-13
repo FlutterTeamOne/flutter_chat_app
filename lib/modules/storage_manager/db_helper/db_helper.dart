@@ -38,14 +38,14 @@ class DBHelper {
     // print('PATH: ${dbPath.path}');
     var user = UserPath.getUser;
 
-    /// TODO refactor print
+    /// TODO: refactor print
     print('USER DB:  $user');
     // String path = join(dbPath.path,
     //     user.name + user.userId.toString() + DatabaseConst.dbFileName);
     String path =
         join(dbPath, user.userId.toString() + DatabaseConst.dbFileName);
 
-    /// TODO refactor print
+    /// TODO: refactor print
     print('PATH_ABSOLUTE: $path');
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(

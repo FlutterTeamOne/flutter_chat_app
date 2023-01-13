@@ -132,7 +132,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                               builder: (BuildContext context) =>
                                   (AddChatDialogWidget(val: value)))
                           .then((value) async {
-                        /// TODO refactor print
+                        /// TODO: refactor print
                         print('FriendId From Add Dialog: $value');
                         print('Current UserId: ${UserPref.getUserId}');
                         //FriendId Validation
@@ -141,11 +141,11 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                           userFromServerDb =
                               await grpcClient.getUser(userId: value);
 
-                          /// TODO refactor print
+                          /// TODO: refactor print
                           print("UserFromServer: $userFromServerDb");
                           if (!mounted) return;
 
-                          /// TODO refactor print
+                          /// TODO: refactor print
                           print("BEFORE REST");
                           await ref.read(River.chatPod.notifier).createChat(
                                 ChatDto(
@@ -155,7 +155,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                 ),
                               );
                         } on CustomException catch (e) {
-                          /// TODO refactor print
+                          /// TODO: refactor print
                           print('GET USER RESPONSE ERROR: $e');
                           await showDialog(
                               context: context,

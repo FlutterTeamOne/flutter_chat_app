@@ -459,10 +459,10 @@ extension SeedColorScheme on ColorScheme {
       surfaceVariant: surfaceVariant ?? Color(scheme.surfaceVariant),
       onSurfaceVariant: onSurfaceVariant ?? Color(scheme.onSurfaceVariant),
       outline: outline ?? Color(scheme.outline),
-      // TODO(rydmike): Temporarily removed, not yet available in Flutter 3.3.
+      // TODO:(rydmike): Temporarily removed, not yet available in Flutter 3.3.
       // outlineVariant: outlineVariant ?? Color(scheme.outlineVariant),
       shadow: shadow ?? Color(scheme.shadow),
-      // TODO(rydmike): Temporarily removed, not yet available in Flutter 3.3.
+      // TODO:(rydmike): Temporarily removed, not yet available in Flutter 3.3.
       // scrim: scrim ?? Color(scheme.scrim),
       inverseSurface: inverseSurface ?? Color(scheme.inverseSurface),
       onInverseSurface: onInverseSurface ?? Color(scheme.onInverseSurface),

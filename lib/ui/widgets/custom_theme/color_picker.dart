@@ -1289,7 +1289,7 @@ class _ColorPickerState extends State<ColorPicker> {
     if (widget.customColorSwatchesAndNames.toString() !=
             oldWidget.customColorSwatchesAndNames.toString() ||
         !mapEquals(widget.pickersEnabled, oldWidget.pickersEnabled)) {
-      // TODO(rydmike): Investigate the mapEquals issue.
+      // TODO:(rydmike): Investigate the mapEquals issue.
       // In above un-equality check, the mapEquals, or with map != operator,
       // does not work if you provide a map made with createPrimarySwatch or
       // createAccentSwatch. It should, not sure why it does not. The Wheel
@@ -2192,7 +2192,7 @@ class _ColorPickerState extends State<ColorPicker> {
     }
     // ELSE FOR: Clipboard could not parsed to a Color()
     else {
-      // TODO(rydmike): Improve sound when it can be done with SDK features.
+      // TODO:(rydmike): Improve sound when it can be done with SDK features.
       // This is a nice idea, but it does not do much on most platforms.
       // Would just like to get a nice "error bleep" sound on all platforms
       // without any plugin by using SDK only, but not doable, bummer.

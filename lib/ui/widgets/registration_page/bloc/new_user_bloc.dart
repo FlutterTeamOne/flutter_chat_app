@@ -22,11 +22,11 @@ class NewUserBloc extends Bloc<NewUserEvent, NewUserState> {
   void _setNewUserEvent(
       SetNewUserEvent event, Emitter<NewUserState> emit) async {
     // await DBHelper.instanse.initDB(user: event.user);
-    /// TODO refactor print
+    /// TODO: refactor print
     print('event user ${event.user.name}');
     UserDto newCreatedUser = await GrpcClient().createUser(user: event.user);
 
-    /// TODO refactor print
+    /// TODO: refactor print
     print('response: $newCreatedUser');
     emit(state.copyWith(newUser: newCreatedUser));
   }

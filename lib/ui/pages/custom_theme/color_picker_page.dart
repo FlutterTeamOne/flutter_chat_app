@@ -140,7 +140,7 @@ class _ColorPickerPageState extends ConsumerState<ColorPickerPage> {
                               primaryColor: color,
                             ));
 
-                    /// TODO refactor print
+                    /// TODO: refactor print
                     print(color);
                   },
                   width: 44,
@@ -315,7 +315,7 @@ class _ColorPickerPageState extends ConsumerState<ColorPickerPage> {
                   primaryColor: color,
                 ));
 
-        /// TODO refactor print
+        /// TODO: refactor print
         print(color);
       },
       width: 40,

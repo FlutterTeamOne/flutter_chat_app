@@ -29,7 +29,7 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
     //
     var restChats = await RestClient().getChats();
 
-    /// TODO refactor print
+    /// TODO: refactor print
     print('IF CHATS is NULL - ADD CHAT FROM LOCAL DB: $restChats');
     print('IF CHATS is NULL - ADD CHAT FROM LOCAL DB: $chats');
     //сравниваем два листа и в зависимости от этого меняем стейт на нужный лист
@@ -47,7 +47,7 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
             chatId: chat.chatId!);
       }
     } else {
-      /// TODO refactor print
+      /// TODO: refactor print
       print('ADD CHAT FROM EVENT: $chats');
       state = state.copyWith(chats: chats);
     }
@@ -65,7 +65,7 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
       throw CustomException(e.response.toString());
     }
 
-    /// TODO refactor print
+    /// TODO: refactor print
     print("JAJAJ");
     var chats = await _chatServices.createChat(
         createDate: chatFromRest.createdDate,
@@ -76,7 +76,7 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
   }
 
   void getChatId(int chatId) {
-    /// TODO refactor print
+    /// TODO: refactor print
     print('HEY');
     state = state.copyWith(chatId: chatId);
     // return state;
@@ -88,7 +88,7 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
     //запрос на удаление к рест серверу
     await RestClient().deleteChatRest(id: chatId);
 
-    /// TODO refactor print
+    /// TODO: refactor print
     print('CHAT ID: $chatId');
     state = state.copyWith(chatId: null);
   }

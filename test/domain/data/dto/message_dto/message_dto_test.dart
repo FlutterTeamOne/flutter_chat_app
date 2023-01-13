@@ -9,11 +9,11 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   MessageDto messageDto = MessageDto(chatId: 1, senderId: 1, content: "Hello");
   setUpAll(() async {
-    /// TODO refactor print
+    /// TODO: refactor print
     print("test start");
   });
   tearDownAll(() {
-    /// TODO refactor print
+    /// TODO: refactor print
     print("test end");
   });
   group("MessageDto tests", () {
@@ -110,7 +110,7 @@ void main() {
     test('ToString', () async {
       var actual = messageDto.toString();
 
-      /// TODO refactor print
+      /// TODO: refactor print
       print(actual);
 
       expect(actual,

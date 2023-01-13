@@ -32,7 +32,7 @@ Future<void> main() async {
   await UserPref.init();
   await UserPref.restore();
 
-  /// TODO refactor print
+  /// TODO: refactor print
   print("UserPref: ${UserPref.getUserDbPref}");
   UserPref.getUserDbPref
       ? await DBHelperStart.instanse.initDB()
@@ -43,7 +43,7 @@ Future<void> main() async {
       await Directory('$userDir/AppData/Local/FlutterChatApp/databases')
           .create(recursive: true);
 
-  /// TODO refactor print
+  /// TODO: refactor print
   print(directory.path);
   runApp(ProviderScope(child: MyApp()));
 }

@@ -37,7 +37,7 @@ class DBHelperStart {
     // String path = join(dbPath.path, DatabaseConst.dbFileNameStart);
     String path = join(dbPath, DatabaseConst.dbFileNameStart);
 
-    /// TODO refactor print
+    /// TODO: refactor print
     print('PATH_absolute: $path');
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(

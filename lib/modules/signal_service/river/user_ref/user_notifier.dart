@@ -57,7 +57,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
           await _usersServices.getAllUserIdAndUpdatedStarted();
       List<UserRequest> usersRequest = [];
       if (usersForUpdate.isNotEmpty) {
-        /// TODO refactor print
+        /// TODO: refactor print
         print("lastID ${usersForUpdate.last['user_id']}");
         for (var user in usersForUpdate) {
           usersRequest.add(UserRequest(
@@ -73,11 +73,11 @@ class UserNotifier extends StateNotifier<UserStateRef> {
         usersResponse = await stub.sync(UsersRequest(
             mainUser: UserPref.getUserId, usersForUpdate: usersRequest));
       } catch (e) {
-        /// TODO refactor print
+        /// TODO: refactor print
         print(e);
       }
 
-      /// TODO refactor print
+      /// TODO: refactor print
       print("UsersServ NEW ${usersResponse.usersNew}");
       print("UsersServ UPDATED ${usersResponse.usersUpdated}");
       for (var user in usersResponse.usersNew) {
@@ -113,7 +113,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       var usersUp = await _usersServices.getAllUserIdAndUpdated();
       var usersRequest = <UserRequest>[];
       if (usersUp.isNotEmpty) {
-        /// TODO refactor print
+        /// TODO: refactor print
         print("lastID ${usersUp.last['user_id']}");
         for (var user in usersUp) {
           usersRequest.add(UserRequest(
@@ -153,7 +153,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       //запрос на сервер
       var response = DataDBResponse();
 
-      /// TODO refactor print
+      /// TODO: refactor print
       print('maxUserId: $mainUserId');
       print('chatId: $maxChatId');
       print('messageId: $maxMessageId');
@@ -167,18 +167,18 @@ class UserNotifier extends StateNotifier<UserStateRef> {
               maxMessageId: maxMessageId, messageForUpdate: messagesRequest),
         ));
       } catch (e) {
-        /// TODO refactor print
+        /// TODO: refactor print
         print(e);
       }
 
-      /// TODO refactor print
+      /// TODO: refactor print
       print("NEWUSERS: ${response.users.usersNew}");
 
       ///
       ///ДОБАВЛЯЕМ НОВЫХ ЮЗЕРОВ
       ///
       for (var user in response.users.usersNew) {
-        /// TODO refactor print
+        /// TODO: refactor print
         print(
             "deleted date is empty? ${user.deletedDate} ${user.deletedDate.isNotEmpty}");
         String userAvatar = (user.deletedDate == "" || user.deletedDate.isEmpty)
@@ -197,7 +197,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       ///
       ///ДОБАВЛЯЕМ НОВЫЕ ЧАТЫ
       ///
-      ///  /// TODO refactor print
+      ///  /// TODO: refactor print
       print('NEW_CHATS: ${response.chats.chatsNew}');
       for (var chat in response.chats.chatsNew) {
         await _chatServices.createChat(
@@ -209,10 +209,10 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       ///
       ///ОБНОВЛЯЕМ СТАРЫХ ЮЗЕРОВ
       ///
-      /// TODO refactor print
+      /// TODO: refactor print
       print('REPSONSE_UPDATEUSERS: ${response.users.usersUpdated}');
       for (var user in response.users.usersUpdated) {
-        /// TODO refactor print
+        /// TODO: refactor print
         print(
             "deleted date is empty? ${user.deletedDate} ${user.deletedDate.isEmpty}");
         String userAvatar = (user.deletedDate == "" || user.deletedDate.isEmpty)
@@ -231,7 +231,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       ///
       ///ДОБАВЛЯЕМ НОВЫЕ СООБЩЕНИЯ
       ///
-      /// TODO refactor print
+      /// TODO: refactor print
       print("RESPONSE_MESSAGES NEW: ${response.messages.messagesNew}");
       for (var message in response.messages.messagesNew) {
         var type = ContentType.isText.name == message.contentType.name
@@ -261,14 +261,14 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       ///
       ///ОБНОВЛЯЕМ ЧАТЫ
       ///
-      /// TODO refactor print
+      /// TODO: refactor print
       print("RESPONSE_UPDATED_CHATS: ${response.chats.chatsUpdated}");
       for (var chats in response.chats.chatsUpdated) {}
 
       ///
       ///ОБНОВЛЯЕМ СООБЩЕНИЯ
       ///
-      /// TODO refactor print
+      /// TODO: refactor print
       print("RESPONSE_UPDATED_MESSAGE: ${response.messages.messagesUpdated}");
       for (var message in response.messages.messagesUpdated) {
         var type = ContentType.isText.name == message.contentType.name
@@ -291,20 +291,20 @@ class UserNotifier extends StateNotifier<UserStateRef> {
           isRead: message.isRead,
         );
 
-        /// TODO refactor print
+        /// TODO: refactor print
         print("UPDATEMESSAGE START");
         await _messagesServices.updateMessageSynh(msg: msg);
         if (msg.deletedDate != null && msg.deletedDate != '') {
           await _messagesServices.deleteMessage(id: msg.messageId!);
         }
 
-        /// TODO refactor print
+        /// TODO: refactor print
         print("UPDATEMESSAGE END");
       }
       users = await _usersServices.getAllUsers();
     }
     for (var userServ in users) {
-      /// TODO refactor print
+      /// TODO: refactor print
       print('USERS IN Base: $userServ');
     }
     //Добавляем всех юзеров в state
@@ -337,11 +337,11 @@ class UserNotifier extends StateNotifier<UserStateRef> {
   }
 
   void changeUser(bool isStartDB) {
-    /// TODO refactor print
+    /// TODO: refactor print
     print('GET USER PREF: ${UserPref.getUserDbPref} ');
     UserPref.setUserDbPref = isStartDB;
 
-    /// TODO refactor print
+    /// TODO: refactor print
     print('GET USER PREF: ${UserPref.getUserDbPref} ');
   }
 
@@ -350,11 +350,11 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     try {
       result = await GrpcClient().deleteUser(userId: userId);
     } catch (e) {
-      /// TODO refactor print
+      /// TODO: refactor print
       print(e);
     }
 
-    /// TODO refactor print
+    /// TODO: refactor print
     print('event: $userId');
     print(result.isDeleted);
     state = state.copyWith(isDeleted: result.isDeleted);
@@ -365,10 +365,10 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     try {
       result = await GrpcClient().updateUser(updatedUser: user);
 
-      /// TODO refactor print
+      /// TODO: refactor print
       print('RESULT: $result');
     } catch (e) {
-      /// TODO refactor print
+      /// TODO: refactor print
       print(e);
     }
     await _usersServices.updateUser(

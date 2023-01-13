@@ -66,7 +66,7 @@ class ButtonChangeEmail extends ConsumerWidget {
 
                               userPod.readUser();
 
-                              /// TODO refactor print
+                              /// TODO: refactor print
                               print(newEmail);
                               Navigator.pop(context);
                             },

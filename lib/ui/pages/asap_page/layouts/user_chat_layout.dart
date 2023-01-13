@@ -179,13 +179,13 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
     // print('IS EDIT F:${context.read<MessageBloc>().isEditing}');
     if (messageRef.editState == EditState.isPreparation &&
         controller.text.isNotEmpty) {
-      /// TODO refactor print
+      /// TODO: refactor print
       print("EDITING");
       var localMessageId = messageRef.messageId;
       var message = messageRef.messages
           ?.firstWhere((element) => element.localMessageId == localMessageId);
       if (message?.contentType == ContentType.isText) {
-        /// TODO refactor print
+        /// TODO: refactor print
         print('EDIT  TEXT');
         messageNotif.updateMessage(
             message: MessageDto(
@@ -197,12 +197,12 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                 updatedDate: DateTime.now().toIso8601String()),
             isEditing: EditState.isEditing);
       } else if (message?.contentType == ContentType.isMediaText) {
-        /// TODO refactor print
+        /// TODO: refactor print
         print('EDIT MEDIA TEXT');
         List<String>? data = message?.content.split('media: ');
         var msg = data![1];
 
-        /// TODO refactor print
+        /// TODO: refactor print
         print('MSG UPD: $msg');
         messageNotif.updateMessage(
             message: MessageDto(
@@ -214,7 +214,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                 updatedDate: DateTime.now().toIso8601String()),
             isEditing: EditState.isEditing);
       } else {
-        /// TODO refactor print
+        /// TODO: refactor print
         print('EDIT MEDIA ');
         return;
       }

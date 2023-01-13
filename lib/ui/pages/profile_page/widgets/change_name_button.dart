@@ -64,7 +64,7 @@ class ButtonChangeName extends ConsumerWidget {
                               userPod.updateUser(updatedUser);
                               userPod.readUser();
 
-                              /// TODO refactor print
+                              /// TODO: refactor print
                               print(newName);
                               Navigator.pop(context);
                             },

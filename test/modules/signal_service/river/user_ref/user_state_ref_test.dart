@@ -14,11 +14,11 @@ void main() async {
   setUpAll(() async {
     await UserPref.init();
 
-    /// TODO refactor print
+    /// TODO: refactor print
     print("test start");
   });
   tearDownAll(() {
-    /// TODO refactor print
+    /// TODO: refactor print
     print("test end");
   });
   group("UserStateRef copyWith tests", () {
@@ -67,7 +67,7 @@ void main() async {
           const UserStateRef(users: [], userDb: null, isDeleted: false);
       var response = userStateRef.userDbthis;
 
-      /// TODO refactor print
+      /// TODO: refactor print
       print(response);
 
       expect(response, false);

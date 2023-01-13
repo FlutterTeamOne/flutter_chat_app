@@ -52,7 +52,7 @@ class _PopupMenuCardWidgetState extends ConsumerState<PopupMenuCardWidget> {
             var msg = data![0].split('message: ')[1];
             // image = data[4].split('url: ')[1];
             // print('image: $image');
-            /// TODO refactor print
+            /// TODO: refactor print
             print('msg: $msg');
             widget.textController?.text = msg;
           }

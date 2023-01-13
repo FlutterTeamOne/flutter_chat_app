@@ -33,11 +33,11 @@ class GrpcClient {
     try {
       response = await stub.deleteUser(request);
     } catch (e) {
-      /// TODO refactor print
+      /// TODO: refactor print
       print(e);
     }
 
-    /// TODO refactor print
+    /// TODO: refactor print
     print('User delete: $response');
     return response;
   }
@@ -51,7 +51,7 @@ class GrpcClient {
     try {
       response = await stub.getUser(request);
     } on GrpcError catch (e) {
-      /// TODO refactor print
+      /// TODO: refactor print
       print('ERROR getUser GRPC_CLIENT: $e');
       throw CustomException(e.message.toString());
     }
@@ -72,11 +72,11 @@ class GrpcClient {
     try {
       response = await stub.createUser(request);
     } catch (e) {
-      /// TODO refactor print
+      /// TODO: refactor print
       print(e);
     }
 
-    /// TODO refactor print
+    /// TODO: refactor print
     print('CREATE USER FROM GRPC CLIENT RESPONSE: ${response.toString()}');
     return UserDto(
         userId: response.id,
@@ -98,16 +98,16 @@ class GrpcClient {
       ..profilePicUrl = updatedUser.profilePicLink;
     var response = UpdateUserResponse();
 
-    /// TODO refactor print
+    /// TODO: refactor print
     print("Отправлен Юзер: $request");
     try {
       response = await stub.updateUser(request);
     } catch (e) {
-      /// TODO refactor print
+      /// TODO: refactor print
       print(e);
     }
 
-    /// TODO refactor print
+    /// TODO: refactor print
     print("Получен Респонc: $response");
     return response;
   }

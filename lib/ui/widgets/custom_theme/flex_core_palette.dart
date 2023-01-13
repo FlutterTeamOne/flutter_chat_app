@@ -334,7 +334,7 @@ class FlexCorePalette {
     /// A chroma value can also be specified via [tertiaryChroma].
     int? tertiary,
 
-    // TODO(rydmike): Consider adding neutrals and error ARGB parameters.
+    // TODO:(rydmike): Consider adding neutrals and error ARGB parameters.
 
     /// Cam16 chroma value to use for primary colors [TonalPalette} generation.
     ///
@@ -433,7 +433,7 @@ class FlexCorePalette {
     /// no specified Hue input for tertiary key color.
     final double tertiaryHueRotation = 60,
 
-    // TODO(rydmike): Consider adding neutrals and error chroma parameters.
+    // TODO:(rydmike): Consider adding neutrals and error chroma parameters.
 
     /// Cam16 chroma value to use for neutral colors [TonalPalette} generation.
     ///

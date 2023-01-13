@@ -135,7 +135,7 @@ class _AppDialogState extends ConsumerState<_AppDialog> {
                                                   .read(River.userPod.notifier)
                                                   .readUser();
 
-                                              /// TODO refactor print
+                                              /// TODO: refactor print
                                               print(newUrl);
                                               Navigator.pop(context);
                                             }
@@ -185,7 +185,7 @@ Future<bool> validateImage(String imageUrl) async {
   if (res.statusCode != 200) return false;
   var data = res.headers;
 
-  /// TODO refactor print
+  /// TODO: refactor print
   print("IMAGE $data");
   print(data['content-type'][0]);
   return checkIfImage(data['content-type'][0]);
