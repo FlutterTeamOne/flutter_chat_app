@@ -57,15 +57,11 @@ class ValidatorService {
   }
 
   static Future validChat({required SynhChat chat}) async {
-    // final okAll = await LocalChatServices().getAllChats();
-    // if (okAll.isEmpty) {
-    //   await LocalChatServices().createChat(
-    //       createDate: chat.createdDate,
-    //       userId: chat.userId,
-    //       chatId: chat.chatId);
-    // }
     //делаем запроc в локалку на совпадение чата с таким же юзер ид
-
+    //!TODO!: Решить задачу! После удаления чата и перезахода под тем же юзером
+    //! - чат может восстановиться со всеми предыдущими сообщениями
+    //! - а может восстановиться лишь с последними сообщениями от другого юзера
+    //!? скорее всего проблема с lastIdMessage
     List<Map<String, Object?>> chatByUser =
         await LocalChatServices().getChatByUserId(id: chat.userId);
     final ok = await LocalChatServices().getChatById(id: chat.chatId);
@@ -76,7 +72,8 @@ class ValidatorService {
           chatId: chat.chatId);
     }
     if (chat.deletedDate.isNotEmpty) {
-      await LocalMessagesServices().deleteAllMessagesInChat(chatID: chat.chatId);
+      await LocalMessagesServices()
+          .deleteAllMessagesInChat(chatID: chat.chatId);
     }
     if (chatByUser.isEmpty) {}
   }
