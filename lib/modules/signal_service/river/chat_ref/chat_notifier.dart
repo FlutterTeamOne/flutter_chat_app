@@ -59,14 +59,22 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
     // return state;
   }
 
-  deleteChat(int chatId) async {
-    //TODO: func delete chat
-    await _chatServices.deleteChat(id: chatId);
+  Future<void> deleteChat(int chatId) async {
     //запрос на удаление к рест серверу
+    dynamic data;
     try {
-      await RestClient().deleteChatRest(id: chatId);
+     
+      data = await RestClient().deleteChatRest(id: chatId);
+    } on DioError catch (e) {
+      print("DioError DeleteChatNotifer ${e.response.toString()}");
+      throw CustomException(e.response.toString());
     } catch (e) {
+      print("DeleteChatNotifer $e");
       throw CustomException(e.toString());
+    }
+    if (data == null) {
+      print("DATA == NULL DeleteChatNotifer");
+      throw CustomException("RestServer not found");
     }
     print('CHAT ID: $chatId');
     state = state.copyWith(chatId: null);

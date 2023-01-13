@@ -7,6 +7,7 @@ import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/generated/users/users.pbgrpc.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/add_chat_dialog_widget.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/search_field.dart';
+import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../modules/storage_manager/db_helper/user_path.dart';
@@ -145,18 +146,15 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                           ref.read(River.chatPod.notifier).getChatId(chatId);
                         } on CustomException catch (e) {
                           print('GET USER RESPONSE ERROR: $e');
+                          String textContent = e.message == 'null'
+                              ? "Rest Server Not Found"
+                              : e.message;
                           await showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('Ошибка'),
-                                  content: Text("$e"),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, 'OK'),
-                                        child: const Text('OK'))
-                                  ],
+                                return ErrorDialog(
+                                  textTitle: 'Error',
+                                  textContent: textContent,
                                 );
                               });
                         }

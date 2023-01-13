@@ -1,4 +1,6 @@
+import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/modules/signal_service/river/river.dart';
+import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:chat_app/ui/pages/asap_page/layouts/user_chat_layout.dart';
 import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
 import 'package:flutter/material.dart';
@@ -32,15 +34,26 @@ class EditChatPopupWidget extends StatelessWidget {
                             Text("Delete Chat")
                           ],
                         ),
-                        onTap: () {
+                        onTap: () async {
                           try {
-                            ref.read(River.chatPod.notifier).deleteChat(chatId);
+                            await ref
+                                .read(River.chatPod.notifier)
+                                .deleteChat(chatId);
+                            await LocalChatServices().deleteChat(id: chatId);
                             ref.read(River.chatPod.notifier).getChatId(-1);
-                          } catch (e) {
+                          } on CustomException catch (e) {
+                            print("POPUP DELETE Custom $e");
+                            String textContent = e.message == 'null'
+                                ? "Rest Server Not Found"
+                                : e.message;
                             showDialog(
                                 context: context,
-                                builder: (context) => ErrorDialog(
-                                    textTitle: 'Error', textContent: '$e'));
+                                builder: (BuildContext context) {
+                                  return ErrorDialog(
+                                    textTitle: 'Error',
+                                    textContent: textContent,
+                                  );
+                                });
                           }
                         }),
                   ]),

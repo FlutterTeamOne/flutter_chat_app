@@ -76,6 +76,12 @@ class ChatApi {
       var resp;
       if (chatId != null) {
         resp = await _chatService.deleteChat(id: chatId);
+      } else {
+        return Response.badRequest(body: "Not valid ChatId: $chatId");
+      }
+      print(resp);
+      if (resp != 1) {
+        return Response.badRequest(body: "Delete $resp chats");
       }
       return Response.ok(resp.toString());
     });

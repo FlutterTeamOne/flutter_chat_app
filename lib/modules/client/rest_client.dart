@@ -119,17 +119,23 @@ class RestClient {
   }
 
   Future deleteChatRest({required int id}) async {
-    var chatUrl = '$_url/chats/';
+    const String chatUrl = '$_url/chats/';
+    dynamic data;
     try {
-      var resp = await _dio.delete('$chatUrl$id');
+      final Response<dynamic> resp = await _dio.delete('$chatUrl$id');
       print('DEL RESP:$resp');
       if (resp.statusCode == 200) {
-        var data = json.decode(resp.data);
+        data = json.decode(resp.data);
         print('DEL DATA: $data');
       }
+    } on DioError catch (e) {
+      print("DioError DeleteChat ${e.response.toString()}");
+      throw CustomException(e.response.toString());
     } catch (e) {
+      print("Error DeleteChat $e");
       throw CustomException(e.toString());
     }
+    return data;
   }
 
   Future<AttachModel> sendImageRest({required String path}) async {

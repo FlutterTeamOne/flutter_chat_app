@@ -1,6 +1,6 @@
 ﻿import 'package:chat_app/modules/signal_service/river/message_ref/message_notifier.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
-import 'package:chat_app/ui/pages/asap_page/edit_chat_popup_widget.dart';
+import 'package:chat_app/ui/pages/asap_page/layouts/edit_chat_popup_widget.dart';
 import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
 
 import '../../../../modules/signal_service/river/message_ref/message_state_ref.dart';
