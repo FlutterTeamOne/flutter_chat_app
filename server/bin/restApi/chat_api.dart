@@ -39,9 +39,9 @@ class ChatApi {
       print('RESP: $resp');
 
       //Чат с самим собой
-      if (resp['friend1_id'] == resp['friend2_id']) {
-        return Response.notFound("You can't create a chat with yourself");
-      }
+      // if (resp['friend1_id'] == resp['friend2_id']) {
+      //   return Response.notFound("You can't create a chat with yourself");
+      // }
       List<Map<String, Object?>> chatId = await _chatService.getChatByTwoIds(
           friend1_id: resp['friend1_id'], friend2_id: resp['friend2_id']);
       print('user ID: $chatId');
