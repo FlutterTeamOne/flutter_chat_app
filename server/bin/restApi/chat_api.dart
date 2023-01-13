@@ -35,26 +35,44 @@ class ChatApi {
     router.put('/', (Request request) async {
       final body = await request.readAsString();
       var resp = jsonDecode(body);
-
+      dynamic res;
+      Map<String, Object?> userFriend;
       print('RESP: $resp');
 
       //Чат с самим собой
       // if (resp['friend1_id'] == resp['friend2_id']) {
       //   return Response.notFound("You can't create a chat with yourself");
       // }
+      print("GetChatByTwoIds");
       List<Map<String, Object?>> chatId = await _chatService.getChatByTwoIds(
-          friend1_id: resp['friend1_id'], friend2_id: resp['friend2_id']);
+          friend1Id: resp['friend1_id'], friend2Id: resp['friend2_id']);
       print('user ID: $chatId');
+      userFriend =
+          await UsersServices().getUserById(userId: resp['friend2_id'] as int);
+      String date = DateTime.now().toIso8601String();
       if (chatId.isEmpty) {
-        print('user id is not empty');
-        var res = await _chatService.createChat(
+        print('ТАКОГО ЧАТА НЕ БЫЛО');
+        res = await _chatService.createChat(
             friend1Id: resp['friend1_id'],
             friend2Id: resp['friend2_id'],
-            date: resp['date']);
+            date: date);
         print('RES: $res');
-        var userFriend = await UsersServices()
-            .getUserById(userId: resp['friend2_id'] as int);
-        var result = {'friend': userFriend, 'res': res}.toString();
+        //[{chat_id: 4, friend1_id: 1, friend2_id: 5, created_date: 2023-01-13T14:11:06.664694, deleted_date: null, updated_date: 2023-01-13T14:11:06.664694}]
+        String result = {'friend': userFriend, 'res': res}.toString();
+        return Response.ok(result);
+      } else if (chatId.length == 1 &&
+          (chatId[0]['deleted_date'] != '' &&
+              chatId[0]['deleted_date'] != null)) {
+        print("ЧАТ БЫЛ УДАЛЕН ОДНИМ ИЗ ПОЛЬЗОВАТЕЛЕЙ");
+        await _chatService.updateChat(
+            newValues: 'deleted_date = "", updated_date = "$date"',
+            condition: 'chat_id = ${chatId[0]['chat_id']}');
+        print("CHAT: $chatId");
+        res =
+            await ChatsServices().getChatById(id: chatId[0]['chat_id'] as int);
+        print("RES: $res");
+//{chat_id: 1, friend1_id: 1, friend2_id: 2, created_date: 2022-12-02T21:36:32.653712, deleted_date: , updated_date: 2023-01-13T14:08:22.259917}
+        String result = {'friend': userFriend, 'res': res}.toString();
         return Response.ok(result);
       } else {
         return Response.notFound('Chat is already created.');
@@ -74,8 +92,11 @@ class ChatApi {
       var chatId = int.tryParse(id);
       print('CHAI ID DEL: $chatId');
       var resp;
+      String date = DateTime.now().toIso8601String();
       if (chatId != null) {
-        resp = await _chatService.deleteChat(id: chatId);
+        resp = await _chatService.updateChat(
+            newValues: 'deleted_date = "$date", updated_date = "$date"',
+            condition: 'chat_id = $chatId');
       } else {
         return Response.badRequest(body: "Not valid ChatId: $chatId");
       }
@@ -90,22 +111,11 @@ class ChatApi {
     //   data[data.indexWhere((element) => element.id == id)];
     //   return Response.ok(data);
     // });
-    //запрос на добавление чата в список чаты
-    router.put('/', (Request request) async {
-      final body = await request.readAsString();
-      var resp = jsonDecode(body);
-
-      await _chatService.createChat(
-          friend1Id: resp['friend1_id'],
-          friend2Id: resp['friend2_id'],
-          date: resp['date']);
-      return Response.ok(body, headers: _headers);
-    });
     //запрос на поиск чата по ид
     router.get('/<id>', (Request requst, String id) async {
       var chatId = int.parse(id);
       var chat = await _chatService.getChatById(id: chatId);
-      return chat['chat_id'] != null
+      return chat[0]['chat_id'] != null
           ? Response.ok(json.encode(chat), headers: _headers)
           : Response.notFound('Чат не найден');
     });

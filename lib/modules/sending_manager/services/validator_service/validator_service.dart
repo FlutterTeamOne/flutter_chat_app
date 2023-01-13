@@ -30,6 +30,7 @@ class ValidatorService {
         attachmentId: message.attachmentId,
         isRead: message.isRead,
       );
+// await LocalChatServices().
       if (msg.dateDelete == null || msg.dateDelete == '') {
         await LocalMessagesServices().addNewMessageFromBase(message: msg);
       }
@@ -63,6 +64,10 @@ class ValidatorService {
     //       userId: chat.userId,
     //       chatId: chat.chatId);
     // }
+    //делаем запроc в локалку на совпадение чата с таким же юзер ид
+
+    List<Map<String, Object?>> chatByUser =
+        await LocalChatServices().getChatByUserId(id: chat.userId);
     final ok = await LocalChatServices().getChatById(id: chat.chatId);
     if (ok.isEmpty) {
       await LocalChatServices().createChat(
@@ -70,5 +75,6 @@ class ValidatorService {
           userId: chat.userId,
           chatId: chat.chatId);
     }
+    if (chatByUser.isEmpty) {}
   }
 }
