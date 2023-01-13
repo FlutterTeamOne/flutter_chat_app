@@ -14,7 +14,7 @@ import '../../../../src/generated/grpc_lib/grpc_user_lib.dart';
 
 class UserNotifier extends StateNotifier<UserStateRef> {
   late MainUserServices _mainUserServices;
-
+  late GrpcUsersClient stub;
   late LocalUsersServices _usersServices;
   late LocalChatServices _chatServices;
   late LocalMessagesServices _messagesServices;
@@ -23,6 +23,8 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     _mainUserServices = MainUserServices();
     _messagesServices = LocalMessagesServices();
     _chatServices = LocalChatServices();
+    stub = GrpcUsersClient(GrpcClient().channel,
+        options: CallOptions(timeout: const Duration(seconds: 30)));
     DBHelper.instanse.updateListenController.stream.listen((event) {
       if (event == DbListener.isUser) {
         if (!mounted) {
@@ -163,8 +165,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     ///
     print("RESPONSE_UPDATED_CHATS: ${response.chats.chatsUpdated}");
     for (var chats in response.chats.chatsUpdated) {
-            print('\\\\\\\\\\\\\\CHATS UPDATED DONE $chats\\\\\\\\\\\\\\');
-
+      print('\\\\\\\\\\\\\\CHATS UPDATED DONE $chats\\\\\\\\\\\\\\');
     }
 
     ///
@@ -240,54 +241,48 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     print('GET USER PREF: ${UserPref.getUserDbPref} ');
   }
 
-  void deleteUser(int userId) {
-    var result;
+  Future<void> deleteUser(int userId) async {
+    var request = DeleteUserRequest()..id = userId;
+    DeleteUserResponse response;
     try {
-      GrpcClient().deleteUser(userId: userId).then((value) => result = value);
+      response = await stub.deleteUser(request);
+    } on GrpcError catch (e) {
+      throw CustomException(e.message.toString());
     } catch (e) {
       throw CustomException(e.toString());
     }
     print('event: $userId');
-    print(result.isDeleted);
-    state = state.copyWith(isDeleted: result.isDeleted);
+    print(response.isDeleted);
+    state = state.copyWith(isDeleted: response.isDeleted);
   }
 
   Future<void> updateMainUser(UserDto user) async {
-    var result = UpdateUserResponse();
+    UpdateUserRequest request = UpdateUserRequest(
+        id: user.userId,
+        email: user.email,
+        name: user.name,
+        profilePicUrl: user.profilePicLink);
+
+    UpdateUserResponse response = UpdateUserResponse();
+
     try {
-      result = await GrpcClient().updateUser(updatedUser: user);
-      print('RESULT: $result');
+      response = await stub.updateUser(request);
+      print('RESULT: $response');
+      await _usersServices.updateUser(
+          newValues: '''${DatabaseConst.usersColumnName} = "${response.name}",
+            ${DatabaseConst.usersColumnEmail} = "${response.email}",
+            ${DatabaseConst.usersColumnProfilePicLink} = "${response.profilePicUrl}",
+            ${DatabaseConst.usersColumnUpdatedDate} = "${response.dateUpdated}"''',
+          condition: '${DatabaseConst.usersColumnUserId} = ${response.userId}');
     } catch (e) {
       print(e);
     }
-    await _usersServices.updateUser(
-        newValues: '''${DatabaseConst.usersColumnName} = "${result.name}",
-            ${DatabaseConst.usersColumnEmail} = "${result.email}",
-            ${DatabaseConst.usersColumnProfilePicLink} = "${result.profilePicUrl}",
-            ${DatabaseConst.usersColumnUpdatedDate} = "${result.dateUpdated}"''',
-        condition: '${DatabaseConst.usersColumnUserId} = ${result.userId}');
-    //TODO:Артур добавил стрим на изменения состояний при изменении локальной базы у себя в ветке
     final users = await _usersServices.getUserById(id: UserPref.getUserId);
     late UserDto newMainUser;
     if (users.isNotEmpty) {
       newMainUser = users.map((user) => UserDto.fromMap(user)).toList()[0];
     }
     state = state.copyWith(mainUser: newMainUser);
-  }
-
-  Future<bool> confirmPassword(
-      {required int userId, required String password}) async {
-    PasswordResponse response;
-    GrpcUsersClient stub = GrpcUsersClient(GrpcClient().channel);
-    try {
-      response = await stub.confirmPassword(
-          PasswordConfirmRequest(userId: userId, password: password));
-      print('RESULT: $response');
-    } on GrpcError catch (e) {
-      print('ERROR CONFIRM PASSWORD GRPC_CLIENT: $e');
-      throw CustomException(e.message.toString());
-    }
-    return response.ok;
   }
 
   Future<bool> changePassword(
@@ -317,5 +312,17 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       user = users.map((user) => UserDto.fromMap(user)).toList()[0];
     }
     state = state.copyWith(mainUser: user);
+  }
+
+  Future<GetUserResponse> getUserFromServer({required int userId}) async {
+    var request = GetUserRequest()..id = userId;
+    GetUserResponse response = GetUserResponse();
+    try {
+      response = await stub.getUser(request);
+    } on GrpcError catch (e) {
+      print('ERROR getUser GRPC_CLIENT: $e');
+      throw CustomException(e.message.toString());
+    }
+    return response;
   }
 }

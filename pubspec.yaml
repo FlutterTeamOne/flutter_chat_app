@@ -15,7 +15,6 @@ dependencies:
     git:
       url: https://github.com/google/flutter-desktop-embedding
       path: plugins/window_size
-  flutter_bloc:
   shared_preferences: ^2.0.15
   sidebarx: ^0.14.0
   google_fonts: ^3.0.1

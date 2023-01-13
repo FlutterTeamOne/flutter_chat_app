@@ -1,6 +1,6 @@
 import 'package:chat_app/modules/signal_service/river/river.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
-import 'package:chat_app/ui/pages/change_password_page/repository/field_form_class.dart';
+import 'package:chat_app/ui/widgets/custom_widgets/field_form_class.dart';
 import 'package:chat_app/ui/pages/main_layout.dart';
 import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
 import 'package:chat_app/ui/widgets/custom_widgets/TextFormFieldWidget.dart';
@@ -119,6 +119,7 @@ class _ChangePasswordLayoutState extends ConsumerState<ChangePasswordLayout> {
                       )),
             ),
             const SizedBox(height: 15),
+
             ///
             ///Кнопка отправки формы
             ///
