@@ -27,17 +27,42 @@ class UserCard extends StatelessWidget {
                 // ignore: use_build_context_synchronously
                 Navigator.of(context).pushNamed(MainLayout.routeName);
               },
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.network(
-                  user.profilePicLink,
-                  fit: BoxFit.cover,
-                  //При уменьшении экрана по горизонтали, карточки смещаются, и отображаются не как надо
-                  //нужно исправить проблему, при использовании cache/Width/Height правильно отображается но
-                  //теряется качество и растягивается фото, а при использовании просто height/width
-                  //качество остается хорошей но при уменьшении экрана не правильно отображается
-                  cacheWidth: 150,
-                  cacheHeight: 150,
+              // CachedNetworkImage позволяет кешировать изображение
+              child: CachedNetworkImage(
+                width: 125,
+                height: 125,
+                imageUrl: user.profilePicLink,
+                imageBuilder: (context, imageProvider) => ImageCard(
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                // placeholder будет ставить виджет пока загружается картинка
+                placeholder: (context, url) => const ImageCard(
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+                // errorWidget же при возникновении ошибки отображать
+                errorWidget: (context, url, error) => ImageCard(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.error,
+                        color: Theme.of(context).errorColor,
+                        size: 26,
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        'sorry, your image\ncould not be displayed',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle2
+                            ?.copyWith(fontSize: 12),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

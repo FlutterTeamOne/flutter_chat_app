@@ -1,12 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/ui/pages/main_layout.dart';
 import 'package:chat_app/ui/pages/registration_page/registration_page.dart';
-
 import '../../modules/signal_service/river/river.dart';
 import '../../src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 part '../auth/widgets/user_card.dart';
+part 'widgets/image_card.dart';
 
 class AuthPage extends ConsumerStatefulWidget {
   const AuthPage({super.key});
@@ -27,33 +28,38 @@ class _AuthPageState extends ConsumerState<AuthPage> {
   Widget build(BuildContext context) {
     final currentWidth = MediaQuery.of(context).size.width;
     adaptation() {
-      if (currentWidth > 1200) {
-        return 8;
-      } else if (currentWidth < 800) {
-        return 5;
+      if (currentWidth < 1420) {
+        if (currentWidth < 1300) {
+          if (currentWidth < 1160) {
+            if (currentWidth < 1030) {
+              if (currentWidth < 880) {
+                return 5;
+              }
+              return 6;
+            }
+            return 7;
+          }
+          return 8;
+        }
+        return 9;
       } else {
-        return 6;
+        return 10;
       }
     }
 
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor:
-              MaterialStateProperty.all(Theme.of(context).primaryColor),
+          elevation: MaterialStateProperty.all(5),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
           ),
         ),
         onPressed: () {
           Navigator.of(context).pushNamed(RegistrationPage.routeName);
         },
-        child: Text(
-          'Create new user',
-          style: Theme.of(context).textTheme.titleSmall,
-        ),
+        child: const Text('Create new user'),
       ),
       body: Consumer(builder: (context, ref, _) {
         List<UserDto>? users;
@@ -77,24 +83,19 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const SizedBox(height: 50),
-                      Wrap(
-                        children: [
-                          GridView.builder(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: adaptation(),
-                              crossAxisSpacing: 15,
-                              mainAxisSpacing: currentWidth > 900 ? 35 : 25,
-                            ),
-                            shrinkWrap: true,
-                            itemCount: users.length,
-                            itemBuilder: (context, index) {
-                              return UserCard(
-                                user: users![index],
-                              );
-                            },
-                          ),
-                        ],
+                      GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: adaptation(),
+                          crossAxisSpacing: 15,
+                          mainAxisSpacing: currentWidth > 900 ? 35 : 25,
+                        ),
+                        shrinkWrap: true,
+                        itemCount: users.length,
+                        itemBuilder: (context, index) {
+                          return UserCard(
+                            user: users![index],
+                          );
+                        },
                       ),
                       const SizedBox(height: 20),
                     ],
