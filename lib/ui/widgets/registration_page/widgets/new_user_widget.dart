@@ -168,8 +168,8 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
                     }),
                 const SizedBox(height: 20),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     buildCreateNewUserButton(
                       context,
@@ -177,6 +177,9 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
                       emailController,
                       passwordController,
                       _formKey,
+                    ),
+                    const SizedBox(
+                      width: 10,
                     ),
                     CloseButton(
                       color: Theme.of(context).errorColor,
@@ -194,100 +197,36 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
     );
   }
 
-  Padding buildCreateNewUserButton(BuildContext context, newUserNameText,
+  ElevatedButton buildCreateNewUserButton(BuildContext context, newUserNameText,
       newUserEmailText, newUserPasswordText, formKey) {
     late String newUserName;
-    return Padding(
-      padding: const EdgeInsets.only(left: 100.0),
-      child: Row(
-        children: [
-          ElevatedButton(
-              // style: ButtonStyle(
-              //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              //         RoundedRectangleBorder(
-              //   borderRadius: BorderRadius.circular(20.0),
-              // ))),
-              onPressed: () {
-                final isValid = formKey.currentState!.validate();
-                if (isValid) {
-                  // if (_nameKey.currentState!.validate() &&
-                  //     _emailKey.currentState!.validate() &&
-                  //     _passwordKey.currentState!.validate()) {
-                  //   ScaffoldMessenger.of(context).showSnackBar(
-                  //     const SnackBar(content: Text('Creating new user')),
-                  //   );
-                  // }
-                  late NewUserModel newUser = NewUserModel(
-                      name: newUserNameText.text,
-                      email: newUserEmailText.text,
-                      password: newUserPasswordText.text,
-                      registrationDate: newUserCreateDate,
-                      profilePicLink: newUserPictureUrl);
-                  ref.read(River.newUserPod.notifier).newUser(newUser: newUser);
-                  ref.read(River.userPod.notifier).readUser();
-                  Navigator.of(context).pushNamed(AuthPage.routeName);
-                  // showDialog(
-                  //     context: context,
-                  //     builder: (BuildContext context) {
-                  //       newUserName =
-                  //           context.watch<NewUserBloc>().state.newUser.name;
-                  //       return Dialog(
-                  //         // shape: RoundedRectangleBorder(
-                  //         //   borderRadius: BorderRadius.circular(20.0),
-                  //         // ),
-                  //         child: SizedBox(
-                  //           height: 80,
-                  //           width: 50,
-                  //           child: Column(
-                  //             children: [
-                  //               Padding(
-                  //                   padding: const EdgeInsets.all(8.0),
-                  //                   child: context
-                  //                               .read<NewUserBloc>()
-                  //                               .state
-                  //                               .newUser
-                  //                               .name ==
-                  //                           newUserNameText.text
-                  //                       ? Text('User $newUserName created')
-                  //                       : const Text('Error')),
-                  //               Consumer(
-                  //                 builder: (context, ref, _) {
-                  //                   return ElevatedButton(
-                  //                       // style: ButtonStyle(
-                  //                       //     shape: MaterialStateProperty.all<
-                  //                       //             RoundedRectangleBorder>(
-                  //                       //         RoundedRectangleBorder(
-                  //                       //   borderRadius:
-                  //                       //       BorderRadius.circular(20.0),
-                  //                       // ))),
-                  //                       onPressed: () {
-                  //                         ref
-                  //                             .read(River.userPod.notifier)
-                  //                             .readUser();
-
-                  //                         Navigator.of(context)
-                  //                             .pushNamed(AuthPage.routeName);
-                  //                       },
-                  //                       child: const Icon(Icons.check));
-                  //                 },
-                  //               )
-                  //             ],
-                  //           ),
-                  //         ),
-                  //       );
-                  //     });
-                  // print(
-                  //     '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , ');
-                }
-              },
-              child: const Text('Create new user')),
-          IconButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed('/');
-              },
-              icon: const Icon(Icons.close_rounded)),
-        ],
-      ),
-    );
+    return ElevatedButton(
+        // style: ButtonStyle(
+        //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        //         RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.circular(20.0),
+        // ))),
+        onPressed: () {
+          final isValid = formKey.currentState!.validate();
+          if (isValid) {
+            // if (_nameKey.currentState!.validate() &&
+            //     _emailKey.currentState!.validate() &&
+            //     _passwordKey.currentState!.validate()) {
+            //   ScaffoldMessenger.of(context).showSnackBar(
+            //     const SnackBar(content: Text('Creating new user')),
+            //   );
+            // }
+            late NewUserModel newUser = NewUserModel(
+                name: newUserNameText.text,
+                email: newUserEmailText.text,
+                password: newUserPasswordText.text,
+                registrationDate: newUserCreateDate,
+                profilePicLink: newUserPictureUrl);
+            ref.read(River.newUserPod.notifier).newUser(newUser: newUser);
+            ref.read(River.userPod.notifier).readUser();
+            Navigator.of(context).pushNamed(AuthPage.routeName);
+          }
+        },
+        child: const Text('Create new user'));
   }
 }
