@@ -47,6 +47,9 @@ class _ChangePasswordLayoutState extends ConsumerState<ChangePasswordLayout> {
 
   @override
   Widget build(BuildContext context) {
+    ///
+    ///Лист с полями формы
+    ///
     List<FieldFormClass> fieldsForm = [
       FieldFormClass(
           lableText: "Old Password",
@@ -116,39 +119,43 @@ class _ChangePasswordLayoutState extends ConsumerState<ChangePasswordLayout> {
                       )),
             ),
             const SizedBox(height: 15),
+            ///
+            ///Кнопка отправки формы
+            ///
             ElevatedButton(
-                onPressed: () async {
-                  if (!_changePasswordKey.currentState!.validate()) {
-                    return;
-                  }
-                  bool result = false;
-                  try {
-                    result = await ref
-                        .read(River.userPod.notifier)
-                        .changePassword(
-                            userId: UserPref.getUserId,
-                            oldPassword: oldPasswordController.text,
-                            newPassword: newPasswordController.text);
-                  } catch (e) {
-                    showDialog(
-                        context: context,
-                        builder: (context) =>
-                            ErrorDialog(textTitle: "Error", textContent: '$e'));
-                  }
+              child: const Text("Отправить"),
+              onPressed: () async {
+                if (!_changePasswordKey.currentState!.validate()) {
+                  return;
+                }
+                bool result = false;
+                try {
+                  result = await ref
+                      .read(River.userPod.notifier)
+                      .changePassword(
+                          userId: UserPref.getUserId,
+                          oldPassword: oldPasswordController.text,
+                          newPassword: newPasswordController.text);
+                } catch (e) {
+                  showDialog(
+                      context: context,
+                      builder: (context) =>
+                          ErrorDialog(textTitle: "Error", textContent: '$e'));
+                }
 
-                  _changePasswordKey.currentState!.save();
-                  if (result == true) {
-                    showDialog(
-                        context: context,
-                        builder: (context) => ErrorDialog(
-                              textTitle: "Success",
-                              textContent: 'Пароль успешно изменен',
-                              onPressed: () => Navigator.of(context)
-                                  .pushNamed(MainLayout.routeName),
-                            ));
-                  }
-                },
-                child: const Text("Отправить"))
+                _changePasswordKey.currentState!.save();
+                if (result == true) {
+                  showDialog(
+                      context: context,
+                      builder: (context) => ErrorDialog(
+                            textTitle: "Success",
+                            textContent: 'Пароль успешно изменен',
+                            onPressed: () => Navigator.of(context)
+                                .pushNamed(MainLayout.routeName),
+                          ));
+                }
+              },
+            )
           ],
         ),
       ),

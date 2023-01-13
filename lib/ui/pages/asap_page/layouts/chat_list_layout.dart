@@ -18,7 +18,7 @@ import '../../../../src/libraries/library_all.dart';
 class ChatListLayout extends StatefulWidget {
   final List<MessageDto> messageModel;
 
-  ChatListLayout({super.key, required this.messageModel});
+  const ChatListLayout({super.key, required this.messageModel});
 
   @override
   State<ChatListLayout> createState() => _ChatListLayoutState();
@@ -83,7 +83,7 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                     sender: lastMessage.chatId == 0
                                         ? ""
                                         : !checkSender(lastMessage.senderId)
-                                            ? friend!.name
+                                            ? friend.name
                                             : 'You',
                                     // checkSender(widget.messageModel[lastMessageId].senderId),
                                     // ? userBloc.state.users[index].name:'You'),
@@ -94,8 +94,11 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                           .watch(River.chatPod.notifier)
                                           .getChatId(chatModel[index].chatId!);
                                     },
-                                    name: friend?.name,
-                                    image: friend?.profilePicLink,
+                                    name: chatModel[index].userIdChat ==
+                                            UserPref.getUserId
+                                        ? "My favorite chat"
+                                        : friend.name,
+                                    image: friend.profilePicLink,
                                     updatedDate: getUpdateDate(
                                         chatModel[index].updatedDate),
                                     message: lastMessage.chatId != 0
