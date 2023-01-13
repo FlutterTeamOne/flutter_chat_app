@@ -10,6 +10,7 @@ class UserCardWidget extends StatelessWidget {
     required this.selected,
     required this.sender,
     required this.updatedDate,
+    required this.isSuccess,
   });
 
   final String? name;
@@ -19,6 +20,8 @@ class UserCardWidget extends StatelessWidget {
   final bool? selected;
   final String sender;
   final String updatedDate;
+  final int? isSuccess;
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -58,6 +61,10 @@ class UserCardWidget extends StatelessWidget {
         // style: AppTextStyle.s14AbelGrey,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+            color: isSuccess != null || message == 'Start chating'
+                ? Theme.of(context).textSelectionTheme.cursorColor
+                : Theme.of(context).errorColor),
       ),
     );
   }

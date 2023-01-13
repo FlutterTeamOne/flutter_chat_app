@@ -81,33 +81,35 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                   }
                                 }
                                 return UserCardWidget(
-                                    sender: lastMessage.chatId == 0
-                                        ? ""
-                                        : !checkSender(lastMessage.senderId)
-                                            ? friend.name
-                                            : 'You',
-                                    // checkSender(widget.messageModel[lastMessageId].senderId),
-                                    // ? userBloc.state.users[index].name:'You'),
-                                    selected: false,
-                                    onTap: () {
-                                      //TODO: GetChatId => SetChatId
-                                      ref
-                                          .watch(River.chatPod.notifier)
-                                          .getChatId(chatModel[index].chatId!);
-                                    },
-                                    name: chatModel[index].userIdChat ==
-                                            UserPref.getUserId
-                                        ? "My favorite chat"
-                                        : friend.name,
-                                    image: friend.profilePicLink,
-                                    updatedDate: getUpdateDate(
-                                        chatModel[index].updatedDate),
-                                    message: lastMessage.chatId != 0
-                                        ? lastMessage.contentType ==
-                                                ContentType.isText
-                                            ? lastMessage.content
-                                            : 'Image msg'
-                                        : 'Start chating');
+                                  sender: lastMessage.chatId == 0
+                                      ? ""
+                                      : !checkSender(lastMessage.senderId)
+                                          ? friend.name
+                                          : 'You',
+                                  // checkSender(widget.messageModel[lastMessageId].senderId),
+                                  // ? userBloc.state.users[index].name:'You'),
+                                  selected: false,
+                                  onTap: () {
+                                    //TODO: GetChatId => SetChatId
+                                    ref
+                                        .watch(River.chatPod.notifier)
+                                        .getChatId(chatModel[index].chatId!);
+                                  },
+                                  name: chatModel[index].userIdChat ==
+                                          UserPref.getUserId
+                                      ? "My favorite chat"
+                                      : friend.name,
+                                  image: friend.profilePicLink,
+                                  updatedDate: getUpdateDate(
+                                      chatModel[index].updatedDate),
+                                  message: lastMessage.chatId != 0
+                                      ? lastMessage.contentType ==
+                                              ContentType.isText
+                                          ? lastMessage.content
+                                          : 'Image msg'
+                                      : 'Start chating',
+                                  isSuccess: lastMessage.messageId,
+                                );
                               },
                             )
                           ],
