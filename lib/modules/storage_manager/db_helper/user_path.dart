@@ -34,7 +34,7 @@ class UserPref {
 
   static Future<void> init() async =>
       _prefs = await SharedPreferences.getInstance();
-      
+
   static bool get getUserDbPref => _prefs.getBool('userDb') ?? true;
   static set setUserDbPref(bool value) => _prefs.setBool('userDb', value);
   static set setUserId(int id) => _prefs.setInt('userId', id);

@@ -7,6 +7,7 @@ import 'package:chat_app/src/constants/db_constants.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_sync_lib.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
+import 'package:chat_app/ui/widgets/registration_page/models/new_user_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grpc/grpc.dart';
 

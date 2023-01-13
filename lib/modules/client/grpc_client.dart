@@ -56,7 +56,7 @@ class GrpcClient {
   Future createUser({required NewUserModel user}) async {
     late GrpcUsersClient stub;
     stub = GrpcUsersClient(channel,
-        options: CallOptions(timeout: Duration(seconds: 30)));
+        options: CallOptions(timeout: const Duration(seconds: 30)));
     var request = CreateUserRequest()
       ..name = user.name!
       ..email = user.email!

@@ -1,6 +1,8 @@
 import 'package:chat_app/modules/signal_service/river/chat_ref/chat_notifier.dart';
 import 'package:chat_app/modules/signal_service/river/connection_ref/connection_notifier.dart';
 import 'package:chat_app/modules/signal_service/river/message_ref/message_notifier.dart';
+import 'package:chat_app/modules/signal_service/river/new_user_ref/new_user_notifier.dart';
+import 'package:chat_app/modules/signal_service/river/new_user_ref/new_user_state.dart';
 import 'package:chat_app/modules/signal_service/river/synch_user_ref/synch_state_ref.dart';
 import 'package:chat_app/modules/signal_service/river/synch_user_ref/synch_user_notifier.dart';
 
@@ -36,6 +38,9 @@ class River {
   static final messagePod =
       StateNotifierProvider<MessageNotifier, MessageStateRef>(
           (ref) => MessageNotifier());
+  static final newUserPod =
+      StateNotifierProvider<NewUserNotifier, NewUserStateRef>(
+          (ref) => NewUserNotifier());
   // static final futureMessagePod = FutureProvider.autoDispose<MessageStateRef>(
   //     (ref) async => await ref.read(messagePod.notifier).readMessages());
 }
