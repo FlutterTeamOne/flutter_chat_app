@@ -425,21 +425,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.2"
-<<<<<<< HEAD
-  integration_test:
-    dependency: "direct dev"
-    description: flutter
-    source: sdk
-    version: "0.0.0"
-  internet_connection_checker:
-    dependency: "direct main"
-    description:
-      name: internet_connection_checker
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0+1"
-=======
->>>>>>> bugger
   intl:
     dependency: "direct main"
     description:
