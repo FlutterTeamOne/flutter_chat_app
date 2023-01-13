@@ -15,7 +15,7 @@ class GrpcClient {
 
   GrpcClient()
       : _channel = ClientChannel('localhost',
-            port: 6000,
+            port: 6001,
             options: const ChannelOptions(
               credentials: ChannelCredentials.insecure(),
             ));

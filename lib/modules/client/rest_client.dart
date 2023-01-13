@@ -7,7 +7,7 @@ import 'package:chat_app/modules/sending_manager/library/library_sending_manager
 import 'package:dio/dio.dart';
 
 class RestClient {
-  static const String _url = 'http://localhost:8080';
+  static const String _url = 'http://localhost:8081';
 
   final _dio = Dio();
 

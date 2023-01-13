@@ -412,7 +412,7 @@ Future<void> main() async {
     //Реестр кодеков, отслеживает чем будем пользоваться
     CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
   );
-  await server.serve(port: 6000);
+  await server.serve(port: 6001);
   await DbServerServices.instanse.openDatabase();
   print('✅ Server listening on port ${server.port}...');
 }
