@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ChangePasswordLayout extends ConsumerStatefulWidget {
-  ChangePasswordLayout({
+  const ChangePasswordLayout({
     super.key,
   });
 
@@ -18,7 +18,7 @@ class ChangePasswordLayout extends ConsumerStatefulWidget {
 }
 
 class _ChangePasswordLayoutState extends ConsumerState<ChangePasswordLayout> {
-  GlobalKey<FormState> _changePasswordKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _changePasswordKey = GlobalKey();
   late TextEditingController oldPasswordController;
 
   late TextEditingController newPasswordController;
@@ -59,8 +59,7 @@ class _ChangePasswordLayoutState extends ConsumerState<ChangePasswordLayout> {
             result = FieldFormClass.validatorPassword(password);
             return result;
           },
-          inputFormatters:
-              RegExp(r'^[A-Za-z0-9!@#\$&*~а-яА-Я]+', unicode: true),
+          inputFormatters: FieldFormClass.regExpPassword,
           maxLength: 20,
           obscureText: true),
       FieldFormClass(
@@ -76,8 +75,7 @@ class _ChangePasswordLayoutState extends ConsumerState<ChangePasswordLayout> {
                 password!, oldPasswordController.text);
             return result;
           },
-          inputFormatters:
-              RegExp(r'^[A-Za-z0-9!@#\$&*~а-яА-Я]+', unicode: true),
+          inputFormatters: FieldFormClass.regExpPassword,
           maxLength: 20,
           obscureText: true),
       FieldFormClass(
@@ -90,8 +88,7 @@ class _ChangePasswordLayoutState extends ConsumerState<ChangePasswordLayout> {
                 password!, newPasswordController.text);
             return result;
           },
-          inputFormatters:
-              RegExp(r'^[A-Za-z0-9!@#\$&*~а-яА-Я]+', unicode: true),
+          inputFormatters: FieldFormClass.regExpPassword,
           maxLength: 20,
           obscureText: true)
     ];

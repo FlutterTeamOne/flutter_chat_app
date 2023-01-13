@@ -2,6 +2,7 @@ import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';
 import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
+import 'package:chat_app/ui/widgets/custom_widgets/field_form_class.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -79,55 +80,32 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
                   text: 'Name',
                   maxLength: 20,
                   //используем RegExp для сортировки по символам
-                  inputFormatters: RegExp(r'^[A-Za-z0-9]+'),
+                  inputFormatters: FieldFormClass.regExpName,
                   controller: nameController,
-                  validator: (name) {
-                    if (name!.length < 3) {
-                      //если длинна имени меньше 3 символов выводиим ошибку
-                      return 'Name must contain at least 3 characters';
-                    }
-                    {
-                      return null;
-                    }
-                  },
+                  validator: (name) => FieldFormClass.validatorName(name),
                 ),
                 const SizedBox(height: 10),
                 // Форма для мыло
                 FormWidget(
                   text: 'Email',
-                  inputFormatters: RegExp(r"^[a-z0-9.a-z@]+"),
+                  inputFormatters: FieldFormClass.regExpEmail,
                   maxLength: 36,
                   controller: emailController,
-                  validator: (email) {
-                    if (email != null && !EmailValidator.validate(email)) {
-                      // Валидация сделана при помощи пакета email_validator
-                      return 'Enter a valid email';
-                    }
-                    return null;
-                  },
+                  validator: (email) => FieldFormClass.validatorEmail(email),
                 ),
                 const SizedBox(height: 10),
                 ValueListenableBuilder(
                   valueListenable: isActivePassword,
                   builder: (context, value, child) => FormWidget(
                     text: 'Password',
-                    inputFormatters: RegExp(r"^[a-z0-9_A-Z]+"),
+                    inputFormatters: FieldFormClass.regExpPassword,
                     controller: passwordController,
                     obscureText: isActivePassword.value,
                     suffix: isActivePassword.value == true
                         ? Icons.visibility_off_rounded
                         : Icons.visibility_rounded,
-                    validator: (password) {
-                      if (password!.length < 6) {
-                        //если длинна пароля меньше 6 символов выводиим ошибку
-                        return 'Password must contain at least 6 characters';
-                      } else if (!password.contains(RegExp(r'[A-Z]'))) {
-                        //если пароль не содержит хотя бы одну заглавную буквку выводим ошибку
-                        return 'Password must contain at least one capital\nletter';
-                      } else {
-                        return null;
-                      }
-                    },
+                    validator: (password) =>
+                        FieldFormClass.validatorPassword(password),
                     suffixOnTap: () {
                       if (isActivePassword.value == true) {
                         isActivePassword.value = false;
@@ -144,23 +122,15 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
                       // Форма для подтверждения пароля
                       return FormWidget(
                         text: 'Сonfirm password',
-                        inputFormatters: RegExp(r"^[a-z0-9_A-Z]+"),
+                        inputFormatters: FieldFormClass.regExpPassword,
                         controller: confirmPasswordController,
                         obscureText: isActiveConfirm.value,
                         suffix: isActiveConfirm.value == true
                             ? Icons.visibility_off_rounded
                             : Icons.visibility_rounded,
-                        validator: (confirm) {
-                          if (passwordController.text !=
-                                  confirmPasswordController.text ||
-                              passwordController.text.isEmpty) {
-                            //если значение confirmPasswordController пустое или
-                            //не совпадает с passwordController выводим ошибку
-                            return 'Passwords do not match. Try again.';
-                          } else {
-                            return null;
-                          }
-                        },
+                        validator: (confirm) =>
+                            FieldFormClass.validatorNewPasswords(
+                                confirm!, passwordController.text),
                         suffixOnTap: () {
                           if (isActiveConfirm.value == true) {
                             isActiveConfirm.value = false;
@@ -232,7 +202,7 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
                   builder: (context) => ErrorDialog(
                       textTitle: 'Attention', textContent: e.toString()));
             }
-            if (newUser!=null) {
+            if (newUser != null) {
               await showDialog(
                   context: context,
                   builder: (context) => ErrorDialog(
