@@ -51,6 +51,7 @@ class ChatWidgetState extends State<ChatWidget> {
       if (i.chatId == widget.chatId) {
         messages.add(i);
       }
+      messages.sort(((a, b) => a.createdDate!.compareTo(b.createdDate!)));
     }
 
     return Scaffold(
@@ -69,20 +70,21 @@ class ChatWidgetState extends State<ChatWidget> {
         ),
       ),
       body: messages.isEmpty
-          ? Center(child: Text('Start chatting'))
+          ? const Center(child: Text('Start chatting'))
           : GroupedListView<MessageDto, DateTime>(
               controller: scrollController,
               padding: const EdgeInsets.all(10),
               elements: messages,
               reverse: true,
               order: GroupedListOrder.DESC,
-              groupBy: (message) => DateTime(
-                DateTime.parse(message.createdDate!).year,
-                DateTime.parse(message.createdDate!).month,
-                DateTime.parse(message.createdDate!).day,
-              ),
+              groupBy: (message) {
+                final date = DateTime.parse(message.createdDate!);
+                // DateTime(date.year, date.month, date.day, date.hour, date.minute, date.second, date.microsecond);
+                return DateTime(date.year, date.month, date.day);
+              },
               groupHeaderBuilder: (MessageDto message) =>
                   TimeCardWidget(date: message.createdDate!),
+              // TODO: нужна сортировка сообщений внутри группы по дате
               itemBuilder: (context, MessageDto message) {
                 if (!checkSender(message.senderId)) {
                   // print(message.isSentByMe);

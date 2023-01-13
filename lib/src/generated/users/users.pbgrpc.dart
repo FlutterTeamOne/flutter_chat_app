@@ -38,6 +38,18 @@ class GrpcUsersClient extends $grpc.Client {
           ($0.DeleteUserRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.DeleteUserResponse.fromBuffer(value));
+  static final _$changePassword =
+      $grpc.ClientMethod<$0.PasswordChangeRequest, $0.PasswordResponse>(
+          '/GrpcUsers/changePassword',
+          ($0.PasswordChangeRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.PasswordResponse.fromBuffer(value));
+  static final _$confirmPassword =
+      $grpc.ClientMethod<$0.PasswordConfirmRequest, $0.PasswordResponse>(
+          '/GrpcUsers/confirmPassword',
+          ($0.PasswordConfirmRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.PasswordResponse.fromBuffer(value));
 
   GrpcUsersClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -65,6 +77,18 @@ class GrpcUsersClient extends $grpc.Client {
       $0.DeleteUserRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$deleteUser, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.PasswordResponse> changePassword(
+      $0.PasswordChangeRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$changePassword, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.PasswordResponse> confirmPassword(
+      $0.PasswordConfirmRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$confirmPassword, request, options: options);
   }
 }
 
@@ -100,6 +124,24 @@ abstract class GrpcUsersServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.DeleteUserRequest.fromBuffer(value),
         ($0.DeleteUserResponse value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$0.PasswordChangeRequest, $0.PasswordResponse>(
+            'changePassword',
+            changePassword_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $0.PasswordChangeRequest.fromBuffer(value),
+            ($0.PasswordResponse value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$0.PasswordConfirmRequest, $0.PasswordResponse>(
+            'confirmPassword',
+            confirmPassword_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $0.PasswordConfirmRequest.fromBuffer(value),
+            ($0.PasswordResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.GetUserResponse> getUser_Pre(
@@ -122,6 +164,16 @@ abstract class GrpcUsersServiceBase extends $grpc.Service {
     return deleteUser(call, await request);
   }
 
+  $async.Future<$0.PasswordResponse> changePassword_Pre($grpc.ServiceCall call,
+      $async.Future<$0.PasswordChangeRequest> request) async {
+    return changePassword(call, await request);
+  }
+
+  $async.Future<$0.PasswordResponse> confirmPassword_Pre($grpc.ServiceCall call,
+      $async.Future<$0.PasswordConfirmRequest> request) async {
+    return confirmPassword(call, await request);
+  }
+
   $async.Future<$0.GetUserResponse> getUser(
       $grpc.ServiceCall call, $0.GetUserRequest request);
   $async.Future<$0.CreateUserResponse> createUser(
@@ -130,4 +182,8 @@ abstract class GrpcUsersServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.UpdateUserRequest request);
   $async.Future<$0.DeleteUserResponse> deleteUser(
       $grpc.ServiceCall call, $0.DeleteUserRequest request);
+  $async.Future<$0.PasswordResponse> changePassword(
+      $grpc.ServiceCall call, $0.PasswordChangeRequest request);
+  $async.Future<$0.PasswordResponse> confirmPassword(
+      $grpc.ServiceCall call, $0.PasswordConfirmRequest request);
 }

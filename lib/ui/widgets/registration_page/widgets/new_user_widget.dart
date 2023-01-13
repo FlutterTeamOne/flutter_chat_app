@@ -1,7 +1,5 @@
-import 'package:chat_app/modules/signal_service/river/river.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:email_validator/email_validator.dart';
 import '../bloc/new_user_bloc.dart';
 import '../bloc/new_user_event.dart';
 import '../models/new_user_model.dart';
@@ -111,6 +109,8 @@ class _NewUserWidgetState extends State<NewUserWidget> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Enter password';
+                } else if (value.length < 6) {
+                  return 'Password length less then 6';
                 }
                 return null;
               },
@@ -140,9 +140,12 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                 key: _emailKey,
                 controller: newUserEmailText,
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
+                  if (value == null ||
+                      value.isEmpty ||
+                      !EmailValidator.validate(value)) {
                     return 'Enter email';
                   }
+
                   return null;
                 },
               )),
@@ -170,6 +173,8 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Enter name';
+                  } else if (value.length < 3) {
+                    return 'Name length less then 3';
                   }
                   return null;
                 },
@@ -239,29 +244,18 @@ class _NewUserWidgetState extends State<NewUserWidget> {
                                               newUserNameText.text
                                           ? Text('User $newUserName created')
                                           : const Text('Error')),
-                                  Consumer(
-                                    builder: (context, ref, _) {
-                                      return ElevatedButton(
-                                          key: const Key(
-                                              'createUserDialogButton'),
-                                          // style: ButtonStyle(
-                                          //     shape: MaterialStateProperty.all<
-                                          //             RoundedRectangleBorder>(
-                                          //         RoundedRectangleBorder(
-                                          //   borderRadius:
-                                          //       BorderRadius.circular(20.0),
-                                          // ))),
-                                          onPressed: () {
-                                            ref
-                                                .read(River.userPod.notifier)
-                                                .readUser();
-
-                                            Navigator.of(context)
-                                                .pushNamed(AuthPage.routeName);
-                                          },
-                                          child: const Icon(Icons.check));
-                                    },
-                                  )
+                                  ElevatedButton(
+                                      key: const Key('createUserDialogButton'),
+                                      // style: ButtonStyle(
+                                      //     shape: MaterialStateProperty.all<
+                                      //             RoundedRectangleBorder>(
+                                      //         RoundedRectangleBorder(
+                                      //   borderRadius:
+                                      //       BorderRadius.circular(20.0),
+                                      // ))),
+                                      onPressed: () => Navigator.of(context)
+                                          .pushNamed(AuthPage.routeName),
+                                      child: const Icon(Icons.check))
                                 ],
                               ),
                             ),
@@ -276,7 +270,7 @@ class _NewUserWidgetState extends State<NewUserWidget> {
           IconButton(
               key: const Key('cancelUserCreateButton'),
               onPressed: () {
-                Navigator.of(context).pushNamed('/');
+                Navigator.of(context).pushNamed(AuthPage.routeName);
               },
               icon: const Icon(Icons.close_rounded)),
         ],

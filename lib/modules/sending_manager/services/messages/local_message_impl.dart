@@ -1,5 +1,3 @@
-import 'package:chat_app/src/generated/sync/grpcsynh.pbgrpc.dart';
-
 import '../../../../domain/data/dto/attach_dto/attach_dto.dart';
 import '../../../../src/generated/grpc_lib/grpc_message_lib.dart';
 
@@ -55,12 +53,14 @@ class LocalMessagesServices implements ILocalMessagesServices {
                   (${DatabaseConst.messagesColumnContent} = ?) AND
                   (${DatabaseConst.messagesColumnCreatedDate} = ?))''',
         [chatId, senderId, content, date]);
+    DBHelper.instanse.updateListenController.add(DbListener.isMessage);
 
     return message[0][DatabaseConst.messagesColumnLocalMessagesId] as int;
   }
 
   Future addNewMessageFromBase({required Message message}) async {
     var db = DBHelper.instanse;
+    DBHelper.instanse.updateListenController.add(DbListener.isMessage);
 
     return await db.onAdd(tableName: DatabaseConst.messageTable, model: {
       DatabaseConst.messagesColumnChatId: message.chatId,
@@ -107,25 +107,37 @@ class LocalMessagesServices implements ILocalMessagesServices {
   }
 
   @override
-  Future<int> deleteMessage({required int id}) async {
+  Future<int> deleteMessageByMessageId({required int id}) async {
+    var db = await DBHelper.instanse.database;
+
+    var deleted = await db.rawDelete(
+        '''DELETE FROM ${DatabaseConst.messageTable}  WHERE ${DatabaseConst.messagesColumnMessageId}=?''',
+        [id]);
+    DBHelper.instanse.updateListenController.add(DbListener.isMessage);
+
+    return deleted;
+  }
+
+  @override
+  Future<int> deleteMessageByLocalMessageId({required int id}) async {
     var db = await DBHelper.instanse.database;
 
     var deleted = await db.rawDelete(
         '''DELETE FROM ${DatabaseConst.messageTable}  WHERE ${DatabaseConst.messagesColumnLocalMessagesId}=?''',
         [id]);
+    DBHelper.instanse.updateListenController.add(DbListener.isMessage);
+
     return deleted;
-    
   }
 
   Future<int> deleteMessageFromBase(
       {required int id, required String dateDelete}) async {
     var db = await DBHelper.instanse.database;
+    DBHelper.instanse.updateListenController.add(DbListener.isMessage);
 
     return await db.rawDelete(
         '''DELETE FROM ${DatabaseConst.messageTable}  WHERE ${DatabaseConst.messagesColumnMessageId}=?''',
-        [
-          id,
-        ]);
+        [id]);
   }
 
   @override
@@ -140,6 +152,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
     var db = await DBHelper.instanse.database;
     var message = await db.rawQuery(
         'SELECT * FROM ${DatabaseConst.messageTable} WHERE ${DatabaseConst.messagesColumnMessageId} IS NOT NULL');
+    DBHelper.instanse.updateListenController.add(DbListener.isMessage);
 
     return message.map((item) => MessageDto.fromMap(item)).toList();
   }
@@ -149,6 +162,8 @@ class LocalMessagesServices implements ILocalMessagesServices {
     var db = await DBHelper.instanse.database;
     var message = await db.rawQuery(
         'SELECT * FROM ${DatabaseConst.messageTable}  where ${DatabaseConst.messagesColumnLocalMessagesId} = $id');
+    DBHelper.instanse.updateListenController.add(DbListener.isMessage);
+
     return message[0];
   }
 
@@ -173,8 +188,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
   }
 
   @override
-  Future 
-  updateMessage(
+  Future updateMessage(
       {required MessageDto message, required int localMessageId}) async {
     await DBHelper.instanse.onUpdate(
         tableName: 'messages',
@@ -188,9 +202,10 @@ class LocalMessagesServices implements ILocalMessagesServices {
           DatabaseConst.messagesColumnDeletedDate: message.deletedDate,
           DatabaseConst.messagesColumnIsRead: message.isRead,
           DatabaseConst.messagesColumnContent: message.content,
-          DatabaseConst.messagesColumnMessageId:message.messageId
+          DatabaseConst.messagesColumnMessageId: message.messageId
         },
         id: localMessageId);
+    DBHelper.instanse.updateListenController.add(DbListener.isMessage);
   }
 
   updateMessageFromBase(
@@ -206,7 +221,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
     ${DatabaseConst.messagesColumnContent}=?
     WHERE (${DatabaseConst.messagesColumnMessageId} = $messageId);''',
         [messageId, updateDate, content]);
-    DBHelper.instanse.updateListenController.add(true);
+    DBHelper.instanse.updateListenController.add(DbListener.isMessage);
   }
 
   updateMessageSynh({required MessageDto msg}) async {
@@ -218,7 +233,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
     ${DatabaseConst.messagesColumnDeletedDate}=?      
     WHERE ${DatabaseConst.messagesColumnMessageId} = ${msg.messageId}''',
         [msg.updatedDate, msg.content, msg.deletedDate]);
-    DBHelper.instanse.updateListenController.add(true);
+    DBHelper.instanse.updateListenController.add(DbListener.isMessage);
   }
 
   updateWrittenToServer(
@@ -231,6 +246,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
           SET ${DatabaseConst.messagesColumnMessageId}=$messagesId, ${DatabaseConst.messagesColumnUpdatedDate}="$updatedDate"
           WHERE (${DatabaseConst.messagesColumnLocalMessagesId} = $localMessageId)
     ''');
+    DBHelper.instanse.updateListenController.add(DbListener.isMessage);
   }
 
   deleteWrittenToServer(
@@ -241,11 +257,14 @@ class LocalMessagesServices implements ILocalMessagesServices {
           SET ${DatabaseConst.messagesColumnDeletedDate}=?
           WHERE ${DatabaseConst.messagesColumnLocalMessagesId} = $localMessageId
                 ''', [deletedDate]);
+    DBHelper.instanse.updateListenController.add(DbListener.isMessage);
   }
 
   @override
   Future<int> deleteAllMessagesInChat({required int chatID}) async {
     var db = await DBHelper.instanse.database;
+    DBHelper.instanse.updateListenController.add(DbListener.isMessage);
+
     return await db.rawDelete('''
         DELETE FROM messages
         WHERE  ${DatabaseConst.messagesColumnChatId} = $chatID
@@ -265,5 +284,6 @@ class LocalMessagesServices implements ILocalMessagesServices {
   Future addAttach(AttachModel model) async {
     await DBHelper.instanse
         .onAdd(tableName: DatabaseConst.attachmentsTable, model: model.toMap());
+    DBHelper.instanse.updateListenController.add(DbListener.isMessage);
   }
 }

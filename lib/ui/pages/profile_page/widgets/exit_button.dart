@@ -1,6 +1,6 @@
 ﻿part of '../profile_page.dart';
 
-class ExitButton extends StatelessWidget {
+class ExitButton extends ConsumerWidget {
   const ExitButton({
     Key? key,
     required this.userPod,
@@ -11,7 +11,7 @@ class ExitButton extends StatelessWidget {
   final ChatNotifier chatPod;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16),
       child: IconButton(
@@ -19,11 +19,24 @@ class ExitButton extends StatelessWidget {
             // context.read<ChatBloc>().close();
             //закрыть базу
             userPod.changeUser(true);
-            userPod.readUser();
-            chatPod.getChatId(-1);
+
+            //chatPod.getChatId(-1);
+
             await DBHelper.instanse.close();
-            Future.delayed(const Duration(seconds: 1),
-                () => Navigator.of(context).pushNamed('/'));
+            ref.read(River.messagePod.notifier).disconnect();
+            ref.invalidate(River.userPod);
+            ref.invalidate(River.chatPod);
+            ref.invalidate(River.messagePod);
+            // UserNotifier().dispose();
+            // userPod.dispose();
+            // ChatNotifier().dispose();
+            // MessageNotifier().dispose();
+            // ref.exists(River.userPod);
+
+            //  ref.exists(River.chatPod);
+            //   ref.exists(River.messagePod);
+
+            Navigator.of(context).pushNamed(AuthPage.routeName);
           },
           icon: const Icon(Icons.exit_to_app),
           style: const ButtonStyle(

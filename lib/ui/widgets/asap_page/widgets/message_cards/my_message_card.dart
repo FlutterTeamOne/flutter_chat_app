@@ -2,6 +2,7 @@ import 'package:chat_app/modules/signal_service/river/river.dart';
 import 'package:chat_app/src/generated/messages/messages.pbgrpc.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../library/library_widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -54,14 +55,22 @@ class MyMessageCardWidget extends StatelessWidget {
                           textController: textController,
                           message: message,
                         ),
-                  InkWell(
-                    onTap: () => River.messagePod.notifier.select(
-                        (value) => value.createMessage(message: message)),
-                    child: const Text(
-                      'Not Delivered',
-                    ),
-                    // style: AppTextStyle.s14AbelGrey
-                    //     .copyWith(color: AppColor.colorF44336),
+                  Consumer(
+                    builder:
+                        (BuildContext context, WidgetRef ref, Widget? child) {
+                      return InkWell(
+                        onTap: () => ref
+                            .read(River.messagePod.notifier)
+                            .createMessage(
+                                message: message,
+                                contentType: message.contentType),
+                        child: const Text(
+                          'Not Delivered',
+                        ),
+                        // style: AppTextStyle.s14AbelGrey
+                        //     .copyWith(color: AppColor.colorF44336),
+                      );
+                    },
                   )
                 ],
               ),

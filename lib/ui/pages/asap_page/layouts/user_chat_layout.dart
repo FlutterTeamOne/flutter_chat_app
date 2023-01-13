@@ -1,4 +1,7 @@
 ﻿import 'package:chat_app/modules/signal_service/river/message_ref/message_notifier.dart';
+import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
+import 'package:chat_app/ui/pages/asap_page/layouts/edit_chat_popup_widget.dart';
+import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
 
 import '../../../../modules/signal_service/river/message_ref/message_state_ref.dart';
 import '../../../../modules/signal_service/river/river.dart';
@@ -25,32 +28,33 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
   @override
   Widget build(BuildContext context) {
     var badState;
-    ChatDto? chat;
-    // var chat = context.read<ChatBloc>().state.chats?.firstWhere(
-    //       (chats) => chats.chatId == widget.chatId,
-    //     );
-    for (var c in ref.read(River.chatPod).chats!) {
-      if (c.chatId == widget.chatId) {
-        chat = c;
-      }
-    }
-    var user;
-    // = context
-    //     .read<UserBloc>()
-    //     .state
-    //     .users
-    //     ?.firstWhere((user) => user.userId == chat?.userIdChat);
-    for (var u in ref.read(River.userPod).users!) {
-      if (chat?.userIdChat == null) {
-        break;
-      }
-      if (u.userId == chat?.userIdChat) {
-        user = u;
-      }
-    }
+
+    // for (var c in ref.read(River.chatPod).chats!) {
+    //   if (c.chatId == widget.chatId) {
+    //     chat = c;
+    //   }
+    // }
+    ChatDto? chat = ref
+        .read(River.chatPod)
+        .chats
+        ?.firstWhere((chat) => chat.chatId == widget.chatId);
+    UserDto? user = ref
+        .read(River.userPod)
+        .users
+        ?.firstWhere((user) => user.userId == chat?.userIdChat);
+
+    // for (var u in ref.read(River.userPod).users!) {
+    //   if (chat?.userIdChat == null) {
+    //     break;
+    //   }
+    //   if (u.userId == chat?.userIdChat) {
+    //     user = u;
+    //   }
+    // }
     var messageNotif = ref.read(River.messagePod.notifier);
     var messageRead = ref.read(River.messagePod);
     var messageWatch = ref.watch(River.messagePod);
+    final myChat = chat?.userIdChat == UserPref.getUserId;
     return chat == null
         ? Container()
         : Column(
@@ -68,28 +72,11 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                             ? user.profilePicLink
                             : 'https://www.iconsdb.com/icons/preview/red/cancel-xxl.png',
                         // user.profilePicLink,
-                        name: user.name,
+                        name: myChat ? 'My Favorite Chat' : user.name,
                       ),
                     ),
-                    Flexible(
-                      child: PopupMenuButton<int>(
-                          itemBuilder: (context) => [
-                                PopupMenuItem(
-                                    value: 1,
-                                    child: Row(
-                                      children: const [
-                                        Icon(Icons.delete),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text("Delete Chat")
-                                      ],
-                                    ),
-                                    onTap: () => ref
-                                        .read(River.chatPod.notifier)
-                                        .deleteChat(widget.chatId)),
-                              ]),
-                    ),
+                    EditChatPopupWidget(
+                        myChat: myChat, ref: ref, chatId: widget.chatId),
                   ],
                 ),
               ),
@@ -132,9 +119,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                                         borderRadius:
                                             BorderRadius.circular(20.0),
                                       ))),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
+                                      onPressed: () => Navigator.pop(context),
                                       child: const Icon(
                                         Icons.close_rounded,
                                       ))

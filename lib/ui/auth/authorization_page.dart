@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/ui/pages/main_layout.dart';
 import 'package:chat_app/ui/pages/registration_page/registration_page.dart';
@@ -20,16 +22,24 @@ class _AuthPageState extends ConsumerState<AuthPage> {
   @override
   void initState() {
     super.initState();
-    ref.read(River.futureUserPod);
+    ref.read(River.futureSynchUserPod);
+  }
+
+  @override
+  void dispose() {
+    log("DISPOSE AUTH PAGE");
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      ///Инициализация Риверпода
       body: Consumer(builder: (context, ref, _) {
         List<UserDto>? users;
-        users = ref.watch(River.userPod).users;
+        users = ref.watch(River.synchUserPod).users;
         return users == null
+            //TODO: Обработчик ошибок
             ? const Center(
                 child: CircularProgressIndicator(),
               )

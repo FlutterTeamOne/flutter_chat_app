@@ -39,9 +39,9 @@ class ChatApi {
       print('RESP: $resp');
 
       //Чат с самим собой
-      if (resp['friend1_id'] == resp['friend2_id']) {
-        return Response.notFound("You can't create a chat with yourself");
-      }
+      // if (resp['friend1_id'] == resp['friend2_id']) {
+      //   return Response.notFound("You can't create a chat with yourself");
+      // }
       List<Map<String, Object?>> chatId = await _chatService.getChatByTwoIds(
           friend1_id: resp['friend1_id'], friend2_id: resp['friend2_id']);
       print('user ID: $chatId');
@@ -76,6 +76,12 @@ class ChatApi {
       var resp;
       if (chatId != null) {
         resp = await _chatService.deleteChat(id: chatId);
+      } else {
+        return Response.badRequest(body: "Not valid ChatId: $chatId");
+      }
+      print(resp);
+      if (resp != 1) {
+        return Response.badRequest(body: "Delete $resp chats");
       }
       return Response.ok(resp.toString());
     });

@@ -1,3 +1,5 @@
+import 'package:sqflite_common/sqlite_api.dart';
+
 import '../../../storage_manager/db_helper/db_helper_start.dart';
 
 import '../../../../src/constants/db_constants.dart';
@@ -19,9 +21,8 @@ class LocalUsersServices implements ILocalUsersServices {
     String? deletedDate,
     required String profilePicUrl,
   }) async {
-    var db = await DBHelper.instanse.database;
-
-    return await db.insert(DatabaseConst.userTable, {
+    final Database db = await DBHelper.instanse.database;
+    final newUserId = await db.insert(DatabaseConst.userTable, {
       DatabaseConst.usersColumnUserId: userId,
       DatabaseConst.usersColumnName: name,
       DatabaseConst.usersColumnEmail: email,
@@ -30,6 +31,9 @@ class LocalUsersServices implements ILocalUsersServices {
       DatabaseConst.usersColumnDeletedDate: deletedDate ?? '',
       DatabaseConst.usersColumnProfilePicLink: profilePicUrl,
     });
+    DBHelper.instanse.updateListenController.add(DbListener.isUser);
+
+    return newUserId;
   }
 
   @override
@@ -43,7 +47,7 @@ class LocalUsersServices implements ILocalUsersServices {
     required String profilePicUrl,
   }) async {
     var db = await DBHelperStart.instanse.database;
-
+    DBHelperStart.instanse.updateListenController.add(true);
     return await db.insert(DatabaseConst.userTable, {
       DatabaseConst.usersColumnUserId: userId,
       DatabaseConst.usersColumnName: name,
@@ -58,6 +62,8 @@ class LocalUsersServices implements ILocalUsersServices {
   @override
   Future<int> deleteUser({required int id}) async {
     var db = await DBHelper.instanse.database;
+    DBHelper.instanse.updateListenController.add(DbListener.isUser);
+
     return await db.rawDelete(
         'DELETE FROM ${DatabaseConst.userTable} WHERE ${DatabaseConst.usersColumnUserId}=?',
         [id]);
@@ -66,10 +72,7 @@ class LocalUsersServices implements ILocalUsersServices {
   @override
   Future<List<UserDto>> getAllUsers() async {
     var db = await DBHelper.instanse.database;
-    var users = await db.rawQuery('''
-              SELECT *
-              FROM ${DatabaseConst.userTable}
-              ''');
+    var users = await db.rawQuery('SELECT * FROM ${DatabaseConst.userTable}');
     return users.map((item) => UserDto.fromMap(item)).toList();
   }
 
@@ -79,7 +82,8 @@ class LocalUsersServices implements ILocalUsersServices {
     var users = await db.rawQuery('''
               SELECT *
               FROM ${DatabaseConst.userTable}
-              ''');
+              WHERE (${DatabaseConst.usersColumnDeletedDate} LIKE '') OR 
+              (${DatabaseConst.usersColumnDeletedDate} IS NULL)''');
     return users.map((item) => UserDto.fromMap(item)).toList();
   }
 
@@ -105,6 +109,7 @@ class LocalUsersServices implements ILocalUsersServices {
               WHERE (user_id = $localId);
               ''');
     var id = user[0]['user_id'] as int;
+
     return id;
   }
 
@@ -112,25 +117,27 @@ class LocalUsersServices implements ILocalUsersServices {
   Future<int> getMainUserId() async {
     var db = await DBHelper.instanse.database;
     var user = await db.rawQuery(
-        '''               SELECT ${DatabaseConst.mainUserColumnUserId}               FROM ${DatabaseConst.mainUserTable}               ''');
+        '''SELECT ${DatabaseConst.mainUserColumnUserId} FROM ${DatabaseConst.mainUserTable}''');
+
     return user[0][DatabaseConst.mainUserColumnUserId] as int;
   }
 
   @override
-  Future<Map<String, Object?>> getUserByLocalId({required int localId}) async {
+  Future<List<Map<String, Object?>>> getUserById({required int id}) async {
     var db = await DBHelper.instanse.database;
 
     var user = await db.rawQuery('''
-      SELECT * FROM users WHERE user_id = $localId;
+      SELECT * FROM users WHERE user_id = $id
       ''');
-    return user[0];
+
+    return user;
   }
 
   @override
   Future<int> updateUser(
       {required String newValues, required String condition}) async {
     var db = await DBHelper.instanse.database;
-    DBHelper.instanse.updateListenController.add(true);
+    DBHelper.instanse.updateListenController.add(DbListener.isUser);
     return await db.rawUpdate(
         'UPDATE ${DatabaseConst.userTable} SET $newValues WHERE $condition');
   }
@@ -143,22 +150,24 @@ class LocalUsersServices implements ILocalUsersServices {
         'UPDATE ${DatabaseConst.userTable} SET $newValues WHERE $condition');
   }
 
-  Future getLastUserId() async {
+  Future getLastUserIdStart() async {
     var db = await DBHelperStart.instanse.database;
     var lastUser = await db.rawQuery('''
               SELECT MAX(user_id)
               FROM users
               ''');
     // var r = (lastUser[0]['MAX(user_id)']);
+
     return lastUser[0]['MAX(user_id)'] ?? 0;
   }
 
-  Future<List<Map<String, Object?>>> getAllUserIdAndUpdatedStarted() async {
+  Future<List<Map<String, Object?>>> getAllUserIdAndUpdatedStart() async {
     var db = await DBHelperStart.instanse.database;
     var users = await db.rawQuery('''
               SELECT user_id, updated_date
               FROM users
               ''');
+
     return users;
   }
 
@@ -168,6 +177,7 @@ class LocalUsersServices implements ILocalUsersServices {
               SELECT user_id, updated_date
               FROM users
               ''');
+
     return users;
   }
 

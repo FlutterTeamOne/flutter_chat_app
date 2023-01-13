@@ -1,4 +1,5 @@
 import 'package:chat_app/modules/signal_service/river/connection_ref/connection_notifier.dart';
+import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 
 import '../../modules/signal_service/river/river.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,14 +19,35 @@ class MainLayout extends ConsumerStatefulWidget {
 class _MainLayoutState extends ConsumerState<MainLayout> {
   final _sideBarController =
       SidebarXController(selectedIndex: 0, extended: true);
+  @override
+  void initState() {
+    super.initState();
+
+    // ref.read(River.futureUserPod);
+    // ref.read(River.futureChatPod);
+    // ref.read(River.futureMessagePod);
+
+    ref.read(River.userPod.notifier).readUser();
+    ref.read(River.userPod.notifier).setMainUser();
+    ref.read(River.chatPod.notifier).readChat();
+    ref.read(River.messagePod.notifier).readMessages();
+  }
+
+  // @override
+  // void dispose() {
+  //   ref.read(River.userPod.notifier).dispose();
+  //   ref.read(River.chatPod.notifier).dispose();
+  //   ref.read(River.messagePod.notifier).dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    ref.read(River.userPod.notifier).readUser();
-    ref.read(River.chatPod.notifier).readChat();
-    ref.read(River.messagePod.notifier).readMessages();
+    // ref.read(River.userPod.notifier).readUser();
+    // ref.read(River.chatPod.notifier).readChat();
+    // ref.read(River.messagePod.notifier).readMessages();
     final currentWidth = MediaQuery.of(context).size.width;
-    var isConnected = false;
+    bool isConnected = false;
     ref.watch(River.connectPod.select((status) {
       if (status == ConnectionStatus.isDisconnected) {
         showDialogBox(

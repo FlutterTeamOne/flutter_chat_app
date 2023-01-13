@@ -7,6 +7,7 @@ import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/generated/users/users.pbgrpc.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/add_chat_dialog_widget.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/search_field.dart';
+import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../modules/storage_manager/db_helper/user_path.dart';
@@ -16,11 +17,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../src/libraries/library_all.dart';
 
 class ChatListLayout extends StatefulWidget {
-  final List<ChatDto> chatModel;
   final List<MessageDto> messageModel;
 
-  ChatListLayout(
-      {super.key, required this.chatModel, required this.messageModel});
+  const ChatListLayout({super.key, required this.messageModel});
 
   @override
   State<ChatListLayout> createState() => _ChatListLayoutState();
@@ -48,12 +47,13 @@ class _ChatListLayoutState extends State<ChatListLayout> {
       width: 300,
       elevation: 0,
       child: Consumer(builder: (context, ref, child) {
-        var userPod = ref.read(River.userPod);
+        var users = ref.watch(River.userPod).users;
+        var chatModel = ref.watch(River.chatPod).chats;
         return Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              widget.chatModel.isEmpty || widget.chatModel == []
+              chatModel == null || chatModel.isEmpty || users == null
                   ? const Center(
                       child: Text('Oops...\nno chats'),
                     )
@@ -65,38 +65,27 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                             SearchFieldWidget(controller: _searchController),
                             const SizedBox(height: 5),
                             ListView.separated(
-                              itemCount: widget.chatModel.length,
+                              itemCount: chatModel.length,
                               physics: const BouncingScrollPhysics(),
                               shrinkWrap: true,
                               separatorBuilder: (context, index) =>
                                   const SizedBox(height: 25),
                               itemBuilder: (context, index) {
-                                // for (var user in userPod.users!) {
-                                //   if (user.userId ==
-                                //       widget.chatModel[index].userIdChat) {
-                                //     friend = user;
-                                //     break;
-                                //   }
-                                // }
-                                var friend = userPod.users?.firstWhere((user) =>
-                                    widget.chatModel[index].userIdChat ==
-                                    user.userId);
-                                var lastMessage = MessageDto(
+                                UserDto friend = users.firstWhere((user) =>
+                                    chatModel[index].userIdChat == user.userId);
+                                MessageDto lastMessage = MessageDto(
                                     chatId: 0, senderId: 0, content: '');
                                 for (var i in widget.messageModel) {
-                                  if (i.chatId ==
-                                      widget.chatModel[index].chatId) {
+                                  if (i.chatId == chatModel[index].chatId) {
                                     lastMessage = i;
                                   }
                                 }
-                                // var lastMessageId = widget.chatModel.
-                                // : widget.messageModel.length - 1;
                                 return UserCardWidget(
                                     key: Key('userCardWidget $index'),
                                     sender: lastMessage.chatId == 0
                                         ? ""
                                         : !checkSender(lastMessage.senderId)
-                                            ? friend!.name
+                                            ? friend.name
                                             : 'You',
                                     // checkSender(widget.messageModel[lastMessageId].senderId),
                                     // ? userBloc.state.users[index].name:'You'),
@@ -105,13 +94,15 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                       //TODO: GetChatId => SetChatId
                                       ref
                                           .watch(River.chatPod.notifier)
-                                          .getChatId(
-                                              widget.chatModel[index].chatId!);
+                                          .getChatId(chatModel[index].chatId!);
                                     },
-                                    name: friend?.name,
-                                    image: friend?.profilePicLink,
+                                    name: chatModel[index].userIdChat ==
+                                            UserPref.getUserId
+                                        ? "My favorite chat"
+                                        : friend.name,
+                                    image: friend.profilePicLink,
                                     updatedDate: getUpdateDate(
-                                        widget.chatModel[index].updatedDate),
+                                        chatModel[index].updatedDate),
                                     message: lastMessage.chatId != 0
                                         ? lastMessage.contentType ==
                                                 ContentType.isText
@@ -135,37 +126,36 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                               builder: (BuildContext context) =>
                                   (AddChatDialogWidget(val: value)))
                           .then((value) async {
-                        print('FriendId From Add Dialog: $value');
-                        print('Current UserId: ${UserPref.getUserId}');
                         //FriendId Validation
+                        if (value == null) {
+                          return;
+                        }
                         GetUserResponse userFromServerDb;
                         try {
                           userFromServerDb =
                               await grpcClient.getUser(userId: value);
-                          print("UserFromServer: $userFromServerDb");
-                          if (!mounted) return;
                           print("BEFORE REST");
-                          await ref.read(River.chatPod.notifier).createChat(
+                          final chatId = await ref
+                              .read(River.chatPod.notifier)
+                              .createChat(
                                 ChatDto(
                                   userIdChat: value,
                                   createdDate: DateTime.now().toIso8601String(),
                                   updatedDate: DateTime.now().toIso8601String(),
                                 ),
                               );
+                          ref.read(River.chatPod.notifier).getChatId(chatId);
                         } on CustomException catch (e) {
                           print('GET USER RESPONSE ERROR: $e');
+                          String textContent = e.message == 'null'
+                              ? "Rest Server Not Found"
+                              : e.message;
                           await showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('Ошибка'),
-                                  content: Text("$e"),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, 'OK'),
-                                        child: const Text('OK'))
-                                  ],
+                                return ErrorDialog(
+                                  textTitle: 'Error',
+                                  textContent: textContent,
                                 );
                               });
                         }

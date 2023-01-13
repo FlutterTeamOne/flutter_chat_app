@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:chat_app/domain/data/dto/attach_dto/attach_dto.dart';
 import 'package:chat_app/domain/data/library/library_data.dart';
+import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/modules/sending_manager/library/library_sending_manager.dart';
 import 'package:dio/dio.dart';
 
@@ -53,13 +54,22 @@ class RestClient {
       String userUpdatedDate = responseFromRest[5].split(' updated_date: ')[1];
       String? userDeletedDate = responseFromRest[6].split(' deleted_date: ')[1];
 
-      await LocalUsersServices().createUser(
-          userId: userId,
-          name: username,
-          email: userEmail,
-          createdDate: userCreatedDate,
-          updatedDate: userUpdatedDate,
-          profilePicUrl: profilePicUrl);
+      bool isNoUser = true;
+      for (var user in await LocalUsersServices().getAllUsers()) {
+        if (user.userId == userId) {
+          isNoUser = false;
+        }
+      }
+
+      if (isNoUser) {
+        await LocalUsersServices().createUser(
+            userId: userId,
+            name: username,
+            email: userEmail,
+            createdDate: userCreatedDate,
+            updatedDate: userUpdatedDate,
+            profilePicUrl: profilePicUrl);
+      }
 
       // name, email, created_date, profile_pic_url, updated_date, deleted_date,
 
@@ -109,15 +119,23 @@ class RestClient {
   }
 
   Future deleteChatRest({required int id}) async {
-    var chatUrl = '$_url/chats/';
+    const String chatUrl = '$_url/chats/';
+    dynamic data;
     try {
-      var resp = await _dio.delete('$chatUrl$id');
+      final Response<dynamic> resp = await _dio.delete('$chatUrl$id');
       print('DEL RESP:$resp');
       if (resp.statusCode == 200) {
-        var data = json.decode(resp.data);
+        data = json.decode(resp.data);
         print('DEL DATA: $data');
       }
-    } catch (e) {}
+    } on DioError catch (e) {
+      print("DioError DeleteChat ${e.response.toString()}");
+      throw CustomException(e.response.toString());
+    } catch (e) {
+      print("Error DeleteChat $e");
+      throw CustomException(e.toString());
+    }
+    return data;
   }
 
   Future<AttachModel> sendImageRest({required String path}) async {

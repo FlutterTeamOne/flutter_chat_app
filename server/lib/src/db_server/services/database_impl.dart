@@ -38,7 +38,7 @@ class DbServerServices {
           updated_date      char(26) NOT NULL,
           deleted_date      char(26),
           hash_connect      integer UNIQUE,
-          password          char(4),
+          password          char(256),
           CHECK (LENGTH(created_date) >= 26)
           )
         ''');
