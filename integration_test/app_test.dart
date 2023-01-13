@@ -18,7 +18,7 @@ void main() {
   DeleteUserRobot deleteUserTest;
 
   group('Integration tests', () {
-    setUp(() {
+    setUpAll(() {
       app.main();
     });
 
