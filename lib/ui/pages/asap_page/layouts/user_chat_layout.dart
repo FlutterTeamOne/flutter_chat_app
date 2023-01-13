@@ -132,9 +132,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                                         borderRadius:
                                             BorderRadius.circular(20.0),
                                       ))),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
+                                      onPressed: () => Navigator.pop(context),
                                       child: const Icon(
                                         Icons.close_rounded,
                                       ))

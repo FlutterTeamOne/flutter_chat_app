@@ -69,18 +69,17 @@ class ChatWidgetState extends State<ChatWidget> {
         ),
       ),
       body: messages.isEmpty
-          ? Center(child: Text('Start chatting'))
+          ? const Center(child: Text('Start chatting'))
           : GroupedListView<MessageDto, DateTime>(
               controller: scrollController,
               padding: const EdgeInsets.all(10),
               elements: messages,
               reverse: true,
               order: GroupedListOrder.DESC,
-              groupBy: (message) => DateTime(
-                DateTime.parse(message.createdDate!).year,
-                DateTime.parse(message.createdDate!).month,
-                DateTime.parse(message.createdDate!).day,
-              ),
+              groupBy: (message) {
+                final date = DateTime.parse(message.createdDate!);
+                return DateTime(date.year, date.month, date.day);
+              },
               groupHeaderBuilder: (MessageDto message) =>
                   TimeCardWidget(date: message.createdDate!),
               itemBuilder: (context, MessageDto message) {
