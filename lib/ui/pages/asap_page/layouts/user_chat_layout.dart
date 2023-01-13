@@ -173,7 +173,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                 chatId: widget.chatId,
                 senderId: await MainUserServices().getUserID(),
                 content: {'message': controller.text, 'media': msg}.toString(),
-                messageId: localMessageId,
+                messageId: message?.messageId,
                 createdDate: message?.createdDate,
                 updatedDate: DateTime.now().toIso8601String()),
             isEditing: EditState.isEditing);
