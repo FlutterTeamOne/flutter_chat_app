@@ -133,13 +133,16 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                           userFromServerDb =
                               await grpcClient.getUser(userId: value);
                           print("BEFORE REST");
-                          await ref.read(River.chatPod.notifier).createChat(
+                          final chatId = await ref
+                              .read(River.chatPod.notifier)
+                              .createChat(
                                 ChatDto(
                                   userIdChat: value,
                                   createdDate: DateTime.now().toIso8601String(),
                                   updatedDate: DateTime.now().toIso8601String(),
                                 ),
                               );
+                          ref.read(River.chatPod.notifier).getChatId(chatId);
                         } on CustomException catch (e) {
                           print('GET USER RESPONSE ERROR: $e');
                           await showDialog(

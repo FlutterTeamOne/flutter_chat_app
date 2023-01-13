@@ -1,5 +1,7 @@
 ﻿import 'package:chat_app/modules/signal_service/river/message_ref/message_notifier.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
+import 'package:chat_app/ui/pages/asap_page/edit_chat_popup_widget.dart';
+import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
 
 import '../../../../modules/signal_service/river/message_ref/message_state_ref.dart';
 import '../../../../modules/signal_service/river/river.dart';
@@ -73,29 +75,8 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                         name: myChat ? 'My Favorite Chat' : user.name,
                       ),
                     ),
-                    Flexible(
-                      child: myChat
-                          ? IconButton(
-                              onPressed: () {},
-                              icon: const Icon(Icons.draw_outlined))
-                          : PopupMenuButton<int>(
-                              itemBuilder: (context) => [
-                                    PopupMenuItem(
-                                        value: 1,
-                                        child: Row(
-                                          children: const [
-                                            Icon(Icons.delete),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text("Delete Chat")
-                                          ],
-                                        ),
-                                        onTap: () => ref
-                                            .read(River.chatPod.notifier)
-                                            .deleteChat(widget.chatId)),
-                                  ]),
-                    ),
+                    EditChatPopupWidget(
+                        myChat: myChat, ref: ref, chatId: widget.chatId),
                   ],
                 ),
               ),

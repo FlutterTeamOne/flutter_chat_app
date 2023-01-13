@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:chat_app/domain/data/dto/attach_dto/attach_dto.dart';
 import 'package:chat_app/domain/data/library/library_data.dart';
+import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/modules/sending_manager/library/library_sending_manager.dart';
 import 'package:dio/dio.dart';
 
@@ -126,7 +127,9 @@ class RestClient {
         var data = json.decode(resp.data);
         print('DEL DATA: $data');
       }
-    } catch (e) {}
+    } catch (e) {
+      throw CustomException(e.toString());
+    }
   }
 
   Future<AttachModel> sendImageRest({required String path}) async {

@@ -5,7 +5,6 @@ import 'package:chat_app/modules/signal_service/river/chat_ref/chat_state_ref.da
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../sending_manager/library/library_sending_manager.dart';
@@ -33,7 +32,7 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
     return state;
   }
 
-  Future createChat(ChatDto chat) async {
+  Future<int> createChat(ChatDto chat) async {
     ChatDto chatFromRest;
     try {
       chatFromRest = await RestClient().createChatRest(
@@ -45,12 +44,13 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
     }
 
     print("JAJAJ");
-    var chats = await _chatServices.createChat(
+    List<ChatDto> chats = await _chatServices.createChat(
         createDate: chatFromRest.createdDate,
         userId: chatFromRest.userIdChat,
         chatId: chatFromRest.chatId!);
     //TODO:запрос к restApi на создание чата
     state = state.copyWith(chats: chats);
+    return chatFromRest.chatId!;
   }
 
   void getChatId(int chatId) {
@@ -63,7 +63,11 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
     //TODO: func delete chat
     await _chatServices.deleteChat(id: chatId);
     //запрос на удаление к рест серверу
-    await RestClient().deleteChatRest(id: chatId);
+    try {
+      await RestClient().deleteChatRest(id: chatId);
+    } catch (e) {
+      throw CustomException(e.toString());
+    }
     print('CHAT ID: $chatId');
     state = state.copyWith(chatId: null);
   }

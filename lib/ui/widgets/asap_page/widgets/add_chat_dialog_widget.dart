@@ -3,8 +3,6 @@ import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../../src/libraries/library_all.dart';
-
 class AddChatDialogWidget extends StatefulWidget {
   int val;
   AddChatDialogWidget({
@@ -50,9 +48,7 @@ class _AddChatDialogWidgetState extends State<AddChatDialogWidget> {
         height: 500,
         child: Column(children: [
           Text('Friend Id: ${_friendIdFieldController.text}'),
-          const SizedBox(
-            height: 8,
-          ),
+          const SizedBox(height: 8),
           TextField(
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
@@ -63,15 +59,13 @@ class _AddChatDialogWidgetState extends State<AddChatDialogWidget> {
                 prefixIcon: Icon(Icons.person),
                 hintText: 'Enter your friend ID'),
           ),
-          const SizedBox(
-            height: 32,
-          ),
+          const SizedBox(height: 32),
           ElevatedButton(
               onPressed: () async {
                 if (_friendId == null || _friendId == '') {
-                  showDialog(
+                  await showDialog(
                       context: context,
-                      builder: (context) => ErrorDialog(
+                      builder: (context) => const ErrorDialog(
                           textTitle: 'Error', textContent: 'Введите id'));
                 } else {
                   widget.val = int.parse(_friendId!);
