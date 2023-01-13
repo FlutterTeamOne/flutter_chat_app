@@ -15,6 +15,7 @@ class ExitButton extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16),
       child: IconButton(
+          color: Colors.black87,
           onPressed: () async {
             // context.read<ChatBloc>().close();
             //закрыть базу

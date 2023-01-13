@@ -63,7 +63,7 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
     //запрос на удаление к рест серверу
     dynamic data;
     try {
-     
+      //TODO: Добавлять всем сообщениям этого чата deleted_date в локалке
       data = await RestClient().deleteChatRest(id: chatId);
     } on DioError catch (e) {
       print("DioError DeleteChatNotifer ${e.response.toString()}");
