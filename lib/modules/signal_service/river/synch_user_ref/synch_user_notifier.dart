@@ -110,7 +110,7 @@ class SynchUserNotifier extends StateNotifier<SynchStateRef> {
       print("GRPC ERROR CreateUser: $e");
       throw CustomException(e.message.toString());
     } on SocketException catch (e) {
-      print("SOcket ERROR CreateUser: $e");
+      print("Socket ERROR CreateUser: $e");
       throw CustomException(e.toString());
     } catch (e) {
       print("ERROR CreateUser: $e");

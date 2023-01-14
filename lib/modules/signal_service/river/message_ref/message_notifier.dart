@@ -4,6 +4,7 @@ import 'package:chat_app/modules/client/grpc_client.dart';
 import 'package:chat_app/modules/client/rest_client.dart';
 import 'package:chat_app/modules/signal_service/river/message_ref/message_state_ref.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper.dart';
+import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grpc/grpc.dart';
@@ -89,6 +90,8 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
             updatedDate: msg.dateUpdate,
             attachId: msg.attachmentId,
             contentType: msg.contentType);
+       UserPref.setLastMessageId(
+          userName: '${UserPref.getUserId}user', lastMessageId: msg.messageId);
 
         await _messagesServices.updateMessage(
             message: newMsg, localMessageId: msg.localMessgaeId);

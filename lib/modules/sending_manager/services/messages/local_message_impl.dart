@@ -1,3 +1,5 @@
+import 'package:sqflite/sqflite.dart';
+
 import '../../../../domain/data/dto/attach_dto/attach_dto.dart';
 import '../../../../src/generated/grpc_lib/grpc_message_lib.dart';
 
@@ -273,8 +275,8 @@ class LocalMessagesServices implements ILocalMessagesServices {
 
   @override
   Future<int> getMaxMessageId() async {
-    var db = await DBHelper.instanse.database;
-    var messageId = await db.rawQuery('''
+    Database db = await DBHelper.instanse.database;
+    List<Map<String, Object?>> messageId = await db.rawQuery('''
                 SELECT MAX(${DatabaseConst.messagesColumnLocalMessagesId})
                 FROM ${DatabaseConst.messageTable}
                 ''');

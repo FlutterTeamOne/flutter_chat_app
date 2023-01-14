@@ -84,7 +84,9 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     ///
     ///Сообщения
     ///
-    var maxMessageId = await _messagesServices.getMaxMessageId();
+    // var maxMessageId = await _messagesServices.getMaxMessageId();
+    int maxMessageId =
+        UserPref.getLastMessageId(userName: '${UserPref.getUserId}user');
     var messagesForUpdate = await _messagesServices.getAllMessagesNotNull();
     var messagesRequest = <MessageRequest>[];
     if (messagesForUpdate.isNotEmpty) {
@@ -192,6 +194,8 @@ class UserNotifier extends StateNotifier<UserStateRef> {
         attachId: message.attachmentId,
         isRead: message.isRead,
       );
+      UserPref.setLastMessageId(
+          userName: '${UserPref.getUserId}user', lastMessageId: msg.messageId!);
       print("UPDATEMESSAGE START");
       if (msg.deletedDate != null && msg.deletedDate != '') {
         await _messagesServices.deleteMessageByMessageId(id: msg.messageId!);
