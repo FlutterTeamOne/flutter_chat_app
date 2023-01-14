@@ -24,7 +24,7 @@ class CreateUserRobot {
 
     //Нажатие на создание юзера
     await tester.pumpAndSettle();
-    await tester.tap(find.byType(ElevatedButton));
+    await tester.tap(finder.createUserButton);
 
     await tester.pumpAndSettle();
     expect(finder.createUserText, findsOneWidget);
@@ -125,7 +125,7 @@ class CreateUserRobot {
     //нажатие на кнопку создания юзера
     await tester.pumpAndSettle(const Duration(seconds: 1));
 
-    await tester.tap(finder.createButton);
+    await tester.tap(finder.createUserButton);
     await tester.pumpAndSettle();
 
     //нажатие на кнопку cancel

@@ -17,7 +17,7 @@ class DeleteUserRobot {
     await tester.tap(finder.deleteUserButton);
     await tester.pumpAndSettle();
 
-    await tester.tap(finder.okExitErrorButton);
+    await tester.tap(finder.dialogButton);
     await tester.pumpAndSettle();
   }
 }

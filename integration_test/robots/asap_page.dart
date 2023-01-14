@@ -8,7 +8,7 @@ class AsapPageRobot {
   final AsapFinder finder = AsapFinder();
   final UserFinder userFinder = UserFinder();
 
-  Future<void> goToAsapPage() async {
+  Future<void> gotoFirstUserAsapPage() async {
     await tester.pumpAndSettle(const Duration(seconds: 1));
 
     await tester.tap(userFinder.firstUserButton);
@@ -44,6 +44,30 @@ class AsapPageRobot {
     await tester.pumpAndSettle();
 
     await tester.tap(finder.sendMessageButton);
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> checkMessage({required String message}) async {
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+
+    await tester.tap(userFinder.thirdUserButton);
+    await tester.pumpAndSettle();
+
+    //нажимаем на чат - asapPage
+    await tester.tap(finder.asapPageButton);
+    await tester.pumpAndSettle();
+
+    //проверяем карточки юзеров
+    expect(finder.userCardWidget, findsOneWidget);
+    await tester.pumpAndSettle();
+
+    expect(finder.firstUserCard, findsOneWidget);
+    await tester.pumpAndSettle();
+
+    await tester.tap(finder.firstUserCard);
+    await tester.pumpAndSettle();
+
+    expect(find.text(message), findsOneWidget);
     await tester.pumpAndSettle();
   }
 

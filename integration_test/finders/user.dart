@@ -6,6 +6,9 @@ import 'finders.dart';
 class UserFinder extends TestFinder {
   final Finder userWidget = find.byType(UserCard);
 
+  //create user
+  final Finder createUserButton = find.byKey(const Key('createUserButton'));
+
   //кнопкаСоздания
   final Finder createButton = find.byType(ElevatedButton);
 
@@ -34,9 +37,9 @@ class UserFinder extends TestFinder {
       find.byKey(const Key('passwordField 2'));
 
   //юзер карточка - кнопка для перехода на юзера
-  final Finder firstUserButton = find.byKey(const Key('UserButton 0'));
-  final Finder thirdUserButton = find.byKey(const Key('UserButton 2'));
-  final Finder seventhUserButton = find.byKey(const Key('UserButton 6'));
+  final Finder firstUserButton = find.byKey(const Key('UserButton 1'));
+  final Finder thirdUserButton = find.byKey(const Key('UserButton 3'));
+  final Finder seventhUserButton = find.byKey(const Key('UserButton 7'));
 
   //виджет создания юзера и его поля ТекстИнпутФилды
   final Finder usernameInputWidget = find.byKey(const Key('createName'));

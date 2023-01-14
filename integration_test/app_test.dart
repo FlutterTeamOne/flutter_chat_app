@@ -46,13 +46,7 @@ void main() {
 
         //ТЕСТ 3
         //УДАЛЕНИЕ СОЗДАННОГО ЮЗЕРА
-        try {
-          await deleteUserTest.deleteCreatedUser();
-        } catch (e) {
-          print(e);
-          app.main();
-        }
-        await tester.pumpAndSettle();
+        await deleteUserTest.deleteCreatedUser();
         await createUserTest.checkUsers();
 
         //ТЕСТ 4
@@ -63,9 +57,11 @@ void main() {
 
         //ТЕСТ 5
         //ПЕРЕХОДИМ В ЧАТЫ, ПРОВЕРЯЕМ ЧАТЫ ЮЗЕРА, ОТПРАВЛЯЕМ СООБЩЕНИЕ
-        await asapTest.goToAsapPage();
+        await asapTest.gotoFirstUserAsapPage();
         await asapTest.checkChats();
         await asapTest.addMessage(message: 'message');
+        await asapTest.goToAuthPage();
+        await asapTest.checkMessage(message: 'message');
         await asapTest.goToAuthPage();
 
         await tester.pumpAndSettle();

@@ -1,8 +1,8 @@
 part of '../authorization_page.dart';
 
 class UserCard extends StatelessWidget {
-  const UserCard({super.key, required this.user, required this.index});
-  final int index;
+  const UserCard({super.key, required this.user});
+  //final int index;
   final UserDto user;
 
   @override
@@ -15,7 +15,7 @@ class UserCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             InkWell(
-              key: Key('UserButton $index'),
+              key: Key('UserButton ${user.userId}'),
               overlayColor: MaterialStateProperty.all(Colors.transparent),
               onTap: () async {
                 userPod.changeUser(false);
