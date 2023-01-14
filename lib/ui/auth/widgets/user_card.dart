@@ -11,9 +11,9 @@ class UserCard extends StatelessWidget {
     return Consumer(
       builder: (context, ref, _) {
         var userPod = ref.read(River.userPod.notifier);
-        return Wrap(
-          alignment: WrapAlignment.center,
-          crossAxisAlignment: WrapCrossAlignment.center,
+        return Column(
+         
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             InkWell(
               overlayColor: MaterialStateProperty.all(Colors.transparent),

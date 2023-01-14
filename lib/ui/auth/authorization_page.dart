@@ -71,34 +71,32 @@ class _AuthPageState extends ConsumerState<AuthPage> {
             : SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 30),
-                      Text(
-                        'Welcome',
-                        style: Theme.of(context).textTheme.displaySmall,
-                      ),
-                      Text(
-                        'choose user',
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                      const SizedBox(height: 50),
-                      GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: adaptation(),
-                          crossAxisSpacing: 15,
-                          mainAxisSpacing: currentWidth > 900 ? 35 : 25,
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 30),
+                        Text(
+                          'Welcome',
+                          style: Theme.of(context).textTheme.displaySmall,
                         ),
-                        shrinkWrap: true,
-                        itemCount: users.length,
-                        itemBuilder: (context, index) {
-                          return UserCard(
-                            user: users![index],
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                    ],
+                        Text(
+                          'choose user',
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                        const SizedBox(height: 50),
+                        Wrap(
+                          alignment: WrapAlignment.center,
+                          spacing: 16,
+                          runSpacing: 16,
+                          children: users
+                              .map((user) => UserCard(user: user))
+                              .toList(),
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
                   ),
                 ),
               );
