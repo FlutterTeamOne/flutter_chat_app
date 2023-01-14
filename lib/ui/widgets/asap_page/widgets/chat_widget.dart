@@ -12,11 +12,13 @@ class ChatWidget extends StatefulWidget {
     required this.messages,
     required this.chatId,
     required this.textController,
+    required this.deletedUser
   }) : super(key: key);
 
   final List<MessageDto> messages;
   final int chatId;
   final TextEditingController textController;
+  final String? deletedUser;
 
   @override
   State<ChatWidget> createState() => ChatWidgetState();
@@ -70,7 +72,7 @@ class ChatWidgetState extends State<ChatWidget> {
         ),
       ),
       body: messages.isEmpty
-          ? const Center(child: Text('Start chatting'))
+          ?  Center(child: Text(widget.deletedUser!.isEmpty || widget.deletedUser ==null?'Start chatting':'Oops This user has deleted their account'))
           : GroupedListView<MessageDto, DateTime>(
               controller: scrollController,
               padding: const EdgeInsets.all(10),

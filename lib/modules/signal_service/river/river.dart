@@ -38,9 +38,9 @@ class River {
   static final messagePod =
       StateNotifierProvider<MessageNotifier, MessageStateRef>(
           (ref) => MessageNotifier());
+  // static final futureMessagePod = FutureProvider<MessageStateRef>(
+  //     (ref) => ref.read(messagePod.notifier).readMessages());
   static final newUserPod =
       StateNotifierProvider<NewUserNotifier, NewUserStateRef>(
           (ref) => NewUserNotifier());
-  // static final futureMessagePod = FutureProvider.autoDispose<MessageStateRef>(
-  //     (ref) async => await ref.read(messagePod.notifier).readMessages());
 }

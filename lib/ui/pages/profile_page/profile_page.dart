@@ -1,6 +1,5 @@
 import 'package:blur/blur.dart';
 import 'package:chat_app/modules/signal_service/river/chat_ref/chat_notifier.dart';
-import 'package:chat_app/modules/signal_service/river/message_ref/message_notifier.dart';
 import 'package:chat_app/modules/signal_service/river/user_ref/user_notifier.dart';
 import 'package:chat_app/src/constants/user_constants.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';

@@ -1,3 +1,4 @@
+import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/modules/signal_service/river/user_ref/user_notifier.dart';
 import 'package:chat_app/src/constants/user_constants.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
@@ -6,6 +7,7 @@ import 'package:chat_app/ui/widgets/custom_dialogs/textfield_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:grpc/grpc.dart';
 
 class ShowTextFieldDialog {
   static Future<dynamic> showTextFieldDialog(
@@ -35,27 +37,35 @@ class ShowTextFieldDialog {
             onPressed: () async {
               String updatedDate = DateTime.now().toIso8601String();
               late String newValue = newController.text;
+              String textContentError = '';
               //TODO: Проверка на те же данные которые введены
               if (newController.text.isNotEmpty) {
-                if (enumUserInfo == EnumUserInfo.avatar &&
-                    !(await _validateImage(newValue))) {
-                  Navigator.pop(context);
-                  showDialog(
-                      context: context,
-                      builder: (context) => const ErrorDialog(
-                            textTitle: 'Ошибка',
-                            textContent: 'Кривая ссылка',
-                          ));
-                } else if (!((enumUserInfo == EnumUserInfo.email) ==
-                    EmailValidator.validate(newController.text))) {
-                  Navigator.pop(context);
-                  showDialog(
-                      context: context,
-                      builder: (context) => const ErrorDialog(
-                            textTitle: 'Ошибка',
-                            textContent: 'Невалидный email',
-                          ));
-                } else {
+                if (enumUserInfo == EnumUserInfo.avatar) {
+                  if (!(await _validateImage(newValue))) {
+                    textContentError = 'Link broken';
+                  } else if (newController.text == userMain.profilePicLink) {
+                    textContentError = 'Enter new picture URL';
+                  }
+                } else if (enumUserInfo == EnumUserInfo.email) {
+                  if (!EmailValidator.validate(newController.text)) {
+                    textContentError = 'Invalid email';
+                  } else if (newController.text == userMain.email) {
+                    textContentError = 'Enter new email';
+                  }
+                } else if (enumUserInfo == EnumUserInfo.name &&
+                    newController.text == userMain.name) {
+                  textContentError = 'Enter new name';
+                }
+              } else {
+                textContentError = 'Enter data';
+              }
+              if (textContentError != '') {
+                await showDialog(
+                    context: context,
+                    builder: (context) => ErrorDialog(
+                        textTitle: 'Error', textContent: textContentError));
+              } else {
+                try {
                   final updatedUser = UserDto(
                       userId: userMain.userId,
                       name: enumUserInfo != EnumUserInfo.name
@@ -69,23 +79,20 @@ class ShowTextFieldDialog {
                           ? userMain.profilePicLink
                           : newValue,
                       updatedDate: updatedDate);
-                  userPod.updateMainUser(updatedUser);
-
-                  //TODO: Убрать Принт
-                  print("NEW ${enumUserInfo}: $newValue");
-                  Navigator.pop(context);
+                  await userPod.updateMainUser(updatedUser);
+                } on CustomException catch (e) {
+                  await showDialog(
+                      context: context,
+                      builder: (context) =>
+                          ErrorDialog(textTitle: 'Error', textContent: '$e'));
                 }
-              } else {
-                showDialog(
-                    context: context,
-                    builder: (context) => const ErrorDialog(
-                          textTitle: 'Ошибка',
-                          textContent: 'Введите данные',
-                        ));
+                //TODO: Убрать Принт
+                print("NEW ${enumUserInfo}: $newValue");
+                Navigator.pop(context);
               }
             },
           );
-        }).onError((error, stackTrace) => null);
+        });
   }
 
   static Future<bool> _validateImage(String imageUrl) async {

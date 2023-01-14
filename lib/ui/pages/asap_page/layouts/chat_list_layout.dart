@@ -1,19 +1,15 @@
 ﻿import 'dart:async';
 import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/modules/signal_service/river/river.dart';
-import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
-import 'package:chat_app/src/generated/chats/chats.pbgrpc.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/generated/users/users.pbgrpc.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/add_chat_dialog_widget.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/search_field.dart';
 import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../modules/storage_manager/db_helper/user_path.dart';
 import '../../../widgets/library/library_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../src/libraries/library_all.dart';
 
 class ChatListLayout extends StatefulWidget {
@@ -81,34 +77,36 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                   }
                                 }
                                 return UserCardWidget(
-                                    key: Key('userCardWidget $index'),
-                                    sender: lastMessage.chatId == 0
-                                        ? ""
-                                        : !checkSender(lastMessage.senderId)
-                                            ? friend.name
-                                            : 'You',
-                                    // checkSender(widget.messageModel[lastMessageId].senderId),
-                                    // ? userBloc.state.users[index].name:'You'),
-                                    selected: false,
-                                    onTap: () {
-                                      //TODO: GetChatId => SetChatId
-                                      ref
-                                          .watch(River.chatPod.notifier)
-                                          .getChatId(chatModel[index].chatId!);
-                                    },
-                                    name: chatModel[index].userIdChat ==
-                                            UserPref.getUserId
-                                        ? "My favorite chat"
-                                        : friend.name,
-                                    image: friend.profilePicLink,
-                                    updatedDate: getUpdateDate(
-                                        chatModel[index].updatedDate),
-                                    message: lastMessage.chatId != 0
-                                        ? lastMessage.contentType ==
-                                                ContentType.isText
-                                            ? lastMessage.content
-                                            : 'Image msg'
-                                        : 'Start chating');
+                                  key: Key('userCardWidget $index'),
+                                  sender: lastMessage.chatId == 0
+                                      ? ""
+                                      : !checkSender(lastMessage.senderId)
+                                          ? friend.name
+                                          : 'You',
+                                  // checkSender(widget.messageModel[lastMessageId].senderId),
+                                  // ? userBloc.state.users[index].name:'You'),
+                                  selected: false,
+                                  onTap: () {
+                                    //TODO: GetChatId => SetChatId
+                                    ref
+                                        .watch(River.chatPod.notifier)
+                                        .getChatId(chatModel[index].chatId!);
+                                  },
+                                  name: chatModel[index].userIdChat ==
+                                          UserPref.getUserId
+                                      ? "My favorite chat"
+                                      : friend.name,
+                                  image: friend.profilePicLink,
+                                  updatedDate: getUpdateDate(
+                                      chatModel[index].updatedDate),
+                                  message: lastMessage.chatId != 0
+                                      ? lastMessage.contentType ==
+                                              ContentType.isText
+                                          ? lastMessage.content
+                                          : 'Image msg'
+                                      : 'Start chating',
+                                  isSuccess: lastMessage.messageId,
+                                );
                               },
                             )
                           ],
@@ -132,8 +130,9 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                         }
                         GetUserResponse userFromServerDb;
                         try {
-                          userFromServerDb =
-                              await grpcClient.getUser(userId: value);
+                          userFromServerDb = await ref
+                              .read(River.userPod.notifier)
+                              .getUserFromServer(userId: value);
                           print("BEFORE REST");
                           final chatId = await ref
                               .read(River.chatPod.notifier)

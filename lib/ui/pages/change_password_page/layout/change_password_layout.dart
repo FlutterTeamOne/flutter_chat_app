@@ -1,6 +1,6 @@
 import 'package:chat_app/modules/signal_service/river/river.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
-import 'package:chat_app/ui/pages/change_password_page/repository/field_form_class.dart';
+import 'package:chat_app/ui/widgets/custom_widgets/field_form_class.dart';
 import 'package:chat_app/ui/pages/main_layout.dart';
 import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
 import 'package:chat_app/ui/widgets/custom_widgets/TextFormFieldWidget.dart';
@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ChangePasswordLayout extends ConsumerStatefulWidget {
-  ChangePasswordLayout({
+  const ChangePasswordLayout({
     super.key,
   });
 
@@ -18,7 +18,7 @@ class ChangePasswordLayout extends ConsumerStatefulWidget {
 }
 
 class _ChangePasswordLayoutState extends ConsumerState<ChangePasswordLayout> {
-  GlobalKey<FormState> _changePasswordKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _changePasswordKey = GlobalKey();
   late TextEditingController oldPasswordController;
 
   late TextEditingController newPasswordController;
@@ -59,8 +59,7 @@ class _ChangePasswordLayoutState extends ConsumerState<ChangePasswordLayout> {
             result = FieldFormClass.validatorPassword(password);
             return result;
           },
-          inputFormatters:
-              RegExp(r'^[A-Za-z0-9!@#\$&*~а-яА-Я]+', unicode: true),
+          inputFormatters: FieldFormClass.regExpPassword,
           maxLength: 20,
           obscureText: true),
       FieldFormClass(
@@ -76,8 +75,7 @@ class _ChangePasswordLayoutState extends ConsumerState<ChangePasswordLayout> {
                 password!, oldPasswordController.text);
             return result;
           },
-          inputFormatters:
-              RegExp(r'^[A-Za-z0-9!@#\$&*~а-яА-Я]+', unicode: true),
+          inputFormatters: FieldFormClass.regExpPassword,
           maxLength: 20,
           obscureText: true),
       FieldFormClass(
@@ -90,8 +88,7 @@ class _ChangePasswordLayoutState extends ConsumerState<ChangePasswordLayout> {
                 password!, newPasswordController.text);
             return result;
           },
-          inputFormatters:
-              RegExp(r'^[A-Za-z0-9!@#\$&*~а-яА-Я]+', unicode: true),
+          inputFormatters: FieldFormClass.regExpPassword,
           maxLength: 20,
           obscureText: true)
     ];
@@ -100,7 +97,9 @@ class _ChangePasswordLayoutState extends ConsumerState<ChangePasswordLayout> {
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            const SizedBox(height: 15),
             SizedBox(
               width: 300,
               child: ListView.separated(
@@ -119,6 +118,7 @@ class _ChangePasswordLayoutState extends ConsumerState<ChangePasswordLayout> {
                       )),
             ),
             const SizedBox(height: 15),
+
             ///
             ///Кнопка отправки формы
             ///

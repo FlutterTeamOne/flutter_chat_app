@@ -13,7 +13,6 @@ class LocalUsersServices implements ILocalUsersServices {
   @override
   Future<int> createUser({
     required int userId,
-    // int? userId,
     required String name,
     required String email,
     required String createdDate,
@@ -46,9 +45,8 @@ class LocalUsersServices implements ILocalUsersServices {
     String? deletedDate,
     required String profilePicUrl,
   }) async {
-    var db = await DBHelperStart.instanse.database;
-    DBHelperStart.instanse.updateListenController.add(true);
-    return await db.insert(DatabaseConst.userTable, {
+    Database db = await DBHelperStart.instanse.database;
+    int user = await db.insert(DatabaseConst.userTable, {
       DatabaseConst.usersColumnUserId: userId,
       DatabaseConst.usersColumnName: name,
       DatabaseConst.usersColumnEmail: email,
@@ -57,6 +55,8 @@ class LocalUsersServices implements ILocalUsersServices {
       DatabaseConst.usersColumnDeletedDate: deletedDate ?? '',
       DatabaseConst.usersColumnProfilePicLink: profilePicUrl,
     });
+    DBHelperStart.instanse.updateListenController.add(true);
+    return user;
   }
 
   @override

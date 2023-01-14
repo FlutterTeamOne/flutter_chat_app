@@ -164,7 +164,12 @@ class GrpcUsers extends GrpcUsersServiceBase {
   @override
   Future<CreateUserResponse> createUser(
       ServiceCall call, CreateUserRequest request) async {
-    var date = DateTime.now().toIso8601String();
+    String date = DateTime.now().toIso8601String();
+    List<Map<String, Object?>> users =
+        await UsersServices().getUserByEmail(email: request.email);
+    if (users.isNotEmpty) {
+      throw errors[6];
+    }
     var src = await UsersServices().createUser(
         name: request.name,
         email: request.email,
@@ -206,7 +211,8 @@ class GrpcUsers extends GrpcUsersServiceBase {
     GrpcError.custom(17, "Нет пользователя с таким Email"), //2
     GrpcError.custom(18, "Пользователь удален"), //3
     GrpcError.custom(19, "Неверный старый пароль"), //4
-    GrpcError.custom(20, "Произошла неизвестная ошибка") //5
+    GrpcError.custom(20, "Произошла неизвестная ошибка"), //5
+    GrpcError.custom(21, "Пользовательс таким email уже зарегистрирован"), //6
   ];
 
   @override
@@ -249,6 +255,15 @@ class GrpcUsers extends GrpcUsersServiceBase {
       ServiceCall call, UpdateUserRequest request) async {
     var updateUserResponse = UpdateUserResponse();
     updateUserResponse.dateUpdated = DateTime.now().toIso8601String();
+    Map<String, Object?> user =
+        await UsersServices().getUserById(userId: request.id);
+    if (request.email != user['email']) {
+      List<Map<String, Object?>> users =
+          await UsersServices().getUserByEmail(email: request.email);
+      if (users.isNotEmpty) {
+        throw errors[6];
+      }
+    }
     var src = await UsersServices().updateUser(
         newValues: '''name = '${request.name}', 
             email = '${request.email}', 
