@@ -85,27 +85,3 @@ class AsapPageRobot {
     await tester.pumpAndSettle();
   }
 }
-
-
-
-
-      // //переходим к юзеру 3 с кем у нас чат
-      // await tester.tap(finders.profilePageButton);
-      // await tester.pumpAndSettle(const Duration(microseconds: 500));
-      // await tester.tap(finders.backFromProfilePageButton);
-      // await tester.pumpAndSettle(const Duration(microseconds: 500));
-      // await tester.tap(finders.thirdUserButton);
-      // //нажимаем на чат - asapPage
-      // await tester.pumpAndSettle(const Duration(milliseconds: 500));
-      // await tester.tap(finders.asapPageButton);
-      // await tester.pumpAndSettle(const Duration(milliseconds: 500));
-      // //нажимаем на чат с первым юзером
-      // await tester.tap(finders.firstUserCard);
-      // await tester.pumpAndSettle(const Duration(milliseconds: 500));
-      // expect(find.text('HELLO MY DEAR FRIEND'), findsOneWidget);
-      // await tester.pumpAndSettle(const Duration(seconds: 3));
-
-      // //назад к странице пользователя
-      // await tester.pumpAndSettle(const Duration(milliseconds: 500));
-      // await tester.tap(finders.profilePageButton);
-      // await tester.pumpAndSettle(const Duration(milliseconds: 500));
