@@ -1,50 +1,63 @@
 import 'package:flutter_test/flutter_test.dart';
-
-import '../finders.dart';
+import '../finders/asap.dart';
+import '../finders/user.dart';
 
 class AsapPageRobot {
   AsapPageRobot({required this.tester});
   final WidgetTester tester;
+  final AsapFinder finder = AsapFinder();
+  final UserFinder userFinder = UserFinder();
 
   Future<void> goToAsapPage() async {
     await tester.pumpAndSettle(const Duration(seconds: 1));
-    await tester.tap(Finders().firstUserButton);
-    //нажимаем на чат - asapPage
+
+    await tester.tap(userFinder.firstUserButton);
     await tester.pumpAndSettle();
-    await tester.tap(Finders().asapPageButton);
+
+    //нажимаем на чат - asapPage
+    await tester.tap(finder.asapPageButton);
     await tester.pumpAndSettle();
   }
 
   Future<void> checkChats() async {
     await tester.pumpAndSettle(const Duration(seconds: 1));
+
     //проверяем карточки юзеров у первого три чата
-    expect(Finders().userCardWidget, findsNWidgets(3));
+    expect(finder.userCardWidget, findsNWidgets(3));
     await tester.pumpAndSettle();
-    expect(Finders().firstUserCard, findsOneWidget);
+
+    expect(finder.firstUserCard, findsOneWidget);
     await tester.pumpAndSettle();
   }
 
   Future<void> addMessage({required String message}) async {
     await tester.pumpAndSettle(const Duration(seconds: 1));
+
     //добавляем сообщение в чат с первым юзером
-    await tester.tap(Finders().firstUserCard);
+    await tester.tap(finder.firstUserCard);
     await tester.pumpAndSettle();
-    await tester.tap(Finders().messageInputField);
+
+    await tester.tap(finder.messageInputField);
     await tester.pumpAndSettle();
-    await tester.enterText(Finders().messageInputField, message);
+
+    await tester.enterText(finder.messageInputField, message);
     await tester.pumpAndSettle();
-    await tester.tap(Finders().sendMessageButton);
+
+    await tester.tap(finder.sendMessageButton);
     await tester.pumpAndSettle();
   }
 
   Future<void> goToAuthPage() async {
     await tester.pumpAndSettle(const Duration(seconds: 1));
-    await tester.tap(Finders().profilePageButton);
+
+    await tester.tap(finder.profilePageButton);
     await tester.pumpAndSettle();
-    await tester.tap(Finders().backFromProfilePageButton);
+
+    await tester.tap(finder.backFromProfilePageButton);
     await tester.pumpAndSettle(const Duration(seconds: 1));
+
     await tester.pumpAndSettle();
-    expect(Finders().firstUserButton, findsOneWidget);
+    expect(userFinder.firstUserButton, findsOneWidget);
     await tester.pumpAndSettle();
   }
 }

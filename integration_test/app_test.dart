@@ -2,7 +2,6 @@ import 'package:chat_app/main.dart' as app;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
-import 'finders.dart';
 import 'robots/asap_page.dart';
 import 'robots/create_user.dart';
 import 'robots/delete_user.dart';
@@ -11,7 +10,6 @@ import 'robots/settings.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  Finders finders;
   CreateUserRobot createUserTest;
   SettingsPageRobot settingsTest;
   AsapPageRobot asapTest;
@@ -25,7 +23,6 @@ void main() {
     testWidgets(
       "all in one test",
       (WidgetTester tester) async {
-        finders = Finders();
         createUserTest = CreateUserRobot(tester: tester);
         settingsTest = SettingsPageRobot(tester: tester);
         asapTest = AsapPageRobot(tester: tester);
@@ -35,15 +32,9 @@ void main() {
 
         //ТЕСТ 1
         //СОЗДАНИЕ ЮЗЕРА, ПРОВЕРКА СОЗДАНИЯ, ОТМЕНА СОЗДАНИЯ ЮЗЕРА
-        await createUserTest.createUserTest(
-            userWidget: finders.seventhUserWidget,
-            name: 'newuser',
-            email: 'newuser@mail.ru',
-            password: 'password');
-        await createUserTest.checkCreateUser(
-            userWidget: finders.seventhUserButton, username: 'newuser');
-        await createUserTest.cancelCreateUser(
-            userWidget: finders.eighthUserWidget);
+        await createUserTest.createUserTest();
+        await createUserTest.checkCreateUser();
+        await createUserTest.cancelCreateUser();
         // TODO: удаление юзера
 
         //ТЕСТ 2
