@@ -26,9 +26,13 @@ class ChatAppBarWidget extends StatelessWidget {
             )),
           ),
           const SizedBox(width: 15),
-          Text(
-            name,
-            // style: AppTextStyle.s17Abel.copyWith(fontSize: 20),
+          SizedBox(
+            width: 300,
+            child: Text(
+              name,
+              overflow: TextOverflow.ellipsis,
+              // style: AppTextStyle.s17Abel.copyWith(fontSize: 20),
+            ),
           ),
           // const Spacer(),
           // IconButton(

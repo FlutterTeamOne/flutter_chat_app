@@ -64,7 +64,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                 color: Colors.transparent.withOpacity(0.1),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
+                  children: [
                     Flexible(
                       child: ChatAppBarWidget(
                         image: user!.deletedDate!.isEmpty

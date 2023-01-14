@@ -115,8 +115,11 @@ class DbServerServices {
       await txn.execute('''
           INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, deleted_date, password) VALUES ('test2', 't2@t2.t2', '2022-12-02T21:36:32.653712', 'https://faunistics.com/wp-content/uploads/2020/02/1-5-735x599.jpg', '2022-12-02T21:36:32.653712', '', 'pass')
       ''');
+      // await txn.execute('''
+      //     INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, deleted_date, password) VALUES ('test3', 't3@t3.t3', '2022-12-02T21:36:32.653712', 'https://faunistics.com/wp-content/uploads/2019/02/1-735x579.jpg', '2022-12-02T21:36:32.653712', '', 'pass')
+      // ''');
       await txn.execute('''
-          INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, deleted_date, password) VALUES ('test3', 't3@t3.t3', '2022-12-02T21:36:32.653712', 'https://faunistics.com/wp-content/uploads/2019/02/1-735x579.jpg', '2022-12-02T21:36:32.653712', '', 'pass')
+          INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, deleted_date, password) VALUES ('test3', 't3@t3.t3', '2022-12-02T21:36:32.653712', 'https://faunistis.com/wp-content/uploads/2019/02/1-735x579.jpg', '2022-12-02T21:36:32.653712', '', 'pass')
       ''');
       await txn.execute('''
           INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, deleted_date, password) VALUES ('test4', 't4@t4.t4', '2022-12-02T21:36:32.653712', 'https://moya-planeta.ru/upload/images/xl/0a/fb/0afb8c5bc608e7ef6b7d58670c9f43dabafc682d.jpg', '2022-12-02T21:36:32.653712', '', 'pass')
