@@ -17,7 +17,7 @@ abstract class IChatsServices {
   getChatByTwoIds({required int friend1Id, required int friend2Id});
 
   getAllChats();
-  getChatsByUserIdMoreChatId({required int userId, required int chatId});
+  getNewChatsByUserId({required int userId, required List<int> chatIds});
 
   getUpdatedChats({required List<ChatRequest> chats});
 }

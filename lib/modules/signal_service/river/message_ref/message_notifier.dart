@@ -4,6 +4,7 @@ import 'package:chat_app/modules/client/grpc_client.dart';
 import 'package:chat_app/modules/client/rest_client.dart';
 import 'package:chat_app/modules/signal_service/river/message_ref/message_state_ref.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper.dart';
+import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grpc/grpc.dart';
@@ -89,6 +90,8 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
             updatedDate: msg.dateUpdate,
             attachId: msg.attachmentId,
             contentType: msg.contentType);
+       UserPref.setLastMessageId(
+          userName: '${UserPref.getUserId}user', lastMessageId: msg.messageId);
 
         await _messagesServices.updateMessage(
             message: newMsg, localMessageId: msg.localMessgaeId);
@@ -100,22 +103,11 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
       if (event == DbListener.isMessage) {
         if (!mounted) return;
         readMessages();
-        // List<MessageDto> messages = [];
-        // _messagesServices.getAllMessages().then((value) => messages = value);
-
-        // // messages.sort((a, b) => a.localMessageId!.compareTo(b.localMessageId!));
-
-        // print('sortListen message:$messages');
-        // if (messages.isNotEmpty) {
-        //   // state.copyWith(messages: messages);
-        //   readMessages(messages);
-        // }
-        // state.copyWith(messages: messages);
       }
     });
   }
   Future<MessageStateRef> readMessages([List<MessageDto>? messageList]) async {
-    if (messageList == null || messageList.length == 1) {
+    if (messageList == null || messageList.isEmpty) {
       List<MessageDto> messages = await _messagesServices.getAllMessages();
 
       print("MESSAGES:$messages");

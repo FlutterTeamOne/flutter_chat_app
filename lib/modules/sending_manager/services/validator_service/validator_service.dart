@@ -1,5 +1,6 @@
 import 'package:chat_app/modules/sending_manager/library/library_sending_manager.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper.dart';
+import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/src/constants/db_constants.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/generated/sync/grpcsynh.pbgrpc.dart';
@@ -30,6 +31,8 @@ class ValidatorService {
         attachmentId: message.attachmentId,
         isRead: message.isRead,
       );
+      UserPref.setLastMessageId(
+          userName: '${UserPref.getUserId}user', lastMessageId: msg.messageId);
 // await LocalChatServices().
       if (msg.dateDelete == null || msg.dateDelete == '') {
         await LocalMessagesServices().addNewMessageFromBase(message: msg);
