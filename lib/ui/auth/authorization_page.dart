@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:chat_app/main.dart';
 import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/ui/pages/main_layout.dart';
@@ -42,7 +43,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
       await showDialog(
           context: context,
           builder: (context) =>
-              const ErrorDialog(textTitle: "Error", textContent: "e"));
+              ErrorDialog(textTitle: "Error", textContent: e.message));
     } catch (e) {
       print("ERROR");
     }
@@ -89,6 +90,17 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                             .pushNamed(RegistrationPage.routeName);
                       },
                       child: const Text('Create new user')),
+                  ElevatedButton(
+                      style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ))),
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(AuthPage.routeName);
+                      },
+                      child: const Text('Restart Page')),
                 ],
               );
       }),

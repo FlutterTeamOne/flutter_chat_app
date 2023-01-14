@@ -77,6 +77,7 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
       throw CustomException("RestServer not found");
     }
     print('CHAT ID: $chatId');
+    await LocalMessagesServices().deleteAllMessagesInChat(chatID: chatId);
     state = state.copyWith(chatId: null);
   }
 }

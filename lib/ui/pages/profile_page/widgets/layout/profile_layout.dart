@@ -98,9 +98,9 @@ class ProfileLayout extends StatelessWidget {
       required WidgetRef ref,
       required ChatNotifier chatPod}) async {
     try {
-      userPod.deleteUser(userMain.userId!);
+      await userPod.deleteUser(userMain.userId!);
     } catch (e) {
-      showDialog(
+      await showDialog(
           context: context,
           builder: (context) =>
               ErrorDialog(textTitle: 'Error', textContent: '$e'));

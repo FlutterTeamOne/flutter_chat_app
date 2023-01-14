@@ -103,22 +103,11 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
       if (event == DbListener.isMessage) {
         if (!mounted) return;
         readMessages();
-        // List<MessageDto> messages = [];
-        // _messagesServices.getAllMessages().then((value) => messages = value);
-
-        // // messages.sort((a, b) => a.localMessageId!.compareTo(b.localMessageId!));
-
-        // print('sortListen message:$messages');
-        // if (messages.isNotEmpty) {
-        //   // state.copyWith(messages: messages);
-        //   readMessages(messages);
-        // }
-        // state.copyWith(messages: messages);
       }
     });
   }
   Future<MessageStateRef> readMessages([List<MessageDto>? messageList]) async {
-    if (messageList == null || messageList.length == 1) {
+    if (messageList == null || messageList.isEmpty) {
       List<MessageDto> messages = await _messagesServices.getAllMessages();
 
       print("MESSAGES:$messages");

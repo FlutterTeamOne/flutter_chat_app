@@ -9,7 +9,7 @@ Future<void> main() async {
   //открыть базу
   var db = await DbServerServices.instanse.database;
   //Обращаемся к методам работы с таблицей чатов через:
-  var chatsHelper = ChatsServices();
+  var chatsService = ChatsServices();
 
   //Обращаемся к методам работы с таблицей сообщений через:
   var messagesService = MessagesDBServices();
@@ -17,7 +17,17 @@ Future<void> main() async {
   //Обращаемся к методам работы с таблицей юзеров через:
   var usersService = UsersServices();
 
-  print(await usersService.getUserById(userId: 1));
+  //print(await usersService.getUserById(userId: 1));
+  var allChat = await chatsService.getChatsByUserId(userId: 1);
+  var allChatDel = await chatsService.getAllChats();
+
+  for (var chat in allChat) {
+    print(chat);
+  }
+  print("//////////////////");
+  for (var chat in allChatDel) {
+    print(chat);
+  }
 
   // var result = await chatsHelper.getAllChatsSortedByUpdatedDate();
   // for (var i in result) {

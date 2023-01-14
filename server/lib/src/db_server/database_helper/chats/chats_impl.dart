@@ -108,15 +108,17 @@ class ChatsServices implements IChatsServices {
     Database db = await DbServerServices.instanse.database;
 
     return await db.rawQuery('''SELECT * FROM chats f 
-	    WHERE ((f.friend1_id = $userId) OR (f.friend2_id = $userId))''');
+	    WHERE (((f.friend1_id = $userId) OR (f.friend2_id = $userId)) AND (f.deleted_date NOT LIKE '2%'))''');
   }
 
   @override
-  getChatsByUserIdMoreChatId({required int userId, required int chatId}) async {
+  getNewChatsByUserId({required int userId, required List<int> chatIds}) async {
     Database db = await DbServerServices.instanse.database;
 
     return await db.rawQuery('''SELECT * FROM chats 
-	    WHERE ((friend1_id = $userId) OR (friend2_id = $userId)) AND (chat_id > $chatId)''');
+	    WHERE ((friend1_id = $userId) OR (friend2_id = $userId))
+       AND (chat_id NOT IN (${chatIds.join(",")}))
+        AND (deleted_date NOT LIKE '2%')''');
   }
 
   @override

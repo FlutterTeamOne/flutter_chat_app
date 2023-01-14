@@ -48,7 +48,8 @@ class GrpcMessage extends GrpcMessagesServiceBase {
             newMessage['updated_date'] as String;
         await ChatsServices().updateChat(
             newValues:
-                'updated_date = "${req.createMessage.message.dateUpdate}"',
+                '''updated_date = "${req.createMessage.message.dateUpdate}",
+                deleted_date = ""''',
             condition: 'chat_id = ${req.createMessage.message.chatId}');
         print('REQ message UPDATE: ${req.createMessage.message}, ');
         _controllers.forEach((controller, _) async =>
@@ -84,8 +85,6 @@ class GrpcMessage extends GrpcMessagesServiceBase {
       yield req;
     }
   }
-
- 
 }
 
 class GrpcUsers extends GrpcUsersServiceBase {
@@ -273,8 +272,13 @@ class GrpcSynh extends GrpcSynchronizationServiceBase {
       updatedUsers = [];
       updatedChats = [];
     } else {
-      newChats = await ChatsServices().getChatsByUserIdMoreChatId(
-          userId: request.users.mainUser, chatId: request.chats.maxChatId);
+      //TODO: Не смотреть на максимальный id
+      List<int> chatIds = [];
+      for (ChatRequest chat in request.chats.chatsForUpdate) {
+        chatIds.add(chat.chatId);
+      }
+      newChats = await ChatsServices().getNewChatsByUserId(
+          userId: request.users.mainUser, chatIds: chatIds);
       updatedChats = await ChatsServices()
           .getUpdatedChats(chats: request.chats.chatsForUpdate);
       updatedUsers = await UsersServices()
