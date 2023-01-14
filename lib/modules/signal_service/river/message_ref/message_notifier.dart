@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:chat_app/modules/client/grpc_client.dart';
 import 'package:chat_app/modules/client/rest_client.dart';
+import 'package:chat_app/modules/sending_manager/services/validator_service/validator_service.dart';
 import 'package:chat_app/modules/signal_service/river/message_ref/message_state_ref.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
@@ -37,6 +38,7 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
         print("READMESSAGE: ${value.readMessage.message}");
         var messages = <MessageDto>[];
         var msg = value.readMessage.message;
+        await ValidatorService.newMessageFromBaseOnline(message: msg);
         await _messagesServices.addNewMessageFromBase(message: msg);
         messages.add(MessageDto(
             chatId: msg.chatId,
@@ -47,7 +49,8 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
             updatedDate: msg.dateUpdate,
             attachId: msg.attachmentId,
             contentType: msg.contentType));
-        LocalChatServices().updateChatDateUpdated(
+
+        await LocalChatServices().updateChatDateUpdated(
             chatId: messages[0].chatId,
             dateUpdated: '${messages[0].updatedDate}');
         // readMessages(messages);
@@ -90,8 +93,9 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
             updatedDate: msg.dateUpdate,
             attachId: msg.attachmentId,
             contentType: msg.contentType);
-       UserPref.setLastMessageId(
-          userName: '${UserPref.getUserId}user', lastMessageId: msg.messageId);
+        UserPref.setLastMessageId(
+            userName: '${UserPref.getUserId}user',
+            lastMessageId: msg.messageId);
 
         await _messagesServices.updateMessage(
             message: newMsg, localMessageId: msg.localMessgaeId);

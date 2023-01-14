@@ -39,8 +39,15 @@ class EditChatPopupWidget extends StatelessWidget {
                             await ref
                                 .read(River.chatPod.notifier)
                                 .deleteChat(chatId);
-                            await LocalChatServices().deleteChat(id: chatId);
+                            
+                            int friendId = await LocalChatServices()
+                                .getUserIdByChatId(id: chatId);
+                            print("FRIEND ID FOR DELETE $friendId");
                             ref.read(River.chatPod.notifier).getChatId(-1);
+                            await LocalChatServices().deleteChat(id: chatId);
+                            await LocalMessagesServices()
+                                .deleteAllMessagesInChat(chatID: chatId);
+                            await LocalUsersServices().deleteUser(id: friendId);
                           } on CustomException catch (e) {
                             print("POPUP DELETE Custom $e");
                             String textContent = e.message == 'null'

@@ -18,6 +18,7 @@ abstract class ILocalChatsServices {
       {required int chatId, required String dateUpdated});
   Future<int> getMaxId();
   Future<List<Map<String, Object?>>> getChatByUserId({required int id});
+  Future<int> getUserIdByChatId({required int id});
 }
 
 final localChatServices = ILocalChatsServices();

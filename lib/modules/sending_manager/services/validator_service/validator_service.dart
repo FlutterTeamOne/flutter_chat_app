@@ -1,9 +1,10 @@
-import 'package:chat_app/modules/sending_manager/library/library_sending_manager.dart';
-import 'package:chat_app/modules/storage_manager/db_helper/db_helper.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/src/constants/db_constants.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/generated/sync/grpcsynh.pbgrpc.dart';
+import 'package:chat_app/src/libraries/library_all.dart';
+
+import '../../../client/rest_client.dart';
 
 class ValidatorService {
   static Future validMessage({required SynhMessage message}) async {
@@ -79,5 +80,13 @@ class ValidatorService {
           .deleteAllMessagesInChat(chatID: chat.chatId);
     }
     if (chatByUser.isEmpty) {}
+  }
+
+  static Future newMessageFromBaseOnline({required Message message}) async {
+    final ok = await LocalChatServices().getChatById(id: message.chatId);
+    if (ok.isEmpty) {
+      await RestClient()
+          .getChatById(chatId: message.chatId, userId: message.senderId);
+    }
   }
 }

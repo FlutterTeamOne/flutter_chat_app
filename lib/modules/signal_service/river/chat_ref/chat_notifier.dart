@@ -62,6 +62,7 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
   Future<void> deleteChat(int chatId) async {
     //запрос на удаление к рест серверу
     dynamic data;
+    // int friendId = await LocalChatServices().getUserIdByChatId(id: chatId);
     try {
       //TODO: Добавлять всем сообщениям этого чата deleted_date в локалке
       data = await RestClient().deleteChatRest(id: chatId);
@@ -77,7 +78,9 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
       throw CustomException("RestServer not found");
     }
     print('CHAT ID: $chatId');
-    await LocalMessagesServices().deleteAllMessagesInChat(chatID: chatId);
+    // await LocalChatServices().deleteChat(id: chatId);
+    // await LocalMessagesServices().deleteAllMessagesInChat(chatID: chatId);
+    // await LocalUsersServices().deleteUser(id: friendId);
     state = state.copyWith(chatId: null);
   }
 }
