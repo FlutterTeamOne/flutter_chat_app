@@ -20,7 +20,7 @@ class DeleteUserRobot {
   Future<void> goToAuthPage() async {
     await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
-    await tester.tap(asapFinder.backFromProfilePageButton);
+    await tester.tap(asapFinder.exitButton);
     await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
     await tester.pumpAndSettle();

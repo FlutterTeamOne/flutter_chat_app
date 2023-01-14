@@ -53,7 +53,7 @@ class AsapPageRobot {
     await tester.tap(finder.profilePageButton);
     await tester.pumpAndSettle();
 
-    await tester.tap(finder.backFromProfilePageButton);
+    await tester.tap(finder.exitButton);
     await tester.pumpAndSettle(const Duration(seconds: 1));
 
     await tester.pumpAndSettle();

@@ -5,7 +5,7 @@ import 'finders.dart';
 
 class SettingsFinder extends TestFinder {
   //кнопка перехода в настройки темы changeTheme
-  final Finder changeThemeButton = find.byKey(const Key('changeThemeButton'));
+  final Finder changeThemeButton = find.byType(ElevatedButton);
 
   //кнопка в настройках темы, скругления углов
   final Finder roundedBorderButton =
@@ -13,8 +13,4 @@ class SettingsFinder extends TestFinder {
 
   //кнопка настроек - нужно искать по иконке
   final Finder settingsPageButton = find.byIcon(Icons.settings_outlined);
-
-  //кнопка назад со страницы настроек к выбору юзера
-  final Finder backFromSettinsPageButton =
-      find.byKey(const Key('exitFromSettings'));
 }

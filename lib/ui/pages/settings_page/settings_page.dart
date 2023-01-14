@@ -24,7 +24,6 @@ class SettingsPage extends StatelessWidget {
         //       }),
         // ),
         ElevatedButton(
-            key: const Key('changeThemeButton'),
             // style: ButtonStyle(
             //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             //         RoundedRectangleBorder(

@@ -37,7 +37,7 @@ class SettingsPageRobot {
   Future<void> goToAuthPage() async {
     await tester.pumpAndSettle(const Duration(seconds: 1));
 
-    await tester.tap(finder.backFromSettinsPageButton);
+    await tester.tap(finder.exitButton);
     await tester.pumpAndSettle(const Duration(seconds: 1));
 
     await tester.pumpAndSettle();

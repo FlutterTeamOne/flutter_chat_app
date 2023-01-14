@@ -81,7 +81,6 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                     ),
                   ),
                   ElevatedButton(
-                      key: const Key('createButton'),
                       style: ButtonStyle(
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(

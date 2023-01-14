@@ -82,6 +82,7 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
                 const SizedBox(height: 20),
                 // Форма для имени
                 FormWidget(
+                  key: const Key('createName'),
                   text: 'Name',
                   maxLength: 20,
                   //используем RegExp для сортировки по символам
@@ -92,6 +93,7 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
                 const SizedBox(height: 10),
                 // Форма для мыло
                 FormWidget(
+                  key: const Key('createEmail'),
                   text: 'Email',
                   inputFormatters: FieldFormClass.regExpEmail,
                   maxLength: 36,
@@ -102,6 +104,7 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
                 ValueListenableBuilder(
                   valueListenable: isActivePassword,
                   builder: (context, value, child) => FormWidget(
+                    key: const Key('createPassword'),
                     text: 'Password',
                     inputFormatters: FieldFormClass.regExpPassword,
                     controller: passwordController,
@@ -126,6 +129,7 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
                     builder: (context, value, child) {
                       // Форма для подтверждения пароля
                       return FormWidget(
+                        key: const Key('createConfirmPassword'),
                         text: 'Сonfirm password',
                         inputFormatters: FieldFormClass.regExpPassword,
                         controller: confirmPasswordController,
@@ -223,234 +227,3 @@ class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
         });
   }
 }
-
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   // если _isActive будет равен true то пароль скрыт
-  //   final isActivePassword = ValueNotifier<bool>(true);
-  //   final isActiveConfirm = ValueNotifier<bool>(true);
-  //   return Row(
-  //     key: const Key('newUserWidgetRow'),
-  //     mainAxisAlignment: MainAxisAlignment.center,
-  //     children: [
-  //       Column(
-  //         key: const Key('newUserWidgetColumn'),
-  //         children: [
-  //           const SizedBox(
-  //             height: 200,
-  //           ),
-  //           Row(
-  //             children: [
-  //               Form(
-  //                 key: _formKey,
-  //                 child: Column(
-  //                   key: const Key('newUserWidgetBodyColumn'),
-  //                   children: [
-  //                     buildNameRow(),
-  //                     buildEmailRow(),
-  //                     buildPasswordRow(),
-  //                     const SizedBox(
-  //                       height: 20,
-  //                     ),
-  //                     buildCreateNewUserButton(context, newUserNameText,
-  //                         newUserEmailText, newUserPasswordText),
-  //                   ],
-  //                 ),
-  //               ),
-  //             ],
-  //           )
-  //         ],
-  //       ),
-  //     ],
-  //   );
-  // }
-
-  // SizedBox buildPasswordRow() {
-  //   return SizedBox(
-  //     key: const Key('password'),
-  //     width: 300,
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.end,
-  //       children: [
-  //         const Padding(
-  //           padding: EdgeInsets.only(right: textPadding),
-  //           child: Text('Password'),
-  //         ),
-  //         SizedBox(
-  //           width: textFieldWidth,
-  //           child: TextFormField(
-  //             key: _passwordKey,
-  //             controller: newUserPasswordText,
-  //             validator: (value) {
-  //               if (value == null || value.isEmpty) {
-  //                 return 'Enter password';
-  //               } else if (value.length < 6) {
-  //                 return 'Password length less then 6';
-  //               }
-  //               return null;
-  //             },
-  //             obscureText: true,
-  //             onSaved: (value) {},
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  // SizedBox buildEmailRow() {
-  //   return SizedBox(
-  //     key: const Key('email'),
-  //     width: 300,
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.end,
-  //       children: [
-  //         const Padding(
-  //           padding: EdgeInsets.only(right: textPadding),
-  //           child: Text('Email'),
-  //         ),
-  //         SizedBox(
-  //             width: textFieldWidth,
-  //             child: TextFormField(
-  //               key: _emailKey,
-  //               controller: newUserEmailText,
-  //               validator: (value) {
-  //                 if (value == null ||
-  //                     value.isEmpty ||
-  //                     !EmailValidator.validate(value)) {
-  //                   return 'Enter email';
-  //                 }
-
-  //                 return null;
-  //               },
-  //             )),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  // SizedBox buildNameRow() {
-  //   return SizedBox(
-  //     key: const Key('name'),
-  //     width: 300,
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.end,
-  //       children: [
-  //         const Padding(
-  //           padding: EdgeInsets.only(right: textPadding),
-  //           child: Text('Name'),
-  //         ),
-  //         SizedBox(
-  //             width: textFieldWidth,
-  //             child: TextFormField(
-  //               key: _nameKey,
-  //               controller: newUserNameText,
-  //               validator: (value) {
-  //                 if (value == null || value.isEmpty) {
-  //                   return 'Enter name';
-  //                 } else if (value.length < 3) {
-  //                   return 'Name length less then 3';
-  //                 }
-  //                 return null;
-  //               },
-  //             )),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  // Padding buildCreateNewUserButton(BuildContext context, newUserNameText,
-  //     newUserEmailText, newUserPasswordText) {
-  //   late String newUserName;
-  //   return Padding(
-  //     key: const Key('createUserWidget'),
-  //     padding: const EdgeInsets.only(left: 100.0),
-  //     child: Row(
-  //       children: [
-  //         BlocConsumer<NewUserBloc, NewUserState>(
-  //           listener: (context, state) {},
-  //           builder: (context, state) {
-  //             return ElevatedButton(
-  //                 key: const Key('createUserButton'),
-  //                 // style: ButtonStyle(
-  //                 //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-  //                 //         RoundedRectangleBorder(
-  //                 //   borderRadius: BorderRadius.circular(20.0),
-  //                 // ))),
-  //                 onPressed: () {
-  //                   // if (_nameKey.currentState!.validate() &&
-  //                   //     _emailKey.currentState!.validate() &&
-  //                   //     _passwordKey.currentState!.validate()) {
-  //                   //   ScaffoldMessenger.of(context).showSnackBar(
-  //                   //     const SnackBar(content: Text('Creating new user')),
-  //                   //   );
-  //                   // }
-  //                   late NewUserModel newUser = NewUserModel(
-  //                       name: newUserNameText.text,
-  //                       email: newUserEmailText.text,
-  //                       password: newUserPasswordText.text,
-  //                       registrationDate: newUserCreateDate,
-  //                       profilePicLink: newUserPictureUrl);
-  //                   context
-  //                       .read<NewUserBloc>()
-  //                       .add(SetNewUserEvent(user: newUser));
-  //                   showDialog(
-  //                       context: context,
-  //                       builder: (BuildContext context) {
-  //                         newUserName =
-  //                             context.watch<NewUserBloc>().state.newUser.name;
-  //                         return Dialog(
-  //                           key: const Key('createUserDialog'),
-  //                           // shape: RoundedRectangleBorder(
-  //                           //   borderRadius: BorderRadius.circular(20.0),
-  //                           // ),
-  //                           child: SizedBox(
-  //                             height: 80,
-  //                             width: 50,
-  //                             child: Column(
-  //                               children: [
-  //                                 Padding(
-  //                                     padding: const EdgeInsets.all(8.0),
-  //                                     child: context
-  //                                                 .read<NewUserBloc>()
-  //                                                 .state
-  //                                                 .newUser
-  //                                                 .name ==
-  //                                             newUserNameText.text
-  //                                         ? Text('User $newUserName created')
-  //                                         : const Text('Error')),
-  //                                 ElevatedButton(
-  //                                     key: const Key('createUserDialogButton'),
-  //                                     // style: ButtonStyle(
-  //                                     //     shape: MaterialStateProperty.all<
-  //                                     //             RoundedRectangleBorder>(
-  //                                     //         RoundedRectangleBorder(
-  //                                     //   borderRadius:
-  //                                     //       BorderRadius.circular(20.0),
-  //                                     // ))),
-  //                                     onPressed: () => Navigator.of(context)
-  //                                         .pushNamed(AuthPage.routeName),
-  //                                     child: const Icon(Icons.check))
-  //                               ],
-  //                             ),
-  //                           ),
-  //                         );
-  //                       });
-  //                   // print(
-  //                   //     '${newUserNameText.text} , ${newUserEmailText.text} , ${newUserPasswordText.text} , ');
-  //                 },
-  //                 child: const Text('Create new user'));
-  //           },
-  //         ),
-  //         IconButton(
-  //             key: const Key('cancelUserCreateButton'),
-  //             onPressed: () {
-  //               Navigator.of(context).pushNamed(AuthPage.routeName);
-  //             },
-  //             icon: const Icon(Icons.close_rounded)),
-  //       ],
-  //     ),
-  //   );
-  // }
-

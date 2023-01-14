@@ -21,7 +21,4 @@ class AsapFinder extends TestFinder {
 
   //кнопка выбора картинки в сообщениях
   final Finder chooseImageButton = find.byIcon(Icons.emoji_emotions_outlined);
-
-  //кнопка страницы профиля
-  final Finder profilePageButton = find.byIcon(Icons.person_outline_outlined);
 }

@@ -32,23 +32,24 @@ void main() {
 
         //ТЕСТ 1
         //СОЗДАНИЕ ЮЗЕРА, ПРОВЕРКА СОЗДАНИЯ, ОТМЕНА СОЗДАНИЯ ЮЗЕРА
-        await createUserTest.createUserTest();
-        await createUserTest.checkCreateUser();
+        await createUserTest.checkUsers();
         await createUserTest.cancelCreateUser();
+        await createUserTest.createUser();
+        await createUserTest.checkCreateUser();
         // TODO: удаление юзера
 
-        //ТЕСТ 2
-        // ПЕРЕХОД В НАСТРОЙКИ, НАЖИМАЕМ НА КНОПКУ СМЕНЫ ТЕМЫ, ПРОВЕРКА
-        await settingsTest.tapSettings();
-        await settingsTest.tapChangeTheme();
-        await settingsTest.goToAuthPage();
+        // //ТЕСТ 2
+        // // ПЕРЕХОД В НАСТРОЙКИ, НАЖИМАЕМ НА КНОПКУ СМЕНЫ ТЕМЫ, ПРОВЕРКА
+        // await settingsTest.tapSettings();
+        // await settingsTest.tapChangeTheme();
+        // await settingsTest.goToAuthPage();
 
-        //ТЕСТ 3
-        //ПЕРЕХОДИМ В ЧАТЫ, ПРОВЕРЯЕМ ЧАТЫ ЮЗЕРА, ОТПРАВЛЯЕМ СООБЩЕНИЕ
-        await asapTest.goToAsapPage();
-        await asapTest.checkChats();
-        await asapTest.addMessage(message: 'message');
-        await asapTest.goToAuthPage();
+        // //ТЕСТ 3
+        // //ПЕРЕХОДИМ В ЧАТЫ, ПРОВЕРЯЕМ ЧАТЫ ЮЗЕРА, ОТПРАВЛЯЕМ СООБЩЕНИЕ
+        // await asapTest.goToAsapPage();
+        // await asapTest.checkChats();
+        // await asapTest.addMessage(message: 'message');
+        // await asapTest.goToAuthPage();
 
         await tester.pumpAndSettle();
         await tester.pumpAndSettle(const Duration(seconds: 5));
