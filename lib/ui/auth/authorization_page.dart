@@ -1,11 +1,11 @@
 import 'dart:developer';
 
-import 'package:chat_app/main.dart';
 import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/ui/pages/main_layout.dart';
 import 'package:chat_app/ui/pages/registration_page/registration_page.dart';
 import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
+import 'package:grpc/grpc.dart';
 
 import '../../modules/signal_service/river/river.dart';
 import '../../src/libraries/library_all.dart';
@@ -36,17 +36,22 @@ class _AuthPageState extends ConsumerState<AuthPage> {
 
   _init() async {
     try {
-      ref.read(River.futureSynchUserPod);
+      //ref.read(River.futureSynchUserPod);
+      await ref.read(River.synchUserPod.notifier).readUser();
       print("ВСЕ ОК");
+    } on GrpcError catch (e) {
+      print("ERROR");
     } on CustomException catch (e) {
       print("ERROR SYNCH in INIT: $e");
       await showDialog(
           context: context,
-          builder: (context) =>
-              ErrorDialog(textTitle: "Error", textContent: e.message));
+          builder: (context) => const ErrorDialog(
+              textTitle: "Error",
+              textContent: "The server is temporarily unavailable"));
     } catch (e) {
       print("ERROR");
     }
+    
   }
 
   @override

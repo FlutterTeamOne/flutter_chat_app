@@ -1,5 +1,6 @@
 import 'package:chat_app/modules/signal_service/river/connection_ref/connection_notifier.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
+import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
 
 import '../../modules/signal_service/river/river.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,10 +28,14 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
     // ref.read(River.futureChatPod);
     // ref.read(River.futureMessagePod);
 
-    ref.read(River.userPod.notifier).readUser();
-    ref.read(River.userPod.notifier).setMainUser();
-    ref.read(River.chatPod.notifier).readChat();
-    ref.read(River.messagePod.notifier).readMessages();
+    _init();
+  }
+
+  void _init() async {
+    await ref.read(River.userPod.notifier).readUser();
+    await ref.read(River.userPod.notifier).setMainUser();
+    await ref.read(River.chatPod.notifier).readChat();
+    await ref.read(River.messagePod.notifier).readMessages();
   }
 
   // @override

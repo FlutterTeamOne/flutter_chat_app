@@ -37,20 +37,27 @@ class SynchUserNotifier extends StateNotifier<SynchStateRef> {
       }
     }
     //подключаемся к серверу
-    var stub = GrpcSynchronizationClient(GrpcClient().channel);
+
     var usersResponse = UsersResponse();
     String customError = '';
     bool error = false;
     //отправляем запрос на сервер и получаем всех юзеров
     try {
+      var stub = GrpcSynchronizationClient(GrpcClient().channel);
       usersResponse = await stub.sync(UsersRequest(
           mainUser: UserPref.getUserId, usersForUpdate: usersRequest));
+    } on GrpcError catch (e) {
+      print("ERROR GRPC SYNH: $e");
+      users = await _usersServices.getAllUsersStart();
+      state = state.copyWith(users: users);
+      //TODO:Выводить экран ошибки
+      throw CustomException(e.toString());
     } catch (e) {
       print("ERROR SYNH: $e");
       users = await _usersServices.getAllUsersStart();
       state = state.copyWith(users: users);
       //TODO:Выводить экран ошибки
-      throw CustomException(customError);
+      throw CustomException(e.toString());
     }
     print("UsersServ NEW ${usersResponse.usersNew}");
     print("UsersServ UPDATED ${usersResponse.usersUpdated}");
