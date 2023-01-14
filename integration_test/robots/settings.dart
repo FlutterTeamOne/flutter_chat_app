@@ -41,7 +41,7 @@ class SettingsPageRobot {
     await tester.pumpAndSettle(const Duration(seconds: 1));
 
     await tester.pumpAndSettle();
-    expect(userFinder.firstUserButton, findsOneWidget);
+    expect(userFinder.userWidget, findsNWidgets(6));
     await tester.pumpAndSettle();
   }
 }

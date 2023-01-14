@@ -37,12 +37,51 @@ class CreateUserRobot {
     expect(
         find.text('Name must contain at least 3 characters'), findsOneWidget);
 
+    await tester.pumpAndSettle();
+    expect(find.text('Enter a valid email'), findsOneWidget);
+
     //создаем юзера
     await tester.pumpAndSettle();
     await tester.enterText(finder.usernameInputWidget, 'newuser');
 
     await tester.pumpAndSettle();
     await tester.enterText(finder.emailInputWidget, 'newuser@mail.ru');
+
+    await tester.pumpAndSettle();
+    await tester.tap(finder.createButton);
+
+    await tester.pumpAndSettle();
+    expect(find.text('Password must contain at least 6 characters'),
+        findsOneWidget);
+
+    await tester.pumpAndSettle();
+    await tester.enterText(finder.passwordInputWidget, 'Password');
+
+    await tester.pumpAndSettle();
+    await tester.enterText(finder.confirmPasswordInputWidget, 'Password');
+
+    await tester.pumpAndSettle();
+    await tester.tap(finder.createButton);
+
+    await tester.pumpAndSettle();
+    expect(find.text('Password must contain at least \none number'),
+        findsOneWidget);
+
+    await tester.pumpAndSettle();
+    await tester.tap(finder.createButton);
+
+    await tester.pumpAndSettle();
+    await tester.enterText(finder.passwordInputWidget, 'Password0');
+
+    await tester.pumpAndSettle();
+    await tester.enterText(finder.confirmPasswordInputWidget, 'Password0');
+
+    await tester.pumpAndSettle();
+    await tester.tap(finder.createButton);
+
+    await tester.pumpAndSettle();
+    expect(find.text('Password must contain at least \nsymbol !@#\\\$&*'),
+        findsOneWidget);
 
     await tester.pumpAndSettle();
     await tester.enterText(finder.passwordInputWidget, 'Password!0');
@@ -54,7 +93,7 @@ class CreateUserRobot {
     await tester.tap(finder.createButton);
 
     await tester.pumpAndSettle();
-    await tester.tap(finder.createDialogButton);
+    await tester.tap(finder.dialogButton);
 
     //Проверка 7-го виджета юзера
     await tester.pumpAndSettle();

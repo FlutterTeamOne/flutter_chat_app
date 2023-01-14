@@ -24,6 +24,7 @@ class FieldWithChange extends StatelessWidget {
         const SizedBox(height: 2),
         info['enumUserInfo'] == EnumUserInfo.password
             ? ElevatedButton(
+                key: const Key('changePassword'),
                 style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
@@ -32,7 +33,7 @@ class FieldWithChange extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pushNamed(ChangePasswordPage.routeName);
                 },
-                child: Text("Смена пароля"))
+                child: const Text("Смена пароля"))
             : Row(
                 children: [
                   Text(
@@ -40,6 +41,7 @@ class FieldWithChange extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
                   IconButton(
+                    key: Key('edit $content'),
                     onPressed: () async {
                       await ShowTextFieldDialog.showTextFieldDialog(
                           context: context,

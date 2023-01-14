@@ -109,6 +109,7 @@ class _ChangePasswordLayoutState extends ConsumerState<ChangePasswordLayout> {
                   separatorBuilder: (context, index) =>
                       const SizedBox(height: 15),
                   itemBuilder: (context, index) => TextFormFieldWidget(
+                        key: Key('passwordField $index'),
                         lableText: fieldsForm[index].lableText,
                         validator: fieldsForm[index].validator,
                         controller: fieldsForm[index].controller,

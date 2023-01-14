@@ -6,26 +6,18 @@ import '../finders/user.dart';
 class DeleteUserRobot {
   DeleteUserRobot({required this.tester});
   final WidgetTester tester;
-  final UserFinder userFinder = UserFinder();
-  final AsapFinder asapFinder = AsapFinder();
+  final UserFinder finder = UserFinder();
 
-  Future<void> goToProfilePage() async {
-    await tester.pumpAndSettle(const Duration(milliseconds: 500));
-  }
+  Future<void> deleteCreatedUser() async {
+    await tester.pumpAndSettle(const Duration(seconds: 1));
 
-  Future<void> delete() async {
-    await tester.pumpAndSettle(const Duration(milliseconds: 500));
-  }
-
-  Future<void> goToAuthPage() async {
-    await tester.pumpAndSettle(const Duration(milliseconds: 500));
-
-    await tester.tap(asapFinder.exitButton);
-    await tester.pumpAndSettle(const Duration(milliseconds: 500));
-
+    await tester.tap(finder.seventhUserButton);
     await tester.pumpAndSettle();
-    //expect(asapFinder.firstUserWidget, findsOneWidget);
 
-    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.tap(finder.deleteUserButton);
+    await tester.pumpAndSettle();
+
+    await tester.tap(finder.okExitErrorButton);
+    await tester.pumpAndSettle();
   }
 }

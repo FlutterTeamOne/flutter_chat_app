@@ -69,6 +69,7 @@ class ProfileLayout extends StatelessWidget {
                 Row(
                   children: [
                     ElevatedButton(
+                        key: const Key('deleteUserButton'),
                         style: ButtonStyle(
                             shape: MaterialStateProperty.all<
                                 RoundedRectangleBorder>(RoundedRectangleBorder(

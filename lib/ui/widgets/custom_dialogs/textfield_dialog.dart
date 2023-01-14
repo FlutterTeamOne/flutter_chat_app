@@ -38,6 +38,7 @@ class TextFormDialog extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
+                key: const Key('OkExitErrorButton'),
                 style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(

@@ -9,18 +9,34 @@ class UserFinder extends TestFinder {
   //кнопкаСоздания
   final Finder createButton = find.byType(ElevatedButton);
 
+  //Кнопка удаления юзера
+  final Finder deleteUserButton = find.byKey(const Key('deleteUserButton'));
+
+  //Кнопка редактирования пароля
+  final Finder changePassword = find.byKey(const Key('changePassword'));
+
+  //edit created user
+  final Finder editCreatedName = find.byKey(const Key('edit newuser'));
+  final Finder editCreatedEmail = find.byKey(const Key('edit newuser@mail.ru'));
+
   //кнопка отмены
   final Finder cancelCreateButton = find.byType(CloseButton);
 
+  //exit error
+  final Finder okExitErrorButton = find.byKey(const Key('OkExitErrorButton'));
+
   final Finder createUserText = find.text('Create new user');
+
+  //passwords field
+  final Finder oldPasswordField = find.byKey(const Key('passwordField 0'));
+  final Finder newPasswordField = find.byKey(const Key('passwordField 1'));
+  final Finder newConfirmPasswordField =
+      find.byKey(const Key('passwordField 2'));
 
   //юзер карточка - кнопка для перехода на юзера
   final Finder firstUserButton = find.byKey(const Key('UserButton 0'));
   final Finder thirdUserButton = find.byKey(const Key('UserButton 2'));
   final Finder seventhUserButton = find.byKey(const Key('UserButton 6'));
-
-  //кнопка подтверждения ОК при завержении создания юзера
-  final Finder createDialogButton = find.byType(TextButton);
 
   //виджет создания юзера и его поля ТекстИнпутФилды
   final Finder usernameInputWidget = find.byKey(const Key('createName'));

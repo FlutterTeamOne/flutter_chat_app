@@ -8,4 +8,10 @@ abstract class TestFinder {
 
   //кнопка страницы профиля
   final Finder profilePageButton = find.byIcon(Icons.person_outline_outlined);
+
+  //кнопка подтверждения ОК ErrorDialog
+  final Finder dialogButton = find.byType(TextButton);
+
+  //поле ввода
+  final Finder textFormField = find.byType(TextFormField);
 }
