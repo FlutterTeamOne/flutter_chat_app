@@ -42,9 +42,9 @@ class UserNotifier extends StateNotifier<UserStateRef> {
   Future<UserStateRef> localReadUser() {
     List<UserDto> users = [];
 
-    return _usersServices.getAllUsers().then((value) {
-      return state = state.copyWith(users: value);
-    });
+    return _usersServices
+        .getAllUsers()
+        .then((value) => state = state.copyWith(users: value));
     // return state = state.copyWith(users: users);
   }
 
@@ -175,13 +175,8 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     ///
     print("RESPONSE_UPDATED_MESSAGE: ${response.messages.messagesUpdated}");
     for (var message in response.messages.messagesUpdated) {
-      final type = ContentType.isText.name == message.contentType.name
-          ? ContentType.isText
-          : ContentType.isMedia.name == message.contentType.name
-              ? ContentType.isMedia
-              : ContentType.isMediaText.name == message.contentType.name
-                  ? ContentType.isMediaText
-                  : ContentType.isText;
+      final type =
+          MessageDto.contType(contentTypeName: message.contentType.name);
       final msg = MessageDto(
         messageId: message.messageId,
         chatId: message.chatId,

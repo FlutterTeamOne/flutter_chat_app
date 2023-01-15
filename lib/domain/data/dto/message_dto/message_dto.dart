@@ -109,6 +109,16 @@ class MessageDto extends ModelDto {
                         ? ContentType.isMediaText
                         : ContentType.isText);
   }
+ static contType({required String contentTypeName}) {
+    return ContentType.isText.name == contentTypeName
+        ? ContentType.isText
+        : ContentType.isMedia.name == contentTypeName
+            ? ContentType.isMedia
+            : ContentType.isMediaText.name == contentTypeName
+                ? ContentType.isMediaText
+                : ContentType.isText;
+    ;
+  }
 
   String toJson() => json.encode(toMap());
 

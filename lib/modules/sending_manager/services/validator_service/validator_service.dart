@@ -13,13 +13,7 @@ class ValidatorService {
         'SELECT ${DatabaseConst.messagesColumnMessageId} FROM ${DatabaseConst.messageTable} WHERE ${DatabaseConst.messagesColumnMessageId}=?',
         [message.messageId]);
     if (ok.isEmpty) {
-      final type = ContentType.isText.name == message.contentType.name
-          ? ContentType.isText
-          : ContentType.isMedia.name == message.contentType.name
-              ? ContentType.isMedia
-              : ContentType.isMediaText.name == message.contentType.name
-                  ? ContentType.isMediaText
-                  : ContentType.isText;
+      final type = MessageDto.contType(contentTypeName: message.contentType.name);
       final msg = Message(
         messageId: message.messageId,
         chatId: message.chatId,
