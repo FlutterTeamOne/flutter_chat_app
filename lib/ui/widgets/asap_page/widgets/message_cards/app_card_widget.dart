@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import '../../../../../src/generated/grpc_lib/grpc_message_lib.dart';
 import '../../../../../src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +10,6 @@ class AppCardWidget extends StatelessWidget {
     this.bColor,
     this.textStyle,
     this.time,
-    required this.edited,
   }) : super(key: key);
 
   final double marginIndex;
@@ -20,13 +17,13 @@ class AppCardWidget extends StatelessWidget {
   final Color? bColor;
   final TextStyle? textStyle;
   final String? time;
-  final String edited;
+
   @override
   Widget build(BuildContext context) {
     // final dateTime = DateTime.parse(message?.createdDate ?? '');
     // final timeNow = '${dateTime.hour} : ${dateTime.minute}';
-    var image;
-    var msg;
+    late String image;
+    late String msg;
     if (message.contentType == ContentType.isMedia) {
       List<String> data = message.content.split(',');
       image = data[3].split('url: ')[1];
@@ -105,14 +102,22 @@ class AppCardWidget extends StatelessWidget {
                 ],
               ),
             ),
-            Text(
-              edited,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(fontStyle: FontStyle.italic),
-            ),
+            if (message.createdDate != message.updatedDate) ...[
+              Text(
+                'edited ',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(fontStyle: FontStyle.italic),
+              ),
+            ],
             Text(time ?? '', style: Theme.of(context).textTheme.bodySmall),
+            if (message.messageId == null || message.messageId == 0) ...[
+              const Icon(
+                Icons.error,
+                //color: AppColor.colorF44336,
+              ),
+            ]
           ],
         ),
       ),
