@@ -19,16 +19,16 @@ class ChatAppBarWidget extends StatelessWidget {
           CircleAvatar(
             radius: 45,
             child: ClipOval(
-                child: CachedImageWidget(
-            url: image,
-            width: 52,
-            height: 52,
-            errorText: 'Oops',
-          ),),
+              child: CachedImageWidget(
+                url: image,
+                width: 50,
+                height: 50,
+                errorText: 'Oops',
+              ),
+            ),
           ),
           const SizedBox(width: 15),
-          SizedBox(
-            width: 300,
+          Expanded(
             child: Text(
               name,
               overflow: TextOverflow.ellipsis,

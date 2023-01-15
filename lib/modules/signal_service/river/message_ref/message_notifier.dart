@@ -70,7 +70,7 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
     return state;
   }
 
-  createMessage(
+  Future createMessage(
       {MessageDto? message,
       String? mediaPath,
       MediaState? mediaState,
@@ -179,7 +179,7 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
     }
   }
 
-  updateMessage(
+  Future updateMessage(
       {MessageDto? message, int? messageId, EditState? isEditing}) async {
     if (isEditing == EditState.isPreparation) {
       state = state.copyWith(
@@ -219,7 +219,7 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
     }
   }
 
-  deleteMessage({required MessageDto message}) async {
+ Future deleteMessage({required MessageDto message}) async {
     if (message.messageId != null) {
       await _messagesServices.deleteMessageByMessageId(id: message.messageId!);
       var messageDelete = DynamicRequest(
