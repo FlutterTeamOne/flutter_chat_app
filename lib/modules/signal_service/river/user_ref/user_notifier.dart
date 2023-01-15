@@ -39,14 +39,9 @@ class UserNotifier extends StateNotifier<UserStateRef> {
   UserStateRef setUsers(List<UserDto>? users) =>
       state = state.copyWith(users: users);
 
-  Future<UserStateRef> localReadUser() {
-    List<UserDto> users = [];
-
-    return _usersServices
-        .getAllUsers()
-        .then((value) => state = state.copyWith(users: value));
-    // return state = state.copyWith(users: users);
-  }
+  Future<UserStateRef> localReadUser() async => await _usersServices
+      .getAllUsers()
+      .then((users) => state = state.copyWith(users: users));
 
   Future<UserStateRef> readUser() async {
     //Получаем всех юзеров из локальной базы

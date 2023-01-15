@@ -29,10 +29,17 @@ class ChatAppBarWidget extends StatelessWidget {
             child: ClipOval(
               child: CachedImageWidget(
                 url: image,
-                width: 52,
-                height: 52,
+                width: 50,
+                height: 50,
                 errorText: 'Oops',
               ),
+            ),
+          ),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Text(
+              name,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           const SizedBox(width: 15),

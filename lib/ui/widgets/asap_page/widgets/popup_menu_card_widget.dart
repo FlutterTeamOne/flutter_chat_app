@@ -84,9 +84,6 @@ class _PopupMenuCardWidgetState extends ConsumerState<PopupMenuCardWidget> {
     // print("MessageUpdate: ${widget.message!.updatedDate}");
     // print('==? ${widget.message!.createdDate == widget.message!.updatedDate}');
 
-    var editedText = widget.message?.createdDate == widget.message?.updatedDate
-        ? ''
-        : 'edited ';
     return CustomPopupMenu(
       controller: popupmenuController,
       showArrow: false,
@@ -97,7 +94,6 @@ class _PopupMenuCardWidgetState extends ConsumerState<PopupMenuCardWidget> {
       pressType: PressType.singleClick,
       menuBuilder: () => FloatingWindowWidget(items: items),
       child: AppCardWidget(
-        edited: editedText,
         time: realTime,
         marginIndex: widget.marginIndex,
         message: widget.message!,

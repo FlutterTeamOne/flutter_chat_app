@@ -33,7 +33,7 @@ class OtherMessageCardWidget extends StatelessWidget {
           message: message,
           marginIndex: 5,
           time: realTime,
-          edited: message.createdDate == message.updatedDate ? '' : 'edited ',
+          
           textStyle: TextStyle(
             color: Theme.of(context)
                 .textSelectionTheme
