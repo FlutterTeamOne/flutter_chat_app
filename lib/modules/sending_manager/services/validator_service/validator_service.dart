@@ -7,13 +7,19 @@ import 'package:chat_app/src/libraries/library_all.dart';
 import '../../../client/rest_client.dart';
 
 class ValidatorService {
+  static final LocalMessagesServices _messagesServices =
+      LocalMessagesServices();
+  static final LocalChatServices _chatServices = LocalChatServices();
+  static final LocalUsersServices _usersServices = LocalUsersServices();
+
   static Future validMessage({required SynhMessage message}) async {
     final db = await DBHelper.instanse.database;
     final ok = await db.rawQuery(
         'SELECT ${DatabaseConst.messagesColumnMessageId} FROM ${DatabaseConst.messageTable} WHERE ${DatabaseConst.messagesColumnMessageId}=?',
         [message.messageId]);
     if (ok.isEmpty) {
-      final type = MessageDto.contType(contentTypeName: message.contentType.name);
+      final type =
+          MessageDto.contType(contentTypeName: message.contentType.name);
       final msg = Message(
         messageId: message.messageId,
         chatId: message.chatId,
@@ -30,20 +36,20 @@ class ValidatorService {
           userName: '${UserPref.getUserId}user', lastMessageId: msg.messageId);
 // await LocalChatServices().
       if (msg.dateDelete == null || msg.dateDelete == '') {
-        await LocalMessagesServices().addNewMessageFromBase(message: msg);
+        await _messagesServices.addNewMessageFromBase(message: msg);
       }
     }
   }
 
   static Future validUser({required SynhUser user}) async {
-    final ok = await LocalUsersServices().getUserById(id: user.userId);
+    final ok = await _usersServices.getUserById(id: user.userId);
     if (ok.isEmpty) {
       print(
           "deleted date is empty? ${user.deletedDate} ${user.deletedDate.isNotEmpty}");
       String userAvatar = (user.deletedDate == "" || user.deletedDate.isEmpty)
           ? user.picture
           : """https://www.iconsdb.com/icons/preview/red/cancel-xxl.png""";
-      await LocalUsersServices().createUser(
+      await _usersServices.createUser(
           name: user.name,
           email: user.email,
           createdDate: user.createdDate,
@@ -55,29 +61,24 @@ class ValidatorService {
   }
 
   static Future validChat({required SynhChat chat}) async {
-    //делаем запроc в локалку на совпадение чата с таким же юзер ид
-    //!TODO!: Решить задачу! После удаления чата и перезахода под тем же юзером
-    //! - чат может восстановиться со всеми предыдущими сообщениями
-    //! - а может восстановиться лишь с последними сообщениями от другого юзера
-    //!? скорее всего проблема с lastIdMessage
+   
     List<Map<String, Object?>> chatByUser =
-        await LocalChatServices().getChatByUserId(id: chat.userId);
-    final ok = await LocalChatServices().getChatById(id: chat.chatId);
+        await _chatServices.getChatByUserId(id: chat.userId);
+    final ok = await _chatServices.getChatById(id: chat.chatId);
     if (ok.isEmpty) {
-      await LocalChatServices().createChat(
+      await _chatServices.createChat(
           createDate: chat.createdDate,
           userId: chat.userId,
           chatId: chat.chatId);
     }
     if (chat.deletedDate.isNotEmpty) {
-      await LocalMessagesServices()
-          .deleteAllMessagesInChat(chatID: chat.chatId);
+      await _messagesServices.deleteAllMessagesInChat(chatID: chat.chatId);
     }
     if (chatByUser.isEmpty) {}
   }
 
   static Future newMessageFromBaseOnline({required Message message}) async {
-    final ok = await LocalChatServices().getChatById(id: message.chatId);
+    final ok = await _chatServices.getChatById(id: message.chatId);
     if (ok.isEmpty) {
       await RestClient()
           .getChatById(chatId: message.chatId, userId: message.senderId);
