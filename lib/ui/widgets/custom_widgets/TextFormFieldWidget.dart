@@ -50,7 +50,7 @@ class TextFormFieldWidget extends StatelessWidget {
                       ? Icons.visibility_off_rounded
                       : Icons.visibility_rounded),
                   onPressed: () {
-                    if (isActive!.value == true) {
+                    if (isActive.value == true) {
                       isActive.value = false;
                     } else {
                       isActive.value = true;

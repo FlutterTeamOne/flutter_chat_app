@@ -5,7 +5,6 @@ import 'package:chat_app/ui/pages/main_layout.dart';
 import 'package:chat_app/ui/pages/registration_page/registration_page.dart';
 import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
 import 'package:grpc/grpc.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import '../../modules/signal_service/river/river.dart';
 import '../../src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
