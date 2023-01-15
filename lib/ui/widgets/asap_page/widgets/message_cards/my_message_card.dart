@@ -23,7 +23,7 @@ class MyMessageCardWidget extends StatelessWidget {
       alignment: Alignment.centerRight,
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxWidth: currentWidth > 1150 ? 750 : 380,
+          maxWidth: currentWidth > 1150 ? 750 : 350,
         ),
         child: isSuccess != null
             ? PopupMenuCardWidget(
