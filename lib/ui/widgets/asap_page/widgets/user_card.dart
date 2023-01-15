@@ -33,6 +33,7 @@ class UserCardWidget extends StatelessWidget {
         radius: 45,
         child: ClipOval(
           child: CachedImageWidget(
+            borderWidth: 0.001,
             url: image!,
             width: 50,
             height: 50,

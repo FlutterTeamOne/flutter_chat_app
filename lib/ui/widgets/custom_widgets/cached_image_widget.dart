@@ -11,12 +11,14 @@ class CachedImageWidget extends StatelessWidget {
     required this.width,
     required this.height,
     this.errorText,
+    this.borderWidth = 0.5,
   }) : super(key: key);
 
   final String url;
   final double width;
   final double height;
   final String? errorText;
+  final double? borderWidth;
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
@@ -24,6 +26,7 @@ class CachedImageWidget extends StatelessWidget {
         height: height,
         imageUrl: url,
         imageBuilder: (context, imageProvider) => ImageCard(
+              borderWidth: borderWidth ?? 0.5,
               image: DecorationImage(
                 image: imageProvider,
                 fit: BoxFit.cover,
