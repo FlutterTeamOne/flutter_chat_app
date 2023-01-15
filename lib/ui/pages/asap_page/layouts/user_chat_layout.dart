@@ -96,9 +96,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                       _sendAndChange(messageRead, messageNotif),
                   controller: controller,
                   onTap: messageRead.mediaState == MediaState.isSending
-                      ? () {
-                          print('IS SENDING НЕ ОТПРАВЛЯЕМ ПОВТОРНО');
-                        }
+                      ? () {}
                       : () => _sendAndChange(messageRead, messageNotif),
                   editState: messageRead.editState,
                   editText: controller.text,

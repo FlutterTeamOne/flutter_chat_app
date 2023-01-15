@@ -72,6 +72,18 @@ class MessageDto extends ModelDto {
     };
   }
 
+  factory MessageDto.fromMessage(Message message) {
+    return MessageDto(
+        localMessageId: message.localMessgaeId,
+        messageId: message.messageId,
+        chatId: message.chatId,
+        senderId: message.senderId,
+        content: message.content,
+        createdDate: message.dateCreate,
+        updatedDate: message.dateUpdate,
+        attachId: message.attachmentId,
+        contentType: message.contentType);
+  }
   factory MessageDto.fromMap(Map<String, dynamic> map) {
     return MessageDto(
         localMessageId: map[DatabaseConst.messagesColumnLocalMessagesId] as int,
