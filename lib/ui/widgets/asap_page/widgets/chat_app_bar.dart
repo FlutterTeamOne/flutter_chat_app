@@ -36,13 +36,6 @@ class ChatAppBarWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 15),
-          Expanded(
-            child: Text(
-              name,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          const SizedBox(width: 15),
           Text(name),
           const Spacer(),
           EditChatPopupWidget(myChat: myChat, ref: ref, chatId: chatId),
