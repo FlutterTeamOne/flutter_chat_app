@@ -72,10 +72,11 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                             : 'https://www.iconsdb.com/icons/preview/red/cancel-xxl.png',
                         // user.profilePicLink,
                         name: myChat ? 'My Favorite Chat' : user.name,
+                        chatId: widget.chatId,
+                        myChat: myChat,
+                        ref: ref,
                       ),
                     ),
-                    EditChatPopupWidget(
-                        myChat: myChat, ref: ref, chatId: widget.chatId),
                   ],
                 ),
               ),
