@@ -139,6 +139,9 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
     if (mediaState == MediaState.isPreparation) {
       state = state.copyWith(mediaState: MediaState.isPreparation);
     }
+    if (mediaState == MediaState.isSending) {
+      state = state.copyWith(mediaState: MediaState.isSending);
+    }
     print('MESSAGE: $message');
     //отправка текстового сообщения
     if (contentType == ContentType.isText && message != null) {

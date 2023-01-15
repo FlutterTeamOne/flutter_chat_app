@@ -95,7 +95,11 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                   onSubmitted: (text) =>
                       _sendAndChange(messageRead, messageNotif),
                   controller: controller,
-                  onTap: () => _sendAndChange(messageRead, messageNotif),
+                  onTap: messageRead.mediaState == MediaState.isSending
+                      ? () {
+                          print('IS SENDING НЕ ОТПРАВЛЯЕМ ПОВТОРНО');
+                        }
+                      : () => _sendAndChange(messageRead, messageNotif),
                   editState: messageRead.editState,
                   editText: controller.text,
                   cancelEdit: () {
@@ -111,9 +115,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
                       Text('Oops This user has deleted their account'),
-                      SizedBox(
-                        width: 20
-                      ),
+                      SizedBox(width: 20),
                       Icon(
                         Icons.error_outlined,
                         // color: Colors.yellow,
@@ -128,16 +130,18 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
 
   _sendAndChange(
       MessageStateRef messageRef, MessageNotifier messageNotif) async {
+    final String date = DateTime.now().toIso8601String();
+    final int senderId = await MainUserServices().getUserID();
     if (messageRef.editState == EditState.isNotEditing &&
         controller.text.isNotEmpty &&
         messageRef.mediaState != MediaState.isPreparation) {
       messageNotif.createMessage(
           message: MessageDto(
               chatId: widget.chatId,
-              senderId: await MainUserServices().getUserID(),
+              senderId: senderId,
               content: controller.text,
-              createdDate: DateTime.now().toIso8601String(),
-              updatedDate: DateTime.now().toIso8601String(),
+              createdDate: date,
+              updatedDate: date,
               contentType: ContentType.isText),
           contentType: ContentType.isText);
       // context.read<ChatBloc>().add(ReadChatEvent());
@@ -157,11 +161,11 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
         messageNotif.updateMessage(
             message: MessageDto(
                 chatId: widget.chatId,
-                senderId: await MainUserServices().getUserID(),
+                senderId: senderId,
                 content: controller.text,
                 messageId: message?.messageId,
                 createdDate: message?.createdDate,
-                updatedDate: DateTime.now().toIso8601String()),
+                updatedDate: date),
             isEditing: EditState.isEditing);
       } else if (message?.contentType == ContentType.isMediaText) {
         print('EDIT MEDIA TEXT');
@@ -171,11 +175,11 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
         messageNotif.updateMessage(
             message: MessageDto(
                 chatId: widget.chatId,
-                senderId: await MainUserServices().getUserID(),
+                senderId: senderId,
                 content: {'message': controller.text, 'media': msg}.toString(),
                 messageId: message?.messageId,
                 createdDate: message?.createdDate,
-                updatedDate: DateTime.now().toIso8601String()),
+                updatedDate: date),
             isEditing: EditState.isEditing);
       } else {
         print('EDIT MEDIA ');
@@ -190,10 +194,10 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
       messageNotif.createMessage(
           message: MessageDto(
               chatId: widget.chatId,
-              senderId: await MainUserServices().getUserID(),
+              senderId: senderId,
               content: controller.text,
-              createdDate: DateTime.now().toIso8601String(),
-              updatedDate: DateTime.now().toIso8601String(),
+              createdDate: date,
+              updatedDate: date,
               contentType: ContentType.isMediaText),
           contentType: ContentType.isMediaText,
           mediaState: MediaState.isSending);
@@ -204,10 +208,10 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
       messageNotif.createMessage(
           message: MessageDto(
               chatId: widget.chatId,
-              senderId: await MainUserServices().getUserID(),
+              senderId: senderId,
               content: controller.text,
-              createdDate: DateTime.now().toIso8601String(),
-              updatedDate: DateTime.now().toIso8601String(),
+              createdDate: date,
+              updatedDate: date,
               contentType: ContentType.isMedia),
           contentType: ContentType.isMedia,
           mediaState: MediaState.isSending);
