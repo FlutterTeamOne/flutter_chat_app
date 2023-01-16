@@ -6,7 +6,6 @@ import '../../../src/constants/app_data_constants.dart';
 
 import '../../../src/constants/db_constants.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 

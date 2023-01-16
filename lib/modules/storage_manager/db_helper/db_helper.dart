@@ -38,7 +38,6 @@ class DBHelper {
     var dbPath = AppDataConstants.dbDirectory;
     var user = UserPath.getUser;
 
-    
     Logger().i('USER DB:  $user');
     String path =
         join(dbPath, user.userId.toString() + DatabaseConst.dbFileName);
@@ -275,9 +274,7 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
     var dbPath = AppDataConstants.dbDirectory;
     var user = UserPath.getUser;
 
-    //TODO: Убрать принт
-    print('USER DB:  $user');
-
+    Logger().d('USER DB:  $user');
     String path = testPath ??
         join(dbPath, user.userId.toString() + DatabaseConst.dbFileName);
 
