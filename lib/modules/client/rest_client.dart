@@ -7,12 +7,13 @@ import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/modules/sending_manager/library/library_sending_manager.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:dio/dio.dart';
+import 'package:logger/logger.dart';
 
 class RestClient {
   static const String _url = 'http://localhost:8080';
 
   final _dio = Dio();
-
+  final Logger _logger = Logger();
   Future<List<ChatDto>> getChats() async {
     var chatUrl = '$_url/chats/';
     var chats = <ChatDto>[];
@@ -23,7 +24,7 @@ class RestClient {
         chats.add(respChats);
       }
     } catch (e) {
-      print(e);
+      _logger.e(e.toString());
     }
     return chats;
   }
@@ -31,8 +32,8 @@ class RestClient {
   Future createChatRest(
       {required creatorUserId, required user2Id, required String date}) async {
     var chatUrl = '$_url/chats/';
-    var restChat;
-    var chatId;
+    late Map<String, Object> restChat;
+    late int chatId;
     // var date = DateTime.now().toIso8601String();
     // try {
     //возвращает один созданный элемент
@@ -41,8 +42,8 @@ class RestClient {
       "friend2_id": user2Id,
       "date": date
     });
-    print('HELLO');
-    print('RESP DATA:${resp.data}');
+    _logger.d('HELLO');
+    _logger.i('RESP DATA:${resp.data}');
     if (resp.statusCode == 200) {
       var responseFromRest = resp.data.toString().split(',');
 
@@ -79,31 +80,33 @@ class RestClient {
       String updatedDateInput =
           responseFromRest[14].split(' updated_date: ')[1];
 
-      chatId =
-          int.tryParse('${responseFromRest[9].split('res: [{chat_id: ')[1]}')!;
-      print('CHAT ID: $chatId');
-      int friend1_id =
-          int.tryParse('${responseFromRest[10].split(' friend1_id: ')[1]}')!;
-      print('FRIEND ID: $friend1_id');
-      int friend2_id =
-          int.tryParse('${responseFromRest[11].split(' friend2_id: ')[1]}')!;
-      print('FRIEND 2: $friend2_id');
+      chatId = int.tryParse(responseFromRest[9].split('res: [{chat_id: ')[1])!;
+      _logger.d('CHAT ID: $chatId');
+      int friend1Id =
+          int.tryParse(responseFromRest[10].split(' friend1_id: ')[1])!;
+      _logger.d('FRIEND ID: $friend1Id');
+
+      int friend2Id =
+          int.tryParse(responseFromRest[11].split(' friend2_id: ')[1])!;
+      _logger.d('FRIEND 2: $friend2Id');
+
       String updatedDate =
           '"${updatedDateInput.substring(0, updatedDateInput.length - 3)}"';
-      print('UPDATEDDATE: $updatedDate');
-      String createdDate = '"${createdDateInput}"';
-      print('CREATE DATE: $createdDate');
+      _logger.d('UPDATEDDATE: $updatedDate');
+
+      String createdDate = '"$createdDateInput"';
+      _logger.d('CREATE DATE: $createdDate');
 
       restChat = {
         'chat_id': chatId,
-        'friend1_id': friend1_id,
-        'friend2_id': friend2_id,
+        'friend1_id': friend1Id,
+        'friend2_id': friend2Id,
         'created_date': createdDateInput,
         'deleted_date': "",
         'updated_date': updatedDateInput
       };
-      // print(source.);
-      print('RESTCHAT CLIENT $restChat');
+
+      _logger.d('RESTCHAT CLIENT $restChat');
     } else if (resp.statusCode == 404) {
       throw Exception(resp.data);
     }
@@ -114,9 +117,9 @@ class RestClient {
     // }
     return ChatDto(
         chatId: chatId,
-        userIdChat: UserPref.getUserId == restChat['friend1_id']
+        userIdChat: (UserPref.getUserId == restChat['friend1_id']
             ? restChat['friend2_id']
-            : restChat['friend1_id'],
+            : restChat['friend1_id']) as int,
         createdDate: restChat['created_date'].toString(),
         updatedDate: restChat['updated_date'].toString());
   }
@@ -126,16 +129,19 @@ class RestClient {
     dynamic data;
     try {
       final Response<dynamic> resp = await _dio.delete('$chatUrl$id');
-      print('DEL RESP:$resp');
+      _logger.d('DEL RESP:$resp');
+
       if (resp.statusCode == 200) {
         data = json.decode(resp.data);
-        print('DEL DATA: $data');
+        _logger.d('DEL DATA: $data');
       }
     } on DioError catch (e) {
-      print("DioError DeleteChat ${e.response.toString()}");
+      _logger.e("DioError DeleteChat ${e.response.toString()}");
+
       throw CustomException(e.response.toString());
     } catch (e) {
-      print("Error DeleteChat $e");
+      _logger.e("Error DeleteChat $e");
+
       throw CustomException(e.toString());
     }
     return data;
@@ -146,20 +152,22 @@ class RestClient {
     late AttachModel attach;
     try {
       var resp = await _dio.put(imageUrl, data: {"path": path});
-      print("RESP: $resp");
+      _logger.d("RESP: $resp");
+
       if (resp.statusCode == 200) {
         var source = resp.data
             .toString()
             .replaceAll('attachment_id', '"attachment_id"')
             .replaceAll('attachment_meta', '"attachment_meta"');
-        print('source:$source');
+        _logger.d('source:$source');
+
         // var res = json.decode(source);
 
         attach = AttachModel.fromJson(source);
-        print('mod:$attach');
+        _logger.d('mod:$attach');
       }
     } catch (e) {
-      print(e);
+      _logger.e(e.toString());
     }
     return attach;
   }
@@ -172,7 +180,7 @@ class RestClient {
         return resp;
       }
     } catch (e) {
-      print(e);
+     _logger.e(e.toString());
     }
   }
 
@@ -184,7 +192,7 @@ class RestClient {
         return resp;
       }
     } catch (e) {
-      print(e);
+      _logger.e(e.toString());
     }
   }
 
@@ -194,15 +202,15 @@ class RestClient {
     try {
       var resp = await _dio
           .get(chatUrl, queryParameters: {'chatId': chatId, 'userId': userId});
-      print('GET CHAT BY ID: $resp');
+      _logger.d('GET CHAT BY ID: $resp');
       if (resp.statusCode == 200) {
         var data = resp.data.toString().split(',');
         int chatId = int.parse(data[0].split('chats: {chat_id: ')[1]);
-        print(chatId);
+        _logger.e(chatId);
         int friend1Id = int.parse(data[1].split('friend1_id: ')[1]);
-        print('f2:$friend1Id');
+        _logger.e('f1:$friend1Id');
         int friend2Id = int.parse(data[2].split('friend2_id: ')[1]);
-        print('f2:$friend2Id');
+        _logger.e('f2:$friend2Id');
         String chatCreatedDate = data[3].split('created_date: ')[1];
         // String chatDeletedDate = data[4].split('deleted_date: ')[1];
         // String chatUpdatedDate =
@@ -214,11 +222,7 @@ class RestClient {
         String userCreatedDate = data[9].split('created_date: ')[1];
         String userProfileLink = data[10].split('profile_pic_url: ')[1];
         String userUpdatedDate = data[11].split('updated_date: ')[1];
-        // String userDeletedDate = data[12].split('deleted_date: ')[1];
-        // String userHashConnect = data[13].split('hash_connect: ')[1];
-        // String password = data[14].split('password: ')[1].split('}}')[0];
-        // {chats: {chat_id: 8, friend1_id: 5, friend2_id: 2, created_date: 2023-01-14T18:50:44.462042, deleted_date: , updated_date: 2023-01-14T19:39:59.254029},
-        //users: {user_id: 5, name: test5, email: t5@t5.t5, created_date: 2022-12-02T21:36:32.653712, profile_pic_url: https://img.argumenti.ru/news/news_id/599606.jpg, updated_date: 2022-12-02T21:36:32.653712, deleted_date: , hash_connect: null, password: pass}}
+        
         await LocalUsersServices().createUser(
             userId: userId,
             name: userName,
@@ -232,7 +236,7 @@ class RestClient {
             chatId: chatId);
       }
     } catch (e) {
-      print(e);
+     _logger.e(e.toString());
     }
   }
 }

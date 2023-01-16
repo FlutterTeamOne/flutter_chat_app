@@ -3,6 +3,7 @@ import 'package:chat_app/src/constants/db_constants.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/generated/sync/grpcsynh.pbgrpc.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
+import 'package:logger/logger.dart';
 
 import '../../../client/rest_client.dart';
 
@@ -44,8 +45,8 @@ class ValidatorService {
   static Future validUser({required SynhUser user}) async {
     final ok = await _usersServices.getUserById(id: user.userId);
     if (ok.isEmpty) {
-      print(
-          "deleted date is empty? ${user.deletedDate} ${user.deletedDate.isNotEmpty}");
+      
+      Logger().d("deleted date is empty? ${user.deletedDate} ${user.deletedDate.isNotEmpty}");
       String userAvatar = (user.deletedDate == "" || user.deletedDate.isEmpty)
           ? user.picture
           : """https://www.iconsdb.com/icons/preview/red/cancel-xxl.png""";
@@ -61,7 +62,6 @@ class ValidatorService {
   }
 
   static Future validChat({required SynhChat chat}) async {
-   
     List<Map<String, Object?>> chatByUser =
         await _chatServices.getChatByUserId(id: chat.userId);
     final ok = await _chatServices.getChatById(id: chat.chatId);

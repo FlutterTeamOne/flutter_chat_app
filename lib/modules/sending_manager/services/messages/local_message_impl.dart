@@ -273,7 +273,7 @@ class LocalMessagesServices implements ILocalMessagesServices {
         ''');
   }
 
-  @override
+  
   Future<int> getMaxMessageId() async {
     Database db = await DBHelper.instanse.database;
     List<Map<String, Object?>> messageId = await db.rawQuery('''
