@@ -1,7 +1,6 @@
 ﻿import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/modules/signal_service/river/river.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
-import 'package:chat_app/src/generated/users/users.pbgrpc.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/add_chat_dialog_widget.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/search_field.dart';
 import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
