@@ -1,5 +1,4 @@
-﻿import 'dart:async';
-import 'package:chat_app/modules/client/custom_exception.dart';
+﻿import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/modules/signal_service/river/river.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:chat_app/src/generated/users/users.pbgrpc.dart';
@@ -7,6 +6,7 @@ import 'package:chat_app/ui/widgets/asap_page/widgets/add_chat_dialog_widget.dar
 import 'package:chat_app/ui/widgets/asap_page/widgets/search_field.dart';
 import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
 import '../../../../modules/storage_manager/db_helper/user_path.dart';
 import '../../../widgets/library/library_widgets.dart';
 import 'package:flutter/material.dart';
@@ -24,21 +24,8 @@ class ChatListLayout extends StatefulWidget {
 class _ChatListLayoutState extends State<ChatListLayout> {
   final _searchController = TextEditingController();
 
-  bool _isLoading = false;
-
-  void _loadScreen() async {
-    setState(() {
-      _isLoading = true;
-    });
-    await Future.delayed(const Duration(milliseconds: 1000));
-    setState(() {
-      _isLoading = false;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    var grpcClient = GrpcClient();
     return Drawer(
       width: 300,
       elevation: 0,
@@ -87,7 +74,6 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                                   // ? userBloc.state.users[index].name:'You'),
                                   selected: false,
                                   onTap: () {
-                                    //TODO: GetChatId => SetChatId
                                     ref
                                         .watch(River.chatPod.notifier)
                                         .getChatId(chatModel[index].chatId!);
@@ -124,28 +110,26 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                               builder: (BuildContext context) =>
                                   (AddChatDialogWidget(val: value)))
                           .then((value) async {
-                        //FriendId Validation
                         if (value == null) {
                           return;
                         }
-                        GetUserResponse userFromServerDb;
                         try {
-                          userFromServerDb = await ref
+                          await ref
                               .read(River.userPod.notifier)
                               .getUserFromServer(userId: value);
-                          print("BEFORE REST");
-                          final chatId = await ref
-                              .read(River.chatPod.notifier)
-                              .createChat(
-                                ChatDto(
-                                  userIdChat: value,
-                                  createdDate: DateTime.now().toIso8601String(),
-                                  updatedDate: DateTime.now().toIso8601String(),
-                                ),
-                              );
+                          Logger().v("BEFORE REST");
+                          final String date = DateTime.now().toIso8601String();
+                          final chatId =
+                              await ref.read(River.chatPod.notifier).createChat(
+                                    ChatDto(
+                                      userIdChat: value,
+                                      createdDate: date,
+                                      updatedDate: date,
+                                    ),
+                                  );
                           ref.read(River.chatPod.notifier).getChatId(chatId);
                         } on CustomException catch (e) {
-                          print('GET USER RESPONSE ERROR: $e');
+                          Logger().e('GET USER RESPONSE ERROR: $e');
                           String textContent = e.message == 'null'
                               ? "Rest Server Not Found"
                               : e.message;
@@ -159,28 +143,6 @@ class _ChatListLayoutState extends State<ChatListLayout> {
                               });
                         }
                       });
-                      // .whenComplete(() async {
-                      //     await showDialog(
-                      //       barrierDismissible: false,
-                      //       context: context,
-                      //       builder: (context) {
-                      //         return Dialog(
-                      //           backgroundColor:
-                      //               Theme.of(context).backgroundColor,
-                      //           child: const Padding(
-                      //             padding: EdgeInsets.all(8.0),
-                      //             child: Center(
-                      //               child: CircularProgressIndicator(),
-                      //             ),
-                      //           ),
-                      //         );
-                      //       },
-                      //     ).timeout(const Duration(seconds: 2),
-                      //         onTimeout: () => Navigator.pop(context, 'OK'));
-
-                      // await Future.delayed(const Duration(seconds: 2));
-                      // Navigator.pop(context, 'OK');
-                      // });
                     },
                     icon: const Icon(Icons.add),
                     label: const Text('Add Chat'),
