@@ -1,16 +1,17 @@
 import 'package:chat_app/domain/data/dto/message_dto/message_dto.dart';
 import 'package:chat_app/modules/sending_manager/library/library_sending_manager.dart';
-import 'package:chat_app/modules/sending_manager/services/chats/local_chat_impl.dart';
 import 'package:chat_app/modules/sending_manager/services/validator_service/validator_service.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../src/generated/grpc_lib/grpc_message_lib.dart';
 
 class MessageNotifierHelper {
   static final LocalMessagesServices _messagesService = LocalMessagesServices();
   static final LocalChatServices _chatServices = LocalChatServices();
+  static final Logger _logger = Logger();
   static Future isReadMessage({required Message message}) async {
-    print("READMESSAGE: $message");
+    _logger.d("READMESSAGE: $message");
     final List<MessageDto> messages = <MessageDto>[];
 
     await ValidatorService.newMessageFromBaseOnline(message: message);
@@ -38,8 +39,9 @@ class MessageNotifierHelper {
         messageId: updMsg.idMessageMain,
         updateDate: updMsg.dateUpdate);
 
-    print('id Message Main: ${updMsg.idMessageMain}');
-    print('date update: ${updMsg.idMessageMain}');
+   
+    _logger.d('id Message Main: ${updMsg.idMessageMain}');
+    _logger.d('date update: ${updMsg.idMessageMain}');
 
     // var messages = await _messagesServices.getAllMessages();
 
@@ -59,7 +61,7 @@ class MessageNotifierHelper {
   }
 
   static Future isCreatedMessage({required Message msg}) async {
-    print("IsCreate: $msg");
+    _logger.d("IsCreate: $msg");
 
     // var newMsg = MessageDto(
     //     localMessageId: msg.localMessgaeId,
