@@ -26,5 +26,6 @@ class AppData {
         return envVars['UserProfile'];
       }
     }
+    return null;
   }
 }

@@ -1,11 +1,10 @@
-import 'dart:developer';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/ui/pages/main_layout.dart';
 import 'package:chat_app/ui/pages/registration_page/registration_page.dart';
 import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
 import 'package:grpc/grpc.dart';
+import 'package:logger/logger.dart';
 import '../../modules/signal_service/river/river.dart';
 import '../../src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +35,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
 
   @override
   void dispose() {
-    log("DISPOSE AUTH PAGE");
+    Logger().d("DISPOSE AUTH PAGE");
     super.dispose();
   }
 
@@ -44,18 +43,19 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     try {
       //ref.read(River.futureSynchUserPod);
       await ref.read(River.synchUserPod.notifier).readUser();
-      print("ВСЕ ОК");
+      Logger().v("ВСЕ ОК");
     } on GrpcError catch (e) {
-      print("ERROR");
+      Logger().e(e.toString());
     } on CustomException catch (e) {
-      print("ERROR SYNCH in INIT: $e");
+      Logger().e("ERROR SYNCH in INIT: $e");
+
       await showDialog(
           context: context,
           builder: (context) => const ErrorDialog(
               textTitle: "Error",
               textContent: "The server is temporarily unavailable"));
     } catch (e) {
-      print("ERROR");
+      Logger().e("ERROR: $e");
     }
   }
 
