@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../finders/settings.dart';
@@ -15,6 +16,14 @@ class SettingsPageRobot {
 
     //Finders().firstUserButton
     await tester.tap(userFinder.firstUserButton);
+    await tester.pumpAndSettle();
+
+    //вводим пароль
+    await tester.enterText(find.byType(TextFormField), '123Qw!');
+    await tester.pumpAndSettle();
+
+    //login
+    await tester.tap(finder.loginButton);
     await tester.pumpAndSettle();
 
     //нажать на настройки

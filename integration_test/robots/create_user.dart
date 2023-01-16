@@ -110,7 +110,16 @@ class CreateUserRobot {
     expect(finder.userWidget, findsNWidgets(7));
     await tester.pumpAndSettle();
 
+    //нажимаем на 7-го юзера
     await tester.tap(finder.seventhUserButton);
+    await tester.pumpAndSettle();
+
+    //вводим пароль
+    await tester.enterText(find.byType(TextFormField), 'Password!0');
+    await tester.pumpAndSettle();
+
+    //login
+    await tester.tap(finder.loginButton);
     await tester.pumpAndSettle();
 
     expect(find.text('newuser'), findsOneWidget);

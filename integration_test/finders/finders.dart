@@ -9,6 +9,9 @@ abstract class TestFinder {
   //кнопка страницы профиля
   final Finder profilePageButton = find.byIcon(Icons.person_outline_outlined);
 
+  //ввод пароля
+  final Finder loginButton = find.byKey(const Key('loginButton'));
+
   //кнопка подтверждения ОК ErrorDialog
   final Finder dialogButton = find.byType(TextButton);
 

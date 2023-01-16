@@ -104,6 +104,7 @@ class _ConfirmPasswordDialogState extends State<ConfirmPasswordDialog> {
                 ),
                 const SizedBox(width: 10),
                 ElevatedButton(
+                  key: const Key('loginButton'),
                   style: ButtonStyle(elevation: MaterialStateProperty.all(4)),
                   onPressed: () async {
                     final isValid = confirmPasswordKey.currentState!.validate();

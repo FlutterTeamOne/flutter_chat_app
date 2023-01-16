@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import '../finders/asap.dart';
 import '../finders/user.dart';
@@ -12,6 +13,14 @@ class AsapPageRobot {
     await tester.pumpAndSettle(const Duration(seconds: 1));
 
     await tester.tap(userFinder.firstUserButton);
+    await tester.pumpAndSettle();
+
+    //вводим пароль
+    await tester.enterText(find.byType(TextFormField), '123Qw!');
+    await tester.pumpAndSettle();
+
+    //login
+    await tester.tap(finder.loginButton);
     await tester.pumpAndSettle();
 
     //нажимаем на чат - asapPage
@@ -51,6 +60,14 @@ class AsapPageRobot {
     await tester.pumpAndSettle(const Duration(seconds: 1));
 
     await tester.tap(userFinder.thirdUserButton);
+    await tester.pumpAndSettle();
+
+    //вводим пароль
+    await tester.enterText(find.byType(TextFormField), '123Qw!');
+    await tester.pumpAndSettle();
+
+    //login
+    await tester.tap(finder.loginButton);
     await tester.pumpAndSettle();
 
     //нажимаем на чат - asapPage
