@@ -135,7 +135,7 @@ class CustomThemes {
     ),
   );
 
-  static final ThemeData CustomTheme = ThemeData(
+  static final ThemeData customTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
     primarySwatch: Colors.blueGrey,
@@ -161,6 +161,6 @@ class CustomThemes {
     CustomThemes.darkThemeLightBlue,
     CustomThemes.lightThemeBlueGray,
     CustomThemes.darkThemeBlueGray,
-    CustomThemes.CustomTheme,
+    CustomThemes.customTheme,
   ];
 }
