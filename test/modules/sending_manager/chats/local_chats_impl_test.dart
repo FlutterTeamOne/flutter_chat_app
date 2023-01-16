@@ -155,13 +155,15 @@ void main() {
       var date = '2023-01-08T00:41:21.267124';
 
       var r = await LocalChatServices().getChatById(id: id);
-      var matcher =         {
-          'chat_id': id,
-          'user_id': 1,
-          'created_date': date,
-          'update_date': date,
-          'deleted_date': null
-        };
+      var matcher =  [
+            {
+              'chat_id': 1,
+              'user_id': 1,
+              'created_date': '2023-01-08T00:41:21.267124',
+              'update_date': '2023-01-08T00:41:21.267124',
+              'deleted_date': null
+            }
+          ];
       
       expect(r, matcher);
       await DBHelper.instanse.deleteDB(db.path);
