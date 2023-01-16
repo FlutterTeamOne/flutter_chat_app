@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:grpc/grpc.dart';
-import 'package:grpc/grpc.dart';
 import 'package:server/src/db_server/services/message_service.dart';
 import 'package:server/src/library/library_server.dart';
 import 'package:server/src/synh_helper/synh_helper.dart';
@@ -49,7 +48,8 @@ class GrpcMessage extends GrpcMessagesServiceBase {
             newMessage['updated_date'] as String;
         await ChatsServices().updateChat(
             newValues:
-                'updated_date = "${req.createMessage.message.dateUpdate}"',
+                '''updated_date = "${req.createMessage.message.dateUpdate}",
+                deleted_date = ""''',
             condition: 'chat_id = ${req.createMessage.message.chatId}');
         print('REQ message UPDATE: ${req.createMessage.message}, ');
         _controllers.forEach((controller, _) async =>
@@ -85,86 +85,18 @@ class GrpcMessage extends GrpcMessagesServiceBase {
       yield req;
     }
   }
-
-  _onCreateMessage(
-      {required StreamController<DynamicResponse> controller,
-      required StreamController<DynamicResponse> clientController,
-      required DynamicRequest req}) async {
-    print('for Each Create');
-    var message = DynamicResponse();
-    if (controller != clientController) {
-      message = DynamicResponse(
-          readMessage: ReadMessageResponse(message: req.createMessage.message),
-          messageState: MessageStateEnum.isReadMessage);
-      print(message.messageState);
-      controller.sink.add(message);
-    } else {
-      print('CREATE MSG: ${req.createMessage.message}');
-      message = DynamicResponse(
-          createMessage:
-              CreateMessageResponse(message: req.createMessage.message),
-          messageState: MessageStateEnum.isCreateMessage);
-      print(message.messageState);
-      controller.sink.add(message);
-    }
-  }
-
-  _onUpdateMessage(
-      {required StreamController<DynamicResponse> controller,
-      required StreamController<DynamicResponse> clientController,
-      required DynamicRequest req}) async {
-    print('for Each Update');
-    var timeUpdate = DateTime.now().toIso8601String();
-    await messagesService.updateMessage(
-        newValues:
-            "content = '${req.updateMessage.content}', updated_date = '$timeUpdate'",
-        condition: "message_id = ${req.updateMessage.idMessageMain}");
-    var updateMessage = DynamicResponse();
-    if (controller != clientController) {
-      updateMessage = DynamicResponse(
-        updateMessage: UpdateMessageResponse(
-            dateUpdate: timeUpdate,
-            content: req.updateMessage.content,
-            idMessageMain: req.updateMessage.idMessageMain),
-        messageState: MessageStateEnum.isUpdateMessage,
-      );
-      controller.add(updateMessage);
-    } else {
-      updateMessage = DynamicResponse(
-          updateMessage: UpdateMessageResponse(
-              content: req.updateMessage.content,
-              dateUpdate: timeUpdate,
-              idMessageMain: req.updateMessage.idMessageMain),
-          messageState: MessageStateEnum.isUpdateMessage);
-      controller.add(updateMessage);
-    }
-  }
-
-  _onDeleteMessage(
-      {required StreamController<DynamicResponse> controller,
-      required StreamController<DynamicResponse> clientController,
-      required DynamicRequest req}) async {
-    var dateDelete = DateTime.now().toIso8601String();
-    await messagesService.updateMessage(
-        newValues: "deleted_date = '$dateDelete'",
-        condition: 'message_id=${req.deleteMessage.idMessageMain}');
-    if (controller != clientController) {
-      var delMsg = DynamicResponse(
-          deleteMessage: DeleteMessageResponse(
-            idMessageMain: req.deleteMessage.idMessageMain,
-            dateDelete: dateDelete,
-          ),
-          messageState: MessageStateEnum.isDeleteMesage);
-      controller.add(delMsg);
-    } else {}
-  }
 }
 
 class GrpcUsers extends GrpcUsersServiceBase {
   @override
   Future<CreateUserResponse> createUser(
       ServiceCall call, CreateUserRequest request) async {
-    var date = DateTime.now().toIso8601String();
+    String date = DateTime.now().toIso8601String();
+    List<Map<String, Object?>> users =
+        await UsersServices().getUserByEmail(email: request.email);
+    if (users.isNotEmpty) {
+      throw errors[6];
+    }
     var src = await UsersServices().createUser(
         name: request.name,
         email: request.email,
@@ -201,10 +133,13 @@ class GrpcUsers extends GrpcUsersServiceBase {
 
   //TODO: Расписать ошибки и вынести в отдельный класс
   List<GrpcError> errors = [
-    GrpcError.custom(15, "Нет пользователя с таким ID"),
-    GrpcError.custom(16, "Нет пользователя с таким Name"),
-    GrpcError.custom(17, "Нет пользователя с таким Email"),
-    GrpcError.custom(18, "Пользователь удален")
+    GrpcError.custom(15, "Нет пользователя с таким ID"), //0
+    GrpcError.custom(16, "Нет пользователя с таким Name"), //1
+    GrpcError.custom(17, "Нет пользователя с таким Email"), //2
+    GrpcError.custom(18, "Пользователь удален"), //3
+    GrpcError.custom(19, "Неверный старый пароль"), //4
+    GrpcError.custom(20, "Произошла неизвестная ошибка"), //5
+    GrpcError.custom(21, "Пользователь с таким email уже зарегистрирован"), //6
   ];
 
   @override
@@ -247,6 +182,15 @@ class GrpcUsers extends GrpcUsersServiceBase {
       ServiceCall call, UpdateUserRequest request) async {
     var updateUserResponse = UpdateUserResponse();
     updateUserResponse.dateUpdated = DateTime.now().toIso8601String();
+    Map<String, Object?> user =
+        await UsersServices().getUserById(userId: request.id);
+    if (request.email != user['email']) {
+      List<Map<String, Object?>> users =
+          await UsersServices().getUserByEmail(email: request.email);
+      if (users.isNotEmpty) {
+        throw errors[6];
+      }
+    }
     var src = await UsersServices().updateUser(
         newValues: '''name = '${request.name}', 
             email = '${request.email}', 
@@ -265,6 +209,41 @@ class GrpcUsers extends GrpcUsersServiceBase {
       }
     }
     return updateUserResponse;
+  }
+
+  @override
+  Future<PasswordResponse> changePassword(
+      ServiceCall call, PasswordChangeRequest request) async {
+    Map<String, Object?> user =
+        await UsersServices().getUserById(userId: request.userId);
+    if (user.isEmpty) {
+      throw errors[5];
+    }
+    if (request.oldPassword.compareTo(user['password'] as String) != 0) {
+      throw errors[4];
+    }
+    try {
+      await usersServices.updateUser(
+          newValues: "password = '${request.newPassword}'",
+          condition: "user_id = ${request.userId}");
+    } catch (e) {
+      throw errors[5];
+    }
+    return PasswordResponse(ok: true);
+  }
+
+  @override
+  Future<PasswordResponse> confirmPassword(
+      ServiceCall call, PasswordConfirmRequest request) async {
+    Map<String, Object?> user =
+        await UsersServices().getUserById(userId: request.userId);
+    if (user.isEmpty) {
+      throw errors[5];
+    }
+    if (request.password.compareTo(user['password'] as String) != 0) {
+      throw errors[4];
+    }
+    return (PasswordResponse(ok: true));
   }
 }
 
@@ -286,46 +265,36 @@ class GrpcSynh extends GrpcSynchronizationServiceBase {
     ///Юзеры и чаты
     ///
     if (request.chats.maxChatId == 0) {
-      print('new chats started');
       newChats = await ChatsServices()
           .getChatsByUserId(userId: request.users.mainUser);
-      print('new chats ended');
-      print('new users started');
       newUsers = await UsersServices()
           .getAllUsersByIDfriend(userId: request.users.mainUser);
-      print('new users ended');
       updatedUsers = [];
       updatedChats = [];
-      print('REQUEST CHATS MAX CHAT ID OK');
     } else {
-      print(
-          'else new chats started: mainUser:${request.users.mainUser} :maxChatID ${request.chats.maxChatId} ');
-      newChats = await ChatsServices().getChatsByUserIdMoreChatId(
-          userId: request.users.mainUser, chatId: request.chats.maxChatId);
-      print('else updated chats started ${request.chats.chatsForUpdate}');
+      //TODO: Не смотреть на максимальный id
+      List<int> chatIds = [];
+      for (ChatRequest chat in request.chats.chatsForUpdate) {
+        chatIds.add(chat.chatId);
+      }
+      newChats = await ChatsServices().getNewChatsByUserId(
+          userId: request.users.mainUser, chatIds: chatIds);
       updatedChats = await ChatsServices()
           .getUpdatedChats(chats: request.chats.chatsForUpdate);
-      print('else updated users started ${request.users.usersForUpdate}');
       updatedUsers = await UsersServices()
           .getUpdatedUsers(users: request.users.usersForUpdate);
-      print('else  newusers started');
       newUsers = await UsersServices().getAllUsersByIDfriendMoreChatId(
           id: request.users.mainUser, chatId: request.chats.maxChatId);
-      print('ELSE REQUEST CHATS MAX CHAT ID OK');
     }
-    print("ВЫШЛИ ИЗ ЮЗЕРОВ И ЧАТОВ");
 
     ///
     ///Сообщения
     ///
     if (request.messages.maxMessageId == 0) {
-      print("Нет сообщений совсем");
       newMessages = await MessagesDBServices()
           .getMessageByUserId(userId: request.users.mainUser);
       updatedMessages = [];
     } else {
-      print("Есть ли сообщения больше ${request.messages.maxMessageId}?");
-      print("MainUserId: ${request.users.mainUser}");
       newMessages = await MessagesDBServices().getMessageByUserIdMoreMessageId(
           userId: request.users.mainUser,
           messageId: request.messages.maxMessageId);
@@ -369,13 +338,9 @@ class GrpcSynh extends GrpcSynchronizationServiceBase {
     }
     var newUsers = await usersServices.getAllUsersMoreId(id: lastId);
 
-    print("NEWUSERS START $newUsers");
-    print("UPDATEDUSERS START $usersUpdated");
-
     var newUserResponse = SynhHelper.synhUsersResponse(users: newUsers);
-    print('NEW USERS RESP START: $newUserResponse');
     var updatedUserResponse = SynhHelper.synhUsersResponse(users: usersUpdated);
-
+    print('NEW USERS RESP START: $newUserResponse');
     print('UPDATED USERS RESP START: $updatedUserResponse');
 
     return UsersResponse(

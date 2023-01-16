@@ -14,10 +14,10 @@ abstract class IChatsServices {
 
   getChatsByUserId({required int userId});
 
-  getChatByTwoIds({required int friend1_id, required int friend2_id});
+  getChatByTwoIds({required int friend1Id, required int friend2Id});
 
   getAllChats();
-  getChatsByUserIdMoreChatId({required int userId, required int chatId});
+  getNewChatsByUserId({required int userId, required List<int> chatIds});
 
   getUpdatedChats({required List<ChatRequest> chats});
 }

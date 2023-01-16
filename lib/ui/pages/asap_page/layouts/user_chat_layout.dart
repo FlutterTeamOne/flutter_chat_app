@@ -1,4 +1,6 @@
 ﻿import 'package:chat_app/modules/signal_service/river/message_ref/message_notifier.dart';
+import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
+import 'package:chat_app/ui/pages/asap_page/layouts/edit_chat_popup_widget.dart';
 
 import '../../../../modules/signal_service/river/message_ref/message_state_ref.dart';
 import '../../../../modules/signal_service/river/river.dart';
@@ -25,32 +27,33 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
   @override
   Widget build(BuildContext context) {
     var badState;
-    ChatDto? chat;
-    // var chat = context.read<ChatBloc>().state.chats?.firstWhere(
-    //       (chats) => chats.chatId == widget.chatId,
-    //     );
-    for (var c in ref.read(River.chatPod).chats!) {
-      if (c.chatId == widget.chatId) {
-        chat = c;
-      }
-    }
-    var user;
-    // = context
-    //     .read<UserBloc>()
-    //     .state
-    //     .users
-    //     ?.firstWhere((user) => user.userId == chat?.userIdChat);
-    for (var u in ref.read(River.userPod).users!) {
-      if (chat?.userIdChat == null) {
-        break;
-      }
-      if (u.userId == chat?.userIdChat) {
-        user = u;
-      }
-    }
+
+    // for (var c in ref.read(River.chatPod).chats!) {
+    //   if (c.chatId == widget.chatId) {
+    //     chat = c;
+    //   }
+    // }
+    ChatDto? chat = ref
+        .read(River.chatPod)
+        .chats
+        ?.firstWhere((chat) => chat.chatId == widget.chatId);
+    UserDto? user = ref
+        .read(River.userPod)
+        .users
+        ?.firstWhere((user) => user.userId == chat?.userIdChat);
+
+    // for (var u in ref.read(River.userPod).users!) {
+    //   if (chat?.userIdChat == null) {
+    //     break;
+    //   }
+    //   if (u.userId == chat?.userIdChat) {
+    //     user = u;
+    //   }
+    // }
     var messageNotif = ref.read(River.messagePod.notifier);
     var messageRead = ref.read(River.messagePod);
     var messageWatch = ref.watch(River.messagePod);
+    final myChat = chat?.userIdChat == UserPref.getUserId;
     return chat == null
         ? Container()
         : Column(
@@ -61,34 +64,18 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                 color: Colors.transparent.withOpacity(0.1),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
+                  children: [
                     Flexible(
                       child: ChatAppBarWidget(
                         image: user!.deletedDate!.isEmpty
                             ? user.profilePicLink
                             : 'https://www.iconsdb.com/icons/preview/red/cancel-xxl.png',
                         // user.profilePicLink,
-                        name: user.name,
+                        name: myChat ? 'My Favorite Chat' : user.name,
+                        chatId: widget.chatId,
+                        myChat: myChat,
+                        ref: ref,
                       ),
-                    ),
-                    Flexible(
-                      child: PopupMenuButton<int>(
-                          itemBuilder: (context) => [
-                                PopupMenuItem(
-                                    value: 1,
-                                    child: Row(
-                                      children: const [
-                                        Icon(Icons.delete),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text("Delete Chat")
-                                      ],
-                                    ),
-                                    onTap: () => ref
-                                        .read(River.chatPod.notifier)
-                                        .deleteChat(widget.chatId)),
-                              ]),
                     ),
                   ],
                 ),
@@ -100,73 +87,60 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                         textController: controller,
                         messages: messageWatch.messages!,
                         chatId: widget.chatId,
+                        deletedUser: user.deletedDate,
                       )
                     : const Center(child: CircularProgressIndicator()),
               ),
-              TextInputWidget(
-                onSubmitted: (text) =>
-                    _sendAndChange(messageRead, messageNotif),
-                controller: controller,
-                onTap: () => user.deletedDate!.isNotEmpty
-                    ? showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            child: SizedBox(
-                              height: 80,
-                              width: 80,
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text('User ${user.name} is deleted'),
-                                  ),
-                                  ElevatedButton(
-                                      style: ButtonStyle(
-                                          shape: MaterialStateProperty.all<
-                                                  RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                      ))),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Icon(
-                                        Icons.close_rounded,
-                                      ))
-                                ],
-                              ),
-                            ),
-                          );
-                        })
-                    : _sendAndChange(messageRead, messageNotif),
-                editState: messageRead.editState,
-                editText: controller.text,
-                cancelEdit: () {
-                  messageNotif.updateMessage(isEditing: EditState.isNotEditing);
-                  controller.clear();
-                },
-              ),
+              if (user.deletedDate!.isEmpty || user.deletedDate == null) ...[
+                TextInputWidget(
+                  onSubmitted: (text) =>
+                      _sendAndChange(messageRead, messageNotif),
+                  controller: controller,
+                  onTap: messageRead.mediaState == MediaState.isSending
+                      ? () {}
+                      : () => _sendAndChange(messageRead, messageNotif),
+                  editState: messageRead.editState,
+                  editText: controller.text,
+                  cancelEdit: () {
+                    messageNotif.updateMessage(
+                        isEditing: EditState.isNotEditing);
+                    controller.clear();
+                  },
+                )
+              ] else ...[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text('Oops This user has deleted their account'),
+                      SizedBox(width: 20),
+                      Icon(
+                        Icons.error_outlined,
+                        // color: Colors.yellow,
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ],
           );
   }
 
   _sendAndChange(
       MessageStateRef messageRef, MessageNotifier messageNotif) async {
+    final String date = DateTime.now().toIso8601String();
+    final int senderId = await MainUserServices().getUserID();
     if (messageRef.editState == EditState.isNotEditing &&
         controller.text.isNotEmpty &&
         messageRef.mediaState != MediaState.isPreparation) {
-      messageNotif.createMessage(
+    await  messageNotif.createMessage(
           message: MessageDto(
               chatId: widget.chatId,
-              senderId: await MainUserServices().getUserID(),
+              senderId: senderId,
               content: controller.text,
-              createdDate: DateTime.now().toIso8601String(),
-              updatedDate: DateTime.now().toIso8601String(),
+              createdDate: date,
+              updatedDate: date,
               contentType: ContentType.isText),
           contentType: ContentType.isText);
       // context.read<ChatBloc>().add(ReadChatEvent());
@@ -183,28 +157,28 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
           ?.firstWhere((element) => element.localMessageId == localMessageId);
       if (message?.contentType == ContentType.isText) {
         print('EDIT  TEXT');
-        messageNotif.updateMessage(
+     await   messageNotif.updateMessage(
             message: MessageDto(
                 chatId: widget.chatId,
-                senderId: await MainUserServices().getUserID(),
+                senderId: senderId,
                 content: controller.text,
                 messageId: message?.messageId,
                 createdDate: message?.createdDate,
-                updatedDate: DateTime.now().toIso8601String()),
+                updatedDate: date),
             isEditing: EditState.isEditing);
       } else if (message?.contentType == ContentType.isMediaText) {
         print('EDIT MEDIA TEXT');
         List<String>? data = message?.content.split('media: ');
         var msg = data![1];
         print('MSG UPD: $msg');
-        messageNotif.updateMessage(
+      await  messageNotif.updateMessage(
             message: MessageDto(
                 chatId: widget.chatId,
-                senderId: await MainUserServices().getUserID(),
+                senderId: senderId,
                 content: {'message': controller.text, 'media': msg}.toString(),
-                messageId: localMessageId,
+                messageId: message?.messageId,
                 createdDate: message?.createdDate,
-                updatedDate: DateTime.now().toIso8601String()),
+                updatedDate: date),
             isEditing: EditState.isEditing);
       } else {
         print('EDIT MEDIA ');
@@ -216,13 +190,13 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
 
     if (messageRef.mediaState == MediaState.isPreparation &&
         controller.text.isNotEmpty) {
-      messageNotif.createMessage(
+    await  messageNotif.createMessage(
           message: MessageDto(
               chatId: widget.chatId,
-              senderId: await MainUserServices().getUserID(),
+              senderId: senderId,
               content: controller.text,
-              createdDate: DateTime.now().toIso8601String(),
-              updatedDate: DateTime.now().toIso8601String(),
+              createdDate: date,
+              updatedDate: date,
               contentType: ContentType.isMediaText),
           contentType: ContentType.isMediaText,
           mediaState: MediaState.isSending);
@@ -230,13 +204,13 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
       controller.clear();
     } else if (messageRef.mediaState == MediaState.isPreparation &&
         controller.text.isEmpty) {
-      messageNotif.createMessage(
+    await  messageNotif.createMessage(
           message: MessageDto(
               chatId: widget.chatId,
-              senderId: await MainUserServices().getUserID(),
+              senderId: senderId,
               content: controller.text,
-              createdDate: DateTime.now().toIso8601String(),
-              updatedDate: DateTime.now().toIso8601String(),
+              createdDate: date,
+              updatedDate: date,
               contentType: ContentType.isMedia),
           contentType: ContentType.isMedia,
           mediaState: MediaState.isSending);

@@ -1,4 +1,4 @@
-﻿import 'package:flutter/cupertino.dart';
+﻿import 'package:flutter/material.dart';
 
 class FloatingWindowWidget extends StatelessWidget {
   const FloatingWindowWidget({
@@ -13,9 +13,10 @@ class FloatingWindowWidget extends StatelessWidget {
     return Container(
       width: 160,
       padding: const EdgeInsets.all(10),
-      decoration: const BoxDecoration(
-        color: Color(0xFF4C4C4C),
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: Theme.of(context).dialogBackgroundColor,
+        border: Border.all(width: 0.3),
+        borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(8),
           bottomRight: Radius.circular(8),
           topLeft: Radius.circular(8),

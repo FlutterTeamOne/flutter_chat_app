@@ -72,6 +72,18 @@ class MessageDto extends ModelDto {
     };
   }
 
+  factory MessageDto.fromMessage(Message message) {
+    return MessageDto(
+        localMessageId: message.localMessgaeId,
+        messageId: message.messageId,
+        chatId: message.chatId,
+        senderId: message.senderId,
+        content: message.content,
+        createdDate: message.dateCreate,
+        updatedDate: message.dateUpdate,
+        attachId: message.attachmentId,
+        contentType: message.contentType);
+  }
   factory MessageDto.fromMap(Map<String, dynamic> map) {
     return MessageDto(
         localMessageId: map[DatabaseConst.messagesColumnLocalMessagesId] as int,
@@ -96,6 +108,16 @@ class MessageDto extends ModelDto {
                             ContentType.isMediaText.name
                         ? ContentType.isMediaText
                         : ContentType.isText);
+  }
+ static contType({required String contentTypeName}) {
+    return ContentType.isText.name == contentTypeName
+        ? ContentType.isText
+        : ContentType.isMedia.name == contentTypeName
+            ? ContentType.isMedia
+            : ContentType.isMediaText.name == contentTypeName
+                ? ContentType.isMediaText
+                : ContentType.isText;
+    ;
   }
 
   String toJson() => json.encode(toMap());

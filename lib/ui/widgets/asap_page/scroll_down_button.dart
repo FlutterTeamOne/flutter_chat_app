@@ -25,6 +25,7 @@ class ScrollDownButton extends StatelessWidget {
             border: Border.all(
               color:
                   Theme.of(context).floatingActionButtonTheme.foregroundColor!,
+              //TODO: StrokeAlign нет будующих версиях
               strokeAlign: StrokeAlign.center,
             ),
           ),

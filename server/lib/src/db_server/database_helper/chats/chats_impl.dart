@@ -48,13 +48,13 @@ class ChatsServices implements IChatsServices {
   }
 
   @override
-  Future<Map<String, Object?>> getChatById({required int id}) async {
+  Future<List<Map<String, Object?>>> getChatById({required int id}) async {
     Database db = await DbServerServices.instanse.database;
     var chats = await db.rawQuery('''
       SELECT * FROM chats 
         WHERE (chat_id = $id)
     ''');
-    return chats[0];
+    return chats;
   }
 
   @override
@@ -89,16 +89,17 @@ class ChatsServices implements IChatsServices {
   }
 
   @override
-  getChatByTwoIds({required int friend1_id, required int friend2_id}) async {
+  Future<List<Map<String, Object?>>> getChatByTwoIds(
+      {required int friend1Id, required int friend2Id}) async {
     Database db = await DbServerServices.instanse.database;
 
-    var id_chat = await db.rawQuery('''
-      SELECT f.chat_id FROM chats f 
+    var idChat = await db.rawQuery('''
+      SELECT * FROM chats f 
 	      WHERE 
-        (((f.friend1_id = $friend1_id) AND (f.friend2_id = $friend2_id)) 
+        (((f.friend1_id = $friend1Id) AND (f.friend2_id = $friend2Id)) 
         OR 
-        ((f.friend1_id = $friend2_id) AND (f.friend2_id = $friend1_id)))''');
-    return id_chat;
+        ((f.friend1_id = $friend2Id) AND (f.friend2_id = $friend1Id)))''');
+    return idChat;
   }
 
   @override
@@ -107,15 +108,17 @@ class ChatsServices implements IChatsServices {
     Database db = await DbServerServices.instanse.database;
 
     return await db.rawQuery('''SELECT * FROM chats f 
-	    WHERE ((f.friend1_id = $userId) OR (f.friend2_id = $userId))''');
+	    WHERE (((f.friend1_id = $userId) OR (f.friend2_id = $userId)) AND (f.deleted_date NOT LIKE '2%'))''');
   }
 
   @override
-  getChatsByUserIdMoreChatId({required int userId, required int chatId}) async {
+  getNewChatsByUserId({required int userId, required List<int> chatIds}) async {
     Database db = await DbServerServices.instanse.database;
 
     return await db.rawQuery('''SELECT * FROM chats 
-	    WHERE ((friend1_id = $userId) OR (friend2_id = $userId)) AND (chat_id > $chatId)''');
+	    WHERE ((friend1_id = $userId) OR (friend2_id = $userId))
+       AND (chat_id NOT IN (${chatIds.join(",")}))
+        AND (deleted_date NOT LIKE '2%')''');
   }
 
   @override

@@ -1,132 +1,123 @@
-﻿part of '../../profile_page.dart';
+﻿// ignore_for_file: use_build_context_synchronously
+
+part of '../../profile_page.dart';
 
 class ProfileLayout extends StatelessWidget {
   const ProfileLayout({
     Key? key,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
-      var userPod = ref.read(River.userPod.notifier);
-      var chatPod = ref.read(River.chatPod.notifier);
-      var users = ref.watch(River.userPod).users;
-      var userMain =
-          users?.firstWhere((user) => user.userId == UserPref.getUserId);
-      // for (var user in users!) {
-      //   if (user.userId == UserPref.getUserId) {
-      //     userMain = user;
-      //     break;
-      //   }
-      // }
-      return userMain == null
-          ? const Center(
-              widthFactor: 100,
-              heightFactor: 100,
-              child: CircularProgressIndicator())
-          : ListView(
+      UserNotifier userPod = ref.read(River.userPod.notifier);
+      ChatNotifier chatPod = ref.read(River.chatPod.notifier);
+      UserDto? userMain = ref.watch(River.userPod).mainUser;
+
+      ///TODO: Добавить проверку на userMain == null
+      ///Если нулл, выйти из аккаунта
+
+      ///Лист для Отображения информации о юзере
+      final List<Map<String, dynamic>> userInfo = [
+        {
+          'nameField': 'Name',
+          'userPod': userPod,
+          'enumUserInfo': EnumUserInfo.name,
+          'userMain': userMain,
+          'insertText': 'name',
+        },
+        {
+          'nameField': 'Email',
+          'userPod': userPod,
+          'enumUserInfo': EnumUserInfo.email,
+          'userMain': userMain,
+          'insertText': 'email',
+        },
+        {
+          'nameField': 'Password',
+          'userPod': userPod,
+          'enumUserInfo': EnumUserInfo.password,
+          'userMain': userMain,
+          'insertText': 'password',
+        }
+      ];
+      return ListView(
+        children: [
+          // Фон и аватарка
+          AvatarProfilePage(
+              userMain: userMain!, userPod: userPod, chatPod: chatPod),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Фон и аватарка
-                Stack(
+                ///
+                ///Отображение информации о юзере
+                ///
+                ListView.separated(
+                    itemCount: userInfo.length,
+                    physics: const BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 5),
+                    itemBuilder: (context, index) => FieldWithChange(
+                          info: userInfo[index],
+                        )),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
                   children: [
-                    const SizedBox(height: 205),
-                    // Фон
-                    _AppBluredImage(image: userMain.profilePicLink),
-                    // Аватарка
-                    _UserPic(userPic: userMain.profilePicLink),
-                    // Кнопка изменение аву
-                    const _ChangeUserPic(),
-                    ExitButton(userPod: userPod, chatPod: chatPod),
+                    ElevatedButton(
+                        key: const Key('deleteUserButton'),
+                        style: ButtonStyle(
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ))),
+                        onPressed: () => _deleteUserLogic(
+                            userPod: userPod,
+                            userMain: userMain,
+                            context: context,
+                            ref: ref,
+                            chatPod: chatPod),
+                        child: const Text('Delete user')),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Username',
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                      const SizedBox(height: 2),
-                      Row(
-                        children: [
-                          Text(
-                            userMain.name,
-                            style: Theme.of(context).textTheme.bodyText2,
-                          ),
-                          // Кнопка смены имени
-                          ButtonChangeName(userMain: userMain)
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Email',
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                      const SizedBox(height: 2),
-                      Row(
-                        children: [
-                          Text(
-                            userMain.email,
-                            style: Theme.of(context).textTheme.bodyText2,
-                          ),
-                          ButtonChangeEmail(userMain: userMain)
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: [
-                          ElevatedButton(
-                              style: ButtonStyle(
-                                  shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ))),
-                              onPressed: () {
-                                userPod.deleteUser(userMain.userId!);
-
-                                print(userMain.userId);
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      final userIsDeleted =
-                                          ref.read(River.userPod).isDeleted;
-                                      return Dialog(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20.0),
-                                        ),
-                                        child: SizedBox(
-                                          height: 80,
-                                          width: 50,
-                                          child: Column(
-                                            children: [
-                                              Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: userIsDeleted == false
-                                                      ? Text(
-                                                          'User ${userMain.name} is not deleted')
-                                                      : Text(
-                                                          'User ${userMain.name} is deleted')),
-                                              const DeleteDialogWidget()
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    });
-                              },
-                              child: const Text('Delete user')),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
               ],
-            );
+            ),
+          ),
+        ],
+      );
     });
+  }
+
+  void _deleteUserLogic(
+      {required UserNotifier userPod,
+      required UserDto userMain,
+      required BuildContext context,
+      required WidgetRef ref,
+      required ChatNotifier chatPod}) async {
+    try {
+      await userPod.deleteUser(userMain.userId!);
+    } catch (e) {
+      await showDialog(
+          context: context,
+          builder: (context) =>
+              ErrorDialog(textTitle: 'Error', textContent: '$e'));
+    }
+    userPod.changeUser(true);
+    await DBHelper.instanse.deleteDB();
+    ref.read(River.messagePod.notifier).disconnect();
+    ref.invalidate(River.userPod);
+    ref.invalidate(River.chatPod);
+    ref.invalidate(River.messagePod);
+    Navigator.of(context).pushNamed(AuthPage.routeName);
+    showDialog(
+        context: context,
+        builder: (context) => ErrorDialog(
+            textTitle: 'Success',
+            textContent: 'User ${userMain.name} deleted',
+            onPressed: () => Navigator.of(context).pop()));
   }
 }

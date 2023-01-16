@@ -38,7 +38,7 @@ class DbServerServices {
           updated_date      char(26) NOT NULL,
           deleted_date      char(26),
           hash_connect      integer UNIQUE,
-          password          char(4),
+          password          char(256),
           CHECK (LENGTH(created_date) >= 26)
           )
         ''');
@@ -110,23 +110,27 @@ class DbServerServices {
           )
       ''');
       await txn.execute('''
-          INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, deleted_date, password) VALUES ('test1', 't1@t1.t1', '2022-12-02T21:36:32.653712', 'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg', '2022-12-02T21:36:32.653712', '',  'pass')
+          INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, deleted_date, password) VALUES ('test1', 't1@t1.t1', '2022-12-02T21:36:32.653712', 'https://music.mathwatha.com/wp-content/uploads/2017/08/tonyprofile-300x300.jpg', '2022-12-02T21:36:32.653712', '',  '123Qw!')
       ''');
       await txn.execute('''
-          INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, deleted_date, password) VALUES ('test2', 't2@t2.t2', '2022-12-02T21:36:32.653712', 'https://faunistics.com/wp-content/uploads/2020/02/1-5-735x599.jpg', '2022-12-02T21:36:32.653712', '', 'pass')
+          INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, deleted_date, password) VALUES ('test2', 't2@t2.t2', '2022-12-02T21:36:32.653712', 'https://faunistics.com/wp-content/uploads/2020/02/1-5-735x599.jpg', '2022-12-02T21:36:32.653712', '', '123Qw!')
+      ''');
+      // await txn.execute('''
+      //     INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, deleted_date, password) VALUES ('test3', 't3@t3.t3', '2022-12-02T21:36:32.653712', 'https://faunistics.com/wp-content/uploads/2019/02/1-735x579.jpg', '2022-12-02T21:36:32.653712', '', '123Qw!')
+      // ''');
+      await txn.execute('''
+          INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, deleted_date, password) VALUES ('test3', 't3@t3.t3', '2022-12-02T21:36:32.653712', 'https://faunistics.com/wp-content/uploads/2020/02/1-5-735x599.jpg', '2022-12-02T21:36:32.653712', '', '123Qw!')
       ''');
       await txn.execute('''
-          INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, deleted_date, password) VALUES ('test3', 't3@t3.t3', '2022-12-02T21:36:32.653712', 'https://faunistics.com/wp-content/uploads/2019/02/1-735x579.jpg', '2022-12-02T21:36:32.653712', '', 'pass')
+          INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, deleted_date, password) VALUES ('test4', 't4@t4.t4', '2022-12-02T21:36:32.653712', 'https://moya-planeta.ru/upload/images/xl/0a/fb/0afb8c5bc608e7ef6b7d58670c9f43dabafc682d.jpg', '2022-12-02T21:36:32.653712', '', '123Qw!')
       ''');
       await txn.execute('''
-          INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, deleted_date, password) VALUES ('test4', 't4@t4.t4', '2022-12-02T21:36:32.653712', 'https://moya-planeta.ru/upload/images/xl/0a/fb/0afb8c5bc608e7ef6b7d58670c9f43dabafc682d.jpg', '2022-12-02T21:36:32.653712', '', 'pass')
+          INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, deleted_date, password) VALUES ('test5', 't5@t5.t5', '2022-12-02T21:36:32.653712', 'https://img.argumenti.ru/news/news_id/599606.jpg', '2022-12-02T21:36:32.653712', '', '123Qw!')
       ''');
       await txn.execute('''
-          INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, deleted_date, password) VALUES ('test5', 't5@t5.t5', '2022-12-02T21:36:32.653712', 'https://img.argumenti.ru/news/news_id/599606.jpg', '2022-12-02T21:36:32.653712', '', 'pass')
+          INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, deleted_date, password) VALUES ('test6', 't6@t6.t6', '2022-12-02T21:36:32.653712', 'https://ss.metronews.ru/userfiles/materials/90/907556/858x540_d23c4fe6.jpg', '2022-12-02T21:36:32.653712', '', '123Qw!')
       ''');
-      await txn.execute('''
-          INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, deleted_date, password) VALUES ('test6', 't6@t6.t6', '2022-12-02T21:36:32.653712', 'https://ss.metronews.ru/userfiles/materials/90/907556/858x540_d23c4fe6.jpg', '2022-12-02T21:36:32.653712', '', 'pass')
-      ''');
+
       // await txn.execute('''
       //     INSERT INTO users (name, email, created_date, profile_pic_url, updated_date, deleted_date, password) VALUES ('test7', 't2@t2.t2', '2022-12-02T21:36:32.653712', 'https://faunistics.com/wp-content/uploads/2020/02/1-5-735x599.jpg', '2022-12-02T21:36:32.653712', '', 'pass')
       // ''');

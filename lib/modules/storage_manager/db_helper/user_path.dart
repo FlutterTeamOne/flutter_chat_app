@@ -34,13 +34,22 @@ class UserPref {
 
   static Future<void> init() async =>
       _prefs = await SharedPreferences.getInstance();
+
   static bool get getUserDbPref => _prefs.getBool('userDb') ?? true;
   static set setUserDbPref(bool value) => _prefs.setBool('userDb', value);
+
+  static get getUserId => _prefs.getInt('userId');
   static set setUserId(int id) => _prefs.setInt('userId', id);
 
   static set setThemeIndex(int index) => _prefs.setInt('theme_key', index);
-  static get getUserId => _prefs.getInt('userId');
   static get getThemeIndex => _prefs.getInt('theme_key');
+
+  static getLastMessageId({required String userName}) =>
+      _prefs.getInt(userName) ?? 0;
+  static setLastMessageId(
+          {required String userName, required int lastMessageId}) =>
+      _prefs.setInt(userName, lastMessageId);
+  
 
   static restore() async => await _prefs.clear();
 }

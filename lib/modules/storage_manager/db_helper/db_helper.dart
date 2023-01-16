@@ -5,9 +5,10 @@ import '../../../src/constants/app_data_constants.dart';
 
 import '../../../src/constants/db_constants.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
+enum DbListener { isUnknown, isUser, isChat, isMessage }
 
 class DBHelper {
   //Singleton
@@ -20,27 +21,30 @@ class DBHelper {
   Future<Database> get database async => _database ??= await initDB();
 
   ///Стрим контроллер, чтоб слушать изменения в БД
-  final _updateListenController = StreamController<bool>.broadcast();
-  StreamController<bool> get updateListenController => _updateListenController;
+  final _updateListenController = StreamController<DbListener>.broadcast();
+  StreamController<DbListener> get updateListenController =>
+      _updateListenController;
 
-  void _updateListen() => _updateListenController.sink.add(true);
+  void _updateListen() =>
+      _updateListenController.sink.add(DbListener.isUnknown);
 
   ///Инициализация локальной БД. Если ее нет,
   ///то создается новая БД
   Future<Database> initDB() async {
     sqfliteFfiInit();
     var dbFactory = databaseFactoryFfi;
-    // var dbPath = await dbFactory.getDatabasesPath();
-    // var dbPath = await getTemporaryDirectory();
     var dbPath = AppDataConstants.dbDirectory;
-    // print('PATH: ${dbPath.path}');
     var user = UserPath.getUser;
+
+    //TODO: Убрать принт
     print('USER DB:  $user');
-    // String path = join(dbPath.path,
-    //     user.name + user.userId.toString() + DatabaseConst.dbFileName);
+
     String path =
         join(dbPath, user.userId.toString() + DatabaseConst.dbFileName);
+
+    //TODO: Убрать принт
     print('PATH_ABSOLUTE: $path');
+
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(
           version: DatabaseConst.dbVersion,
@@ -74,9 +78,9 @@ CREATE TABLE ${DatabaseConst.mainUserTable}(
 //Таблица Chats
       await txn.execute('''
 CREATE TABLE ${DatabaseConst.chatsTable}(
- ${DatabaseConst.chatsColumnChatId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey},
- ${DatabaseConst.chatsColumnUserId} ${DatabaseConst.integer} ${DatabaseConst.notNull} ${DatabaseConst.unique},
- ${DatabaseConst.chatsColumnCreatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull},
+ ${DatabaseConst.chatsColumnChatId} ${DatabaseConst.integer} ${DatabaseConst.primaryKey} ${DatabaseConst.unique},
+ ${DatabaseConst.chatsColumnUserId} ${DatabaseConst.integer} ${DatabaseConst.notNull},
+ ${DatabaseConst.chatsColumnCreatedDate} ${DatabaseConst.char26} ${DatabaseConst.notNull}, 
  ${DatabaseConst.chatsColumnUpdatedDate} ${DatabaseConst.char26},
  ${DatabaseConst.chatsColumnDeletedDate} ${DatabaseConst.char26},
  ${DatabaseConst.constraint} CHATS_FK_84 ${DatabaseConst.foreignKey} ( ${DatabaseConst.chatsColumnUserId} ) ${DatabaseConst.references} ${DatabaseConst.userTable} ( ${DatabaseConst.usersColumnUserId} )
@@ -268,14 +272,15 @@ CREATE INDEX MAIN_USER_FK_1 ON ${DatabaseConst.mainUserTable}
     var db = await instanse.database;
     var databaseFactory = databaseFactoryFfi;
 
-    var dbPath = '.dart_tool/sqflite_common_ffi/databases/';
+    var dbPath = AppDataConstants.dbDirectory;
     var user = UserPath.getUser;
+
+    //TODO: Убрать принт
+    print('USER DB:  $user');
+
     String path = testPath ??
-        join(
-            dbPath
-            // .path
-            ,
-            user.name + user.userId.toString() + DatabaseConst.dbFileName);
+        join(dbPath, user.userId.toString() + DatabaseConst.dbFileName);
+
     _database = null;
     await db.close();
     await databaseFactory.deleteDatabase(path);

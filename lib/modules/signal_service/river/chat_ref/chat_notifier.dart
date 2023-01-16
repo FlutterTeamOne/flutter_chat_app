@@ -5,7 +5,6 @@ import 'package:chat_app/modules/signal_service/river/chat_ref/chat_state_ref.da
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../sending_manager/library/library_sending_manager.dart';
@@ -15,41 +14,25 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
   ChatNotifier() : super(const ChatStateRef()) {
     _chatServices = LocalChatServices();
     DBHelper.instanse.updateListenController.stream.listen((event) {
-      if (event) {
+      if (event == DbListener.isChat) {
+        if (!mounted) return;
         readChat();
       }
     });
   }
 
   Future<ChatStateRef> readChat([List<ChatDto>? chats]) async {
-    //TODO: Поменять getAllChats на сортированную выборку getAllChatsSortedByUpdatedDate()
-    var chats = await _chatServices.getAllChatsSortedByUpdatedDate();
-    //
-    var restChats = await RestClient().getChats();
-    print('IF CHATS is NULL - ADD CHAT FROM LOCAL DB: $restChats');
-    print('IF CHATS is NULL - ADD CHAT FROM LOCAL DB: $chats');
-    //сравниваем два листа и в зависимости от этого меняем стейт на нужный лист
-    listEquals(chats, restChats)
-        ? state = state.copyWith(chats: restChats)
-        : state = state.copyWith(chats: chats);
+    List<ChatDto> chats = [];
 
-    //если локальная база отличается от серверной,
-    //то перезаписываем локальную базу
-    if (!listEquals(chats, restChats)) {
-      for (var chat in restChats) {
-        await _chatServices.createChat(
-            createDate: chat.createdDate,
-            userId: chat.userIdChat,
-            chatId: chat.chatId!);
-      }
-    } else {
-      print('ADD CHAT FROM EVENT: $chats');
-      state = state.copyWith(chats: chats);
-    }
+    chats = await _chatServices.getAllChatsSortedByUpdatedDate();
+
+    print('ADD CHAT FROM EVENT: $chats');
+    state = state.copyWith(chats: chats);
+
     return state;
   }
 
-  Future createChat(ChatDto chat) async {
+  Future<int> createChat(ChatDto chat) async {
     ChatDto chatFromRest;
     try {
       chatFromRest = await RestClient().createChatRest(
@@ -61,12 +44,13 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
     }
 
     print("JAJAJ");
-    var chats = await _chatServices.createChat(
+    List<ChatDto> chats = await _chatServices.createChat(
         createDate: chatFromRest.createdDate,
         userId: chatFromRest.userIdChat,
         chatId: chatFromRest.chatId!);
     //TODO:запрос к restApi на создание чата
     state = state.copyWith(chats: chats);
+    return chatFromRest.chatId!;
   }
 
   void getChatId(int chatId) {
@@ -75,12 +59,28 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
     // return state;
   }
 
-  deleteChat(int chatId) async {
-    //TODO: func delete chat
-    await _chatServices.deleteChat(id: chatId);
+  Future<void> deleteChat(int chatId) async {
     //запрос на удаление к рест серверу
-    await RestClient().deleteChatRest(id: chatId);
+    dynamic data;
+    // int friendId = await LocalChatServices().getUserIdByChatId(id: chatId);
+    try {
+      //TODO: Добавлять всем сообщениям этого чата deleted_date в локалке
+      data = await RestClient().deleteChatRest(id: chatId);
+    } on DioError catch (e) {
+      print("DioError DeleteChatNotifer ${e.response.toString()}");
+      throw CustomException(e.response.toString());
+    } catch (e) {
+      print("DeleteChatNotifer $e");
+      throw CustomException(e.toString());
+    }
+    if (data == null) {
+      print("DATA == NULL DeleteChatNotifer");
+      throw CustomException("RestServer not found");
+    }
     print('CHAT ID: $chatId');
+    // await LocalChatServices().deleteChat(id: chatId);
+    // await LocalMessagesServices().deleteAllMessagesInChat(chatID: chatId);
+    // await LocalUsersServices().deleteUser(id: friendId);
     state = state.copyWith(chatId: null);
   }
 }

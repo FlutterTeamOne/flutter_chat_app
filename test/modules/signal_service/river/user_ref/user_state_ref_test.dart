@@ -21,7 +21,7 @@ void main() async {
       var userStateRefNullAll =
           const UserStateRef(users: null, userDb: null, isDeleted: null);
 
-      var copyWith = await userStateRefNullAll.copyWith();
+      var copyWith =  userStateRefNullAll.copyWith();
 
       expect(copyWith, userStateRefNullAll);
     });
@@ -30,7 +30,7 @@ void main() async {
           UserStateRef(users: users, userDb: false, isDeleted: null);
 
       var copyWith =
-          await userStateRefNullDel.copyWith(users: users, userDb: false);
+           userStateRefNullDel.copyWith(users: users, userDb: false);
 
       expect(copyWith, userStateRefNullDel);
     });
@@ -40,7 +40,7 @@ void main() async {
           const UserStateRef(users: null, userDb: false, isDeleted: false);
 
       var copyWith =
-          await userStateRefNullUsers.copyWith(isDeleted: false, userDb: false);
+          userStateRefNullUsers.copyWith(isDeleted: false, userDb: false);
 
       expect(copyWith, userStateRefNullUsers);
     });
@@ -50,7 +50,7 @@ void main() async {
           const UserStateRef(users: [], userDb: null, isDeleted: false);
 
       var copyWith =
-          await userStateRef.copyWith(users: users, isDeleted: false);
+           userStateRef.copyWith(users: users, isDeleted: false);
 
       expect(copyWith, userStateRef);
     });

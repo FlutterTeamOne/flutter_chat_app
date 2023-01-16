@@ -111,3 +111,36 @@ const DeleteUserResponse$json = const {
 
 /// Descriptor for `DeleteUserResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List deleteUserResponseDescriptor = $convert.base64Decode('ChJEZWxldGVVc2VyUmVzcG9uc2USHAoJaXNEZWxldGVkGAEgASgIUglpc0RlbGV0ZWQ=');
+@$core.Deprecated('Use passwordChangeRequestDescriptor instead')
+const PasswordChangeRequest$json = const {
+  '1': 'PasswordChangeRequest',
+  '2': const [
+    const {'1': 'userId', '3': 3, '4': 1, '5': 5, '10': 'userId'},
+    const {'1': 'oldPassword', '3': 1, '4': 1, '5': 9, '10': 'oldPassword'},
+    const {'1': 'newPassword', '3': 2, '4': 1, '5': 9, '10': 'newPassword'},
+  ],
+};
+
+/// Descriptor for `PasswordChangeRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List passwordChangeRequestDescriptor = $convert.base64Decode('ChVQYXNzd29yZENoYW5nZVJlcXVlc3QSFgoGdXNlcklkGAMgASgFUgZ1c2VySWQSIAoLb2xkUGFzc3dvcmQYASABKAlSC29sZFBhc3N3b3JkEiAKC25ld1Bhc3N3b3JkGAIgASgJUgtuZXdQYXNzd29yZA==');
+@$core.Deprecated('Use passwordConfirmRequestDescriptor instead')
+const PasswordConfirmRequest$json = const {
+  '1': 'PasswordConfirmRequest',
+  '2': const [
+    const {'1': 'userId', '3': 1, '4': 1, '5': 5, '10': 'userId'},
+    const {'1': 'password', '3': 2, '4': 1, '5': 9, '10': 'password'},
+  ],
+};
+
+/// Descriptor for `PasswordConfirmRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List passwordConfirmRequestDescriptor = $convert.base64Decode('ChZQYXNzd29yZENvbmZpcm1SZXF1ZXN0EhYKBnVzZXJJZBgBIAEoBVIGdXNlcklkEhoKCHBhc3N3b3JkGAIgASgJUghwYXNzd29yZA==');
+@$core.Deprecated('Use passwordResponseDescriptor instead')
+const PasswordResponse$json = const {
+  '1': 'PasswordResponse',
+  '2': const [
+    const {'1': 'ok', '3': 1, '4': 1, '5': 8, '10': 'ok'},
+  ],
+};
+
+/// Descriptor for `PasswordResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List passwordResponseDescriptor = $convert.base64Decode('ChBQYXNzd29yZFJlc3BvbnNlEg4KAm9rGAEgASgIUgJvaw==');

@@ -1,7 +1,6 @@
 import 'package:chat_app/modules/signal_service/river/river.dart';
-import 'package:chat_app/src/generated/messages/messages.pbgrpc.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../library/library_widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -28,39 +27,34 @@ class MyMessageCardWidget extends StatelessWidget {
         ),
         child: isSuccess != null
             ? PopupMenuCardWidget(
+                key: const Key('messageText'),
                 message: message,
                 textController: textController,
                 marginIndex: 15)
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  currentWidth > 888.8
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            PopupMenuCardWidget(
-                                marginIndex: 5,
-                                textController: textController,
-                                message: message),
-                            const Icon(
-                              Icons.error,
-                              //color: AppColor.colorF44336,
-                            )
-                          ],
-                        )
-                      : PopupMenuCardWidget(
-                          marginIndex: 10,
-                          textController: textController,
-                          message: message,
+                children: [
+                  PopupMenuCardWidget(
+                    marginIndex: 10,
+                    textController: textController,
+                    message: message,
+                  ),
+                  Consumer(
+                    builder:
+                        (BuildContext context, WidgetRef ref, Widget? child) {
+                      return InkWell(
+                        onTap: () => ref
+                            .read(River.messagePod.notifier)
+                            .createMessage(
+                                message: message,
+                                contentType: message.contentType),
+                        child: const Text(
+                          'Not Delivered',
                         ),
-                  InkWell(
-                    onTap: () => River.messagePod.notifier.select(
-                        (value) => value.createMessage(message: message)),
-                    child: const Text(
-                      'Not Delivered',
-                    ),
-                    // style: AppTextStyle.s14AbelGrey
-                    //     .copyWith(color: AppColor.colorF44336),
+                        // style: AppTextStyle.s14AbelGrey
+                        //     .copyWith(color: AppColor.colorF44336),
+                      );
+                    },
                   )
                 ],
               ),
