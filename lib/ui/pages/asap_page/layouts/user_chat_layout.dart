@@ -134,7 +134,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
     if (messageRef.editState == EditState.isNotEditing &&
         controller.text.isNotEmpty &&
         messageRef.mediaState != MediaState.isPreparation) {
-    await  messageNotif.createMessage(
+      await messageNotif.createMessage(
           message: MessageDto(
               chatId: widget.chatId,
               senderId: senderId,
@@ -157,7 +157,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
           ?.firstWhere((element) => element.localMessageId == localMessageId);
       if (message?.contentType == ContentType.isText) {
         print('EDIT  TEXT');
-     await   messageNotif.updateMessage(
+        await messageNotif.updateMessage(
             message: MessageDto(
                 chatId: widget.chatId,
                 senderId: senderId,
@@ -171,7 +171,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
         List<String>? data = message?.content.split('media: ');
         var msg = data![1];
         print('MSG UPD: $msg');
-      await  messageNotif.updateMessage(
+        await messageNotif.updateMessage(
             message: MessageDto(
                 chatId: widget.chatId,
                 senderId: senderId,
@@ -190,7 +190,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
 
     if (messageRef.mediaState == MediaState.isPreparation &&
         controller.text.isNotEmpty) {
-    await  messageNotif.createMessage(
+      await messageNotif.createMessage(
           message: MessageDto(
               chatId: widget.chatId,
               senderId: senderId,
@@ -204,7 +204,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
       controller.clear();
     } else if (messageRef.mediaState == MediaState.isPreparation &&
         controller.text.isEmpty) {
-    await  messageNotif.createMessage(
+      await messageNotif.createMessage(
           message: MessageDto(
               chatId: widget.chatId,
               senderId: senderId,
