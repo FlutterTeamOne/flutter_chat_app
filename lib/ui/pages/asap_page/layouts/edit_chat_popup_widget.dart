@@ -1,7 +1,6 @@
 import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/modules/signal_service/river/river.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
-import 'package:chat_app/ui/pages/asap_page/layouts/user_chat_layout.dart';
 import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

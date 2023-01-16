@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:chat_app/modules/client/grpc_client.dart';
 import 'package:chat_app/modules/client/rest_client.dart';
-import 'package:chat_app/modules/sending_manager/services/validator_service/validator_service.dart';
 import 'package:chat_app/modules/signal_service/river/message_ref/message_notifier_helper.dart';
 import 'package:chat_app/modules/signal_service/river/message_ref/message_state_ref.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper.dart';
-import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grpc/grpc.dart';

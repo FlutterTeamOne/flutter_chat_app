@@ -1,12 +1,8 @@
-import 'dart:async';
-
-import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/modules/signal_service/river/chat_ref/chat_notifier.dart';
 import 'package:chat_app/modules/signal_service/river/connection_ref/connection_notifier.dart';
 import 'package:chat_app/modules/signal_service/river/message_ref/message_notifier.dart';
 import 'package:chat_app/modules/signal_service/river/synch_user_ref/synch_state_ref.dart';
 import 'package:chat_app/modules/signal_service/river/synch_user_ref/synch_user_notifier.dart';
-import 'package:flutter/material.dart';
 
 import 'chat_ref/chat_state_ref.dart';
 import 'message_ref/message_state_ref.dart';

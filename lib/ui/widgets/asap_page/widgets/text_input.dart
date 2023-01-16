@@ -6,7 +6,6 @@ import '../../../../modules/signal_service/river/message_ref/message_state_ref.d
 import '../../../../modules/signal_service/river/river.dart';
 import 'app_circle_button.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TextInputWidget extends ConsumerStatefulWidget {

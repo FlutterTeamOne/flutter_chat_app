@@ -12,7 +12,6 @@ import 'dart:io';
 
 import 'package:grpc/grpc.dart';
 import 'package:server/src/generated/messages.pbgrpc.dart';
-import 'package:server/src/generated/messages.pbjson.dart';
 
 Future<void> main(List<String> args) async {
   if (args.isEmpty) {

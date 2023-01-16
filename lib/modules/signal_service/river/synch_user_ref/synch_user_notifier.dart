@@ -5,7 +5,6 @@ import 'package:chat_app/modules/signal_service/river/synch_user_ref/synch_state
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:chat_app/ui/widgets/registration_page/models/new_user_model.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grpc/grpc.dart';
 

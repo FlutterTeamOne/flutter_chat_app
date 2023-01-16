@@ -1,7 +1,6 @@
 import 'package:chat_app/domain/data/dto/user_dto/user_dto.dart';
 import 'package:chat_app/modules/signal_service/river/river.dart';
 import 'package:chat_app/modules/signal_service/river/user_ref/user_notifier.dart';
-import 'package:chat_app/modules/signal_service/river/user_ref/user_state_ref.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';
 import 'package:flutter/material.dart';

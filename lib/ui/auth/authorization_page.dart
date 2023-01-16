@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/ui/pages/main_layout.dart';

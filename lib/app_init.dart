@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
 import 'package:chat_app/src/constants/app_data_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_size/window_size.dart';
 
 import 'modules/storage_manager/db_helper/user_path.dart';

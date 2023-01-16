@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import '../cam16.dart';
 import '../flex_core_palette.dart';
-import '../flex_seed_scheme.dart';
 import 'package:flutter/material.dart';
 
 import '../models/color_picker_type.dart';

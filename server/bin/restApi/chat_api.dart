@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:server/src/library/library_server.dart';
 import 'package:shelf/shelf.dart';

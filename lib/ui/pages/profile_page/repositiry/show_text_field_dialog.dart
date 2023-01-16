@@ -7,7 +7,6 @@ import 'package:chat_app/ui/widgets/custom_dialogs/textfield_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:grpc/grpc.dart';
 
 class ShowTextFieldDialog {
   static Future<dynamic> showTextFieldDialog(
