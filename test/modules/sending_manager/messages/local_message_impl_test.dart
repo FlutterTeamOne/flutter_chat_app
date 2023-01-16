@@ -80,14 +80,14 @@ void main() {
 
       var insert = await db.rawInsert('''
         INSERT INTO messages
-          (chat_id, created_date, sender_id, content, updated_date)
+          (chat_id, created_date, sender_id, content, updated_date, message_id)
           VALUES
-          (1, '2023-01-08T00:41:21.267124', 1, 'content', '2023-01-08T00:41:21.267124')''');
+          (1, '2023-01-08T00:41:21.267124', 1, 'content', '2023-01-08T00:41:21.267124', 1)''');
 
       var id = (await db.rawQuery('''SELECT last_insert_rowid()'''))[0]
           ['last_insert_rowid()'] as int;
 
-      var r = await LocalMessagesServices().deleteMessageByMessageId(id: id);
+      var r = await LocalMessagesServices().deleteMessageByMessageId(id: 1);
       var matcher = 1;
 
       expect(r, matcher);
@@ -102,14 +102,14 @@ void main() {
 
       var insert = await db.rawInsert('''
         INSERT INTO messages
-          (chat_id, created_date, sender_id, content, updated_date)
+          (chat_id, created_date, sender_id, content, updated_date, message_id)
           VALUES
-          (1, '2023-01-08T00:41:21.267124', 1, 'content', '2023-01-08T00:41:21.267124')''');
+          (1, '2023-01-08T00:41:21.267124', 1, 'content', '2023-01-08T00:41:21.267124', 1)''');
 
       var id = (await db.rawQuery('''SELECT last_insert_rowid()'''))[0]
           ['last_insert_rowid()'] as int;
 
-      await LocalMessagesServices().deleteMessageByMessageId(id: id);
+      await LocalMessagesServices().deleteMessageByMessageId(id: 1);
 
       var r = await db
           .rawQuery('''SELECT * FROM messages WHERE local_messages_id = $id''');
