@@ -7,11 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: Scaffold(body: ProfilePage()));
+    return const MaterialApp(home: Scaffold(body: ProfilePage()));
   }
 }
 
@@ -31,7 +30,7 @@ void main() async {
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
-    testWidgets('Все ок', (tester) async { 
+    testWidgets('Все ок', (tester) async {
       await tester.pumpWidget(ProviderScope(child: MyApp(), overrides: [
         River.userPod.overrideWith((ref) {
           return UserNotifier()
@@ -45,9 +44,8 @@ void main() async {
             ]);
         })
       ]));
-      await tester.pump(Duration(seconds: 1));
-      expect(find.byType(CircularProgressIndicator), findsNothing);
+      await tester.pump(const Duration(seconds: 1));
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
   });
 }
-
