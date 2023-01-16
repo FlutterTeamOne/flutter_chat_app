@@ -1,12 +1,8 @@
-import 'package:chat_app/domain/data/dto/chat_dto/chat_dto.dart';
 import 'package:chat_app/domain/data/library/library_data.dart';
-import 'package:chat_app/main.dart';
 import 'package:chat_app/ui/pages/asap_page/layouts/chat_list_layout.dart';
 import 'package:chat_app/ui/pages/asap_page/layouts/default_user_chat_layout.dart';
-import 'package:chat_app/ui/pages/asap_page/layouts/user_chat_layout.dart';
 import 'package:chat_app/ui/pages/library/library_pages.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/add_chat_dialog_widget.dart';
-import 'package:chat_app/ui/widgets/asap_page/widgets/chat_app_bar.dart';
 import 'package:chat_app/ui/widgets/asap_page/widgets/search_field.dart';
 import 'package:chat_app/ui/widgets/library/library_widgets.dart';
 import 'package:flutter/material.dart';
@@ -25,23 +21,21 @@ void main() {
   List<MessageDto> messages = [];
   const testKey = Key('K');
   var userCardWidget = UserCardWidget(
-      name: 'name',
-      image: 'https://compressjpeg.com/images/compressjpeg/icon.png',
-      message: 'message',
-      onTap: () {},
-      selected: true,
-      sender: 'sender',
-      updatedDate: DateTime.now().toIso8601String());
+    name: 'name',
+    image: 'https://compressjpeg.com/images/compressjpeg/icon.png',
+    message: 'message',
+    onTap: () {},
+    selected: true,
+    sender: 'sender',
+    updatedDate: DateTime.now().toIso8601String(),
+    isSuccess: 1,
+  );
   var addChatDialogWidget = AddChatDialogWidget(val: 0);
   var searchFieldWidget = const SearchFieldWidget();
   var circleIndicatorWidget = const CircularProgressIndicator();
   var defaultUserChatWidget = const DefaultUserChatLayout();
-  var chatAppBarWidget = const ChatAppBarWidget(
-    image: 'https://compressjpeg.com/images/compressjpeg/icon.png',
-    name: 'name',
-  );
+
   var chatListWidget = ChatListLayout(
-    chatModel: chats,
     messageModel: messages,
   );
 
@@ -79,10 +73,8 @@ void main() {
     });
 
     testWidgets('finds a chatAppBarWidget', (tester) async {
-      await tester.pumpWidget(ProviderScope(
-          child: MaterialApp(
-              home: Scaffold(body: Center(child: chatAppBarWidget)))));
-      expect(find.byWidget(chatAppBarWidget), findsOneWidget);
+      await tester.pumpWidget(const ChatAppWidgetTest());
+      expect(find.byType(ChatAppBarWidget), findsOneWidget);
     });
 
     testWidgets('finds a userCardWidget', (tester) async {
@@ -103,4 +95,32 @@ void main() {
       expect(find.byWidget(addChatDialogWidget), findsOneWidget);
     });
   });
+}
+
+class ChatAppWidgetTest extends ConsumerStatefulWidget {
+  const ChatAppWidgetTest({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ChatAppWidgetTestState();
+}
+
+class _ChatAppWidgetTestState extends ConsumerState<ChatAppWidgetTest> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Consumer(builder: (context, ref, _) {
+        return Scaffold(
+          body: Center(
+              child: ChatAppBarWidget(
+            chatId: 1,
+            image: 'https://www.iconsdb.com/icons/preview/red/cancel-xxl.png',
+            myChat: true,
+            name: 'My Favorite Chat',
+            ref: ref,
+          )),
+        );
+      }),
+    );
+  }
 }
