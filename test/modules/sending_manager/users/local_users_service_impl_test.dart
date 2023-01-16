@@ -227,7 +227,7 @@ void main() {
       var r = await LocalUsersServices().getUserById(id: insertedRowId);
 
       var matcher = (await db.rawQuery(
-          '''SELECT * FROM users WHERE (user_id = $insertedRowId);'''))[0];
+          '''SELECT * FROM users WHERE (user_id = $insertedRowId);'''));
 
       expect(r, matcher);
 
@@ -251,7 +251,7 @@ void main() {
       var r = await LocalUsersServices().getUserById(id: insertedRowId);
 
       var matcher = (await db.rawQuery(
-          '''SELECT * FROM users WHERE (user_id = $insertedRowId);'''))[0];
+          '''SELECT * FROM users WHERE (user_id = $insertedRowId);'''));
 
       expect(r, matcher);
 
