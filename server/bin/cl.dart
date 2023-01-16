@@ -116,9 +116,9 @@ class Client {
 }
 
 //var con = false;
-void main() async {
-  var client = Client();
-  var messageEmpty = Empty();
-  print("Обратный ответ:");
-  // print(await client.getUsers(messageEmpty));
-}
+// void main() async {
+//   Client client = Client();
+//   var messageEmpty = Empty();
+//   print("Обратный ответ:");
+//   print(await client.getUsers(messageEmpty));
+// }

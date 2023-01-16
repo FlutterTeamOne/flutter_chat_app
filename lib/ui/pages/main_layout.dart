@@ -1,7 +1,4 @@
 import 'package:chat_app/modules/signal_service/river/connection_ref/connection_notifier.dart';
-import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
-import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
-
 import '../../modules/signal_service/river/river.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

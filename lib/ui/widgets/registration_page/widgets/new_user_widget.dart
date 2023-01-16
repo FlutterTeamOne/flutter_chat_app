@@ -3,11 +3,9 @@ import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';
 import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
 import 'package:chat_app/ui/widgets/custom_widgets/field_form_class.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:chat_app/modules/signal_service/river/river.dart';
-import 'package:grpc/grpc.dart';
 
 import '../models/new_user_model.dart';
 import 'package:flutter/material.dart';

@@ -1,6 +1,5 @@
 import 'package:server/src/db_server/database_helper/attachments/attachment_int.dart';
 import 'package:server/src/db_server/services/database_impl.dart';
-import 'package:server/src/models/attach_model.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 
 class AttachmentServices implements IAttachmentServices {

@@ -193,6 +193,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
               contentType: ContentType.isMediaText),
           contentType: ContentType.isMediaText,
           mediaState: MediaState.isSending);
+      // ignore: use_build_context_synchronously
       FocusScope.of(context).unfocus();
       controller.clear();
     } else if (messageRef.mediaState == MediaState.isPreparation &&
@@ -207,6 +208,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
               contentType: ContentType.isMedia),
           contentType: ContentType.isMedia,
           mediaState: MediaState.isSending);
+      // ignore: use_build_context_synchronously
       FocusScope.of(context).unfocus();
       controller.clear();
       return;

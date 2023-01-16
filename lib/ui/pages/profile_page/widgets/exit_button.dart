@@ -36,7 +36,6 @@ class ExitButton extends ConsumerWidget {
 
             //  ref.exists(River.chatPod);
             //   ref.exists(River.messagePod);
-
             Navigator.of(context).pushNamed(AuthPage.routeName);
           },
           icon: const Icon(Icons.exit_to_app),

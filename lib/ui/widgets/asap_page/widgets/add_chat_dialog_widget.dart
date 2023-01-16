@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AddChatDialogWidget extends StatefulWidget {
-  int val;
+  // ignore: prefer_const_constructors_in_immutables
   AddChatDialogWidget({
     Key? key,
     required this.val,
   }) : super(key: key);
-
+  late final int val;
   @override
   State<AddChatDialogWidget> createState() => _AddChatDialogWidgetState();
 }

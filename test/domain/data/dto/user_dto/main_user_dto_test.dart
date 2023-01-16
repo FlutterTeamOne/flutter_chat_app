@@ -1,14 +1,16 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:chat_app/domain/data/dto/user_dto/main_user_dto.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   setUpAll(() async {
-    print("test start");
+    log("test start");
+  
   });
   tearDownAll(() {
-    print("test end");
+    log("test end");
   });
   group("MainUserDto tests", () {
     test('CopyWith response', () async {

@@ -1,5 +1,4 @@
 import 'package:chat_app/ui/pages/change_password_page/layout/change_password_layout.dart';
-import 'package:chat_app/ui/pages/main_layout.dart';
 import 'package:flutter/material.dart';
 
 class ChangePasswordPage extends StatelessWidget {
