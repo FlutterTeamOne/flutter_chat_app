@@ -12,22 +12,13 @@ class _UserPic extends StatelessWidget {
     return Positioned(
       bottom: 5,
       left: 15,
-      child: Container(
+      child: SizedBox(
         height: 125,
         width: 125,
-        decoration: BoxDecoration(
-          image: userPic.isEmpty
-              ? const DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage(
-                      'assets/images/user_images/defaultUserAvatar.png'))
-              : DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(userPic),
-                ),
-          borderRadius: BorderRadius.circular(10),
-          // Цвет
-          // color: AppColor.color9E9E9E,
+        child: CachedImageWidget(
+          url: userPic,
+          width: 125,
+          height: 125,
         ),
       ),
     );

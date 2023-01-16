@@ -10,8 +10,14 @@ import '../../modules/signal_service/river/river.dart';
 import '../../src/libraries/library_all.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../widgets/custom_widgets/cached_image_widget.dart';
+import '../widgets/custom_widgets/field_form_class.dart';
+import '../widgets/registration_page/widgets/new_user_widget.dart';
+
 part '../auth/widgets/user_card.dart';
 part 'widgets/image_card.dart';
+part 'widgets/confirm_password_dialog.dart';
 
 class AuthPage extends ConsumerStatefulWidget {
   const AuthPage({super.key});

@@ -63,10 +63,10 @@ class LocalUsersServices implements ILocalUsersServices {
   Future<int> deleteUser({required int id}) async {
     var db = await DBHelper.instanse.database;
     DBHelper.instanse.updateListenController.add(DbListener.isUser);
-
-    return await db.rawDelete(
+    int user = await db.rawDelete(
         'DELETE FROM ${DatabaseConst.userTable} WHERE ${DatabaseConst.usersColumnUserId}=?',
         [id]);
+    return user;
   }
 
   @override

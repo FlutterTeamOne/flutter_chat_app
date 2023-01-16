@@ -5,6 +5,7 @@ import 'package:chat_app/domain/data/dto/attach_dto/attach_dto.dart';
 import 'package:chat_app/domain/data/library/library_data.dart';
 import 'package:chat_app/modules/client/custom_exception.dart';
 import 'package:chat_app/modules/sending_manager/library/library_sending_manager.dart';
+import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:dio/dio.dart';
 
 class RestClient {
@@ -113,7 +114,9 @@ class RestClient {
     // }
     return ChatDto(
         chatId: chatId,
-        userIdChat: restChat['friend2_id'],
+        userIdChat: UserPref.getUserId == restChat['friend1_id']
+            ? restChat['friend2_id']
+            : restChat['friend1_id'],
         createdDate: restChat['created_date'].toString(),
         updatedDate: restChat['updated_date'].toString());
   }
@@ -179,6 +182,54 @@ class RestClient {
       var resp = await _dio.delete(imageUrl, data: imageId);
       if (resp.statusCode == 200) {
         return resp;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future getChatById({required int chatId, required int userId}) async {
+    const String chatUrl = '$_url/chats/getchatuser/';
+
+    try {
+      var resp = await _dio
+          .get(chatUrl, queryParameters: {'chatId': chatId, 'userId': userId});
+      print('GET CHAT BY ID: $resp');
+      if (resp.statusCode == 200) {
+        var data = resp.data.toString().split(',');
+        int chatId = int.parse(data[0].split('chats: {chat_id: ')[1]);
+        print(chatId);
+        int friend1Id = int.parse(data[1].split('friend1_id: ')[1]);
+        print('f2:$friend1Id');
+        int friend2Id = int.parse(data[2].split('friend2_id: ')[1]);
+        print('f2:$friend2Id');
+        String chatCreatedDate = data[3].split('created_date: ')[1];
+        // String chatDeletedDate = data[4].split('deleted_date: ')[1];
+        // String chatUpdatedDate =
+        //     data[5].split('updated_date: ')[1].split('}')[0];
+
+        int userId = int.parse(data[6].split('user_id: ')[1]);
+        String userName = data[7].split('name: ')[1];
+        String userEmail = data[8].split('email: ')[1];
+        String userCreatedDate = data[9].split('created_date: ')[1];
+        String userProfileLink = data[10].split('profile_pic_url: ')[1];
+        String userUpdatedDate = data[11].split('updated_date: ')[1];
+        // String userDeletedDate = data[12].split('deleted_date: ')[1];
+        // String userHashConnect = data[13].split('hash_connect: ')[1];
+        // String password = data[14].split('password: ')[1].split('}}')[0];
+        // {chats: {chat_id: 8, friend1_id: 5, friend2_id: 2, created_date: 2023-01-14T18:50:44.462042, deleted_date: , updated_date: 2023-01-14T19:39:59.254029},
+        //users: {user_id: 5, name: test5, email: t5@t5.t5, created_date: 2022-12-02T21:36:32.653712, profile_pic_url: https://img.argumenti.ru/news/news_id/599606.jpg, updated_date: 2022-12-02T21:36:32.653712, deleted_date: , hash_connect: null, password: pass}}
+        await LocalUsersServices().createUser(
+            userId: userId,
+            name: userName,
+            email: userEmail,
+            createdDate: userCreatedDate,
+            updatedDate: userUpdatedDate,
+            profilePicUrl: userProfileLink);
+        await LocalChatServices().createChat(
+            createDate: chatCreatedDate,
+            userId: UserPref.getUserId == friend1Id ? friend2Id : friend1Id,
+            chatId: chatId);
       }
     } catch (e) {
       print(e);

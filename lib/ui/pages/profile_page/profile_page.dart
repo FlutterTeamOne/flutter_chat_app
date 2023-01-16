@@ -1,10 +1,13 @@
 import 'package:blur/blur.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_app/modules/signal_service/river/chat_ref/chat_notifier.dart';
 import 'package:chat_app/modules/signal_service/river/user_ref/user_notifier.dart';
 import 'package:chat_app/src/constants/user_constants.dart';
 import 'package:chat_app/ui/auth/authorization_page.dart';
 import 'package:chat_app/ui/pages/profile_page/repositiry/show_text_field_dialog.dart';
 import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
+import 'package:chat_app/ui/widgets/custom_widgets/cached_image_widget.dart';
+import 'package:lottie/lottie.dart';
 import '../../../modules/signal_service/river/river.dart';
 import '../../../modules/storage_manager/db_helper/user_path.dart';
 import '../../../src/libraries/library_all.dart';

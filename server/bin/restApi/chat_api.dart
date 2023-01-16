@@ -19,17 +19,28 @@ class ChatApi {
       var chats = await _chatService.getAllChats();
       return Response.ok(json.encode(chats), headers: _headers);
     });
-    router.get('/<user_id>', (Request request, String userId) async {
-      final id = int.parse(userId);
-      var chats = await _chatService.getChatsByUserId(userId: id);
+    // router.get('/<user_id>', (Request request, String userId) async {
+    //   final id = int.parse(userId);
+    //   var chats = await _chatService.getChatsByUserId(userId: id);
+    //   print('got chats: $chats');
+    //   return Response.ok(json.encode(chats), headers: _headers);
+    // });
+    //запрос чата по id
+    //http://localhost/chats/getChatUser
+    router.get('/getchatuser/', (Request request) async {
+      print("Я тут ${request.url.queryParameters}");
+      Map<String, Object> param = {...request.url.queryParameters};
+      print("PARAM $param");
+      final int chatId = int.parse(param['chatId'] as String);
+      final int userId = int.parse(param['userId'] as String);
+
+      List<Map<String, Object?>> chats =
+          await _chatService.getChatById(id: chatId);
+      Map<String, Object?> users =
+          await UsersServices().getUserById(userId: userId);
       print('got chats: $chats');
-      return Response.ok(json.encode(chats), headers: _headers);
-    });
-    router.get('/<chat_id>', (Request request, String chatId) async {
-      final id = int.parse(chatId);
-      var chats = await _chatService.getChatById(id: id);
-      print('got chats: $chats');
-      return Response.ok(json.encode(chats), headers: _headers);
+      print('got users: $users');
+      return Response.ok({'chats': chats[0], 'users': users}.toString());
     });
     //запрос на добавление в чата в список чатов
     router.put('/', (Request request) async {

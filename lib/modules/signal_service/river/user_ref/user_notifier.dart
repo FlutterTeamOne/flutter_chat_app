@@ -40,14 +40,9 @@ class UserNotifier extends StateNotifier<UserStateRef> {
   UserStateRef setUsers(List<UserDto>? users) =>
       state = state.copyWith(users: users);
 
-  Future<UserStateRef> localReadUser() {
-    List<UserDto> users = [];
-
-    return _usersServices.getAllUsers().then((value) {
-      return state = state.copyWith(users: value);
-    });
-    // return state = state.copyWith(users: users);
-  }
+  Future<UserStateRef> localReadUser() async => await _usersServices
+      .getAllUsers()
+      .then((users) => state = state.copyWith(users: users));
 
   Future<UserStateRef> readUser() async {
     //Получаем всех юзеров из локальной базы
@@ -176,13 +171,8 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     ///
     print("RESPONSE_UPDATED_MESSAGE: ${response.messages.messagesUpdated}");
     for (var message in response.messages.messagesUpdated) {
-      final type = ContentType.isText.name == message.contentType.name
-          ? ContentType.isText
-          : ContentType.isMedia.name == message.contentType.name
-              ? ContentType.isMedia
-              : ContentType.isMediaText.name == message.contentType.name
-                  ? ContentType.isMediaText
-                  : ContentType.isText;
+      final type =
+          MessageDto.contType(contentTypeName: message.contentType.name);
       final msg = MessageDto(
         messageId: message.messageId,
         chatId: message.chatId,

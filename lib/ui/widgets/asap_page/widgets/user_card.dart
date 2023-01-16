@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:chat_app/ui/widgets/custom_widgets/cached_image_widget.dart';
+import 'package:flutter/material.dart';
 
 class UserCardWidget extends StatelessWidget {
   const UserCardWidget({
@@ -31,12 +32,14 @@ class UserCardWidget extends StatelessWidget {
       leading: CircleAvatar(
         radius: 45,
         child: ClipOval(
-            child: Image.network(
-          image ?? '',
-          fit: BoxFit.cover,
-          width: 50,
-          height: 50,
-        )),
+          child: CachedImageWidget(
+            borderWidth: 0.001,
+            url: image!,
+            width: 50,
+            height: 50,
+            errorText: 'Oops',
+          ),
+        ),
       ),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

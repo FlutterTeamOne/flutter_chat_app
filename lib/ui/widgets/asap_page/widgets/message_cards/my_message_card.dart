@@ -33,26 +33,12 @@ class MyMessageCardWidget extends StatelessWidget {
                 marginIndex: 15)
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  currentWidth > 888.8
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            PopupMenuCardWidget(
-                                marginIndex: 5,
-                                textController: textController,
-                                message: message),
-                            const Icon(
-                              Icons.error,
-                              //color: AppColor.colorF44336,
-                            )
-                          ],
-                        )
-                      : PopupMenuCardWidget(
-                          marginIndex: 10,
-                          textController: textController,
-                          message: message,
-                        ),
+                children: [
+                  PopupMenuCardWidget(
+                    marginIndex: 10,
+                    textController: textController,
+                    message: message,
+                  ),
                   Consumer(
                     builder:
                         (BuildContext context, WidgetRef ref, Widget? child) {

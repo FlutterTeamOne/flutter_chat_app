@@ -25,7 +25,7 @@ class NewUserWidget extends ConsumerStatefulWidget {
 
 class _NewUserWidgetState extends ConsumerState<NewUserWidget> {
   static const String newUserPictureUrl =
-      """https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg?w=2000""";
+      """https://t4.ftcdn.net/jpg/00/65/77/27/360_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg""";
   static String newUserCreateDate = DateTime.now().toIso8601String();
   //Контроллеры
   late TextEditingController nameController;

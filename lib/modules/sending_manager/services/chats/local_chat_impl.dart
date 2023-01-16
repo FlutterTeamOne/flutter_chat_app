@@ -1,3 +1,5 @@
+import 'package:sqflite_common/sqlite_api.dart';
+
 import '../../../../src/constants/db_constants.dart';
 import '../../../../domain/data/library/library_data.dart';
 import '../../library/library_sending_manager.dart';
@@ -113,5 +115,17 @@ class LocalChatServices implements ILocalChatsServices {
                 FROM ${DatabaseConst.chatsTable}''');
 
     return (chat[0][DatabaseConst.chatsColumnChatId] ?? 0) as int;
+  }
+
+  @override
+  Future<int> getUserIdByChatId({required int id}) async {
+    Database db = await DBHelper.instanse.database;
+    var chat = await db.rawQuery('''
+              SELECT user_id
+              FROM ${DatabaseConst.chatsTable}
+              WHERE ${DatabaseConst.chatsColumnChatId}=?
+              ''', [id]);
+
+    return chat[0]['user_id'] as int;
   }
 }

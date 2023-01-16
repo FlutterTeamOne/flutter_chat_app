@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:chat_app/modules/client/grpc_client.dart';
 import 'package:chat_app/modules/client/rest_client.dart';
+import 'package:chat_app/modules/sending_manager/services/validator_service/validator_service.dart';
+import 'package:chat_app/modules/signal_service/river/message_ref/message_notifier_helper.dart';
 import 'package:chat_app/modules/signal_service/river/message_ref/message_state_ref.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
@@ -34,69 +36,16 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
       print("MESSAGE!!!!!!!!!!!!!!!");
       print(value.messageState);
       if (value.messageState == MessageStateEnum.isReadMessage) {
-        print("READMESSAGE: ${value.readMessage.message}");
-        var messages = <MessageDto>[];
-        var msg = value.readMessage.message;
-        await _messagesServices.addNewMessageFromBase(message: msg);
-        messages.add(MessageDto(
-            chatId: msg.chatId,
-            senderId: msg.senderId,
-            messageId: msg.messageId,
-            content: msg.content,
-            createdDate: msg.dateCreate,
-            updatedDate: msg.dateUpdate,
-            attachId: msg.attachmentId,
-            contentType: msg.contentType));
-        LocalChatServices().updateChatDateUpdated(
-            chatId: messages[0].chatId,
-            dateUpdated: '${messages[0].updatedDate}');
-        // readMessages(messages);
+        await MessageNotifierHelper.isReadMessage(
+            message: value.readMessage.message);
       } else if (value.messageState == MessageStateEnum.isUpdateMessage) {
-        var updMsg = value.updateMessage;
-
-        await _messagesServices.updateMessageFromBase(
-            content: updMsg.content,
-            messageId: updMsg.idMessageMain,
-            updateDate: updMsg.dateUpdate);
-
-        print('id Message Main: ${updMsg.idMessageMain}');
-        print('date update: ${updMsg.idMessageMain}');
-
-        // var messages = await _messagesServices.getAllMessages();
-
-        // print('IsUpdate message:$messages');
-
-        // readMessages(messages);
+        await MessageNotifierHelper.isUpdatedMessage(
+            updMsg: value.updateMessage);
       } else if (value.messageState == MessageStateEnum.isDeleteMesage) {
-        var del = value.deleteMessage;
-
-        await _messagesServices.deleteMessageFromBase(
-            id: del.idMessageMain, dateDelete: del.dateDelete);
-        // var messages = await _messagesServices.getAllMessages();
-
-        // print('IsDelete message:$messages');
-
-        // readMessages(messages);
+        await MessageNotifierHelper.isDeleteMessage(del: value.deleteMessage);
       } else if (value.messageState == MessageStateEnum.isCreateMessage) {
-        print("IsCreate: ${value.createMessage.message}");
-        var msg = value.createMessage.message;
-        var newMsg = MessageDto(
-            localMessageId: msg.localMessgaeId,
-            messageId: msg.messageId,
-            chatId: msg.chatId,
-            senderId: msg.senderId,
-            content: msg.content,
-            createdDate: msg.dateCreate,
-            updatedDate: msg.dateUpdate,
-            attachId: msg.attachmentId,
-            contentType: msg.contentType);
-       UserPref.setLastMessageId(
-          userName: '${UserPref.getUserId}user', lastMessageId: msg.messageId);
-
-        await _messagesServices.updateMessage(
-            message: newMsg, localMessageId: msg.localMessgaeId);
-        await LocalChatServices().updateChatDateUpdated(
-            chatId: newMsg.chatId, dateUpdated: '${newMsg.updatedDate}');
+        await MessageNotifierHelper.isCreatedMessage(
+            msg: value.createMessage.message);
       }
     });
     DBHelper.instanse.updateListenController.stream.listen((event) {
@@ -121,7 +70,7 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
     return state;
   }
 
-  createMessage(
+  Future createMessage(
       {MessageDto? message,
       String? mediaPath,
       MediaState? mediaState,
@@ -134,6 +83,9 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
     }
     if (mediaState == MediaState.isPreparation) {
       state = state.copyWith(mediaState: MediaState.isPreparation);
+    }
+    if (mediaState == MediaState.isSending) {
+      state = state.copyWith(mediaState: MediaState.isSending);
     }
     print('MESSAGE: $message');
     //отправка текстового сообщения
@@ -227,7 +179,7 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
     }
   }
 
-  updateMessage(
+  Future updateMessage(
       {MessageDto? message, int? messageId, EditState? isEditing}) async {
     if (isEditing == EditState.isPreparation) {
       state = state.copyWith(
@@ -267,7 +219,7 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
     }
   }
 
-  deleteMessage({required MessageDto message}) async {
+ Future deleteMessage({required MessageDto message}) async {
     if (message.messageId != null) {
       await _messagesServices.deleteMessageByMessageId(id: message.messageId!);
       var messageDelete = DynamicRequest(
