@@ -70,8 +70,28 @@ class ChatWidgetState extends State<ChatWidget> {
       ),
       body: messages.isEmpty
           ? Center(child: Text('Start chatting'))
-          : GroupedListView<MessageDto, DateTime>(
+
+
+          
+
+          : 
+        //   NotificationListener(
+        //  onNotification: (ScrollNotification notification) {
+        //   final current = notification.metrics.pixels + 400;
+        //   final max = notification.metrics.maxScrollExtent;
+        //   if (current >= max) {
+        //     if (canLoad) {
+        //       canLoad = false;
+        //       BlocProvider.of<PokemonCubit>(context).getPokemons();
+        //     }
+        //   }
+        //   return false;
+        // },
+        //     child:
+           GroupedListView<MessageDto, DateTime>(
+            
               controller: scrollController,
+              // тут уже готово, есть скролл контроллер осталось отследить скролл вниз и передавать новые сообщения
               padding: const EdgeInsets.all(10),
               elements: messages,
               reverse: true,
