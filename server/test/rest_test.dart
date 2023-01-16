@@ -22,7 +22,7 @@ void main() {
     //2
     test('GET 404 error', () async {
       String urlGet = '$url/';
-      var response;
+      late dynamic response;
       try {
         response = await dio.get(urlGet);
 
@@ -35,7 +35,7 @@ void main() {
     //3
     test('GET chats by user id 1', () async {
       String urlChats = '$url/chats/1';
-      var response;
+      late dynamic response;
       bool isChatsWithUserId;
       try {
         response = await dio.get(urlChats);
@@ -52,7 +52,7 @@ void main() {
     //4
     test('GET chats by user id 2', () async {
       String urlChats = '$url/chats/2';
-      var response;
+      late dynamic response;
       bool isChatsWithUserId;
       try {
         response = await dio.get(urlChats);
@@ -69,7 +69,7 @@ void main() {
     //5
     test('GET error chats by user id 100', () async {
       String urlChats = '$url/chats/100';
-      var response;
+      late dynamic response;
       bool isChatsWithUserId;
       try {
         response = await dio.get(urlChats);
@@ -85,8 +85,8 @@ void main() {
     //6
     test('PUT create chat', () async {
       String urlChat = '$url/chats/';
-      var response;
-      var res;
+      late dynamic response;
+      late dynamic res;
       //Проверка создания чата 4, 5 юзеров
       //Проверка наличия чата с id 6
       //Может не проходить тест, если в вашей базе другие данные, нужно поменять
@@ -121,8 +121,8 @@ void main() {
     //7
     test('DELETE chat by chat id 6', () async {
       String urlChat = '$url/chats/6';
-      var response;
-      var res;
+      late dynamic response;
+      late dynamic res;
       bool isChatId6;
       try {
         res = await dio.get(urlChat);
@@ -146,7 +146,7 @@ void main() {
     //8
     test('GET image by id 1', () async {
       var urlGetImageById1 = '$url/images/1';
-      var response;
+      late dynamic response;
       try {
         response = await dio.get(urlGetImageById1);
 
@@ -159,7 +159,7 @@ void main() {
     //9
     test('GET image by id 2', () async {
       var urlGetImageById2 = '$url/images/2';
-      var response;
+      late dynamic response;
       try {
         response = await dio.get(urlGetImageById2);
         expect(response.statusCode, 200);

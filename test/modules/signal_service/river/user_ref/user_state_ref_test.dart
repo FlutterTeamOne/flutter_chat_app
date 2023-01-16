@@ -13,10 +13,10 @@ void main() async {
 
   setUpAll(() async {
     await UserPref.init();
-    print("test start");
+    log("test start");
   });
   tearDownAll(() {
-    print("test end");
+    log("test end");
   });
   group("UserStateRef copyWith tests", () {
     test('CopyWith test All null', () async {
