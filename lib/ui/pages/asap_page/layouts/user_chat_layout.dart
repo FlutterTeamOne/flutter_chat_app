@@ -1,7 +1,5 @@
 ﻿import 'package:chat_app/modules/signal_service/river/message_ref/message_notifier.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
-import 'package:chat_app/ui/pages/asap_page/layouts/edit_chat_popup_widget.dart';
-
 import '../../../../modules/signal_service/river/message_ref/message_state_ref.dart';
 import '../../../../modules/signal_service/river/river.dart';
 import '../../../../src/generated/grpc_lib/grpc_message_lib.dart';
@@ -26,13 +24,6 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
   TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    var badState;
-
-    // for (var c in ref.read(River.chatPod).chats!) {
-    //   if (c.chatId == widget.chatId) {
-    //     chat = c;
-    //   }
-    // }
     ChatDto? chat = ref
         .read(River.chatPod)
         .chats
