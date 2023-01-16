@@ -2,21 +2,19 @@ import 'dart:async';
 
 import 'package:chat_app/modules/client/grpc_client.dart';
 import 'package:chat_app/modules/client/rest_client.dart';
-import 'package:chat_app/modules/sending_manager/services/validator_service/validator_service.dart';
 import 'package:chat_app/modules/signal_service/river/message_ref/message_notifier_helper.dart';
 import 'package:chat_app/modules/signal_service/river/message_ref/message_state_ref.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper.dart';
-import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grpc/grpc.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../domain/data/library/library_data.dart';
 import '../../../sending_manager/library/library_sending_manager.dart';
 
 class MessageNotifier extends StateNotifier<MessageStateRef> {
   late LocalMessagesServices _messagesServices;
-  late LocalUsersServices _userServices;
   late MainUserServices _mainUserServices;
   late StreamSubscription _subscription;
   StreamController<DynamicRequest> messageController =
@@ -25,16 +23,16 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
   var stub = GrpcMessagesClient(GrpcClient().channel,
       options: CallOptions(metadata: {'token': 'some token'}),
       interceptors: []);
+  static final Logger _logger = Logger();
+
   MessageNotifier() : super(const MessageStateRef()) {
     _messagesServices = LocalMessagesServices();
 
-    _userServices = LocalUsersServices();
     _mainUserServices = MainUserServices();
 
     _subscription =
         stub.streamMessage(messageController.stream).listen((value) async {
-      print("MESSAGE!!!!!!!!!!!!!!!");
-      print(value.messageState);
+      _logger.v("MESSAGE!!!!!!!!!!!!!!! ${value.messageState}");
       if (value.messageState == MessageStateEnum.isReadMessage) {
         await MessageNotifierHelper.isReadMessage(
             message: value.readMessage.message);
@@ -59,11 +57,11 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
     if (messageList == null || messageList.isEmpty) {
       List<MessageDto> messages = await _messagesServices.getAllMessages();
 
-      print("MESSAGES:$messages");
+      _logger.d("MESSAGES:$messages");
 
       state = state.copyWith(messages: messages);
     } else {
-      print('EVENT MSG: $messageList');
+      _logger.d('EVENT MSG: $messageList');
 
       state = state.copyWith(messages: messageList);
     }
@@ -87,7 +85,8 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
     if (mediaState == MediaState.isSending) {
       state = state.copyWith(mediaState: MediaState.isSending);
     }
-    print('MESSAGE: $message');
+    _logger.d("MESSAGE: $message");
+
     //отправка текстового сообщения
     if (contentType == ContentType.isText && message != null) {
       // ignore: prefer_conditional_assignment
@@ -212,14 +211,16 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
 //           print('id Message Main: ${messageUpdateResponse.idMessageMain}');
 //           print('date update: ${messageUpdateResponse.dateUpdate}');
 //         }
-      } catch (e) {}
+      } catch (e) {
+        _logger.e(e.toString());
+      }
     }
     if (isEditing == EditState.isNotEditing) {
       state = state.copyWith(editState: EditState.isNotEditing);
     }
   }
 
- Future deleteMessage({required MessageDto message}) async {
+  Future deleteMessage({required MessageDto message}) async {
     if (message.messageId != null) {
       await _messagesServices.deleteMessageByMessageId(id: message.messageId!);
       var messageDelete = DynamicRequest(
@@ -227,17 +228,18 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
           messageState: MessageStateEnum.isDeleteMesage);
       try {
         messageController.add(messageDelete);
-        // print('DEL DATE: ${response.dateDelete}');
-        // print('DEL ID: ${response.idMessageMain}');
+       
 
         // await _messagesServices.updateWrittenToServer(localMessageId: localMessageId, updatedDate: updatedDate)
-      } catch (e) {}
+      } catch (e) {
+        _logger.e(e.toString());
+      }
     } else {
       await _messagesServices.deleteMessageByLocalMessageId(
           id: message.localMessageId!);
     }
-    // add(ReadMessageEvent());
-    print('message ID: $message');
+    _logger.d('message ID: $message');
+
     state = state.copyWith(
         deleteState: DeleteState.isDeleted, editState: EditState.isNotEditing);
   }
