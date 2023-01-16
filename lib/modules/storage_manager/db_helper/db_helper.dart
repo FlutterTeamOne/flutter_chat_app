@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:logger/logger.dart';
+
 import '../../../domain/data/dto/user_dto/user_dto.dart';
 import 'user_path.dart';
 import '../../../src/constants/app_data_constants.dart';
@@ -36,14 +38,12 @@ class DBHelper {
     var dbPath = AppDataConstants.dbDirectory;
     var user = UserPath.getUser;
 
-    //TODO: Убрать принт
-    print('USER DB:  $user');
-
+    
+    Logger().i('USER DB:  $user');
     String path =
         join(dbPath, user.userId.toString() + DatabaseConst.dbFileName);
 
-    //TODO: Убрать принт
-    print('PATH_ABSOLUTE: $path');
+    Logger().i('PATH_ABSOLUTE: $path');
 
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(

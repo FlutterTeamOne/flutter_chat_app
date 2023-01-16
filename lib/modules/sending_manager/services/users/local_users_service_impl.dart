@@ -145,9 +145,10 @@ class LocalUsersServices implements ILocalUsersServices {
   Future<int> updateUserStart(
       {required String newValues, required String condition}) async {
     var db = await DBHelperStart.instanse.database;
-    DBHelperStart.instanse.updateListenController.add(true);
-    return await db.rawUpdate(
+    var userStart = await db.rawUpdate(
         'UPDATE ${DatabaseConst.userTable} SET $newValues WHERE $condition');
+    DBHelperStart.instanse.updateListenController.add(true);
+    return userStart;
   }
 
   Future getLastUserIdStart() async {
