@@ -75,79 +75,79 @@ Future main() async {
 
         var r = await db.rawQuery('''PRAGMA table_info(users)''');
         var matcher = [
-          {
-            'cid': 0,
-            'name': 'user_id',
-            'type': 'integer',
-            'notnull': 0,
-            'dflt_value': null,
-            'pk': 1
-          },
-          {
-            'cid': 1,
-            'name': 'name',
-            'type': 'char(50)',
-            'notnull': 1,
-            'dflt_value': null,
-            'pk': 0
-          },
-          {
-            'cid': 2,
-            'name': 'email',
-            'type': 'char(50)',
-            'notnull': 1,
-            'dflt_value': null,
-            'pk': 0
-          },
-          {
-            'cid': 3,
-            'name': 'created_date',
-            'type': 'char(26)',
-            'notnull': 1,
-            'dflt_value': null,
-            'pk': 0
-          },
-          {
-            'cid': 4,
-            'name': 'profile_pic_url',
-            'type': 'char(50)',
-            'notnull': 1,
-            'dflt_value': null,
-            'pk': 0
-          },
-          {
-            'cid': 5,
-            'name': 'updated_date',
-            'type': 'char(26)',
-            'notnull': 1,
-            'dflt_value': null,
-            'pk': 0
-          },
-          {
-            'cid': 6,
-            'name': 'deleted_date',
-            'type': 'char(26)',
-            'notnull': 0,
-            'dflt_value': null,
-            'pk': 0
-          },
-          {
-            'cid': 7,
-            'name': 'hash_connect',
-            'type': 'integer',
-            'notnull': 0,
-            'dflt_value': null,
-            'pk': 0
-          },
-          {
-            'cid': 8,
-            'name': 'password',
-            'type': 'char(4)',
-            'notnull': 0,
-            'dflt_value': null,
-            'pk': 0
-          }
-        ];
+            {
+              'cid': 0,
+              'name': 'user_id',
+              'type': 'INTEGER',
+              'notnull': 0,
+              'dflt_value': null,
+              'pk': 1
+            },
+            {
+              'cid': 1,
+              'name': 'name',
+              'type': 'char(50)',
+              'notnull': 1,
+              'dflt_value': null,
+              'pk': 0
+            },
+            {
+              'cid': 2,
+              'name': 'email',
+              'type': 'char(50)',
+              'notnull': 1,
+              'dflt_value': null,
+              'pk': 0
+            },
+            {
+              'cid': 3,
+              'name': 'created_date',
+              'type': 'char(26)',
+              'notnull': 1,
+              'dflt_value': null,
+              'pk': 0
+            },
+            {
+              'cid': 4,
+              'name': 'profile_pic_url',
+              'type': 'char(50)',
+              'notnull': 1,
+              'dflt_value': null,
+              'pk': 0
+            },
+            {
+              'cid': 5,
+              'name': 'updated_date',
+              'type': 'char(26)',
+              'notnull': 1,
+              'dflt_value': null,
+              'pk': 0
+            },
+            {
+              'cid': 6,
+              'name': 'deleted_date',
+              'type': 'char(26)',
+              'notnull': 0,
+              'dflt_value': null,
+              'pk': 0
+            },
+            {
+              'cid': 7,
+              'name': 'hash_connect',
+              'type': 'INTEGER',
+              'notnull': 0,
+              'dflt_value': null,
+              'pk': 0
+            },
+            {
+              'cid': 8,
+              'name': 'password',
+              'type': 'char(4)',
+              'notnull': 0,
+              'dflt_value': null,
+              'pk': 0
+            }
+          ];
 
         expect(r, matcher);
         db.close();
@@ -174,55 +174,55 @@ Future main() async {
 
         var r = await db.rawQuery('''PRAGMA table_info(chats)''');
         var matcher = [
-          {
-            'cid': 0,
-            'name': 'chat_id',
-            'type': 'integer',
-            'notnull': 0,
-            'dflt_value': null,
-            'pk': 1
-          },
-          {
-            'cid': 1,
-            'name': 'friend1_id',
-            'type': 'integer',
-            'notnull': 1,
-            'dflt_value': null,
-            'pk': 0
-          },
-          {
-            'cid': 2,
-            'name': 'friend2_id',
-            'type': 'integer',
-            'notnull': 1,
-            'dflt_value': null,
-            'pk': 0
-          },
-          {
-            'cid': 3,
-            'name': 'created_date',
-            'type': 'char(26)',
-            'notnull': 1,
-            'dflt_value': null,
-            'pk': 0
-          },
-          {
-            'cid': 4,
-            'name': 'deleted_date',
-            'type': 'char(26)',
-            'notnull': 0,
-            'dflt_value': null,
-            'pk': 0
-          },
-          {
-            'cid': 5,
-            'name': 'updated_date',
-            'type': 'char(26)',
-            'notnull': 1,
-            'dflt_value': null,
-            'pk': 0
-          }
-        ];
+            {
+              'cid': 0,
+              'name': 'chat_id',
+              'type': 'INTEGER',
+              'notnull': 0,
+              'dflt_value': null,
+              'pk': 1
+            },
+            {
+              'cid': 1,
+              'name': 'friend1_id',
+              'type': 'INTEGER',
+              'notnull': 1,
+              'dflt_value': null,
+              'pk': 0
+            },
+            {
+              'cid': 2,
+              'name': 'friend2_id',
+              'type': 'INTEGER',
+              'notnull': 1,
+              'dflt_value': null,
+              'pk': 0
+            },
+            {
+              'cid': 3,
+              'name': 'created_date',
+              'type': 'char(26)',
+              'notnull': 1,
+              'dflt_value': null,
+              'pk': 0
+            },
+            {
+              'cid': 4,
+              'name': 'deleted_date',
+              'type': 'char(26)',
+              'notnull': 0,
+              'dflt_value': null,
+              'pk': 0
+            },
+            {
+              'cid': 5,
+              'name': 'updated_date',
+              'type': 'char(26)',
+              'notnull': 1,
+              'dflt_value': null,
+              'pk': 0
+            }
+          ];
         expect(r, matcher);
         db.close();
       });
@@ -253,79 +253,79 @@ Future main() async {
 
         var r = await db.rawQuery('''PRAGMA table_info(messages)''');
         var matcher = [
-          {
-            'cid': 0,
-            'name': 'message_id',
-            'type': 'integer',
-            'notnull': 0,
-            'dflt_value': null,
-            'pk': 1
-          },
-          {
-            'cid': 1,
-            'name': 'chat_id',
-            'type': 'integer',
-            'notnull': 1,
-            'dflt_value': null,
-            'pk': 0
-          },
-          {
-            'cid': 2,
-            'name': 'sender_id',
-            'type': 'integer',
-            'notnull': 1,
-            'dflt_value': null,
-            'pk': 0
-          },
-          {
-            'cid': 3,
-            'name': 'content',
-            'type': 'char(50)',
-            'notnull': 1,
-            'dflt_value': null,
-            'pk': 0
-          },
-          {
-            'cid': 4,
-            'name': 'created_date',
-            'type': 'char(26)',
-            'notnull': 1,
-            'dflt_value': null,
-            'pk': 0
-          },
-          {
-            'cid': 5,
-            'name': 'updated_date',
-            'type': 'char(26)',
-            'notnull': 1,
-            'dflt_value': null,
-            'pk': 0
-          },
-          {
-            'cid': 6,
-            'name': 'deleted_date',
-            'type': 'char(26)',
-            'notnull': 0,
-            'dflt_value': null,
-            'pk': 0
-          },
-          {
-            'cid': 7,
-            'name': 'attachment_id',
-            'type': 'integer',
-            'notnull': 0,
-            'dflt_value': null,
-            'pk': 0
-          },
-          {
-            'cid': 8,
-            'name': 'content_type',
-            'type': 'TEXT',
-            'notnull': 0,
-            'dflt_value': null,
-            'pk': 0
-          }
-        ];
+            {
+              'cid': 0,
+              'name': 'message_id',
+              'type': 'INTEGER',
+              'notnull': 0,
+              'dflt_value': null,
+              'pk': 1
+            },
+            {
+              'cid': 1,
+              'name': 'chat_id',
+              'type': 'INTEGER',
+              'notnull': 1,
+              'dflt_value': null,
+              'pk': 0
+            },
+            {
+              'cid': 2,
+              'name': 'sender_id',
+              'type': 'INTEGER',
+              'notnull': 1,
+              'dflt_value': null,
+              'pk': 0
+            },
+            {
+              'cid': 3,
+              'name': 'content',
+              'type': 'char(50)',
+              'notnull': 1,
+              'dflt_value': null,
+              'pk': 0
+            },
+            {
+              'cid': 4,
+              'name': 'created_date',
+              'type': 'char(26)',
+              'notnull': 1,
+              'dflt_value': null,
+              'pk': 0
+            },
+            {
+              'cid': 5,
+              'name': 'updated_date',
+              'type': 'char(26)',
+              'notnull': 1,
+              'dflt_value': null,
+              'pk': 0
+            },
+            {
+              'cid': 6,
+              'name': 'deleted_date',
+              'type': 'char(26)',
+              'notnull': 0,
+              'dflt_value': null,
+              'pk': 0
+            },
+            {
+              'cid': 7,
+              'name': 'attachment_id',
+              'type': 'INTEGER',
+              'notnull': 0,
+              'dflt_value': null,
+              'pk': 0
+            },
+            {
+              'cid': 8,
+              'name': 'content_type',
+              'type': 'TEXT',
+              'notnull': 0,
+              'dflt_value': null,
+              'pk': 0
+            }
+          ];
         expect(r, matcher);
         db.close();
       });
@@ -345,23 +345,23 @@ Future main() async {
 
         var r = await db.rawQuery('''PRAGMA table_info(attachments)''');
         var matcher = [
-          {
-            'cid': 0,
-            'name': 'attachment_id',
-            'type': 'integer',
-            'notnull': 0,
-            'dflt_value': null,
-            'pk': 1
-          },
-          {
-            'cid': 1,
-            'name': 'attachment_meta',
-            'type': 'char(4096)',
-            'notnull': 1,
-            'dflt_value': null,
-            'pk': 0
-          }
-        ];
+            {
+              'cid': 0,
+              'name': 'attachment_id',
+              'type': 'INTEGER',
+              'notnull': 0,
+              'dflt_value': null,
+              'pk': 1
+            },
+            {
+              'cid': 1,
+              'name': 'attachment_meta',
+              'type': 'char(4096)',
+              'notnull': 1,
+              'dflt_value': null,
+              'pk': 0
+            }
+          ];
         expect(r, matcher);
         db.close();
       });

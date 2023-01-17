@@ -29,11 +29,13 @@ void main() {
     sender: 'sender',
     updatedDate: DateTime.now().toIso8601String(),
     isSuccess: null,
+
   );
   var addChatDialogWidget = AddChatDialogWidget(val: 0);
   var searchFieldWidget = const SearchFieldWidget();
   var circleIndicatorWidget = const CircularProgressIndicator();
   var defaultUserChatWidget = const DefaultUserChatLayout();
+
   // var chatAppBarWidget = const ChatAppBarWidget(
   //   image: 'https://compressjpeg.com/images/compressjpeg/icon.png',
   //   name: 'name',
@@ -41,6 +43,7 @@ void main() {
   //   myChat: 2,
   //   ref: WidgetRef,
   // );
+
   var chatListWidget = ChatListLayout(
     messageModel: messages,
   );
@@ -78,12 +81,14 @@ void main() {
       expect(find.byWidget(defaultUserChatWidget), findsOneWidget);
     });
 
+
     // testWidgets('finds a chatAppBarWidget', (tester) async {
     //   await tester.pumpWidget(ProviderScope(
     //       child: MaterialApp(
     //           home: Scaffold(body: Center(child: chatAppBarWidget)))));
     //   expect(find.byWidget(chatAppBarWidget), findsOneWidget);
     // });
+
 
     testWidgets('finds a userCardWidget', (tester) async {
       await tester.pumpWidget(ProviderScope(
@@ -103,4 +108,32 @@ void main() {
       expect(find.byWidget(addChatDialogWidget), findsOneWidget);
     });
   });
+}
+
+class ChatAppWidgetTest extends ConsumerStatefulWidget {
+  const ChatAppWidgetTest({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ChatAppWidgetTestState();
+}
+
+class _ChatAppWidgetTestState extends ConsumerState<ChatAppWidgetTest> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Consumer(builder: (context, ref, _) {
+        return Scaffold(
+          body: Center(
+              child: ChatAppBarWidget(
+            chatId: 1,
+            image: 'https://www.iconsdb.com/icons/preview/red/cancel-xxl.png',
+            myChat: true,
+            name: 'My Favorite Chat',
+            ref: ref,
+          )),
+        );
+      }),
+    );
+  }
 }

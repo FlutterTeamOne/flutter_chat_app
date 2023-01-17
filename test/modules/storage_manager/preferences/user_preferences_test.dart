@@ -1,5 +1,6 @@
 import 'package:chat_app/modules/storage_manager/preferences/user_preferences.dart';
 import 'package:flutter_test/flutter_test.dart';
+
 void main() async {
   group('UserPrefernces', () {
     test('setIsReadTrue', () async {
