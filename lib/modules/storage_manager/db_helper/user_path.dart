@@ -1,3 +1,4 @@
+import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,14 +10,13 @@ class UserPath {
   String setPath(String name) {
     var dbPath = '';
     getDbPath().then((value) => dbPath = value);
-    _path = join(dbPath, 'sfera_$name.db');
+    _path = join(dbPath, 'db_$name.db');
     return _path;
   }
 
   Future<String> getDbPath() async {
     var dbPath = await getTemporaryDirectory();
-    print('PATH: ${dbPath.path}');
-    // var _dbFileName = 'sfera';
+    Logger().d('PATH: ${dbPath.path}');
     return dbPath.path;
   }
 
@@ -49,7 +49,6 @@ class UserPref {
   static setLastMessageId(
           {required String userName, required int lastMessageId}) =>
       _prefs.setInt(userName, lastMessageId);
-  
 
   static restore() async => await _prefs.clear();
 }

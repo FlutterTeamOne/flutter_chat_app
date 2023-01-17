@@ -23,17 +23,15 @@ class UserCard extends StatelessWidget {
                 UserPath.user = user;
                 //await DBHelperStart.instanse.close();
                 var db = await DBHelper.instanse.initDB();
-                print("db open? ${db.path},${db.isOpen}");
-                showDialog(
+                Logger().d("db open? ${db.path},${db.isOpen}");
+                await showDialog(
                   context: context,
                   builder: (context) => ConfirmPasswordDialog(user: user),
                 );
 
-                ///TODO: Проверка пароля пользователя
                 ///1. Сверить Пароль введенный с паролем на сервере
                 ///Если нет, вывести ошибку "Неверный пароль"
                 ///
-                ///TODO: Проверка что все хорошо в таблице MainUser и юзер такой заполнен
                 ///Если база открыта, то
                 ///1.Проерить Таблицу MainUser на наличие юзера
                 ///2.Проверить поля в таблице User

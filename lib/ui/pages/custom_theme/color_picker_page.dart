@@ -4,6 +4,7 @@ import 'package:chat_app/modules/style_manager/riverpod/theme_models.dart';
 import 'package:chat_app/ui/pages/library/library_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
 
 import '../../widgets/custom_theme/flex_color_picker.dart';
 
@@ -148,7 +149,7 @@ class _ColorPickerPageState extends ConsumerState<ColorPickerPage> {
                               textColor: state.textColor,
                               primaryColor: color,
                             ));
-                    print(color);
+                    Logger().d(color);
                   },
                   width: 44,
                   height: 44,
@@ -322,7 +323,7 @@ class _ColorPickerPageState extends ConsumerState<ColorPickerPage> {
                   textColor: state.textColor,
                   primaryColor: color,
                 ));
-        print(color);
+        Logger().d(color);
       },
       width: 40,
       height: 40,

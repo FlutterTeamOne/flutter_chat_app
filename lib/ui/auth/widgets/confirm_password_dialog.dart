@@ -45,7 +45,7 @@ class _ConfirmPasswordDialogState extends State<ConfirmPasswordDialog> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'SFERA Password',
+                      '${widget.user.name} Password',
                       style: textTheme.subtitle2?.copyWith(fontSize: 16),
                     ),
                     const SizedBox(height: 5),

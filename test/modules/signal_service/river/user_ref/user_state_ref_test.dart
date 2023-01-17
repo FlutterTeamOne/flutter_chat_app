@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chat_app/domain/data/dto/user_dto/user_dto.dart';
 import 'package:chat_app/modules/signal_service/river/user_ref/user_state_ref.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
@@ -11,10 +13,10 @@ void main() async {
 
   setUpAll(() async {
     await UserPref.init();
-    print("test start");
+    log("test start");
   });
   tearDownAll(() {
-    print("test end");
+    log("test end");
   });
   group("UserStateRef copyWith tests", () {
     test('CopyWith test All null', () async {
@@ -61,7 +63,7 @@ void main() async {
       var userStateRef =
           const UserStateRef(users: [], userDb: null, isDeleted: false);
       var response = userStateRef.userDbthis;
-      print(response);
+      log(response.toString());
 
       expect(response, false);
     });

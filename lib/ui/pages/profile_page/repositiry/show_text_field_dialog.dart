@@ -7,6 +7,7 @@ import 'package:chat_app/ui/widgets/custom_dialogs/textfield_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 class ShowTextFieldDialog {
   static Future<dynamic> showTextFieldDialog(
@@ -37,7 +38,6 @@ class ShowTextFieldDialog {
               String updatedDate = DateTime.now().toIso8601String();
               late String newValue = newController.text;
               String textContentError = '';
-              //TODO: Проверка на те же данные которые введены
               if (newController.text.isNotEmpty) {
                 if (enumUserInfo == EnumUserInfo.avatar) {
                   if (!(await _validateImage(newValue))) {
@@ -85,8 +85,10 @@ class ShowTextFieldDialog {
                       builder: (context) =>
                           ErrorDialog(textTitle: 'Error', textContent: '$e'));
                 }
-                //TODO: Убрать Принт
-                print("NEW ${enumUserInfo}: $newValue");
+
+                Logger().d("NEW $enumUserInfo: $newValue");
+                
+                // ignore: use_build_context_synchronously
                 Navigator.pop(context);
               }
             },
@@ -95,7 +97,7 @@ class ShowTextFieldDialog {
   }
 
   static Future<bool> _validateImage(String imageUrl) async {
-    var res;
+    late Response res;
     try {
       res = await Dio().get(imageUrl);
     } catch (e) {
@@ -104,10 +106,10 @@ class ShowTextFieldDialog {
 
     if (res.statusCode != 200) return false;
     var data = res.headers;
-    //TODO: Убрать принты
-    print("IMAGE $data");
-    print(data['content-type'][0]);
-    return _checkIfImage(data['content-type'][0]);
+
+    Logger().d("IMAGE $data");
+    Logger().d(data['content-type']?[0]);
+    return _checkIfImage(data['content-type']![0]);
   }
 
   static bool _checkIfImage(String param) {

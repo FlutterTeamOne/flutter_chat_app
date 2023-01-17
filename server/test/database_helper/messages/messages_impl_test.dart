@@ -34,7 +34,7 @@ void main() {
         var date = '2022-13-45T34:11:11.123456';
         var contentType = ContentType.isText;
 
-        var insert = await db.rawQuery('''INSERT INTO messages (chat_id, sender_id, content, created_date, updated_date, content_type) VALUES (1, 1, 'content', "$date", "$date", "$contentType")''');
+         await db.rawQuery('''INSERT INTO messages (chat_id, sender_id, content, created_date, updated_date, content_type) VALUES (1, 1, 'content', "$date", "$date", "$contentType")''');
 
         var id = (await db.rawQuery('''SELECT last_insert_rowid()'''))[0]['last_insert_rowid()'] as int;
         
@@ -52,7 +52,7 @@ void main() {
         var date = '2022-13-45T34:11:11.123456';
         var contentType = ContentType.isText;
 
-        var insert = await db.rawQuery('''INSERT INTO messages (chat_id, sender_id, content, created_date, updated_date, content_type) VALUES (1, 1, 'content', "$date", "$date", "$contentType")''');
+         await db.rawQuery('''INSERT INTO messages (chat_id, sender_id, content, created_date, updated_date, content_type) VALUES (1, 1, 'content', "$date", "$date", "$contentType")''');
 
         var id = (await db.rawQuery('''SELECT last_insert_rowid()'''))[0]['last_insert_rowid()'] as int;
         
@@ -71,7 +71,7 @@ void main() {
         var date = '2022-13-45T34:11:11.123456';
         var contentType = ContentType.isText;
 
-        var insert = await db.rawQuery('''INSERT INTO messages (chat_id, sender_id, content, created_date, updated_date, content_type) VALUES (1, 1, 'content', "$date", "$date", "$contentType")''');
+         await db.rawQuery('''INSERT INTO messages (chat_id, sender_id, content, created_date, updated_date, content_type) VALUES (1, 1, 'content', "$date", "$date", "$contentType")''');
 
         var id = (await db.rawQuery('''SELECT last_insert_rowid()'''))[0]['last_insert_rowid()'];
         
@@ -101,7 +101,7 @@ void main() {
         var date = '2022-13-45T34:11:11.123456';
         var contentType = ContentType.isText;
 
-        var insert = await db.rawQuery('''INSERT INTO messages (chat_id, sender_id, content, created_date, updated_date, content_type) VALUES (1, 1, 'content', "$date", "$date", "$contentType")''');
+         await db.rawQuery('''INSERT INTO messages (chat_id, sender_id, content, created_date, updated_date, content_type) VALUES (1, 1, 'content', "$date", "$date", "$contentType")''');
 
         var id = (await db.rawQuery('''SELECT last_insert_rowid()'''))[0]['last_insert_rowid()'] as int;
         
@@ -131,7 +131,7 @@ void main() {
         var date = '2022-13-45T34:11:11.123456';
         var contentType = ContentType.isText;
 
-        var insert = await db.rawQuery('''INSERT INTO messages (chat_id, sender_id, content, created_date, updated_date, content_type) VALUES (1, 1, 'content', "$date", "$date", "$contentType")''');
+         await db.rawQuery('''INSERT INTO messages (chat_id, sender_id, content, created_date, updated_date, content_type) VALUES (1, 1, 'content', "$date", "$date", "$contentType")''');
 
         var id = (await db.rawQuery('''SELECT last_insert_rowid()'''))[0]['last_insert_rowid()'] as int;
         
@@ -161,7 +161,7 @@ void main() {
         var date = '2022-13-45T34:11:11.123456';
         var contentType = ContentType.isText;
 
-        var insert = await db.rawQuery('''INSERT INTO messages (chat_id, sender_id, content, created_date, updated_date, content_type) VALUES (1, 1, 'content', "$date", "$date", "$contentType")''');
+         await db.rawQuery('''INSERT INTO messages (chat_id, sender_id, content, created_date, updated_date, content_type) VALUES (1, 1, 'content', "$date", "$date", "$contentType")''');
 
         var id = (await db.rawQuery('''SELECT last_insert_rowid()'''))[0]['last_insert_rowid()'] as int;
         
@@ -191,7 +191,7 @@ void main() {
         var date = '2022-13-45T34:11:11.123456';
         var contentType = ContentType.isText;
 
-        var insert = await db.rawQuery('''INSERT INTO messages (chat_id, sender_id, content, created_date, updated_date, content_type) VALUES (1, 1, 'content', "$date", "$date", "$contentType")''');
+         await db.rawQuery('''INSERT INTO messages (chat_id, sender_id, content, created_date, updated_date, content_type) VALUES (1, 1, 'content', "$date", "$date", "$contentType")''');
 
         var id = (await db.rawQuery('''SELECT last_insert_rowid()'''))[0]['last_insert_rowid()'] as int;
         

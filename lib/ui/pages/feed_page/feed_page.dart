@@ -8,7 +8,7 @@ class FeedPage extends StatelessWidget {
     return const Center(
       child: Text(
         key: Key('feed_page text'),
-        'SFERA feed',
+        'App feed',
         // style: AppTextStyle.s36Abel,
       ),
     );

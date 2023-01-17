@@ -1,6 +1,6 @@
 ﻿import 'package:chat_app/modules/signal_service/river/message_ref/message_notifier.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
-
+import 'package:logger/logger.dart';
 import '../../../../modules/signal_service/river/message_ref/message_state_ref.dart';
 import '../../../../modules/signal_service/river/river.dart';
 import '../../../../src/generated/grpc_lib/grpc_message_lib.dart';
@@ -25,13 +25,6 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
   TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    var badState;
-
-    // for (var c in ref.read(River.chatPod).chats!) {
-    //   if (c.chatId == widget.chatId) {
-    //     chat = c;
-    //   }
-    // }
     ChatDto? chat = ref
         .read(River.chatPod)
         .chats
@@ -143,6 +136,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
               contentType: ContentType.isText),
           contentType: ContentType.isText);
       // context.read<ChatBloc>().add(ReadChatEvent());
+      // ignore: use_build_context_synchronously
       FocusScope.of(context).unfocus();
       controller.clear();
       return;
@@ -150,12 +144,12 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
     // print('IS EDIT F:${context.read<MessageBloc>().isEditing}');
     if (messageRef.editState == EditState.isPreparation &&
         controller.text.isNotEmpty) {
-      print("EDITING");
+      Logger().v("EDITING");
       var localMessageId = messageRef.messageId;
       var message = messageRef.messages
           ?.firstWhere((element) => element.localMessageId == localMessageId);
       if (message?.contentType == ContentType.isText) {
-        print('EDIT  TEXT');
+        Logger().v('EDIT  TEXT');
         await messageNotif.updateMessage(
             message: MessageDto(
                 chatId: widget.chatId,
@@ -166,10 +160,10 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                 updatedDate: date),
             isEditing: EditState.isEditing);
       } else if (message?.contentType == ContentType.isMediaText) {
-        print('EDIT MEDIA TEXT');
+        Logger().v('EDIT MEDIA TEXT');
         List<String>? data = message?.content.split('media: ');
         var msg = data![1];
-        print('MSG UPD: $msg');
+        Logger().v('MSG UPD: $msg');
         await messageNotif.updateMessage(
             message: MessageDto(
                 chatId: widget.chatId,
@@ -180,7 +174,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
                 updatedDate: date),
             isEditing: EditState.isEditing);
       } else {
-        print('EDIT MEDIA ');
+        Logger().v('EDIT MEDIA ');
         return;
       }
       controller.clear();
@@ -199,6 +193,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
               contentType: ContentType.isMediaText),
           contentType: ContentType.isMediaText,
           mediaState: MediaState.isSending);
+      // ignore: use_build_context_synchronously
       FocusScope.of(context).unfocus();
       controller.clear();
     } else if (messageRef.mediaState == MediaState.isPreparation &&
@@ -213,6 +208,7 @@ class UserChatLayoutState extends ConsumerState<UserChatLayout> {
               contentType: ContentType.isMedia),
           contentType: ContentType.isMedia,
           mediaState: MediaState.isSending);
+      // ignore: use_build_context_synchronously
       FocusScope.of(context).unfocus();
       controller.clear();
       return;

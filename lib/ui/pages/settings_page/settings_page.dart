@@ -1,3 +1,4 @@
+import 'package:chat_app/ui/pages/custom_theme/color_picker_page.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -31,9 +32,9 @@ class SettingsPage extends StatelessWidget {
             // ))),
             onPressed: () {
               // context.read<ChangeThemeBloc>().add(SetThemeEvent(index: 6));
-              Navigator.of(context).pushNamed('/color_picker_page');
+              Navigator.of(context).pushNamed(ColorPickerPage.routeName);
             },
-            child: Text('Custom theme'))
+            child: const Text('Custom theme'))
       ],
     ));
   }

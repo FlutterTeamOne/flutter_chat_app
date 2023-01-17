@@ -7,18 +7,19 @@ import 'package:chat_app/src/generated/grpc_lib/grpc_sync_lib.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grpc/grpc.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../src/generated/grpc_lib/grpc_user_lib.dart';
 
 class UserNotifier extends StateNotifier<UserStateRef> {
-  late MainUserServices _mainUserServices;
   late GrpcUsersClient stub;
   late LocalUsersServices _usersServices;
   late LocalChatServices _chatServices;
   late LocalMessagesServices _messagesServices;
+  static final Logger _logger = Logger();
+
   UserNotifier() : super(const UserStateRef()) {
     _usersServices = LocalUsersServices();
-    _mainUserServices = MainUserServices();
     _messagesServices = LocalMessagesServices();
     _chatServices = LocalChatServices();
     stub = GrpcUsersClient(GrpcClient().channel,
@@ -53,7 +54,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     final usersUp = await _usersServices.getAllUserIdAndUpdated();
     final usersRequest = <UserRequest>[];
     if (usersUp.isNotEmpty) {
-      print("lastID ${usersUp.last['user_id']}");
+      _logger.v("lastID ${usersUp.last['user_id']}");
       for (var user in usersUp) {
         usersRequest.add(UserRequest(
             userId: user['user_id'] as int,
@@ -93,9 +94,11 @@ class UserNotifier extends StateNotifier<UserStateRef> {
 
     //запрос на сервер
     var response = DataDBResponse();
-    print('maxUserId: $mainUserId');
-    print('chatId: $maxChatId');
-    print('messageId: $maxMessageId');
+
+    _logger.v('maxUserId: $mainUserId');
+    _logger.v('chatId: $maxChatId');
+    _logger.v('messageId: $maxMessageId');
+
     try {
       response = await stub.getUsersSynh(MainUserRequest(
         users: UsersRequest(mainUser: mainUserId, usersForUpdate: usersRequest),
@@ -104,9 +107,9 @@ class UserNotifier extends StateNotifier<UserStateRef> {
             maxMessageId: maxMessageId, messageForUpdate: messagesRequest),
       ));
     } catch (e) {
-      print(e);
+      _logger.e(e.toString());
     }
-    print("NEWUSERS: ${response.users.usersNew}");
+    _logger.d("NEWUSERS: ${response.users.usersNew}");
 
     ///
     ///ДОБАВЛЯЕМ НОВЫХ ЮЗЕРОВ
@@ -118,18 +121,18 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     ///
     ///ДОБАВЛЯЕМ НОВЫЕ ЧАТЫ
     ///
-    print('NEW_CHATS: ${response.chats.chatsNew}');
+
+    _logger.d('NEW_CHATS: ${response.chats.chatsNew}');
     for (var chat in response.chats.chatsNew) {
       await ValidatorService.validChat(chat: chat);
-      print('\\\\\\\\\\\\\\NEW CHATS DONE\\\\\\\\\\\\\\');
     }
 
     ///
     ///ОБНОВЛЯЕМ СТАРЫХ ЮЗЕРОВ
     ///
-    print('REPSONSE_UPDATEUSERS: ${response.users.usersUpdated}');
+    _logger.d('REPSONSE_UPDATEUSERS: ${response.users.usersUpdated}');
     for (var user in response.users.usersUpdated) {
-      print(
+      _logger.d(
           "deleted date is empty? ${user.deletedDate} ${user.deletedDate.isEmpty}");
       String userAvatar = (user.deletedDate == "" || user.deletedDate.isEmpty)
           ? user.picture
@@ -147,10 +150,9 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     ///
     ///ДОБАВЛЯЕМ НОВЫЕ СООБЩЕНИЯ
     ///
-    print("RESPONSE_MESSAGES NEW: ${response.messages.messagesNew}");
+    _logger.d("RESPONSE_MESSAGES NEW: ${response.messages.messagesNew}");
     for (var message in response.messages.messagesNew) {
       await ValidatorService.validMessage(message: message);
-      // await _messagesServices.addNewMessageFromBase(message: msg);
       await _chatServices.updateChatDateUpdated(
           chatId: message.chatId, dateUpdated: message.updatedDate);
     }
@@ -158,15 +160,15 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     ///
     ///ОБНОВЛЯЕМ ЧАТЫ
     ///
-    print("RESPONSE_UPDATED_CHATS: ${response.chats.chatsUpdated}");
+    _logger.d("RESPONSE_UPDATED_CHATS: ${response.chats.chatsUpdated}");
     for (var chats in response.chats.chatsUpdated) {
-      print('\\\\\\\\\\\\\\CHATS UPDATED DONE $chats\\\\\\\\\\\\\\');
+      _logger.v('CHATS UPDATED DONE $chats');
     }
 
     ///
     ///ОБНОВЛЯЕМ СООБЩЕНИЯ
     ///
-    print("RESPONSE_UPDATED_MESSAGE: ${response.messages.messagesUpdated}");
+    _logger.d("RESPONSE_UPDATED_MESSAGE: ${response.messages.messagesUpdated}");
     for (var message in response.messages.messagesUpdated) {
       final type =
           MessageDto.contType(contentTypeName: message.contentType.name);
@@ -184,18 +186,18 @@ class UserNotifier extends StateNotifier<UserStateRef> {
       );
       UserPref.setLastMessageId(
           userName: '${UserPref.getUserId}user', lastMessageId: msg.messageId!);
-      print("UPDATEMESSAGE START");
+      _logger.v("UPDATEMESSAGE START");
       if (msg.deletedDate != null && msg.deletedDate != '') {
         await _messagesServices.deleteMessageByMessageId(id: msg.messageId!);
       } else {
         await _messagesServices.updateMessageSynh(msg: msg);
       }
-      print("UPDATEMESSAGE END");
+      _logger.v("UPDATEMESSAGE END");
     }
     users = await _usersServices.getAllUsers();
 
     for (var userServ in users) {
-      print('USERS IN Base: $userServ');
+      _logger.v('USERS IN Base: $userServ');
     }
 
     //Добавляем всех юзеров в state
@@ -228,9 +230,9 @@ class UserNotifier extends StateNotifier<UserStateRef> {
   }
 
   void changeUser(bool isStartDB) {
-    print('GET USER PREF: ${UserPref.getUserDbPref} ');
+    _logger.d('GET USER PREF: ${UserPref.getUserDbPref} ');
     UserPref.setUserDbPref = isStartDB;
-    print('GET USER PREF: ${UserPref.getUserDbPref} ');
+    _logger.d('GET USER PREF: ${UserPref.getUserDbPref} ');
   }
 
   Future<void> deleteUser(int userId) async {
@@ -243,8 +245,8 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     } catch (e) {
       throw CustomException(e.toString());
     }
-    print('event: $userId');
-    print(response.isDeleted);
+    _logger.v('event: $userId');
+    _logger.v(response.isDeleted);
     state = state.copyWith(isDeleted: response.isDeleted);
   }
 
@@ -259,7 +261,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
 
     try {
       response = await stub.updateUser(request);
-      print('RESULT: $response');
+      _logger.v('RESULT: $response');
       await _usersServices.updateUser(
           newValues: '''${DatabaseConst.usersColumnName} = "${response.name}",
             ${DatabaseConst.usersColumnEmail} = "${response.email}",
@@ -267,7 +269,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
             ${DatabaseConst.usersColumnUpdatedDate} = "${response.dateUpdated}"''',
           condition: '${DatabaseConst.usersColumnUserId} = ${response.userId}');
     } on GrpcError catch (e) {
-      print(e);
+      _logger.e(e.toString());
       throw CustomException(e.message.toString());
     }
     final users = await _usersServices.getUserById(id: UserPref.getUserId);
@@ -287,11 +289,10 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     try {
       response = await stub.changePassword(PasswordChangeRequest(
           userId: userId, oldPassword: oldPassword, newPassword: newPassword));
-      //TODO: Убрать принт
-      print('RESULT CHANGE PASSWORD: $response');
+
+      _logger.v('RESULT CHANGE PASSWORD: $response');
     } on GrpcError catch (e) {
-      //TODO: Убрать принт
-      print('ERROR CHANGE PASSWORD GRPC_CLIENT: $e');
+      _logger.e('ERROR CHANGE PASSWORD GRPC_CLIENT: $e');
       throw CustomException(e.message.toString());
     }
     return response.ok;
@@ -313,7 +314,7 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     try {
       response = await stub.getUser(request);
     } on GrpcError catch (e) {
-      print('ERROR getUser GRPC_CLIENT: $e');
+      _logger.e('ERROR getUser GRPC_CLIENT: $e');
       throw CustomException(e.message.toString());
     }
     return response;

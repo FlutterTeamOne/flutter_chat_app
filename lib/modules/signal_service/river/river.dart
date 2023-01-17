@@ -18,25 +18,14 @@ class River {
   static final synchUserPod =
       StateNotifierProvider.autoDispose<SynchUserNotifier, SynchStateRef>(
           (ref) => SynchUserNotifier());
-  // static final futureSynchUserPod = FutureProvider.autoDispose<SynchStateRef>(
-  //     (ref) async => await ref.read(synchUserPod.notifier).readUser());
-  static final userPod =
-      StateNotifierProvider<UserNotifier, UserStateRef>((ref) {
-    // ref.read(chatPod.notifier).readChat();
-    // ref.read(messagePod.notifier).readMessages();
-    return UserNotifier();
-  });
-  // static final futureUserPod = FutureProvider.autoDispose<UserStateRef>(
-  //     (ref) async => await ref.read(userPod.notifier).readUser());
+
+  static final userPod = StateNotifierProvider<UserNotifier, UserStateRef>(
+      (ref) => UserNotifier());
 
   static final chatPod = StateNotifierProvider<ChatNotifier, ChatStateRef>(
       (ref) => ChatNotifier());
-  // static final futureChatPod = FutureProvider.autoDispose<ChatStateRef>(
-  //     (ref) async => await ref.read(chatPod.notifier).readChat());
+
   static final messagePod =
       StateNotifierProvider<MessageNotifier, MessageStateRef>(
           (ref) => MessageNotifier());
-  // static final futureMessagePod = FutureProvider<MessageStateRef>(
-  //     (ref) => ref.read(messagePod.notifier).readMessages());
-
 }

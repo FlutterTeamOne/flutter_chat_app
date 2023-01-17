@@ -6,6 +6,7 @@ import 'package:chat_app/modules/storage_manager/db_helper/db_helper.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
 
 import '../../../sending_manager/library/library_sending_manager.dart';
 
@@ -26,7 +27,7 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
 
     chats = await _chatServices.getAllChatsSortedByUpdatedDate();
 
-    print('ADD CHAT FROM EVENT: $chats');
+    Logger().d('ADD CHAT FROM EVENT: $chats');
     state = state.copyWith(chats: chats);
 
     return state;
@@ -43,41 +44,39 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
       throw CustomException(e.response.toString());
     }
 
-    print("JAJAJ");
     List<ChatDto> chats = await _chatServices.createChat(
         createDate: chatFromRest.createdDate,
         userId: chatFromRest.userIdChat,
         chatId: chatFromRest.chatId!);
-    //TODO:запрос к restApi на создание чата
     state = state.copyWith(chats: chats);
     return chatFromRest.chatId!;
   }
 
   void getChatId(int chatId) {
-    print('HEY');
+    Logger().d('HEY');
     state = state.copyWith(chatId: chatId);
-    // return state;
   }
 
   Future<void> deleteChat(int chatId) async {
     //запрос на удаление к рест серверу
     dynamic data;
-    // int friendId = await LocalChatServices().getUserIdByChatId(id: chatId);
     try {
-      //TODO: Добавлять всем сообщениям этого чата deleted_date в локалке
       data = await RestClient().deleteChatRest(id: chatId);
     } on DioError catch (e) {
-      print("DioError DeleteChatNotifer ${e.response.toString()}");
+      Logger().e("DioError DeleteChatNotifer ${e.response.toString()}");
+
       throw CustomException(e.response.toString());
     } catch (e) {
-      print("DeleteChatNotifer $e");
+      Logger().e("DeleteChatNotifer $e");
+
       throw CustomException(e.toString());
     }
     if (data == null) {
-      print("DATA == NULL DeleteChatNotifer");
+      Logger().e("DATA == NULL DeleteChatNotifer");
       throw CustomException("RestServer not found");
     }
-    print('CHAT ID: $chatId');
+    Logger().d('CHAT ID: $chatId');
+
     // await LocalChatServices().deleteChat(id: chatId);
     // await LocalMessagesServices().deleteAllMessagesInChat(chatID: chatId);
     // await LocalUsersServices().deleteUser(id: friendId);

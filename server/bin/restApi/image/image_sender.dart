@@ -9,7 +9,7 @@ class ImageSender {
   Future<Map<String, Object?>> uploadImage(String path) async {
     var image = await MultipartFile.fromFile(path);
     FormData data = FormData.fromMap({'key': _key, 'image': image});
-    var resp;
+    late dynamic resp;
     try {
       var body = await _dio.post(_imgbb, data: data,
           onSendProgress: (int sent, int total) {

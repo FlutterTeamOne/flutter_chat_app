@@ -1,4 +1,5 @@
 ﻿import 'package:chat_app/src/generated/grpc_lib/grpc_message_lib.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../modules/signal_service/river/message_ref/message_state_ref.dart';
 import '../../../../modules/signal_service/river/river.dart';
@@ -50,10 +51,10 @@ class _PopupMenuCardWidgetState extends ConsumerState<PopupMenuCardWidget> {
                   widget.textController?.text = '';
                 } else {
                   List<String>? data = widget.message?.content.split(',');
-                  var msg = data![0].split('message: ')[1];
+                  String msg = data![0].split('message: ')[1];
                   // image = data[4].split('url: ')[1];
                   // print('image: $image');
-                  print('msg: $msg');
+                  Logger().d('msg: $msg');
                   widget.textController?.text = msg;
                 }
                 messagePod.updateMessage(
@@ -68,21 +69,15 @@ class _PopupMenuCardWidgetState extends ConsumerState<PopupMenuCardWidget> {
         icon: Icons.delete,
         text: 'Delete',
         onTap: () {
-          //TODO: Удалять по LocalId не отправленные сообщнеия
           messagePod.deleteMessage(message: widget.message!);
           popupmenuController.hideMenu();
         },
       ),
     ];
-    var time = DateTime.parse(widget.message?.createdDate ?? '');
-    var correctminute =
+    DateTime time = DateTime.parse(widget.message?.createdDate ?? '');
+    final correctminute =
         time.minute.toString().length == 1 ? '0${time.minute}' : time.minute;
     String? realTime = '${time.hour}:$correctminute';
-
-    // print('Message: ${widget.message!.content}');
-    // print("MessageCreate: ${widget.message!.createdDate}");
-    // print("MessageUpdate: ${widget.message!.updatedDate}");
-    // print('==? ${widget.message!.createdDate == widget.message!.updatedDate}');
 
     return CustomPopupMenu(
       controller: popupmenuController,

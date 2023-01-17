@@ -88,7 +88,6 @@ class UsersServices implements IUsersServices {
         '''SELECT user_id, updated_date, deleted_date FROM users WHERE (user_id = $id)''');
   }
 
-  @override
   Future<Map<String, Object?>> getUserById({required int userId}) async {
     Database db = await DbServerServices.instanse.database;
 

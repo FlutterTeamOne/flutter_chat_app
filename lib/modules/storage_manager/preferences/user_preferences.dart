@@ -1,48 +1,48 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserPreferences {
-  static const FRIENDS_CHAT_ID_KEY = "friends_chat_id_key";
-  static const IS_READ_KEY = "is_read_key";
-  static const MESSAGE_ID_KEY = "message_id_key";
-  static const THEME_KEY = "theme_key";
+  static const friendsChatIdKey = "friends_chat_id_key";
+  static const isReadKey = "is_read_key";
+  static const messageIdKey = "message_id_key";
+  static const themeKey = "theme_key";
 
   setIsRead(bool value) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setBool(IS_READ_KEY, value);
+    sharedPreferences.setBool(isReadKey, value);
   }
 
   getIsRead() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getBool(IS_READ_KEY);
+    return sharedPreferences.getBool(isReadKey);
   }
 
   setFriendsChatId(int value) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setInt(FRIENDS_CHAT_ID_KEY, value);
+    sharedPreferences.setInt(friendsChatIdKey, value);
   }
 
   getFriendsChatId() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getInt(FRIENDS_CHAT_ID_KEY);
+    return sharedPreferences.getInt(friendsChatIdKey);
   }
 
   setMessageId(int value) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setInt(MESSAGE_ID_KEY, value);
+    sharedPreferences.setInt(messageIdKey, value);
   }
 
   getMessageId() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getInt(MESSAGE_ID_KEY);
+    return sharedPreferences.getInt(messageIdKey);
   }
 
   setThemeEvent(int value) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setInt(THEME_KEY, value);
+    sharedPreferences.setInt(themeKey, value);
   }
 
   Future<int?> getTheme() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getInt(THEME_KEY);
+    return sharedPreferences.getInt(themeKey);
   }
 }

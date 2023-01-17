@@ -1,6 +1,4 @@
 import 'package:chat_app/domain/data/dto/attach_dto/attach_dto.dart';
-import 'package:chat_app/domain/data/dto/user_dto/user_dto.dart';
-import 'package:chat_app/modules/storage_manager/db_helper/db_helper.dart';
 import 'package:chat_app/modules/storage_manager/db_helper/user_path.dart';
 import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -77,7 +75,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('messages');
 
-      var insert = await db.rawInsert('''
+      await db.rawInsert('''
         INSERT INTO messages
           (chat_id, created_date, sender_id, content, updated_date)
           VALUES
@@ -99,7 +97,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('messages');
 
-      var insert = await db.rawInsert('''
+      await db.rawInsert('''
         INSERT INTO messages
           (chat_id, created_date, sender_id, content, updated_date)
           VALUES
@@ -124,7 +122,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('messages');
 
-      var insert = await db.rawInsert('''
+       await db.rawInsert('''
         INSERT INTO messages
           (chat_id, created_date, message_id, sender_id, content, updated_date)
           VALUES
@@ -145,7 +143,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('messages');
 
-      var insert = await db.rawInsert('''
+      await db.rawInsert('''
         INSERT INTO messages
           (chat_id, created_date, message_id, sender_id, content, updated_date)
           VALUES
@@ -167,7 +165,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('messages');
 
-      var insert = await db.rawInsert('''
+       await db.rawInsert('''
         INSERT INTO messages
           (chat_id, created_date, sender_id, content, updated_date)
           VALUES
@@ -198,7 +196,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('messages');
 
-      var insert = await db.rawInsert('''
+      await db.rawInsert('''
         INSERT INTO messages
           (chat_id, created_date, sender_id, message_id, content, updated_date)
           VALUES
@@ -235,7 +233,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('messages');
 
-      var insert = await db.rawInsert('''
+       await db.rawInsert('''
         INSERT INTO messages
           (chat_id, created_date, sender_id, content, updated_date)
           VALUES
@@ -269,7 +267,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('messages');
 
-      var insert = await db.rawInsert('''
+      await db.rawInsert('''
         INSERT INTO messages
           (chat_id, created_date, sender_id, content, updated_date)
           VALUES
@@ -305,7 +303,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('messages');
 
-      var insert = await db.rawInsert('''
+      await db.rawInsert('''
         INSERT INTO messages
           (chat_id, created_date, sender_id, content, updated_date)
           VALUES
@@ -341,7 +339,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('messages');
 
-      var insert = await db.rawInsert('''
+       await db.rawInsert('''
         INSERT INTO messages
           (chat_id, created_date, sender_id, content, updated_date)
           VALUES
@@ -379,7 +377,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('messages');
 
-      var insert = await db.rawInsert('''
+       await db.rawInsert('''
         INSERT INTO messages
           (chat_id, created_date, sender_id, message_id, content, updated_date)
           VALUES
@@ -411,7 +409,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('messages');
 
-      var insert = await db.rawInsert('''
+       await db.rawInsert('''
         INSERT INTO messages
           (chat_id, created_date, sender_id, content, updated_date)
           VALUES
@@ -442,7 +440,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('messages');
 
-      var insert = await db.rawInsert('''
+       await db.rawInsert('''
         INSERT INTO messages
           (chat_id, created_date, sender_id, content, updated_date)
           VALUES
@@ -468,7 +466,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('messages');
 
-      var insert = await db.rawInsert('''
+      await db.rawInsert('''
         INSERT INTO messages
           (chat_id, created_date, sender_id, content, updated_date)
           VALUES
@@ -489,7 +487,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('messages');
 
-      var insert = await db.rawInsert('''
+       await db.rawInsert('''
         INSERT INTO messages
           (chat_id, created_date, sender_id, content, updated_date)
           VALUES

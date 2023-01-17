@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:chat_app/modules/storage_manager/db_helper/db_helper_start.dart';
 import 'package:chat_app/src/constants/app_data_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:window_size/window_size.dart';
 
 import 'modules/storage_manager/db_helper/user_path.dart';
@@ -31,18 +32,18 @@ class AppInit {
     //Сброс
     await UserPref.restore();
 
-    //TODO: Убрать принт
-    print("START UserPref: ${UserPref.getUserDbPref}");
+   
+    Logger().d("START UserPref: ${UserPref.getUserDbPref}");
     UserPref.getUserDbPref
-        ? await DBHelperStart.instanse.initDB()
-        : await DBHelper.instanse.initDB();
+        ? await DBHelperStart.instanse.database
+        : await DBHelper.instanse.database;
 
     var userDir = AppDataConstants.userDirectory;
     var directory =
         await Directory('$userDir/AppData/Local/FlutterChatApp/databases')
             .create(recursive: true);
 
-    //TODO: Убрать принт
-    print("Путь к локальным базам ${directory.path}");
+    
+    Logger().i("Путь к локальным базам ${directory.path}");
   }
 }

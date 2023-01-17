@@ -33,7 +33,7 @@ void main() {
           updatedDate: '2022-13-45T34:11:11.123456',
           profilePicUrl: 'profilePicUrl');
 
-      var lastID = await db.rawQuery('''SELECT last_insert_rowid()''');
+      await db.rawQuery('''SELECT last_insert_rowid()''');
       var matcher = 1;
       expect(r, matcher);
       await DBHelper.instanse.deleteDB(db.path);
@@ -44,7 +44,7 @@ void main() {
         () async {
       await DBHelperStart.instanse.initDB();
       var db = await DBHelperStart.instanse.database;
-      var deleted = await db.delete('users');
+      await db.delete('users');
       var r = await LocalUsersServices().createUserStart(
           userId: 1,
           name: 'name',
@@ -53,7 +53,7 @@ void main() {
           updatedDate: '2022-13-45T34:11:11.123456',
           profilePicUrl: 'profilePicUrl');
 
-      var lastID = await db.rawQuery('''SELECT last_insert_rowid()''');
+      await db.rawQuery('''SELECT last_insert_rowid()''');
       var matcher = 1;
       expect(r, matcher);
       await DBHelperStart.instanse.deleteDB(db.path);
@@ -77,7 +77,7 @@ void main() {
     test('getAllUsers - returns list of UserDtos ', () async {
       await DBHelper.instanse.initDB();
       var db = await DBHelper.instanse.database;
-      var deleted = await db.delete('users');
+      await db.delete('users');
 
       await db.rawInsert('''
         INSERT INTO users (name, email, profile_pic_link, created_date, updated_date) 
@@ -102,7 +102,7 @@ void main() {
     test('getAllUsers - returns list of UserDtos ', () async {
       await DBHelper.instanse.initDB();
       var db = await DBHelper.instanse.database;
-      var deleted = await db.delete('users');
+      await db.delete('users');
 
       await db.rawInsert('''
         INSERT INTO users (name, email, profile_pic_link, created_date, updated_date) 
@@ -127,9 +127,9 @@ void main() {
     test('getAllUsersStart - returns list of Users in the startDB', () async {
       await DBHelperStart.instanse.initDB();
       var db = await DBHelperStart.instanse.database;
-      var deleted = await db.delete('users');
+      await db.delete('users');
 
-      var insert = await db.rawInsert('''
+      await db.rawInsert('''
         INSERT INTO users (user_id, name, email, profile_pic_link, created_date, updated_date, deleted_date) 
           VALUES (100000, 'LocalUsersServices', 'LocalUsersServices@test', 'profilePicLink', '2022-13-45T34:11:11.123456', '2022-13-45T34:11:11.123456', '');
       ''');
@@ -155,9 +155,9 @@ void main() {
         () async {
       await DBHelper.instanse.initDB();
       var db = await DBHelper.instanse.database;
-      var deleted = await db.delete('users');
+      await db.delete('users');
 
-      var insert = await db.rawInsert('''
+      await db.rawInsert('''
         INSERT INTO users (user_id, name, email, profile_pic_link, created_date, updated_date, deleted_date) 
           VALUES (100000, 'LocalUsersServices', 'LocalUsersServices@test', 'profilePicLink', '2022-13-45T34:11:11.123456', '2022-13-45T34:11:11.123456', '');
       ''');
@@ -189,9 +189,9 @@ void main() {
         () async {
       await DBHelper.instanse.initDB();
       var db = await DBHelper.instanse.database;
-      var deleted = await db.delete('main_user');
+      await db.delete('main_user');
 
-      var insert = await db.rawInsert('''
+      await db.rawInsert('''
         INSERT INTO main_user (user_id, user_key, date_sync) VALUES (1, 1, 'date_sync');
       ''');
 
@@ -213,9 +213,9 @@ void main() {
     test('getUserByLocalId - returns a UserDto by rowid', () async {
       await DBHelper.instanse.initDB();
       var db = await DBHelper.instanse.database;
-      var deleted = await db.delete('users');
+      await db.delete('users');
 
-      var insert = await db.rawInsert('''
+      await db.rawInsert('''
         INSERT INTO users (user_id, name, email, profile_pic_link, created_date, updated_date, deleted_date) 
           VALUES (100000, 'LocalUsersServices', 'LocalUsersServices@test', 'profilePicLink', '2022-13-45T34:11:11.123456', '2022-13-45T34:11:11.123456', '');
       ''');
@@ -237,9 +237,9 @@ void main() {
     test('getUserByLocalId - returns a UserDto by rowid', () async {
       await DBHelper.instanse.initDB();
       var db = await DBHelper.instanse.database;
-      var deleted = await db.delete('users');
+      await db.delete('users');
 
-      var insert = await db.rawInsert('''
+      await db.rawInsert('''
         INSERT INTO users (user_id, name, email, profile_pic_link, created_date, updated_date, deleted_date) 
           VALUES (100000, 'LocalUsersServices', 'LocalUsersServices@test', 'profilePicLink', '2022-13-45T34:11:11.123456', '2022-13-45T34:11:11.123456', '');
       ''');
@@ -261,9 +261,9 @@ void main() {
     test('updateUser - returns the number of updated fields', () async {
       await DBHelper.instanse.initDB();
       var db = await DBHelper.instanse.database;
-      var deleted = await db.delete('users');
+      await db.delete('users');
 
-      var insert = await db.rawInsert('''
+      await db.rawInsert('''
         INSERT INTO users (user_id, name, email, profile_pic_link, created_date, updated_date, deleted_date) 
           VALUES (100000, 'LocalUsersServices', 'LocalUsersServices@test', 'profilePicLink', '2022-13-45T34:11:11.123456', '2022-13-45T34:11:11.123456', '');
       ''');
@@ -282,9 +282,9 @@ void main() {
     test('updateUser - updates user data', () async {
       await DBHelper.instanse.initDB();
       var db = await DBHelper.instanse.database;
-      var deleted = await db.delete('users');
+      await db.delete('users');
 
-      var insert = await db.rawInsert('''
+      await db.rawInsert('''
         INSERT INTO users (user_id, name, email, profile_pic_link, created_date, updated_date, deleted_date) 
           VALUES (100000, 'LocalUsersServices', 'LocalUsersServices@test', 'profilePicLink', '2022-13-45T34:11:11.123456', '2022-13-45T34:11:11.123456', '');
       ''');
@@ -306,16 +306,15 @@ void main() {
     test('updateUserStart - returns the number of updated fields', () async {
       await DBHelperStart.instanse.initDB();
       var db = await DBHelperStart.instanse.database;
-      var deleted = await db.delete('users');
+      await db.delete('users');
 
-      var insert = await db.rawInsert('''
+      await db.rawInsert('''
         INSERT INTO users (user_id, name, email, profile_pic_link, created_date, updated_date, deleted_date) 
           VALUES (100000, 'LocalUsersServices', 'LocalUsersServices@test', 'profilePicLink', '2022-13-45T34:11:11.123456', '2022-13-45T34:11:11.123456', '');
       ''');
 
-      var insertedRowId =
-          (await db.rawQuery('''SELECT last_insert_rowid()'''))[0]
-              ['last_insert_rowid()'] as int;
+      (await db.rawQuery('''SELECT last_insert_rowid()'''))[0]
+          ['last_insert_rowid()'] as int;
 
       var r = await LocalUsersServices().updateUserStart(
           newValues: "name = 'LocalUsersServices2'",
@@ -331,9 +330,9 @@ void main() {
     test('updateUserStart - updates user data', () async {
       await DBHelperStart.instanse.initDB();
       var db = await DBHelperStart.instanse.database;
-      var deleted = await db.delete('users');
+      await db.delete('users');
 
-      var insert = await db.rawInsert('''
+      await db.rawInsert('''
         INSERT INTO users (user_id, name, email, profile_pic_link, created_date, updated_date, deleted_date) 
           VALUES (100000, 'LocalUsersServices', 'LocalUsersServices@test', 'profilePicLink', '2022-13-45T34:11:11.123456', '2022-13-45T34:11:11.123456', '');
       ''');
@@ -357,9 +356,9 @@ void main() {
         () async {
       await DBHelperStart.instanse.initDB();
       var db = await DBHelperStart.instanse.database;
-      var deleted = await db.delete('users');
+      await db.delete('users');
 
-      var insert = await db.rawInsert('''
+      await db.rawInsert('''
         INSERT INTO users (user_id, name, email, profile_pic_link, created_date, updated_date, deleted_date) 
           VALUES (100000, 'LocalUsersServices', 'LocalUsersServices@test', 'profilePicLink', '2022-13-45T34:11:11.123456', '2022-13-45T34:11:11.123456', '');
       ''');
@@ -382,9 +381,9 @@ void main() {
         () async {
       await DBHelper.instanse.initDB();
       var db = await DBHelper.instanse.database;
-      var deleted = await db.delete('users');
+      await db.delete('users');
 
-      var insert = await db.rawInsert('''
+      await db.rawInsert('''
         INSERT INTO users (user_id, name, email, profile_pic_link, created_date, updated_date, deleted_date) 
           VALUES (100000, 'LocalUsersServices', 'LocalUsersServices@test', 'profilePicLink', '2022-13-45T34:11:11.123456', '2022-13-45T34:11:11.123456', '');
       ''');
@@ -403,7 +402,7 @@ void main() {
     test('getLastUserId - gets the biggest user_id', () async {
       await DBHelperStart.instanse.initDB();
       var db = await DBHelperStart.instanse.database;
-      var deleted = await db.delete('users');
+      await db.delete('users');
 
       await db.rawInsert('''
         INSERT INTO users (user_id, name, email, profile_pic_link, created_date, updated_date, deleted_date) 
@@ -427,7 +426,7 @@ void main() {
     test('getLastUserId - gets the biggest user_id', () async {
       await DBHelperStart.instanse.initDB();
       var db = await DBHelperStart.instanse.database;
-      var deleted = await db.delete('users');
+      await db.delete('users');
 
       await db.rawInsert('''
         INSERT INTO users (user_id, name, email, profile_pic_link, created_date, updated_date, deleted_date) 
@@ -451,7 +450,7 @@ void main() {
     test('getMaxUserId - gets the biggest user_id', () async {
       await DBHelper.instanse.initDB();
       var db = await DBHelper.instanse.database;
-      var deleted = await db.delete('users');
+      await db.delete('users');
 
       await db.rawInsert('''
         INSERT INTO users (user_id, name, email, profile_pic_link, created_date, updated_date, deleted_date) 

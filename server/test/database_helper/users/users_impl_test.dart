@@ -1,11 +1,11 @@
+import 'package:server/src/db_server/database_helper/users/users_impl.dart';
+import 'package:server/src/db_server/services/database_impl.dart';
 import 'package:server/src/generated/grpcsynh.pb.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:test/test.dart';
-import '../../../lib/src/db_server/services/database_impl.dart';
 
-import '../../../lib/src/db_server/database_helper/users/users_impl.dart';
 
 void main() {
   // WidgetsFlutterBinding.ensureInitialized();
@@ -319,7 +319,7 @@ void main() {
           VALUES ($userId, 1, '2022-13-45T34:11:11.123456', '2022-13-45T34:11:11.123456')
       ''');
 
-      var chatId = (await db.rawQuery('''SELECT last_insert_rowid()'''))[0]
+      (await db.rawQuery('''SELECT last_insert_rowid()'''))[0]
           ['last_insert_rowid()'] as int;
 
       var r = await UsersServices().getAllUsersByIDfriend(userId: 1);

@@ -9,9 +9,11 @@ import 'package:flutter_test/flutter_test.dart';
 
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: Scaffold(body: ProfilePage()));
+    return const MaterialApp(home: Scaffold(body: ProfilePage()));
   }
 }
 
@@ -22,17 +24,17 @@ void main() async {
 
   group("Отрисовка виджетов на ProfilePage", () {
     testWidgets('Отрисовка Consumer', (tester) async {
-      await tester.pumpWidget(ProviderScope(child: MyApp()));
+      await tester.pumpWidget(const ProviderScope(child: MyApp()));
       expect(find.byType(Consumer), findsOneWidget);
     });
 
     testWidgets('Нет данных', (tester) async {
-      await tester.pumpWidget(ProviderScope(child: MyApp()));
+      await tester.pumpWidget(const ProviderScope(child: MyApp()));
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
     testWidgets('Все ок', (tester) async { 
-      await tester.pumpWidget(ProviderScope(child: MyApp(), overrides: [
+      await tester.pumpWidget(ProviderScope(overrides: [
         River.userPod.overrideWith((ref) {
           return UserNotifier()
             ..setUsers([
@@ -44,8 +46,8 @@ void main() async {
                   updatedDate: '')
             ]);
         })
-      ]));
-      await tester.pump(Duration(seconds: 1));
+      ], child: const MyApp()));
+      await tester.pump(const Duration(seconds: 1));
       expect(find.byType(CircularProgressIndicator), findsNothing);
     });
   });

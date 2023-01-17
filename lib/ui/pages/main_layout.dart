@@ -1,5 +1,4 @@
 import 'package:chat_app/modules/signal_service/river/connection_ref/connection_notifier.dart';
-
 import '../../modules/signal_service/river/river.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

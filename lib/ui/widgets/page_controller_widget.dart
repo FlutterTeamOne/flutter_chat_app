@@ -24,18 +24,6 @@ class PageControllerWidget extends StatelessWidget {
           case 2:
             return const AsapPage();
           case 3:
-            return const ChoosePage();
-          case 4:
-            return const BlackBoxPage();
-          case 5:
-            return const MeetNetPage();
-          case 6:
-            return const FindFriendsPage();
-          case 7:
-            return const JobLitePage();
-          case 8:
-            return const VideosPage();
-          case 9:
             return const SettingsPage();
 
           default:

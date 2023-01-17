@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:logger/logger.dart';
+
 import '../../../src/constants/app_data_constants.dart';
 
 import '../../../src/constants/db_constants.dart';
@@ -34,7 +36,7 @@ class DBHelperStart {
     // print('PATH_start: ${dbPath.path}');
     // String path = join(dbPath.path, DatabaseConst.dbFileNameStart);
     String path = join(dbPath, DatabaseConst.dbFileNameStart);
-    print('PATH_absolute: ${path}');
+    Logger().i('PATH_absolute: $path');
     return await dbFactory.openDatabase(path,
         options: OpenDatabaseOptions(
           version: DatabaseConst.dbVersion,

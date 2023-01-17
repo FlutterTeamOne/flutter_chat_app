@@ -7,6 +7,7 @@ import 'package:chat_app/src/libraries/library_all.dart';
 import 'package:chat_app/ui/widgets/registration_page/models/new_user_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grpc/grpc.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../src/generated/grpc_lib/grpc_sync_lib.dart';
 import '../../../../src/generated/grpc_lib/grpc_user_lib.dart';
@@ -14,6 +15,8 @@ import '../../../../src/generated/grpc_lib/grpc_user_lib.dart';
 class SynchUserNotifier extends StateNotifier<SynchStateRef> {
   late LocalUsersServices _usersServices;
   late GrpcUsersClient stub;
+  static final Logger _logger = Logger();
+
   SynchUserNotifier() : super(SynchStateRef()) {
     _usersServices = LocalUsersServices();
 
@@ -28,7 +31,7 @@ class SynchUserNotifier extends StateNotifier<SynchStateRef> {
         await _usersServices.getAllUserIdAndUpdatedStart();
     List<UserRequest> usersRequest = [];
     if (usersForUpdate.isNotEmpty) {
-      print("lastID ${usersForUpdate.last['user_id']}");
+      _logger.d("lastID ${usersForUpdate.last['user_id']}");
       for (var user in usersForUpdate) {
         usersRequest.add(UserRequest(
             userId: user['user_id'] as int,
@@ -38,28 +41,26 @@ class SynchUserNotifier extends StateNotifier<SynchStateRef> {
     //подключаемся к серверу
 
     var usersResponse = UsersResponse();
-    String customError = '';
-    bool error = false;
     //отправляем запрос на сервер и получаем всех юзеров
     try {
       var stub = GrpcSynchronizationClient(GrpcClient().channel);
       usersResponse = await stub.sync(UsersRequest(
           mainUser: UserPref.getUserId, usersForUpdate: usersRequest));
     } on GrpcError catch (e) {
-      print("ERROR GRPC SYNH: $e");
+      _logger.e("ERROR GRPC SYNH: $e");
       users = await _usersServices.getAllUsersStart();
       state = state.copyWith(users: users);
-      //TODO:Выводить экран ошибки
       throw CustomException(e.toString());
     } catch (e) {
-      print("ERROR SYNH: $e");
+      _logger.e("ERROR SYNH: $e");
+
       users = await _usersServices.getAllUsersStart();
       state = state.copyWith(users: users);
-      //TODO:Выводить экран ошибки
       throw CustomException(e.toString());
     }
-    print("UsersServ NEW ${usersResponse.usersNew}");
-    print("UsersServ UPDATED ${usersResponse.usersUpdated}");
+    _logger.d("UsersServ NEW ${usersResponse.usersNew}");
+    _logger.d("UsersServ UPDATED ${usersResponse.usersUpdated}");
+
     for (var user in usersResponse.usersNew) {
       //парсим всех юзеров и записываем их в локальное дб
       await _usersServices.createUserStart(
@@ -113,16 +114,19 @@ class SynchUserNotifier extends StateNotifier<SynchStateRef> {
           updatedDate: newUser.updatedDate,
           profilePicUrl: newUser.profilePicLink);
     } on GrpcError catch (e) {
-      print("GRPC ERROR CreateUser: $e");
+      _logger.e("GRPC ERROR CreateUser: $e");
       throw CustomException(e.message.toString());
     } on SocketException catch (e) {
-      print("Socket ERROR CreateUser: $e");
+      _logger.e("Socket ERROR CreateUser: $e");
+
       throw CustomException(e.toString());
     } catch (e) {
-      print("ERROR CreateUser: $e");
+      _logger.e("ERROR CreateUser: $e");
+
       throw CustomException(e.toString());
     }
-    print('CREATE USER FROM GRPC CLIENT RESPONSE: ${response.toString()}');
+    _logger.v('CREATE USER FROM GRPC CLIENT RESPONSE: ${response.toString()}');
+
     state = state.copyWith(newUser: newUser);
   }
 
@@ -133,9 +137,9 @@ class SynchUserNotifier extends StateNotifier<SynchStateRef> {
     try {
       response = await stub.confirmPassword(
           PasswordConfirmRequest(userId: userId, password: password));
-      print('RESULT: $response');
+      _logger.v('RESULT: $response');
     } on GrpcError catch (e) {
-      print('ERROR CONFIRM PASSWORD GRPC_CLIENT: $e');
+      _logger.e('ERROR CONFIRM PASSWORD GRPC_CLIENT: $e');
       throw CustomException(e.message.toString());
     }
     return response.ok;

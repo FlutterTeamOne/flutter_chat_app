@@ -40,7 +40,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('chats');
 
-      var insert = await db.rawQuery('''
+       await db.rawQuery('''
         INSERT INTO chats 
           (user_id, created_date, update_date)
         VALUES
@@ -60,7 +60,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('chats');
 
-      var insert = await db.rawQuery('''
+       await db.rawQuery('''
         INSERT INTO chats 
           (user_id, created_date, update_date)
         VALUES
@@ -82,7 +82,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('chats');
 
-      var insert = await db.rawQuery('''
+      await db.rawQuery('''
         INSERT INTO chats 
           (user_id, created_date, update_date)
         VALUES
@@ -140,7 +140,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('chats');
 
-      var insert = await db.rawQuery('''
+      await db.rawQuery('''
         INSERT INTO chats 
           (user_id, created_date, update_date)
         VALUES
@@ -168,7 +168,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('chats');
 
-      var insert = await db.rawQuery('''
+       await db.rawQuery('''
         INSERT INTO chats 
           (user_id, created_date, update_date)
         VALUES
@@ -176,7 +176,6 @@ void main() {
 
       var id = (await db.rawQuery('''SELECT last_insert_rowid()'''))[0]['last_insert_rowid()'] as int;
 
-      var date = '2023-01-08T00:41:21.267124';
 
       var r = await LocalChatServices().getMainIdChatByMessage(localId: id);
       var matcher = id;
@@ -190,7 +189,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('chats');
 
-      var insert = await db.rawQuery('''
+       await db.rawQuery('''
         INSERT INTO chats 
           (user_id, created_date, update_date)
         VALUES
@@ -213,7 +212,7 @@ void main() {
       var db = await DBHelper.instanse.database;
       await db.delete('chats');
 
-      var insert = await db.rawQuery('''
+      await db.rawQuery('''
         INSERT INTO chats 
           (user_id, created_date, update_date)
         VALUES

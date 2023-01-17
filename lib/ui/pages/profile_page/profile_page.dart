@@ -7,6 +7,7 @@ import 'package:chat_app/ui/auth/authorization_page.dart';
 import 'package:chat_app/ui/pages/profile_page/repositiry/show_text_field_dialog.dart';
 import 'package:chat_app/ui/widgets/custom_dialogs/error_dialog.dart';
 import 'package:chat_app/ui/widgets/custom_widgets/cached_image_widget.dart';
+import 'package:logger/logger.dart';
 import 'package:lottie/lottie.dart';
 import '../../../modules/signal_service/river/river.dart';
 import '../../../modules/storage_manager/db_helper/user_path.dart';
@@ -36,7 +37,7 @@ class ProfilePage extends StatelessWidget {
       body: Consumer(
         builder: (context, ref, _) {
           final mainUser = ref.watch(River.userPod).mainUser;
-          print('USER POD PROFILE: $mainUser');
+          Logger().d('USER POD PROFILE: $mainUser');
 
           return mainUser != null
               ? const ProfileLayout(key: Key("ProfileLayout"))
