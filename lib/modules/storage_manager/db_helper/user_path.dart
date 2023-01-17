@@ -10,14 +10,13 @@ class UserPath {
   String setPath(String name) {
     var dbPath = '';
     getDbPath().then((value) => dbPath = value);
-    _path = join(dbPath, 'sfera_$name.db');
+    _path = join(dbPath, 'db_$name.db');
     return _path;
   }
 
   Future<String> getDbPath() async {
     var dbPath = await getTemporaryDirectory();
     Logger().d('PATH: ${dbPath.path}');
-    // var _dbFileName = 'sfera';
     return dbPath.path;
   }
 

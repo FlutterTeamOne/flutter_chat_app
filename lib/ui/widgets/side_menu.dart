@@ -36,12 +36,12 @@ class SideMenuWidget extends StatelessWidget {
             ? Column(
                 children: [
                   const SizedBox(height: 20),
-                  Text('Sfera'.toUpperCase(),
+                  Text('Chat'.toUpperCase(),
                       style: TextStyle(color: Theme.of(context).primaryColor)),
                   const SizedBox(height: 20),
                 ],
               )
-            : Text('Ⓢ', style: Theme.of(context).textTheme.headlineLarge),
+            : Text('Ⓒ', style: Theme.of(context).textTheme.headlineLarge),
         separatorBuilder: (context, index) => const SizedBox(height: 5),
         items: currentWidth <= 1276
             ? const [
@@ -83,11 +83,11 @@ class SideMenuWidget extends StatelessWidget {
                 ),
                 SidebarXItem(
                   icon: Icons.calendar_view_day_rounded,
-                  label: 'SFERA feed',
+                  label: 'App feed',
                 ),
                 SidebarXItem(
                   icon: Icons.chat_rounded,
-                  label: 'Asap',
+                  label: 'Messenger',
                 ),
                 SidebarXItem(
                   icon: Icons.calendar_view_day_rounded,

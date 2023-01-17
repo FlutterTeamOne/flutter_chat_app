@@ -1,6 +1,6 @@
 class DatabaseConst {
   //название и версия бд
-  static const dbFileName = 'sfera.db';
+  static const dbFileName = 'chat.db';
   static const dbVersion = 1;
   static const dbFileNameStart = 'startDb.db';
 
