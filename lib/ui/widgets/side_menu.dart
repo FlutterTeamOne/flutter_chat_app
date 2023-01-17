@@ -55,24 +55,6 @@ class SideMenuWidget extends StatelessWidget {
                   icon: Icons.chat_bubble_outline_rounded,
                 ),
                 SidebarXItem(
-                  icon: Icons.calendar_view_day_outlined,
-                ),
-                SidebarXItem(
-                  icon: Icons.view_in_ar_outlined,
-                ),
-                SidebarXItem(
-                  icon: Icons.pie_chart_outline_rounded,
-                ),
-                SidebarXItem(
-                  icon: Icons.supervisor_account_outlined,
-                ),
-                SidebarXItem(
-                  icon: Icons.person_search_outlined,
-                ),
-                SidebarXItem(
-                  icon: Icons.diamond_outlined,
-                ),
-                SidebarXItem(
                   icon: Icons.settings_outlined,
                 ),
               ]
@@ -88,30 +70,6 @@ class SideMenuWidget extends StatelessWidget {
                 SidebarXItem(
                   icon: Icons.chat_rounded,
                   label: 'Messenger',
-                ),
-                SidebarXItem(
-                  icon: Icons.calendar_view_day_rounded,
-                  label: 'Choose',
-                ),
-                SidebarXItem(
-                  icon: Icons.view_in_ar_rounded,
-                  label: 'Black box',
-                ),
-                SidebarXItem(
-                  icon: Icons.pie_chart_outline_rounded,
-                  label: 'MeetNet',
-                ),
-                SidebarXItem(
-                  icon: Icons.supervisor_account_rounded,
-                  label: 'Find friends',
-                ),
-                SidebarXItem(
-                  icon: Icons.person_search_rounded,
-                  label: 'Job lite',
-                ),
-                SidebarXItem(
-                  icon: Icons.diamond_rounded,
-                  label: 'VideoS',
                 ),
                 SidebarXItem(
                   icon: Icons.settings,
